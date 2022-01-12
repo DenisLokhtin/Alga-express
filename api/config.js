@@ -6,6 +6,9 @@ module.exports = {
     rootPath,
     uploadPath: path.join(rootPath, 'public/uploads'),
     db: {
-        url: 'mongodb://localhost/alga-express'
-    }
+        url: 'mongodb://localhost/alga',
+    },
+    google: {
+        clientId: process.env.GOOGLE_CLIENT_ID,
+    },
 };

@@ -4,7 +4,8 @@ import axiosApi from "../axiosApi";
 import createSagaMiddleware from 'redux-saga';
 import {rootSagas} from "./rootSagas";
 import {configureStore} from "@reduxjs/toolkit";
-import usersSlice, {initialState} from "./slices/userSlice";
+import usersSlice, {initialState} from "./slices/usersSlice";
+import thunk from "redux-thunk";
 
 const rootReducer = combineReducers({
     'users': usersSlice.reducer,
@@ -14,7 +15,10 @@ const persistedState = loadFromLocalStorage();
 
 const sagaMiddleware = createSagaMiddleware();
 
-const middleware = [sagaMiddleware];
+const middleware = [
+    thunk,
+    sagaMiddleware,
+];
 
 const store = configureStore({
     reducer: rootReducer,
