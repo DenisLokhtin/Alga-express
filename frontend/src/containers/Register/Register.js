@@ -82,8 +82,9 @@ const Register = () => {
     };
 
     const passwordError = () => {
-        return user.password !== passwords.password_2 || user.password === '' && passwords.password_2 === '' && user.email === '' && user.name === '' && user.phone === '' || !checkbox;
-
+        if (user.password === passwords.password_2 && user.password !== '' && passwords.password_2 !== '' && user.email !== '' && user.name !== '' && user.phone !== '' && checkbox) {
+            return false
+        } else return true
     };
 
     const getFieldError = fieldName => {
@@ -196,7 +197,7 @@ const Register = () => {
                             color="primary"
                             className={classes.submit}
                             loading={loading}
-                            disabled={loading || passwordError()}
+                            disabled={passwordError()}
                         >
                             зарегистрироваться
                         </ButtonWithProgress>
