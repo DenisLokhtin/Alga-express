@@ -1,17 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import './UserMenu.css';
 import PersonIcon from '@mui/icons-material/Person';
-import {
-    Avatar,
-    Divider,
-    IconButton,
-    List,
-    ListItemButton,
-    ListItemIcon,
-    ListItemText,
-    Menu,
-    MenuItem
-} from "@mui/material";
+import {Divider, IconButton, List, ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem} from "@mui/material";
 import LogoutIcon from '@mui/icons-material/Logout';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import HistoryIcon from '@mui/icons-material/History';
