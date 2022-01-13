@@ -3,54 +3,24 @@ const axios = require('axios');
 const config = require('../config');
 const Package = require('../models/Package');
 const User = require('../models/User');
+const filter = require("../middleware/filter");
 
 const router = express.Router();
 
 router.get('/', async (req, res) => {
     const query = {};
+
     if (req.query.id) query.id = req.query.id;
-    // if (req.query.user_id) query.id = req.query.id;
-
-    // console.log(query.id);
-
+    if (req.query.history) query.history = req.query.history;
+    if (req.query.user) query.user = req.query.user;
     let findFilter = {};
-    const user = {};
-
-    user.role = 'admin';
-    // user.role = 'warehouseman';
-    // user.role = 'user';
-
 
     try {
-        const user = await User.find(query);
-
-        if (user.role === 'admin') {
-            findFilter = {
-                status: {$ne: !'ISSUED'},
-                _id: user._id,
-                deleted: {$ne: !true},
-            };
-        }
-
-        if (user.role === 'warehouseman') {
-            findFilter = {
-                status: {$ne: !'ISSUED'},
-                _id: user._id,
-                deleted: {$ne: !true},
-            };
-        }
-
-        if (user.role === 'user') {
-            findFilter = {
-                status: {$ne: !'ISSUED'},
-                _id: user._id,
-                deleted: {$ne: !true},
-            };
-        }
-
+        const findUser = await User.findById(query.id);
+        findFilter = filter(query, findUser);
         const packages = await Package.find(findFilter);
 
-        res.send(query.id);
+        res.send(packages);
     } catch (e) {
 
     }
