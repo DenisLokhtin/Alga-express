@@ -1,9 +1,9 @@
-import {createTheme} from "@material-ui/core";
+import {createTheme} from '@mui/material/styles';
 
 const theme = createTheme({
     props: {
-        MuiTextField: {
-            variant: "outlined",
+        MuiInput: {
+            variant: "filled",
             fullWidth: true,
         },
     },
