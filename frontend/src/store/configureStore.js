@@ -5,9 +5,11 @@ import createSagaMiddleware from 'redux-saga';
 import {rootSagas} from "./rootSagas";
 import {configureStore} from "@reduxjs/toolkit";
 import usersSlice, {initialState} from "./slices/userSlice";
+import packageSlice from "./slices/packageRegisterSlice";
 
 const rootReducer = combineReducers({
     'users': usersSlice.reducer,
+    'package': packageSlice.reducer,
 });
 
 const persistedState = loadFromLocalStorage();
