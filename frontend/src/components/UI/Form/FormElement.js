@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Grid, MenuItem, TextField} from "@material-ui/core";
+import TextField from "@mui/material/TextField";
+import Grid from "@mui/material/Grid";
+import MenuItem from "@mui/material/MenuItem";
 
 const FormElement = ({label, name, value, onChange, required, error, autoComplete, type, select, options, multiline, rows}) => {
   let inputChildren = null;
@@ -9,8 +11,7 @@ const FormElement = ({label, name, value, onChange, required, error, autoComplet
     inputChildren = options.map(option => (
       <MenuItem
         key={option._id}
-        value={option._id}
-      >
+        value={option._id}>
         {option.title}
       </MenuItem>
     ));

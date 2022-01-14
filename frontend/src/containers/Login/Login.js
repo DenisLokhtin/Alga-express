@@ -2,11 +2,16 @@ import React, {useEffect, useState} from 'react';
 import {Link as RouterLink} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import FormElement from "../../components/UI/Form/FormElement";
-import LockOpenOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
-import {Avatar, Container, Grid, Link, makeStyles, Typography} from "@material-ui/core";
-import {clearErrorUser, loginUser} from "../../store/actions/usersActions";
+import {clearError, loginUser} from "../../store/actions/usersActions";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
 import GoogleLogin from "../../components/UI/GoogleLogin/GoogleLogin";
+import LockOpenIcon from '@mui/icons-material/LockOpen';
+import {makeStyles} from "@mui/styles";
+import Container from "@mui/material/Container";
+import Avatar from "@mui/material/Avatar";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Link from "@mui/material/Link";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -43,7 +48,7 @@ const Login = () => {
 
     useEffect(() => {
         return () => {
-            dispatch(clearErrorUser());
+            dispatch(clearError());
         };
     }, [dispatch]);
 
@@ -68,7 +73,7 @@ const Login = () => {
         <Container component="section" maxWidth="xs">
             <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
-                    <LockOpenOutlinedIcon/>
+                    <LockOpenIcon/>
                 </Avatar>
 
                 <Typography component="h1" variant="h6">

@@ -1,13 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {Link as RouterLink} from 'react-router-dom';
-import {Avatar, Container, Grid, Link, makeStyles, Typography} from "@material-ui/core";
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Container from "@mui/material/Container";
+import Avatar from "@mui/material/Avatar";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Link from "@mui/material/Link";
+import {makeStyles} from "@mui/styles";
 import {useDispatch, useSelector} from "react-redux";
-import {clearErrorUser, registerUser} from "../../store/actions/usersActions";
+import {clearError, registerUser} from "../../store/actions/usersActions";
 import FormElement from "../../components/UI/Form/FormElement";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import PhoneInput from 'react-phone-input-2'
 import ru from 'react-phone-input-2/lang/ru.json'
 import './Register.css'
@@ -53,7 +58,7 @@ const Register = () => {
 
     useEffect(() => {
         return () => {
-            dispatch(clearErrorUser());
+            dispatch(clearError());
         };
     }, [dispatch]);
 
@@ -121,6 +126,7 @@ const Register = () => {
 
                     <FormElement
                         required
+                        variant="outlined"
                         type="text"
                         label="ФИО"
                         name="name"
@@ -175,11 +181,10 @@ const Register = () => {
                     />
 
                     <Grid item xs={12}>
-                        <FormControlLabel onClick={() => setCheckbox(!checkbox)} style={{'marginBottom': '5px'}}
-                                          control={<Checkbox size='medium'/>}/>
-                        <Typography style={{'marginLeft': '-20px'}} component="span">
+                        <FormControlLabel label={<Typography component="span">
                             Я согласен с <Link component={RouterLink} to="/rules">правилами</Link>
-                        </Typography>
+                        </Typography>} onClick={() => setCheckbox(!checkbox)} style={{'marginBottom': '5px'}}
+                                          control={<Checkbox size='medium'/>}/>
                     </Grid>
 
                     <Grid item xs={12}>
