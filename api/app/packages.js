@@ -1,24 +1,31 @@
 const express = require("express");
-const axios = require('axios');
-const config = require('../config');
 const Package = require('../models/Package');
-const User = require('../models/User');
 const filter = require("../middleware/filter");
+const auth = require("../middleware/auth");
+const packageValidate = require("../middleware/packageValidate");
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
     const query = {};
 
     if (req.query.id) query.id = req.query.id;
     if (req.query.history) query.history = req.query.history;
-    if (req.query.user) query.user = req.query.user;
+    if (req.query.sort) {
+        query.sort = req.query.sort;
+    } else {
+        query.sort = 'date';
+    }
+
+    query.role = req.user.role;
+    query.user_id = req.user._id;
     let findFilter = {};
 
     try {
-        const findUser = await User.findById(query.id);
-        findFilter = filter(query, findUser);
-        const packages = await Package.find(findFilter);
+        findFilter = filter(query);
+        const packages = await Package.find(findFilter)
+            .populate('user', 'name')
+            .sort(query.sort);
 
         res.send(packages);
     } catch (e) {
@@ -26,29 +33,58 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.post('/', async (req, res) => {
-    if (!req.body.trackNumber || !req.body.title || !req.body.amount || !req.body.price) {
-        return res.status(400).send({error: 'Data No Valid'});
-    }
-
-    const packageData = {
-        title: req.body.title,
-        trackNumber: req.body.trackNumber,
-        amount: req.body.amount,
-        price: req.body.price,
-    };
-
-    const package = new Package(packageData);
-
+router.post('/', auth, packageValidate, async (req, res) => {
     try {
-        await package.save();
-        res.send(package);
-    } catch (e) {
-        console.log(e);
+        const packageData = {
+            country: req.body.country,
+            title: req.body.title,
+            trackNumber: req.body.trackNumber,
+            amount: req.body.amount,
+            price: req.body.price,
+            user: req.user._id
+        };
+
+        console.log(packageData);
+
+        const newPackage = new Package(packageData);
+
+        await newPackage.save();
+        res.send(newPackage);
+
+    } catch (error) {
+        const modelFields = Object.keys(error.errors);
+
+        for (const key of modelFields) {
+            switch (key) {
+                case 'country':
+                    error.errors[key].message = 'Поле Страна обязательное';
+                    break;
+                case 'trackNumber':
+                    error.errors[key].message = 'Поле Трек-Номер обязательное';
+                    break;
+                case 'title':
+                    error.errors[key].message = 'Поле Название обязательное';
+                    break;
+                case 'amount':
+                    if (error.errors.amount.properties.min === 0) {
+                        error.errors[key].message;
+                    } else {
+                        error.errors[key].message = 'Поле Количество обязательное';
+                    }
+                    break;
+                case 'price':
+                    if (error.errors['price'].properties.min === 0) {
+                        error.errors[key].message;
+                    } else {
+                        error.errors[key].message = 'Поле Цена обязательное';
+                    }
+            }
+        }
+        res.status(400).send(error);
     }
 });
 
-router.put('/', async (req, res) => {
+router.put('/', auth, async (req, res) => {
     try {
 
     } catch (e) {
@@ -56,7 +92,7 @@ router.put('/', async (req, res) => {
     }
 });
 
-router.delete('/', async (req, res) => {
+router.delete('/', auth, async (req, res) => {
     const deletedData = {
         deleted: true,
     };
