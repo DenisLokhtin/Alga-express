@@ -56,7 +56,7 @@ const AppToolbar = () => {
                             <MenuIcon sx={{fontSize: 30, color: "#F5F5F7"}}/>
                         </IconButton>
                         <BurgerMenu setOpen={setOpen} open={open}>
-                            <Anonymous/>
+                            <Anonymous setOpen={setOpen}/>
                             {/*<UserMenu/>*/}
                         </BurgerMenu>
                     </Grid>`
