@@ -14,7 +14,16 @@ const app = (
     <Provider store={store}>
         <BrowserRouter>
             <MuiThemeProvider theme={theme}>
-                <ToastContainer/>
+                <ToastContainer
+                    position="bottom-left"
+                    autoClose={3000}
+                    hideProgressBar={false}
+                    newestOnTop
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss={false}
+                    draggable
+                    pauseOnHover={false}/>
                 <App/>
             </MuiThemeProvider>
         </BrowserRouter>
