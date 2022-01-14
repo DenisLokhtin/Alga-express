@@ -54,16 +54,11 @@ const UserSchema = new mongoose.Schema({
     balance: {
         type: Number,
         default: 0,
-        required: true,
+        required: false,
     },
     passport: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Passports',
-        required: false,
-    },
-    orders: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Orders',
         required: false,
     },
     phone: {
