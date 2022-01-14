@@ -12,15 +12,15 @@ import HowItWorks from "./containers/HowItWorks/HowItWorks";
 const App = () => {
     return (
         <Layout>
-        <Routes>
-            <Route path='/register' element={<Register/>}/>
-            <Route path='/package-register' element={<PackageRegister/>}/>
+            <Routes>
+                <Route path='/register' element={<Register/>}/>
+                <Route path='/package-register' element={<PackageRegister/>}/>
                 <Route path='/login' element={<Login/>}/>
-                <Route path='/rules' exact element={<Rules/>}/>
-                <Route path='/about_us' exact element={<AboutUs/>}/>
-                <Route path='/contacts' exact element={<Contacts/>}/>
                 <Route path='/register' exact element={<Register/>}/>
-                <Route path='/how_it_works' exact element={<HowItWorks/>}/>
+                <Route path='/rules' element={<Rules/>}/>
+                <Route path='/about_us' element={<AboutUs/>}/>
+                <Route path='/contacts' element={<Contacts/>}/>
+                <Route path='/how_it_works' element={<HowItWorks/>}/>
             </Routes>
         </Layout>
     );
