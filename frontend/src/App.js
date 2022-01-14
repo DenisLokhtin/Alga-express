@@ -6,7 +6,6 @@ import Layout from "./components/UI/Layout/Layout";
 import AboutUs from "./containers/AboutUs/AboutUs";
 import Contacts from "./containers/Contacts/Contacts";
 import Rules from "./containers/Rules/Rules";
-import ProhibitedGoods from "./containers/ProhibitedGoods/ProhibitedGoods";
 import HowItWorks from "./containers/HowItWorks/HowItWorks";
 
 const App = () => {
@@ -19,7 +18,6 @@ const App = () => {
                 <Route path='/contacts' exact element={<Contacts/>}/>
                 <Route path='/register' exact element={<Register/>}/>
                 <Route path='/how_it_works' exact element={<HowItWorks/>}/>
-                <Route path='/prohibited_goods' exact element={<ProhibitedGoods/>}/>
             </Routes>
         </Layout>
     );
