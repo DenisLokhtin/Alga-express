@@ -6,6 +6,8 @@ import {rootSagas} from "./rootSagas";
 import {configureStore} from "@reduxjs/toolkit";
 import usersSlice, {initialState} from "./slices/userSlice";
 import packageSlice from "./slices/packageRegisterSlice";
+import {configureStore, getDefaultMiddleware} from "@reduxjs/toolkit";
+import usersSlice, {initialState} from "./slices/usersSlice";
 
 const rootReducer = combineReducers({
     'users': usersSlice.reducer,

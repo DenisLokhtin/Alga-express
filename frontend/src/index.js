@@ -1,19 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
-import {Provider} from "react-redux";
 import {BrowserRouter} from "react-router-dom";
+import {Provider} from "react-redux";
 import {ToastContainer} from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import App from './App';
 import store from "./store/configureStore";
+import theme from "./theme";
+import { ThemeProvider } from '@mui/material/styles';
+import 'react-toastify/dist/ReactToastify.css';
 
 const app = (
     <Provider store={store}>
         <BrowserRouter>
-            <App/>
-            <ToastContainer/>
+            <ThemeProvider theme={theme}>
+                <ToastContainer/>
+                <App/>
+            </ThemeProvider>
         </BrowserRouter>
     </Provider>
-)
+);
 
 ReactDOM.render(app, document.getElementById('root'));
