@@ -3,8 +3,9 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import LoginIcon from '@mui/icons-material/Login';
 import {Button, Grid, List, ListItem} from "@mui/material";
 import "./Anonymous.css";
+import {Link} from "react-router-dom";
 
-const Anonymous = () => {
+const Anonymous = ({setOpen}) => {
     const [width, setWidth] = useState(window.innerWidth);
 
     useEffect(() => {
@@ -25,6 +26,8 @@ const Anonymous = () => {
                     '&:hover': {borderColor: "#F5F5F7"}}}
                 startIcon={<LoginIcon sx={{fontSize: 30, color: "#F5F5F7"}}/>}
                 variant="outlined"
+                component={Link}
+                to={'/login'}
             >
                 Войти
             </Button>
@@ -34,6 +37,8 @@ const Anonymous = () => {
                     '&:hover': {borderColor: "#F5F5F7"}}}
                 startIcon={<PersonAddIcon sx={{fontSize: 30, color: "#F5F5F7"}}/>}
                 variant="outlined"
+                component={Link}
+                to={'/register'}
             >
                 Зарегистрироваться
             </Button>
@@ -49,6 +54,9 @@ const Anonymous = () => {
                             '&:hover': {borderColor: "#F5F5F7"}}}
                         startIcon={<LoginIcon sx={{fontSize: 30, color: "#F5F5F7"}}/>}
                         variant="outlined"
+                        component={Link}
+                        to={'/login'}
+                        onClick={() => setOpen(false)}
                     >
                         Войти
                     </Button>
@@ -57,6 +65,9 @@ const Anonymous = () => {
                             '&:hover': {borderColor: "#F5F5F7"}}}
                         startIcon={<PersonAddIcon sx={{fontSize: 30, color: "#F5F5F7"}}/>}
                         variant="outlined"
+                        component={Link}
+                        to={'/register'}
+                        onClick={() => setOpen(false)}
                     >
                         Зарегистрироваться
                     </Button>
