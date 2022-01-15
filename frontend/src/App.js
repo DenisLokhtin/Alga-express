@@ -8,9 +8,9 @@ import Layout from "./components/UI/Layout/Layout";
 const App = () => {
     return (
         <Layout>
-        <Routes>
-            <Route path='/register' element={<Register/>}/>
-            <Route path='/package-register' element={<PackageRegister/>}/>
+            <Routes>
+                <Route path='/register' element={<Register/>}/>
+                <Route path='/package-register' element={<PackageRegister/>}/>
                 <Route path='/login' element={<Login/>}/>
                 <Route path='/register' exact element={<Register/>}/>
             </Routes>
