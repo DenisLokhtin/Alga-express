@@ -3,6 +3,9 @@ const Package = require('../models/Package');
 const filter = require("../middleware/filter");
 const auth = require("../middleware/auth");
 const packageValidate = require("../middleware/packageValidate");
+const permit = require("../middleware/permit");
+const userEdit = require("../middleware/userEdit");
+const test = require("../middleware/test");
 
 const router = express.Router();
 
@@ -12,7 +15,7 @@ router.get('/', auth, async (req, res) => {
     if (req.query.id) query.id = req.query.id;
     if (req.query.history) query.history = req.query.history;
     if (req.query.sort) {
-        query.sort = req.query.sort;
+        query.sort = {[req.query.sort]: -1};
     } else {
         query.sort = 'date';
     }
@@ -32,6 +35,25 @@ router.get('/', auth, async (req, res) => {
 
     }
 });
+//
+// router.get('/:id', auth, async (req, res) => {
+//     console.log(req.params.id);
+//     // if (req.user.role === 'user')
+//     //     if (req.user.role === 'admin')
+//
+//             try {
+//                 const packageFind = await Package.find();
+//
+//                 console.log('packageFind: ', packageFind);
+//                 if (packageFind) {
+//                 }
+//                 res.send('ok');
+//             } catch (e) {
+//                 res.send(e);
+//                 console.log(e);
+//             }
+//
+// });
 
 router.post('/', auth, packageValidate, async (req, res) => {
     try {
@@ -43,8 +65,6 @@ router.post('/', auth, packageValidate, async (req, res) => {
             price: req.body.price,
             user: req.user._id
         };
-
-        console.log(packageData);
 
         const newPackage = new Package(packageData);
 
@@ -84,12 +104,33 @@ router.post('/', auth, packageValidate, async (req, res) => {
     }
 });
 
-router.put('/', auth, async (req, res) => {
+router.put('/:id', auth, packageValidate, async (req, res) => {
+
+    // if (req.user.role === 'user')
+    // if (req.user.role === 'admin')
+
     try {
+        const packageFind = await Package.findById(req.params.id);
+        const result = userEdit(req.user, packageFind, req.body);
 
+        if (result.error)
+            return res.status(result.code).send({error: result.error});
+
+        if (result.message)
+            return res.status(result.code).send({message: result.message});
+
+        if (result.success) {
+            console.log(result.success);
+            await result.success.save();
+            return res.status(result.code).send(result.success);
+        }
+
+    res.send('ok');
     } catch (e) {
-
+        res.status(500).send({error: e});
     }
+
+
 });
 
 router.delete('/', auth, async (req, res) => {

@@ -50,7 +50,7 @@ const PackageSchema = new mongoose.Schema({
     status: {
         type: String,
         trim: true,
-        enum: ['NEW', 'REGISTERED', 'ON_WAREHOUSE', 'ON_WAY', 'PROCESSED', 'ISSUE', 'ISSUED'],
+        enum: ['NEW', 'REGISTERED', 'ON_WAREHOUSE', 'ON_WAY', 'PROCESSED', 'ISSUE', 'ISSUED', 'ERASED'],
         default: 'REGISTERED',
     },
     deleted: Boolean,
@@ -63,13 +63,13 @@ const PackageSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    orderNumber: {
+    cargoNumber: {
         type: String,
         trim: true,
         default: () => nanoid(),
         unique: true
     },
-    orderPrice: {
+    cargoPrice: {
         type: Number,
         min: [0],
     },

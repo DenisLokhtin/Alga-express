@@ -1,20 +1,26 @@
 const checkHistory = (data, user_id) => {
     const filterData = {
         deleted: {$ne: true},
+        status: {$ne: 'ERASED'}
     }
 
     if (user_id) filterData.user = user_id;
 
     if (data.history) {
 
-        filterData.status = 'ISSUED';
+        if (filterData.status) {
+            filterData.status = 'ISSUED';
+        }
 
     } else {
 
-        filterData.status = {$ne: 'ISSUED'};
+        if (filterData.status) {
+            filterData.status = {$in: ['NEW', 'REGISTERED', 'ON_WAREHOUSE', 'ON_WAY', 'PROCESSED', 'ISSUE']};
+        }
 
     }
 
+    console.log(filterData);
     return filterData;
 };
 
