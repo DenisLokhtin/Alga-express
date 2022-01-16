@@ -1,6 +1,6 @@
 const adminEdit = (user, packageOrder, updateData, price) => {
     const result = {};
-
+    console.log('adminEdit', updateData.status);
     if (packageOrder.status === 'ISSUED') {
         result.code = 400;
         result.error = 'Заказ выполнен - редактировнию не подлежит';
@@ -29,10 +29,12 @@ const adminEdit = (user, packageOrder, updateData, price) => {
         packageOrder.length = updateData.length || packageOrder.length;
         packageOrder.height = updateData.height || packageOrder.height;
         packageOrder.urlPackage = updateData.urlPackage || packageOrder.urlPackage;
+        packageOrder.status = updateData.status || packageOrder.status;
 
         if (updateData.cargoWeight) {
             packageOrder.cargoWeight = updateData.cargoWeight;
-            packageOrder.status = updateData.status || packageOrder.status;
+            packageOrder.status = 'PROCESSED';
+
             if (packageOrder.country === "USA")
                 packageOrder.cargoPrice = updateData.cargoWeight * price.usa;
             if (packageOrder.country === "TURKEY")
@@ -41,13 +43,13 @@ const adminEdit = (user, packageOrder, updateData, price) => {
                 packageOrder.cargoPrice = updateData.cargoWeight * price.china;
         }
 
-        packageOrder.deleted = updateData.deleted || packageOrder.deleted;ву
+        packageOrder.deleted = updateData.deleted || packageOrder.deleted;
 
     } else {
         result.code = 400;
         result.error = 'Доступ запрещен';
-    }
 
+    }
     result.code = 200;
     result.success = packageOrder;
     return result;
