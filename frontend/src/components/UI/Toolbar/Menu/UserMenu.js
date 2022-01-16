@@ -108,7 +108,7 @@ const UserMenu = () => {
         }
     }, []);
 
-    if (width < 576) {
+    if (width < 900) {
         renderComponent = (
             <List>
                 <ListItemButton
