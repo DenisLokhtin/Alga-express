@@ -13,8 +13,16 @@ const app = (
     <Provider store={store}>
         <BrowserRouter>
             <ThemeProvider theme={theme}>
-                <ToastContainer/>
-                <App/>
+                <ToastContainer
+                    position="bottom-left"
+                    autoClose={3000}
+                    hideProgressBar={false}
+                    newestOnTop
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss={false}
+                    draggable
+                    pauseOnHover={false}/>
             </ThemeProvider>
         </BrowserRouter>
     </Provider>
