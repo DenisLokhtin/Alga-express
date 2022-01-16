@@ -20,21 +20,17 @@ const checkHistory = (data, user_id) => {
 
     }
 
-    console.log(filterData);
     return filterData;
 };
 
 const filter = (inputDate) => {
-    console.log('inputDate: ', inputDate);
     if (inputDate.role === 'user') return  checkHistory(inputDate, inputDate.user_id);
 
     if (inputDate.role === 'admin') {
+
         if (inputDate.id) {
-            console.log('Id have');
             return  checkHistory(inputDate, inputDate.id);
         } else {
-            console.log('Id NO have');
-
             return  checkHistory(inputDate);
         }
     }
