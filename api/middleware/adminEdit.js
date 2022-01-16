@@ -1,12 +1,5 @@
-const Package = require("../models/Package");
-
-const userEdit = (user, packageOrder, updateData) => {
+const adminEdit = (user, packageOrder, updateData, price) => {
     const result = {};
-
-    if (user._id.toString() !== packageOrder.user.toString()) {
-        result.code = 400;
-        result.error = 'Доступ запрещен';
-    }
 
     if (packageOrder.status === 'ISSUED') {
         result.code = 400;
@@ -21,6 +14,10 @@ const userEdit = (user, packageOrder, updateData) => {
         updateData.width ||
         updateData.length ||
         updateData.height ||
+        updateData.status ||
+        updateData.deleted ||
+        updateData.cargoPrice ||
+        updateData.cargoWeight ||
         updateData.urlPackage) {
 
         packageOrder.trackNumber = updateData.trackNumber || packageOrder.trackNumber;
@@ -32,6 +29,20 @@ const userEdit = (user, packageOrder, updateData) => {
         packageOrder.length = updateData.length || packageOrder.length;
         packageOrder.height = updateData.height || packageOrder.height;
         packageOrder.urlPackage = updateData.urlPackage || packageOrder.urlPackage;
+
+        if (updateData.cargoWeight) {
+            packageOrder.cargoWeight = updateData.cargoWeight;
+            packageOrder.status = updateData.status || packageOrder.status;
+            if (packageOrder.country === "USA")
+                packageOrder.cargoPrice = updateData.cargoWeight * price.usa;
+            if (packageOrder.country === "TURKEY")
+                packageOrder.cargoPrice = updateData.cargoWeight * price.turkey;
+            if (packageOrder.country === "CHINA")
+                packageOrder.cargoPrice = updateData.cargoWeight * price.china;
+        }
+
+        packageOrder.deleted = updateData.deleted || packageOrder.deleted;ву
+
     } else {
         result.code = 400;
         result.error = 'Доступ запрещен';
@@ -42,5 +53,4 @@ const userEdit = (user, packageOrder, updateData) => {
     return result;
 };
 
-module.exports = userEdit;
-
+module.exports = adminEdit;

@@ -32,7 +32,7 @@ const PackageSchema = new mongoose.Schema({
     country: {
         type: String,
         trim: true,
-        enum: ['USA', 'Turkey', 'China'],
+        enum: ['USA', 'TURKEY', 'CHINA'],
         required: true
     },
     width: {
@@ -69,6 +69,7 @@ const PackageSchema = new mongoose.Schema({
         default: () => nanoid(),
         unique: true
     },
+    cargoWeight: Number,
     cargoPrice: {
         type: Number,
         min: [0],

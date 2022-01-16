@@ -5,17 +5,30 @@ const auth = require("../middleware/auth");
 const packageValidate = require("../middleware/packageValidate");
 const permit = require("../middleware/permit");
 const userEdit = require("../middleware/userEdit");
-const test = require("../middleware/test");
+const adminEdit = require("../middleware/adminEdit");
+const Tariff = require("../models/Tariff");
 
 const router = express.Router();
 
 router.get('/', auth, async (req, res) => {
     const query = {};
 
+    // console.log(Number(req.query.page));
+    // console.log(isNaN(req.query.page));
+
+    if (Number.isInteger(req.query.page))
+        return res.status(403).send({error: 'Не корректные данные запроса'});
+
+    let page = parseInt(req.query.page) || 0;
+    let limit = parseInt(req.query.limit) || 20;
+
+    console.log('page: ', page, typeof (page));
+    console.log('limit: ', limit, typeof (limit));
+
     if (req.query.id) query.id = req.query.id;
     if (req.query.history) query.history = req.query.history;
     if (req.query.sort) {
-        query.sort = {[req.query.sort]: -1};
+        query.sort = {[req.query.sort]: 1};
     } else {
         query.sort = 'date';
     }
@@ -28,11 +41,13 @@ router.get('/', auth, async (req, res) => {
         findFilter = filter(query);
         const packages = await Package.find(findFilter)
             .populate('user', 'name')
-            .sort(query.sort);
+            .sort(query.sort)
+            .limit(limit)
+            .skip(page * limit);
 
         res.send(packages);
     } catch (e) {
-
+        res.status(500).send({error: 'some error'});
     }
 });
 //
@@ -106,12 +121,25 @@ router.post('/', auth, packageValidate, async (req, res) => {
 
 router.put('/:id', auth, packageValidate, async (req, res) => {
 
-    // if (req.user.role === 'user')
-    // if (req.user.role === 'admin')
+    let result = {};
 
     try {
         const packageFind = await Package.findById(req.params.id);
-        const result = userEdit(req.user, packageFind, req.body);
+        const prices = await Tariff.findOne({user: packageFind.user});
+
+        // console.log('package: ', packageFind.user);
+        // console.log('prices: ', prices);
+        // if (req.user._id.toString() !== packageFind.user.toString()) {
+        //     result.code = 400;
+        //     result.error = 'Доступ запрещен';
+        // }
+
+
+        if (req.user.role === 'user')
+            result = userEdit(req.user, packageFind, req.body);
+
+        if (req.user.role === 'admin' || req.user.role === 'warehouseman')
+            result = adminEdit(req.user, packageFind, req.body, prices);
 
         if (result.error)
             return res.status(result.code).send({error: result.error});
@@ -120,29 +148,37 @@ router.put('/:id', auth, packageValidate, async (req, res) => {
             return res.status(result.code).send({message: result.message});
 
         if (result.success) {
-            console.log(result.success);
             await result.success.save();
             return res.status(result.code).send(result.success);
         }
 
-    res.send('ok');
+        res.send(result.success);
     } catch (e) {
-        res.status(500).send({error: e});
+        res.status(500).send({error: 'some error'});
+
     }
 
 
 });
 
-router.delete('/', auth, async (req, res) => {
-    const deletedData = {
-        deleted: true,
-    };
-
+router.delete('/:id', auth, async (req, res) => {
     try {
+        const erasePackage = await Package.findById(req.params.id);
 
+        if (erasePackage.status === 'ISSUED')
+            return res.status(400).send({error: 'Доступ запрещен'});
 
+        if (req.user.role === 'admin')
+            erasePackage.delete = true;
+
+        if (req.user.role === 'user')
+            erasePackage.status = 'ERASED';
+
+        await erasePackage.save();
+
+        res.status(200).send({message: `Посылка ${erasePackage.cargoNumber} удалена успешно`});
     } catch (e) {
-
+        res.status(500).send({error: 'some error'});
     }
 });
 module.exports = router;
