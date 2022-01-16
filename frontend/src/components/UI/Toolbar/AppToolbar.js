@@ -44,7 +44,7 @@ const AppToolbar = () => {
         </Toolbar>
     );
 
-    if (width < 576) {
+    if (width < 900) {
         renderComponent = (
             <Toolbar className="toolbar">
                 <Grid container justifyContent="space-between" alignItems="center">
