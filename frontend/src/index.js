@@ -6,7 +6,7 @@ import {ToastContainer} from "react-toastify";
 import App from './App';
 import store from "./store/configureStore";
 import theme from "./theme";
-import { ThemeProvider } from '@mui/material/styles';
+import {ThemeProvider} from '@mui/material/styles';
 import 'react-toastify/dist/ReactToastify.css';
 
 const app = (
@@ -22,7 +22,8 @@ const app = (
                     rtl={false}
                     pauseOnFocusLoss={false}
                     draggable
-                    pauseOnHover={false}/>
+                    pauseOnHover={false}
+                />
                 <App/>
             </ThemeProvider>
         </BrowserRouter>

@@ -42,7 +42,7 @@ store.subscribe(() => {
 
 axiosApi.interceptors.request.use(config => {
     try {
-        config.headers['Authorization'] = store.getState().users.user.token
+        config.headers['Authorization'] = store.getState().users.user.user.token
     } catch (e) {}
 
     return config;

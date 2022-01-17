@@ -10,21 +10,21 @@ const PackageSchema = new mongoose.Schema({
     trackNumber: {
         type: String,
         trim: true,
-        required: true
+        required: 'Поле Трек-Номер обязательное',
     },
     title: {
         type: String,
         trim: true,
-        required: true
+        required: 'Поле Название обязательное',
     },
     amount: {
         type: Number,
-        required: true,
+        required: 'Поле Количество обязательное',
         min: [0, 'Количество не может быть отрицательным числом'],
     },
     price: {
         type: Number,
-        required: true,
+        required: 'Поле Цена обязательное',
         min: [0, 'Цена не может быть меньше нуля'],
     },
     date_depart: Date,
@@ -32,25 +32,28 @@ const PackageSchema = new mongoose.Schema({
     country: {
         type: String,
         trim: true,
-        enum: ['USA', 'Turkey', 'China'],
-        required: true
+        enum: ['USA', 'TURKEY', 'CHINA'],
+        required: 'Поле Страна обязательное',
     },
     width: {
         type: Number,
+        required: ['length','height'],
         min: [0, 'Ширина не может быть меньше нуля'],
     },
     length: {
         type: Number,
+        required: ['width','height'],
         min: [0, 'Длина не может быть меньше нуля'],
     },
     height: {
         type: Number,
+        required: ['length','width'],
         min: [0, 'Высота не может быть меньше нуля'],
     },
     status: {
         type: String,
         trim: true,
-        enum: ['NEW', 'REGISTERED', 'ON_WAREHOUSE', 'ON_WAY', 'PROCESSED', 'ISSUE', 'ISSUED'],
+        enum: ['NEW', 'REGISTERED', 'ON_WAREHOUSE', 'ON_WAY', 'PROCESSED', 'ISSUE', 'ISSUED', 'ERASED'],
         default: 'REGISTERED',
     },
     deleted: Boolean,
@@ -63,13 +66,14 @@ const PackageSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    orderNumber: {
+    cargoNumber: {
         type: String,
         trim: true,
         default: () => nanoid(),
         unique: true
     },
-    orderPrice: {
+    cargoWeight: Number,
+    cargoPrice: {
         type: Number,
         min: [0],
     },
