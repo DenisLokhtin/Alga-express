@@ -8,6 +8,8 @@ import AboutUs from "./containers/AboutUs/AboutUs";
 import Contacts from "./containers/Contacts/Contacts";
 import Rules from "./containers/Rules/Rules";
 import HowItWorks from "./containers/HowItWorks/HowItWorks";
+import News from "./containers/News/News";
+import MarketSites from "./containers/MarketSites/MarketSites";
 
 const App = () => {
     return (
@@ -16,7 +18,6 @@ const App = () => {
                 <Route path='/register' element={<Register/>}/>
                 <Route path='/package-register' element={<PackageRegister/>}/>
                 <Route path='/login' element={<Login/>}/>
-                <Route path='/register' exact element={<Register/>}/>
                 <Route path='/rules' element={<Rules/>}/>
                 <Route path='/about_us' element={<AboutUs/>}/>
                 <Route path='/contacts' element={<Contacts/>}/>
