@@ -8,6 +8,7 @@ import AboutUs from "./containers/AboutUs/AboutUs";
 import Contacts from "./containers/Contacts/Contacts";
 import Rules from "./containers/Rules/Rules";
 import HowItWorks from "./containers/HowItWorks/HowItWorks";
+import News from "./containers/News/News";
 
 const App = () => {
     return (

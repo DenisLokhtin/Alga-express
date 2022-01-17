@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const idvalidator = require('mongoose-id-validator');
 
 const NewsSchema = new mongoose.Schema({
   title: {
@@ -11,6 +10,11 @@ const NewsSchema = new mongoose.Schema({
     required: true,
   },
   image: String,
+  datetime: {
+    type: Date,
+    required: true,
+    min: (new Date()).toISOString(),
+  },
   deleted: {
     type: Boolean,
     default: false
@@ -18,6 +22,5 @@ const NewsSchema = new mongoose.Schema({
 });
 
 
-NewsSchema.plugin(idvalidator);
 const News = mongoose.model('News', NewsSchema);
 module.exports = News;
