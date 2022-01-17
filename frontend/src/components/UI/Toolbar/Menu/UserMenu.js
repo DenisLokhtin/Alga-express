@@ -7,8 +7,10 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import HistoryIcon from '@mui/icons-material/History';
 import AddIcon from '@mui/icons-material/Add';
 import {Logout} from "@mui/icons-material";
+import NewspaperIcon from '@mui/icons-material/Newspaper';
+import {Link} from "react-router-dom";
 
-const UserMenu = () => {
+const UserMenu = ({setOpen}) => {
     const [width, setWidth] = useState(window.innerWidth);
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -75,6 +77,12 @@ const UserMenu = () => {
                     </ListItemIcon>
                     Личный кабинет
                 </MenuItem>
+                <MenuItem component={Link} to={'/news'}>
+                    <ListItemIcon>
+                        <NewspaperIcon/>
+                    </ListItemIcon>
+                    Новости
+                </MenuItem>
                 <MenuItem>
                     <ListItemIcon>
                         <HistoryIcon/>
@@ -120,6 +128,19 @@ const UserMenu = () => {
                     </ListItemIcon>
                     <ListItemText>
                         Личный кабинет
+                    </ListItemText>
+                </ListItemButton>
+                <ListItemButton
+                    sx={{color: "#F5F5F7"}}
+                    component={Link}
+                    to={'/news'}
+                    onClick={() => setOpen(false)}
+                >
+                    <ListItemIcon>
+                        <NewspaperIcon sx={{color: "#F5F5F7", fontSize: 30}}/>
+                    </ListItemIcon>
+                    <ListItemText>
+                        Новости
                     </ListItemText>
                 </ListItemButton>
                 <ListItemButton

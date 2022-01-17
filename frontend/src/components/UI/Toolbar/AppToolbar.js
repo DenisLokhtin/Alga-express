@@ -37,8 +37,8 @@ const AppToolbar = () => {
                     </Button>
                 </Grid>
                 <Grid item>
-                    <Anonymous/>
-                    {/*<UserMenu/>*/}
+                    {/*<Anonymous/>*/}
+                    <UserMenu/>
                 </Grid>
             </Grid>
         </Toolbar>
@@ -56,8 +56,8 @@ const AppToolbar = () => {
                             <MenuIcon sx={{fontSize: 30, color: "#F5F5F7"}}/>
                         </IconButton>
                         <BurgerMenu setOpen={setOpen} open={open}>
-                            <Anonymous setOpen={setOpen}/>
-                            {/*<UserMenu/>*/}
+                            {/*<Anonymous setOpen={setOpen}/>*/}
+                            <UserMenu setOpen={setOpen}/>
                         </BurgerMenu>
                     </Grid>`
                     <Grid item>
