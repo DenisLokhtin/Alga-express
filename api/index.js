@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const news = require('./app/news');
 const mongoose = require('mongoose');
 const exitHook = require('async-exit-hook');
 const users = require('./app/users');
@@ -14,6 +15,7 @@ app.use(express.static('public'));
 
 const port = 8000;
 
+app.use('/news', news);
 app.use('/users', users);
 app.use('/packages', packages);
 
