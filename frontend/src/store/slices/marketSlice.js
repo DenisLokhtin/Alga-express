@@ -7,6 +7,7 @@ const marketSlice = createSlice({
     initialState: {
         sites: [],
         fetchLoading: false,
+        createLoading: false,
     },
     reducers: {
         fetchMarketRequest(state) {
