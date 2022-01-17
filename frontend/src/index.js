@@ -23,6 +23,7 @@ const app = (
                     pauseOnFocusLoss={false}
                     draggable
                     pauseOnHover={false}/>
+                <App/>
             </ThemeProvider>
         </BrowserRouter>
     </Provider>
