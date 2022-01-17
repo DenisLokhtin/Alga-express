@@ -7,9 +7,11 @@ import {configureStore} from "@reduxjs/toolkit";
 import packageSlice from "./slices/packageRegisterSlice";
 import usersSlice, {initialState} from "./slices/usersSlice";
 import newsSlice from "./slices/newsSlice";
+import marketSlice from "./slices/marketSlice";
 
 const rootReducer = combineReducers({
     'users': usersSlice.reducer,
+    'market': marketSlice.reducer,
     'package': packageSlice.reducer,
     'news':newsSlice.reducer,
 });
@@ -18,7 +20,7 @@ const persistedState = loadFromLocalStorage();
 
 const sagaMiddleware = createSagaMiddleware();
 
-const middleware = [sagaMiddleware];
+const middleware = [...getDefaultMiddleware(), sagaMiddleware];
 
 const store = configureStore({
     reducer: rootReducer,

@@ -5,6 +5,7 @@ const news = require('./app/news');
 const mongoose = require('mongoose');
 const exitHook = require('async-exit-hook');
 const users = require('./app/users');
+const market=require('./app/market');
 const config = require('./config');
 const packages = require('./app/packages');
 
@@ -17,6 +18,7 @@ const port = 8000;
 
 app.use('/news', news);
 app.use('/users', users);
+app.use('/market',market);
 app.use('/packages', packages);
 
 const run = async () => {
