@@ -6,10 +6,12 @@ import {rootSagas} from "./rootSagas";
 import {configureStore} from "@reduxjs/toolkit";
 import packageSlice from "./slices/packageRegisterSlice";
 import usersSlice, {initialState} from "./slices/usersSlice";
+import newsSlice from "./slices/newsSlice";
 
 const rootReducer = combineReducers({
     'users': usersSlice.reducer,
     'package': packageSlice.reducer,
+    'news':newsSlice.reducer,
 });
 
 const persistedState = loadFromLocalStorage();
