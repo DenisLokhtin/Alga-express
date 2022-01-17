@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {clearTextFieldsErrors, createPackageRequest} from "../../store/actions/packageRegisterActions";
-import {Button, Checkbox, Container, FormControl, FormHelperText, Grid, InputLabel, MenuItem, Select, TextField, Typography} from "@mui/material";
+import {Checkbox, Container, FormControl, FormHelperText, Grid, InputLabel, MenuItem, Select, TextField, Typography} from "@mui/material";
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {makeStyles} from "@mui/styles";
 import Dimension from "../../components/Dimension/Dimension";
+import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -44,6 +45,8 @@ theme.typography.h4 = {
 
 const PackageRegister = () => {
     const classes = useStyles();
+    const user = useSelector(state => state.users.user);
+    const loading = useSelector(state => state.package.createPackageRequest);
     const dispatch = useDispatch();
     const error = useSelector(state => state.package.createPackageError);
 
@@ -89,9 +92,9 @@ const PackageRegister = () => {
         e.preventDefault();
 
         if (checked) {
-            dispatch(createPackageRequest({...packageRegister, ...dimensions}));
+            dispatch(createPackageRequest({...packageRegister, ...dimensions, ...user}));
         } else {
-            dispatch(createPackageRequest({...packageRegister}));
+            dispatch(createPackageRequest({...packageRegister, ...user}));
         }
     };
 
@@ -214,11 +217,13 @@ const PackageRegister = () => {
                         />) : null}
                     <Grid item xs={12} sm={8} md={7} lg={7}
                           className={classes.packageBtnContainer}>
-                        <Button
+                        <ButtonWithProgress
+                            loading={loading}
+                            disabled={loading}
                             type="submit"
                             variant="contained">
                             Оформить
-                        </Button>
+                        </ButtonWithProgress>
                     </Grid>
                 </Grid>
             </Container>

@@ -11,7 +11,6 @@ const Tariff = require("../models/Tariff");
 const router = express.Router();
 
 router.get('/', auth, permit('admin', 'warehouseman', 'user'), async (req, res) => {
-
     const query = {};
 
     if (Number.isInteger(req.query.page))
@@ -121,8 +120,6 @@ router.put('/:id', auth, packageValidate, permit('admin', 'warehouseman', 'user'
         res.status(500).send({error: 'some error'});
 
     }
-
-
 });
 
 router.delete('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req, res) => {

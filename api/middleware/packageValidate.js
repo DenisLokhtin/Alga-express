@@ -68,10 +68,12 @@ const packageValidate = async (req, res, next) => {
             width: req.body.width,
             height: req.body.height,
             length: req.body.length,
+            user: req.user._id,
         };
 
         const newPackage = new Package(packageDataDimensions);
         await newPackage.save();
+
         return res.send(newPackage);
     }
 
