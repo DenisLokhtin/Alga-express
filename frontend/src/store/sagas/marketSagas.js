@@ -2,7 +2,13 @@ import {takeEvery} from 'redux-saga/effects';
 import axiosApi from "../../axiosApi";
 import {put} from 'redux-saga/effects';
 import {toast} from "react-toastify";
-import {fetchMarketFailure, fetchMarketRequest, fetchMarketSuccess} from "../actions/marketActions";
+import {
+    addMarketFailure, addMarketRequest,
+    addMarketSuccess,
+    fetchMarketFailure,
+    fetchMarketRequest,
+    fetchMarketSuccess
+} from "../actions/marketActions";
 
 export function* marketSagas() {
     try {
@@ -14,8 +20,25 @@ export function* marketSagas() {
     }
 }
 
+export function* addMarketSaga({payload: newMarket}) {
+    try {
+        yield axiosApi.post( '/market', newMarket);
+        yield put(addMarketSuccess());
+        yield put(fetchMarketRequest());
+        toast.success('Новая ссылка добавлена!');
+    } catch (error) {
+        if (!error.response) {
+            toast.error(error.message);
+        }
+        toast.error('Произошла ошибка');
+        yield put(addMarketFailure(error.response.data));
+    }
+}
+
+
 const marketSaga = [
     takeEvery(fetchMarketRequest, marketSagas),
+    takeEvery(addMarketRequest, addMarketSaga),
 ];
 
 export default marketSaga;

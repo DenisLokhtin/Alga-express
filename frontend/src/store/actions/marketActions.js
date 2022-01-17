@@ -4,4 +4,8 @@ export const {
     fetchMarketRequest,
     fetchMarketSuccess,
     fetchMarketFailure,
+    addMarketRequest,
+    addMarketSuccess,
+    addMarketFailure,
+
 } = marketSlice.actions;

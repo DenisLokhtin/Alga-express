@@ -31,11 +31,16 @@ router.get('/', async (req, res) => {
 
 
 router.post('/', upload.single('image'), async (req, res) => {
+
     try {
+        if(!req.file.filename){
+            return res.status(400).send({message:"Загрузите лого"})
+        }
+
         const marketData = {
             title: req.body.title,
-            image: 'uploads/' + req.file.filename,
             url: req.body.url,
+            image:'uploads/'+req.file.filename,
         };
 
         const market = new Market (marketData);
