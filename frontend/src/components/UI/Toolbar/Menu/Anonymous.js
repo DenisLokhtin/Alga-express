@@ -45,7 +45,7 @@ const Anonymous = ({setOpen}) => {
         </Grid>
     );
 
-    if (width < 576) {
+    if (width < 900) {
         renderComponent = (
             <List>
                 <ListItem sx={{display: "flex", justifyContent: "space-evenly"}}>

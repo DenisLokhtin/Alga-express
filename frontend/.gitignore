@@ -1,12 +1,13 @@
 /node_modules
 /.pnp
 .pnp.js
+../.idea/
 
 # testing
 /coverage
 
 # production
-/build
+/buildgit
 
 # misc
 .DS_Store

@@ -3,13 +3,15 @@ import {loadFromLocalStorage, saveToLocalStorage} from "./localStorage";
 import axiosApi from "../axiosApi";
 import createSagaMiddleware from 'redux-saga';
 import {rootSagas} from "./rootSagas";
-import {configureStore, getDefaultMiddleware} from "@reduxjs/toolkit";
+import {configureStore} from "@reduxjs/toolkit";
+import packageSlice from "./slices/packageRegisterSlice";
 import usersSlice, {initialState} from "./slices/usersSlice";
 import marketSlice from "./slices/marketSlice";
 
 const rootReducer = combineReducers({
     'users': usersSlice.reducer,
     'market': marketSlice.reducer,
+    'package': packageSlice.reducer,
 });
 
 const persistedState = loadFromLocalStorage();
