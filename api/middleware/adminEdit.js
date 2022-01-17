@@ -2,7 +2,7 @@ const adminEdit = (user, packageOrder, updateData, price) => {
     const result = {};
     console.log('adminEdit', updateData.status);
     if (packageOrder.status === 'ISSUED') {
-        result.code = 400;
+        result.code = 406;
         result.error = 'Заказ выполнен - редактировнию не подлежит';
     }
 
@@ -46,7 +46,7 @@ const adminEdit = (user, packageOrder, updateData, price) => {
         packageOrder.deleted = updateData.deleted || packageOrder.deleted;
 
     } else {
-        result.code = 400;
+        result.code = 403;
         result.error = 'Доступ запрещен';
 
     }

@@ -88,34 +88,6 @@ router.post('/', auth, packageValidate, permit('admin', 'warehouseman', 'user'),
         res.send(newPackage);
 
     } catch (error) {
-        const modelFields = Object.keys(error.errors);
-
-        for (const key of modelFields) {
-            switch (key) {
-                case 'country':
-                    error.errors[key].message = 'Поле Страна обязательное';
-                    break;
-                case 'trackNumber':
-                    error.errors[key].message = 'Поле Трек-Номер обязательное';
-                    break;
-                case 'title':
-                    error.errors[key].message = 'Поле Название обязательное';
-                    break;
-                case 'amount':
-                    if (error.errors.amount.properties.min === 0) {
-                        error.errors[key].message;
-                    } else {
-                        error.errors[key].message = 'Поле Количество обязательное';
-                    }
-                    break;
-                case 'price':
-                    if (error.errors['price'].properties.min === 0) {
-                        error.errors[key].message;
-                    } else {
-                        error.errors[key].message = 'Поле Цена обязательное';
-                    }
-            }
-        }
         res.status(400).send(error);
     }
 });
@@ -158,7 +130,7 @@ router.delete('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req,
         const erasePackage = await Package.findById(req.params.id);
 
         if (erasePackage.status === 'ISSUED')
-            return res.status(400).send({error: 'Доступ запрещен'});
+            return res.status(403).send({error: 'Доступ запрещен'});
 
         if (req.user.role === 'admin')
             erasePackage.delete = true;

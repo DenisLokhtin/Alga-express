@@ -10,21 +10,21 @@ const PackageSchema = new mongoose.Schema({
     trackNumber: {
         type: String,
         trim: true,
-        required: true
+        required: 'Поле Трек-Номер обязательное',
     },
     title: {
         type: String,
         trim: true,
-        required: true
+        required: 'Поле Название обязательное',
     },
     amount: {
         type: Number,
-        required: true,
+        required: 'Поле Количество обязательное',
         min: [0, 'Количество не может быть отрицательным числом'],
     },
     price: {
         type: Number,
-        required: true,
+        required: 'Поле Цена обязательное',
         min: [0, 'Цена не может быть меньше нуля'],
     },
     date_depart: Date,
@@ -33,18 +33,21 @@ const PackageSchema = new mongoose.Schema({
         type: String,
         trim: true,
         enum: ['USA', 'TURKEY', 'CHINA'],
-        required: true
+        required: 'Поле Страна обязательное',
     },
     width: {
         type: Number,
+        required: ['length','height'],
         min: [0, 'Ширина не может быть меньше нуля'],
     },
     length: {
         type: Number,
+        required: ['width','height'],
         min: [0, 'Длина не может быть меньше нуля'],
     },
     height: {
         type: Number,
+        required: ['length','width'],
         min: [0, 'Высота не может быть меньше нуля'],
     },
     status: {

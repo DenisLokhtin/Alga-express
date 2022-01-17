@@ -1,15 +1,13 @@
-const Package = require("../models/Package");
-
 const userEdit = (user, packageOrder, updateData) => {
     const result = {};
 
     if (user._id.toString() !== packageOrder.user.toString()) {
-        result.code = 400;
+        result.code = 403;
         result.error = 'Доступ запрещен';
     }
 
     if (packageOrder.status === 'ISSUED') {
-        result.code = 400;
+        result.code = 403;
         result.error = 'Заказ выполнен - редактировнию не подлежит';
     }
 
@@ -33,7 +31,7 @@ const userEdit = (user, packageOrder, updateData) => {
         packageOrder.height = updateData.height || packageOrder.height;
         packageOrder.urlPackage = updateData.urlPackage || packageOrder.urlPackage;
     } else {
-        result.code = 400;
+        result.code = 403;
         result.error = 'Доступ запрещен';
     }
 
