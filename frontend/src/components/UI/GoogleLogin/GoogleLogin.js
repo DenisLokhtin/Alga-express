@@ -1,16 +1,16 @@
 import React from 'react';
 import GoogleLoginButton from 'react-google-login';
 import {googleClientId} from "../../../config";
-import {Button} from "@material-ui/core";
 import {FcGoogle} from "react-icons/fc";
 import {useDispatch} from "react-redux";
-import {googleLogin} from "../../../store/actions/usersActions";
+import {googleLoginRequest} from "../../../store/actions/usersActions";
+import Button from "@mui/material/Button";
 
 const GoogleLogin = () => {
   const dispatch = useDispatch();
 
   const handleLogin = response => {
-    dispatch(googleLogin(response));
+    dispatch(googleLoginRequest(response));
   };
 
   return (

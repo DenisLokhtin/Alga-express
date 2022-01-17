@@ -6,17 +6,26 @@ import {ToastContainer} from "react-toastify";
 import App from './App';
 import store from "./store/configureStore";
 import theme from "./theme";
-import {MuiThemeProvider} from "@material-ui/core";
-
+import {ThemeProvider} from '@mui/material/styles';
 import 'react-toastify/dist/ReactToastify.css';
 
 const app = (
     <Provider store={store}>
         <BrowserRouter>
-            <MuiThemeProvider theme={theme}>
-                <ToastContainer/>
+            <ThemeProvider theme={theme}>
+                <ToastContainer
+                    position="bottom-left"
+                    autoClose={3000}
+                    hideProgressBar={false}
+                    newestOnTop
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss={false}
+                    draggable
+                    pauseOnHover={false}
+                />
                 <App/>
-            </MuiThemeProvider>
+            </ThemeProvider>
         </BrowserRouter>
     </Provider>
 );

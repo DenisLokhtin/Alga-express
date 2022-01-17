@@ -61,11 +61,6 @@ const UserSchema = new mongoose.Schema({
         ref: 'Passports',
         required: false,
     },
-    orders: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Orders',
-        required: false,
-    },
     phone: {
         type: String,
         required: true,

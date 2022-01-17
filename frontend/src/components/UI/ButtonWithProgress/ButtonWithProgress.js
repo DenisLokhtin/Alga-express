@@ -1,5 +1,8 @@
 import React from 'react';
-import {Button, CircularProgress, makeStyles} from "@material-ui/core";
+import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
+import {makeStyles} from "@mui/styles";
+
 
 const useStyles = makeStyles({
   wrapper: {

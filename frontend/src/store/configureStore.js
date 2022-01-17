@@ -3,22 +3,24 @@ import {loadFromLocalStorage, saveToLocalStorage} from "./localStorage";
 import axiosApi from "../axiosApi";
 import createSagaMiddleware from 'redux-saga';
 import {rootSagas} from "./rootSagas";
-import {configureStore} from "@reduxjs/toolkit";
+import {configureStore, getDefaultMiddleware} from "@reduxjs/toolkit";
+import packageSlice from "./slices/packageRegisterSlice";
 import usersSlice, {initialState} from "./slices/usersSlice";
-import thunk from "redux-thunk";
+import newsSlice from "./slices/newsSlice";
+import marketSlice from "./slices/marketSlice";
 
 const rootReducer = combineReducers({
     'users': usersSlice.reducer,
+    'market': marketSlice.reducer,
+    'package': packageSlice.reducer,
+    'news':newsSlice.reducer,
 });
 
 const persistedState = loadFromLocalStorage();
 
 const sagaMiddleware = createSagaMiddleware();
 
-const middleware = [
-    thunk,
-    sagaMiddleware,
-];
+const middleware = [...getDefaultMiddleware(), sagaMiddleware];
 
 const store = configureStore({
     reducer: rootReducer,
@@ -40,7 +42,7 @@ store.subscribe(() => {
 
 axiosApi.interceptors.request.use(config => {
     try {
-        config.headers['Authorization'] = store.getState().users.user.token
+        config.headers['Authorization'] = store.getState().users.user.user.token
     } catch (e) {}
 
     return config;

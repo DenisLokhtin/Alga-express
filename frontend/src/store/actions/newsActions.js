@@ -1,0 +1,14 @@
+import newsSlice from "../slices/newsSlice";
+
+export const {
+    fetchNewsRequest,
+    fetchNewsSuccess,
+    fetchNewsFailure,
+    addNewsRequest,
+    addNewsSuccess,
+    addNewsFailure,
+    fetchOneNewsRequest,
+    fetchOneNewsSuccess,
+    fetchOneNewsFailure,
+
+} = newsSlice.actions;
