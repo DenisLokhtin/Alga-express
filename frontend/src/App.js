@@ -10,12 +10,14 @@ import Rules from "./containers/Rules/Rules";
 import HowItWorks from "./containers/HowItWorks/HowItWorks";
 import News from "./containers/News/News";
 import MarketSites from "./containers/MarketSites/MarketSites";
+import HomePage from "./containers/HomePage/HomePage";
 
 const App = () => {
     return (
         <Layout>
             <Routes>
                 <Route path='/register' element={<Register/>}/>
+                <Route path='/' element={<HomePage/>}/>
                 <Route path='/package-register' element={<PackageRegister/>}/>
                 <Route path='/login' element={<Login/>}/>
                 <Route path='/rules' element={<Rules/>}/>
