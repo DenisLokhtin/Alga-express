@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import LoginIcon from '@mui/icons-material/Login';
 import {Button, Grid, List, ListItem} from "@mui/material";
 import "./Anonymous.css";
 import {Link} from "react-router-dom";
 
-const Anonymous = ({setOpen}) => {
+const Anonymous = () => {
     const [width, setWidth] = useState(window.innerWidth);
 
     useEffect(() => {
@@ -31,17 +30,6 @@ const Anonymous = ({setOpen}) => {
             >
                 Войти
             </Button>
-            <Button
-                className="btn"
-                sx={{borderColor: "#F5F5F7", color: "#F5F5F7", marginLeft: "15px",
-                    '&:hover': {borderColor: "#F5F5F7"}}}
-                startIcon={<PersonAddIcon sx={{fontSize: 30, color: "#F5F5F7"}}/>}
-                variant="outlined"
-                component={Link}
-                to={'/register'}
-            >
-                Зарегистрироваться
-            </Button>
         </Grid>
     );
 
@@ -56,20 +44,8 @@ const Anonymous = ({setOpen}) => {
                         variant="outlined"
                         component={Link}
                         to={'/login'}
-                        onClick={() => setOpen(false)}
                     >
                         Войти
-                    </Button>
-                    <Button
-                        sx={{borderColor: "#F5F5F7", color: "#F5F5F7",
-                            '&:hover': {borderColor: "#F5F5F7"}}}
-                        startIcon={<PersonAddIcon sx={{fontSize: 30, color: "#F5F5F7"}}/>}
-                        variant="outlined"
-                        component={Link}
-                        to={'/register'}
-                        onClick={() => setOpen(false)}
-                    >
-                        Зарегистрироваться
                     </Button>
                 </ListItem>
             </List>
