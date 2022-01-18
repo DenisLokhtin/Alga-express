@@ -4,7 +4,7 @@ const path = require('path');
 const {nanoid} = require('nanoid');
 const config = require('../config');
 const News = require('../models/News');
-
+const dayjs = require("dayjs");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -44,14 +44,11 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', upload.single('image'), async (req, res) => {
-  const date = new Date();
-  const currentDate = date.getDay()+'-'+date.getMonth()+'-'+date.getFullYear();
-
   try {
     const newsData = {
       title: req.body.title,
       description: req.body.description,
-      datetime: currentDate,
+      datetime: dayjs().format('DD/MM/YYYY'),
     };
 
     if (req.file) {

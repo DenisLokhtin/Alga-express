@@ -22,7 +22,7 @@ export function* newsSagas() {
 
 export function* oneNewsSagas({payload:id}) {
     try {
-        const response = yield axiosApi.get('/news'+
+        const response = yield axiosApi.get('/news/'+
         id);
         yield put(fetchOneNewsSuccess(response.data));
     } catch (e) {
