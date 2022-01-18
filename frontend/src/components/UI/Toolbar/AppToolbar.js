@@ -3,7 +3,6 @@ import Anonymous from "./Menu/Anonymous";
 import './AppToolbar.css';
 import {Button, Grid, IconButton, Toolbar} from "@mui/material";
 import {Link} from "react-router-dom";
-import './AppToolbar.css';
 import BurgerMenu from "../BurgerMenu/BurgerMenu";
 import MenuIcon from "@mui/icons-material/Menu";
 import UserMenu from "./Menu/UserMenu";
@@ -23,10 +22,10 @@ const AppToolbar = () => {
 
     let renderComponent = (
         <Toolbar className="toolbar">
-            <Grid container justifyContent="space-between" alignItems="center">
+            <Grid container justifyContent="space-between" alignItems="center" >
                 <Grid item>
-                    <Link to="/" className="homeLink">
-                        Alga Express
+                    <Link to="/">
+                        <img src={require('../../../assets/logo.png')} alt="" style={{width: "40px"}}/>
                     </Link>
                 </Grid>
                 <Grid item>
@@ -58,8 +57,8 @@ const AppToolbar = () => {
                         </BurgerMenu>
                     </Grid>
                     <Grid item xs={4} display={"flex"} justifyContent={"center"}>
-                        <Link to="/" className="homeLink">
-                            Alga Express
+                        <Link to="/">
+                            <img src={require('../../../assets/logo.png')} alt="" style={{width: "35px"}}/>
                         </Link>
                     </Grid>
                     <Grid item xs={4} display={"flex"} justifyContent={"flex-end"}>
