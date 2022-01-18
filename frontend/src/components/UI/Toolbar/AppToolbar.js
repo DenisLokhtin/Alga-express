@@ -8,8 +8,10 @@ import BurgerMenu from "../BurgerMenu/BurgerMenu";
 import MenuIcon from "@mui/icons-material/Menu";
 import UserMenu from "./Menu/UserMenu";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import {useSelector} from "react-redux";
 
 const AppToolbar = () => {
+    const user = useSelector(state => state.users.user);
     const [width, setWidth] = useState(window.innerWidth);
     const [open, setOpen] = useState(false);
 
@@ -28,17 +30,11 @@ const AppToolbar = () => {
                     </Link>
                 </Grid>
                 <Grid item>
-                    <Button
-                        sx={{borderColor: "#F5F5F7", color: "#F5F5F7",
-                            '&:hover': {borderColor: "#F5F5F7"}}}
-                        startIcon={<AccountBalanceWalletIcon/>}
-                    >
-                        765.0 сом
-                    </Button>
-                </Grid>
-                <Grid item>
-                    <Anonymous/>
-                    {/*<UserMenu/>*/}
+                    {
+                        user
+                            ? <UserMenu/>
+                            : <Anonymous/>
+                    }
                 </Grid>
             </Grid>
         </Toolbar>
@@ -47,8 +43,8 @@ const AppToolbar = () => {
     if (width < 900) {
         renderComponent = (
             <Toolbar className="toolbar">
-                <Grid container justifyContent="space-between" alignItems="center">
-                    <Grid item>
+                <Grid container alignItems="center">
+                    <Grid item xs={4} display={"flex"} justifyContent={"flex-start"}>
                         <IconButton
                             type="button"
                             onClick={() => setOpen(true)}
@@ -56,23 +52,26 @@ const AppToolbar = () => {
                             <MenuIcon sx={{fontSize: 30, color: "#F5F5F7"}}/>
                         </IconButton>
                         <BurgerMenu setOpen={setOpen} open={open}>
-                            <Anonymous setOpen={setOpen}/>
-                            {/*<UserMenu/>*/}
+                            {
+                                user && <UserMenu setOpen={() => setOpen(false)}/>
+                            }
                         </BurgerMenu>
-                    </Grid>`
-                    <Grid item>
+                    </Grid>
+                    <Grid item xs={4} display={"flex"} justifyContent={"center"}>
                         <Link to="/" className="homeLink">
                             Alga Express
                         </Link>
                     </Grid>
-                    <Grid item>
-                        <Button
-                            sx={{borderColor: "#F5F5F7", color: "#F5F5F7",
-                                '&:hover': {borderColor: "#F5F5F7"}}}
-                            startIcon={<AccountBalanceWalletIcon/>}
-                        >
-                            765.0 сом
-                        </Button>
+                    <Grid item xs={4} display={"flex"} justifyContent={"flex-end"}>
+                        {
+                            user ?
+                                <Button
+                                    sx={{borderColor: "#F5F5F7", color: "#F5F5F7", '&:hover': {borderColor: "#F5F5F7"}}}
+                                    startIcon={<AccountBalanceWalletIcon/>}
+                                >
+                                    {user.user.balance + ' сом'}
+                                </Button> : <Anonymous/>
+                        }
                     </Grid>
                 </Grid>
             </Toolbar>
