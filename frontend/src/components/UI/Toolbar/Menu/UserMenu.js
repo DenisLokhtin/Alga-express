@@ -28,6 +28,7 @@ const UserMenu = ({setOpen}) => {
     };
 
     const toLogOut = () => {
+        setOpen();
         dispatch(logout());
     };
 
@@ -147,7 +148,7 @@ const UserMenu = ({setOpen}) => {
                 <ListItemButton
                     sx={{color: "#F5F5F7"}}
                     component={Link} to={'/package-register'}
-                    onClick={setOpen}
+                    // onClick={setOpen}
                 >
                     <ListItemIcon>
                         <AddIcon sx={{color: "#F5F5F7", fontSize: 30}}/>
