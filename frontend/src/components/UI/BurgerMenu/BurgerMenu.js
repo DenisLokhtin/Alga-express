@@ -20,10 +20,10 @@ const BurgerMenu = ({open, setOpen, children}) => {
         <div className={open ? 'menu active' : 'menu'} onClick={() => setOpen(false)}>
             <div className="menu__content" onClick={e => e.stopPropagation()}>
                 <div className="menu-header">
-                    <IconButton type="button" onClick={toHome}>
+                    <IconButton type="button" onClick={() => setOpen(false)}>
                         <CloseIcon sx={{fontSize: 30, color: "#F5F5F7"}}/>
                     </IconButton>
-                    <IconButton type="button" onClick={() => setOpen(false)}>
+                    <IconButton type="button" onClick={toHome}>
                         <HomeIcon sx={{fontSize: 30, color: "#F5F5F7"}}/>
                     </IconButton>
                 </div>
