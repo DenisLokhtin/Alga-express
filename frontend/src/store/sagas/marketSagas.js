@@ -4,7 +4,7 @@ import {put} from 'redux-saga/effects';
 import {toast} from "react-toastify";
 import {
     addMarketFailure, addMarketRequest,
-    addMarketSuccess,
+    addMarketSuccess, deleteMarketFailure, deleteMarketRequest, deleteMarketSuccess,
     fetchMarketFailure,
     fetchMarketRequest,
     fetchMarketSuccess
@@ -36,9 +36,27 @@ export function* addMarketSaga({payload: newMarket}) {
 }
 
 
+export function* deleteMarketSaga({payload: id}) {
+    try {
+        yield axiosApi.delete('/market/'+id);
+        yield put(deleteMarketSuccess(id));
+        toast.success('Deleted');
+    } catch (error) {
+        if (!error.response) {
+            toast.error(error.message);
+        } else {
+            toast.error(error.response?.data?.global);
+        }
+        yield put(deleteMarketFailure(error.response?.data));
+    }
+}
+
+
+
 const marketSaga = [
     takeEvery(fetchMarketRequest, marketSagas),
     takeEvery(addMarketRequest, addMarketSaga),
+    takeEvery(deleteMarketRequest, deleteMarketSaga),
 ];
 
 export default marketSaga;

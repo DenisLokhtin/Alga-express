@@ -1,17 +1,16 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {fetchMarketRequest} from "../../store/actions/marketActions";
-import {Card, CardMedia, Grid, Link,Typography} from "@mui/material";
+import {deleteMarketRequest, fetchMarketRequest} from "../../store/actions/marketActions";
+import {Card, CardMedia, Grid, IconButton, Link, Typography} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import {apiURL} from "../../config";
 import MarketAdmin from "../../components/MarketAdmin/MarketAdmin";
-
-
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 const useStyles = makeStyles({
     card: {
         height: '100%',
-        textAlign: "center"
+        textAlign: "center",
     },
     media: {
         height: 0,
@@ -20,6 +19,12 @@ const useStyles = makeStyles({
     title: {
         margin: " 10px 0 ",
     },
+    removeBtn:{
+        position: "absolute",
+        top: '0',
+        right: '-20px',
+        zIndex:'90',
+    }
 })
 
 
@@ -40,17 +45,24 @@ const MarketSites = () => {
                     </Typography>
                 <Grid container direction="row" spacing={2} justifyContent={"center"}>
                         {market && market.map(m=>(
-                            <Grid item xs={6} sm={3} md={3} lg={2} key={m._id} >
-                                <Link href={m.url} target={'_blank'} rel={'noopener'}>
-                                <Card className={classes.card}>
-                                    <CardMedia
-                                        image={apiURL+'/'+m.image}
-                                        className={classes.media}
-                                        title={m.title}
-                                    />
-                                </Card>
-                                </Link>
-                            </Grid>
+                            <>
+                                <Grid item xs={6} sm={3} md={3} lg={2} key={m._id} style={{position: "relative",}}>
+                                    <Link href={m.url} target={'_blank'} rel={'noopener'}>
+                                        <Card className={classes.card}>
+                                            <CardMedia
+                                                image={apiURL+'/'+m.image}
+                                                className={classes.media}
+                                                title={m.title}
+                                            />
+                                        </Card>
+                                    </Link>
+                                    <IconButton
+                                        onClick={()=>dispatch(deleteMarketRequest(m._id))}
+                                        className={classes.removeBtn}>
+                                        <HighlightOffIcon/>
+                                    </IconButton>
+                                </Grid>
+                            </>
                         ))}
                 </Grid>
                 <MarketAdmin/>

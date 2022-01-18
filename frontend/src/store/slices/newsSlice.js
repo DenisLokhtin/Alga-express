@@ -46,6 +46,7 @@ const newsSlice = createSlice({
             state.singleLoading = false;
         },
 
+
     }
 });
 

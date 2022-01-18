@@ -9,6 +9,8 @@ const marketSlice = createSlice({
         fetchLoading: false,
         createLoading: false,
         createError: null,
+        deleteLoading: false,
+        deleteError:null,
     },
     reducers: {
         fetchMarketRequest(state) {
@@ -31,6 +33,18 @@ const marketSlice = createSlice({
         addMarketFailure(state,action ){
             state.createLoading = false;
             state.createError = action.payload;
+        },
+        deleteMarketRequest(state){
+            state.deleteLoading = true;
+        },
+        deleteMarketSuccess(state,{payload:id}){
+            state.deleteLoading = false;
+            state.deleteError =null;
+            state.sites = state.sites.filter(site=>site._id!==id);
+        },
+        deleteMarketFailure(state,{payload:error}){
+            state.deleteLoading = false;
+            state.deleteError = error;
         }
     }
 });
