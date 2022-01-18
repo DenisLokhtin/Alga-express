@@ -7,11 +7,17 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import HistoryIcon from '@mui/icons-material/History';
 import AddIcon from '@mui/icons-material/Add';
 import {Logout} from "@mui/icons-material";
+import {useDispatch, useSelector} from "react-redux";
+import {logout} from "../../../../store/actions/usersActions";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import {Link} from "react-router-dom";
 
-const UserMenu = () => {
+const UserMenu = ({setOpen}) => {
+    const dispatch = useDispatch();
     const [width, setWidth] = useState(window.innerWidth);
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
+    const user = useSelector(state => state.users.user);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -22,7 +28,7 @@ const UserMenu = () => {
     };
 
     const toLogOut = () => {
-
+        dispatch(logout());
     };
 
     let renderComponent = (
@@ -31,10 +37,9 @@ const UserMenu = () => {
                 onClick={handleClick}
             >
                 <PersonIcon sx={{fontSize: 30, color: "#F5F5F7"}}/>
-                <span className="text">Здравствуйте пользователь</span>
+                <span className="text">{user.user.name}</span>
             </IconButton>
             <Menu
-
                 anchorEl={anchorEl}
                 id="account-menu"
                 open={open}
@@ -81,13 +86,19 @@ const UserMenu = () => {
                     </ListItemIcon>
                     История заказов
                 </MenuItem>
-                <MenuItem>
+                <MenuItem component={Link} to={'/package-register'}>
                     <ListItemIcon>
                         <AddIcon/>
                     </ListItemIcon>
                     Офрмить заказ
                 </MenuItem>
                 <Divider/>
+                <MenuItem>
+                    <ListItemIcon>
+                        <AccountBalanceWalletIcon/>
+                    </ListItemIcon>
+                    Ваш баланс {user.user.balance + ' сом'}
+                </MenuItem>
                 <MenuItem onClick={toLogOut}>
                     <ListItemIcon>
                         <Logout fontSize="small" />
@@ -135,7 +146,8 @@ const UserMenu = () => {
                 </ListItemButton>
                 <ListItemButton
                     sx={{color: "#F5F5F7"}}
-                    //Здесь будет onclick
+                    component={Link} to={'/package-register'}
+                    onClick={setOpen}
                 >
                     <ListItemIcon>
                         <AddIcon sx={{color: "#F5F5F7", fontSize: 30}}/>
