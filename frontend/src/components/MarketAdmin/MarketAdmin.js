@@ -35,10 +35,9 @@ const MarketAdmin = () => {
     console.log('error',error);
 
     const [picture, setPicture] = useState({
-
-
-
-
+        title: "",
+        image: null,
+        url: "",
     });
 
     const submitFormHandler = e => {
@@ -99,7 +98,6 @@ const MarketAdmin = () => {
                 value={picture.title}
                 onChange={inputChangeHandler}
                 error={getFieldError('title')}
-
             />
 
             <FormElement

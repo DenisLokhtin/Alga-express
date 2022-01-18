@@ -3,7 +3,7 @@ import {loadFromLocalStorage, saveToLocalStorage} from "./localStorage";
 import axiosApi from "../axiosApi";
 import createSagaMiddleware from 'redux-saga';
 import {rootSagas} from "./rootSagas";
-import {configureStore} from "@reduxjs/toolkit";
+import {configureStore, getDefaultMiddleware} from "@reduxjs/toolkit";
 import packageSlice from "./slices/packageRegisterSlice";
 import usersSlice, {initialState} from "./slices/usersSlice";
 import newsSlice from "./slices/newsSlice";
@@ -42,7 +42,7 @@ store.subscribe(() => {
 
 axiosApi.interceptors.request.use(config => {
     try {
-        config.headers['Authorization'] = store.getState().users.user.user.token
+        config.headers['Authorization'] = store.getState().users.user.user.token;
     } catch (e) {}
 
     return config;

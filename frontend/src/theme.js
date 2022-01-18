@@ -1,10 +1,12 @@
-import {createTheme} from '@mui/material/styles';
+import {createTheme} from "@mui/material/styles";
 
 const theme = createTheme({
-    props: {
-        MuiInput: {
-            variant: "filled",
-            fullWidth: true,
+    components: {
+        MuiTextField: {
+            defaultProps: {
+                variant: "standard",
+                fullWidth: true,
+            },
         },
     },
 });

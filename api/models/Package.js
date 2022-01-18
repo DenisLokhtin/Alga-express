@@ -2,9 +2,7 @@ const mongoose = require('mongoose');
 const idValidator = require('mongoose-id-validator');
 const {customAlphabet} = require("nanoid");
 
-
 const nanoid = customAlphabet('1234567890', 8);
-
 
 const PackageSchema = new mongoose.Schema({
     trackNumber: {
@@ -32,22 +30,19 @@ const PackageSchema = new mongoose.Schema({
     country: {
         type: String,
         trim: true,
-        enum: ['USA', 'TURKEY', 'CHINA'],
+        enum: ['USA', 'Turkey', 'China'],
         required: 'Поле Страна обязательное',
     },
     width: {
         type: Number,
-        required: ['length','height'],
         min: [0, 'Ширина не может быть меньше нуля'],
     },
     length: {
         type: Number,
-        required: ['width','height'],
         min: [0, 'Длина не может быть меньше нуля'],
     },
     height: {
         type: Number,
-        required: ['length','width'],
         min: [0, 'Высота не может быть меньше нуля'],
     },
     status: {

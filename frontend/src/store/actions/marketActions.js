@@ -7,5 +7,8 @@ export const {
     addMarketRequest,
     addMarketSuccess,
     addMarketFailure,
+    deleteMarketRequest,
+    deleteMarketSuccess,
+    deleteMarketFailure,
 
 } = marketSlice.actions;
