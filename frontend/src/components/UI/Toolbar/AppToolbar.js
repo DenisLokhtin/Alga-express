@@ -8,6 +8,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import UserMenu from "./Menu/UserMenu";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import {useSelector} from "react-redux";
+import logo from '../../../assets/logo.svg';
 
 const AppToolbar = () => {
     const user = useSelector(state => state.users.user);
@@ -25,7 +26,7 @@ const AppToolbar = () => {
             <Grid container justifyContent="space-between" alignItems="center" >
                 <Grid item>
                     <Link to="/">
-                        <img src={require('../../../assets/logo.png')} alt="" style={{width: "40px"}}/>
+                        <img src={logo} alt="logo" style={{width: "40px"}}/>
                     </Link>
                 </Grid>
                 <Grid item>
@@ -58,7 +59,7 @@ const AppToolbar = () => {
                     </Grid>
                     <Grid item xs={4} display={"flex"} justifyContent={"center"}>
                         <Link to="/">
-                            <img src={require('../../../assets/logo.png')} alt="" style={{width: "35px"}}/>
+                            <img src={logo} alt="logo" style={{width: "40px"}}/>
                         </Link>
                     </Grid>
                     <Grid item xs={4} display={"flex"} justifyContent={"flex-end"}>
