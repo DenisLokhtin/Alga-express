@@ -24,7 +24,7 @@ const useStyles = makeStyles({
         width: '100%',
         display: "flex",
         flexDirection: "row",
-        '@media (max-width:600px)': {
+        '@media (max-width: 900px)': {
             flexDirection: "column",
         }
     },
