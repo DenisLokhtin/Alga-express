@@ -28,7 +28,7 @@ const UserMenu = ({setOpen}) => {
     };
 
     const toLogOut = () => {
-        setOpen();
+        setOpen(false);
         dispatch(logout());
     };
 
