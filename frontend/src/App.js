@@ -12,6 +12,7 @@ import News from "./containers/News/News";
 import MarketSites from "./containers/MarketSites/MarketSites";
 import SingleNews from "./containers/SingleNews/SingleNews";
 import HomePage from "./containers/HomePage/HomePage";
+import FAQ from "./containers/FAQ/FAQ";
 
 const App = () => {
     return (
@@ -28,6 +29,7 @@ const App = () => {
                 <Route path='/news' element={<News/>}/>
                 <Route path='/news/:id' element={<SingleNews/>}/>
                 <Route path='/sites' element={<MarketSites/>}/>
+                <Route path='/FAQ' element={<FAQ/>}/>
             </Routes>
         </Layout>
     );
