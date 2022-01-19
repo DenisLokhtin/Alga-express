@@ -70,7 +70,7 @@ const AppToolbar = () => {
                                     startIcon={<AccountBalanceWalletIcon/>}
                                     variant={"text"}
                                 >
-                                    {user?.user?.balance + ' сом'}
+                                    {user?.balance + ' сом'}
                                 </Button> : <Anonymous/>
                         }
                     </Grid>
