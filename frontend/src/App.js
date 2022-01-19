@@ -11,6 +11,7 @@ import HowItWorks from "./containers/HowItWorks/HowItWorks";
 import News from "./containers/News/News";
 import MarketSites from "./containers/MarketSites/MarketSites";
 import SingleNews from "./containers/SingleNews/SingleNews";
+import HomePage from "./containers/HomePage/HomePage";
 
 const App = () => {
     return (
