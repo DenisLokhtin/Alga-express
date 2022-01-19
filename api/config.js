@@ -8,7 +8,4 @@ module.exports = {
     db: {
         url: 'mongodb://localhost/alga-express',
     },
-    google: {
-        clientId: process.env.GOOGLE_CLIENT_ID,
-    },
 };
