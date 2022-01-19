@@ -38,7 +38,7 @@ const UserMenu = ({setOpen}) => {
                 onClick={handleClick}
             >
                 <PersonIcon sx={{fontSize: 30, color: "#F5F5F7"}}/>
-                <span className="text">{user.user.name}</span>
+                <span className="text">{user?.user?.name}</span>
             </IconButton>
             <Menu
                 anchorEl={anchorEl}
