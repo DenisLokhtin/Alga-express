@@ -36,7 +36,7 @@ router.post('/sessions', async (req, res) => {
   user.generateToken();
   await user.save({validateBeforeSave: false});
 
-  res.send({message: 'Email and password correct!', user});
+  res.send(user);
 });
 
 router.delete('/sessions', async (req, res) => {
