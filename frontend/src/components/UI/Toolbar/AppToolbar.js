@@ -32,7 +32,7 @@ const AppToolbar = () => {
                 <Grid item>
                     {
                         user
-                            ? <UserMenu/>
+                            ? <UserMenu setOpen={setOpen}/>
                             : <Anonymous/>
                     }
                 </Grid>
@@ -68,6 +68,7 @@ const AppToolbar = () => {
                                 <Button
                                     sx={{borderColor: "#F5F5F7", color: "#F5F5F7", '&:hover': {borderColor: "#F5F5F7"}}}
                                     startIcon={<AccountBalanceWalletIcon/>}
+                                    variant={"text"}
                                 >
                                     {user.user.balance + ' сом'}
                                 </Button> : <Anonymous/>
