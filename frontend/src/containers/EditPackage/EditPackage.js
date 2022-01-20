@@ -99,16 +99,27 @@ const EditPackage = () => {
     };
 
 
-    useEffect(async () => {
-        await dispatch(getPackageByIdRequest(params.id));
+    useEffect( () => {
+        dispatch(getPackageByIdRequest(params.id));
+        onePackage && setPackageRegister(prevState => ({
+            ...prevState,
+            trackNumber: onePackage.trackNumber,
+            title: onePackage.title,
+            amount: onePackage.amount,
+            price: onePackage.price,
+            country: onePackage.country,
+            width: onePackage.width,
+            height: onePackage.height,
+            length: onePackage.length,
+            urlPackage: onePackage.urlPackage,
+        }));
         return () => {
             dispatch(clearTextFieldsErrors());
         };
-    }, [dispatch]);
+    }, [dispatch, onePackage.trackNumber, onePackage.title, onePackage.amount, onePackage.price,
+        onePackage.country, onePackage.width, onePackage.height, onePackage.length, onePackage.urlPackage
+    ]);
 
-    useEffect(() => {
-        setPackageRegister(onePackage)
-    }, [dispatch, onePackage]);
 
 
     const changePackage = (e) => {
