@@ -215,7 +215,6 @@ const EditPackage = () => {
                     <Grid item xs={12} sm={8} md={7} lg={7}>
                         <TextField
                             name="urlPackage"
-                            type="number"
                             value={packageRegister.urlPackage || ''}
                             onChange={inputChangeHandler}
                             fullWidth
