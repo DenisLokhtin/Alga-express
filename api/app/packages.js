@@ -55,7 +55,7 @@ router.get('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req, re
         const packageFind = await Package.findById(req.params.id)
                                     .populate('user', 'name');
 
-        if ((req.user.role === 'user') && (packageFind.user.toString() === req.user._id.toString())) {
+        if ((req.user.role === 'user') && (packageFind.user._id.toString() === req.user._id.toString())) {
             return res.send(packageFind);
         }
 
@@ -117,7 +117,7 @@ router.put('/:id', auth, packageValidate, permit('admin', 'warehouseman', 'user'
 
         res.send(result.success);
     } catch (e) {
-        res.status(500).send({error: 'some error'});
+        res.status(400).send(e);
 
     }
 });

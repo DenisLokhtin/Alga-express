@@ -12,17 +12,19 @@ import News from "./containers/News/News";
 import MarketSites from "./containers/MarketSites/MarketSites";
 import SingleNews from "./containers/SingleNews/SingleNews";
 import HomePage from "./containers/HomePage/HomePage";
+import EditPackage from "./containers/EditPackage/EditPackage";
 import FAQ from "./containers/FAQ/FAQ";
 
 const App = () => {
     return (
         <Layout>
             <Routes>
+                <Route path='/register' element={<Register/>}/>
                 <Route path='/' element={<HomePage/>}/>
                 <Route path='/register' element={<Register/>}/>
                 <Route path='/package-register' element={<PackageRegister/>}/>
+                <Route path='/package-edit/:id' element={<EditPackage/>}/>
                 <Route path='/login' element={<Login/>}/>
-                <Route path='/register' exact element={<Register/>}/>
                 <Route path='/rules' element={<Rules/>}/>
                 <Route path='/about_us' element={<AboutUs/>}/>
                 <Route path='/contacts' element={<Contacts/>}/>
