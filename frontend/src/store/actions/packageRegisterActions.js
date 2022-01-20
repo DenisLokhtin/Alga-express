@@ -11,4 +11,11 @@ export const {
     changePackageSuccess,
     changePackageFailure,
     clearTextFieldsErrors,
+    editAdminPackageRequest,
+    editAdminPackageSuccess,
+    editAdminPackageFailure,
+    fetchPackageAdminRequest,
+    fetchPackageAdminSuccess,
+    fetchPackageAdminFailure,
+    clearAdminErrors,
 } = packageSlice.actions;
