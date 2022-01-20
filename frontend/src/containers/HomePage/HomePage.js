@@ -5,7 +5,6 @@ const HomePage = () => {
     return (
         <Grid container>
             <Grid item>
-
             </Grid>
         </Grid>
     );

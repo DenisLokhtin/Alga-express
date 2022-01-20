@@ -15,7 +15,17 @@ const useStyles = makeStyles({
     },
     line: {
         borderBottom: "2px solid black",
-    }
+    },
+    title: {
+        textAlign: "center",
+        fontSize: "30px",
+    },
+    text: {
+        marginTop: "50px",
+    },
+    date: {
+        marginTop: "40px",
+    },
 })
 
 const News = () => {
@@ -31,13 +41,13 @@ const News = () => {
     return (
         <Grid container direction={"column"}>
             <Grid item>
-                <h2>Новости</h2>
+                <h2 className={classes.title}>Новости</h2>
             </Grid>
 
             {news.length !== 0 && news.map((item, i) => (
                 <Grid key={i} className={classes.line}>
-                    <p>{item.datetime}</p>
-                    <p>{item.title}</p>
+                    <p className={classes.date}>{item.datetime}</p>
+                    <p className={classes.text}>{item.title}</p>
                     <Link to={'/news/' + item._id}>
                         Подробнее...
                     </Link>
