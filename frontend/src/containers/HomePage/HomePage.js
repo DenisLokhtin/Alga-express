@@ -8,6 +8,7 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import SpeedIcon from '@mui/icons-material/Speed';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import PriceCheckIcon from '@mui/icons-material/PriceCheck';
+import Container from "@mui/material/Container";
 
 const useStyles = makeStyles({
     block: {
@@ -44,74 +45,78 @@ const HomePage = () => {
                 </h1>
             </Grid>
             <Grid item>
-                <h2 className={classes.title}>Почему мы ?</h2>
-                <List className={classes.list}>
-                    <ListItem>
-                        <ListItemAvatar>
-                            <Avatar>
-                                <AccessTimeIcon/>
-                            </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText primary="Отправка груза 2 раза в неделю"/>
-                    </ListItem>
-                    <ListItem>
-                        <ListItemAvatar>
-                            <Avatar>
-                                <SpeedIcon/>
-                            </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText primary="Быстрая доставка"/>
-                    </ListItem>
-                    <ListItem>
-                        <ListItemAvatar>
-                            <Avatar>
-                                <ThumbUpAltIcon/>
-                            </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText primary="Качественная услуга"/>
-                    </ListItem>
-                    <ListItem>
-                        <ListItemAvatar>
-                            <Avatar>
-                                <PriceCheckIcon/>
-                            </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText primary="Лучшие цены"/>
-                    </ListItem>
-                </List>
+                <Container>
+                    <h2 className={classes.title}>Почему мы ?</h2>
+                    <List className={classes.list}>
+                        <ListItem>
+                            <ListItemAvatar>
+                                <Avatar>
+                                    <AccessTimeIcon/>
+                                </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText primary="Отправка груза 2 раза в неделю"/>
+                        </ListItem>
+                        <ListItem>
+                            <ListItemAvatar>
+                                <Avatar>
+                                    <SpeedIcon/>
+                                </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText primary="Быстрая доставка"/>
+                        </ListItem>
+                        <ListItem>
+                            <ListItemAvatar>
+                                <Avatar>
+                                    <ThumbUpAltIcon/>
+                                </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText primary="Качественная услуга"/>
+                        </ListItem>
+                        <ListItem>
+                            <ListItemAvatar>
+                                <Avatar>
+                                    <PriceCheckIcon/>
+                                </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText primary="Лучшие цены"/>
+                        </ListItem>
+                    </List>
+                </Container>
             </Grid>
             <Grid item>
-                <h2 className={classes.title}>Выкуп для вас !</h2>
-                <div style={{display: "flex", justifyContent: "space-evenly", flexWrap: "wrap"}}>
-                    <Card sx={{width: "200px", marginBottom: "20px"}}>
-                        <CardMedia
-                            component="img"
-                            image={"https://logowik.com/content/uploads/images/trendyolcom2977.jpg"}
-                            height="100px"
-                        />
-                    </Card>
-                    <Card sx={{width: "200px", marginBottom: "20px"}}>
-                        <CardMedia
-                            component="img"
-                            image={"https://thumbs.dreamstime.com/b/amazon-logo-editorial-vector-illustration-market-136495269.jpg"}
-                            height="100px"
-                        />
-                    </Card>
-                    <Card sx={{width: "200px", marginBottom: "20px"}}>
-                        <CardMedia
-                            component="img"
-                            image={"https://i1.wp.com/sportsfinding.com/wp-content/uploads/2020/02/nike-swoosh-wikipedia.jpg?fit=580%2C350&ssl=1&resize=1280%2C720"}
-                            height="100px"
-                        />
-                    </Card>
-                    <Card sx={{width: "200px", marginBottom: "20px"}}>
-                        <CardMedia
-                            component="img"
-                            image={"https://assets.turbologo.com/blog/en/2019/07/19085123/The-Trefoil-adidas-logo-1.jpg"}
-                            height="100px"
-                        />
-                    </Card>
-                </div>
+                <Container>
+                    <h2 className={classes.title}>Выкуп для вас !</h2>
+                    <div style={{display: "flex", justifyContent: "space-evenly", flexWrap: "wrap"}}>
+                        <Card sx={{width: "200px", marginBottom: "20px"}}>
+                            <CardMedia
+                                component="img"
+                                image={"https://logowik.com/content/uploads/images/trendyolcom2977.jpg"}
+                                height="100px"
+                            />
+                        </Card>
+                        <Card sx={{width: "200px", marginBottom: "20px"}}>
+                            <CardMedia
+                                component="img"
+                                image={"https://thumbs.dreamstime.com/b/amazon-logo-editorial-vector-illustration-market-136495269.jpg"}
+                                height="100px"
+                            />
+                        </Card>
+                        <Card sx={{width: "200px", marginBottom: "20px"}}>
+                            <CardMedia
+                                component="img"
+                                image={"https://i1.wp.com/sportsfinding.com/wp-content/uploads/2020/02/nike-swoosh-wikipedia.jpg?fit=580%2C350&ssl=1&resize=1280%2C720"}
+                                height="100px"
+                            />
+                        </Card>
+                        <Card sx={{width: "200px", marginBottom: "20px"}}>
+                            <CardMedia
+                                component="img"
+                                image={"https://assets.turbologo.com/blog/en/2019/07/19085123/The-Trefoil-adidas-logo-1.jpg"}
+                                height="100px"
+                            />
+                        </Card>
+                    </div>
+                </Container>
             </Grid>
         </Grid>
     );
