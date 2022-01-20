@@ -11,6 +11,7 @@ import HowItWorks from "./containers/HowItWorks/HowItWorks";
 import News from "./containers/News/News";
 import MarketSites from "./containers/MarketSites/MarketSites";
 import HomePage from "./containers/HomePage/HomePage";
+import EditPackage from "./containers/EditPackage/EditPackage";
 
 const App = () => {
     return (
@@ -19,6 +20,7 @@ const App = () => {
                 <Route path='/register' element={<Register/>}/>
                 <Route path='/' element={<HomePage/>}/>
                 <Route path='/package-register' element={<PackageRegister/>}/>
+                <Route path='/package-edit/:id' element={<EditPackage/>}/>
                 <Route path='/login' element={<Login/>}/>
                 <Route path='/rules' element={<Rules/>}/>
                 <Route path='/about_us' element={<AboutUs/>}/>
