@@ -10,9 +10,7 @@ const Layout = ({children}) => {
             <CssBaseline/>
             <AppToolbar/>
             <main style={{minHeight: "calc(100vh - 100px)"}}>
-                <Container>
-                    {children}
-                </Container>
+                {children}
             </main>
             <Footer/>
         </>
