@@ -28,6 +28,7 @@ const UserMenu = ({setOpen}) => {
     };
 
     const toLogOut = () => {
+        setOpen(false);
         dispatch(logout());
     };
 
@@ -37,7 +38,7 @@ const UserMenu = ({setOpen}) => {
                 onClick={handleClick}
             >
                 <PersonIcon sx={{fontSize: 30, color: "#F5F5F7"}}/>
-                <span className="text">{user.user.name}</span>
+                <span className="text">{user?.name}</span>
             </IconButton>
             <Menu
                 anchorEl={anchorEl}
@@ -97,7 +98,7 @@ const UserMenu = ({setOpen}) => {
                     <ListItemIcon>
                         <AccountBalanceWalletIcon/>
                     </ListItemIcon>
-                    Ваш баланс {user.user.balance + ' сом'}
+                    Ваш баланс {user?.balance + ' сом'}
                 </MenuItem>
                 <MenuItem onClick={toLogOut}>
                     <ListItemIcon>
@@ -147,7 +148,7 @@ const UserMenu = ({setOpen}) => {
                 <ListItemButton
                     sx={{color: "#F5F5F7"}}
                     component={Link} to={'/package-register'}
-                    onClick={setOpen}
+                    // onClick={setOpen}
                 >
                     <ListItemIcon>
                         <AddIcon sx={{color: "#F5F5F7", fontSize: 30}}/>

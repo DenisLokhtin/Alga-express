@@ -10,8 +10,10 @@ import Rules from "./containers/Rules/Rules";
 import HowItWorks from "./containers/HowItWorks/HowItWorks";
 import News from "./containers/News/News";
 import MarketSites from "./containers/MarketSites/MarketSites";
+import SingleNews from "./containers/SingleNews/SingleNews";
 import HomePage from "./containers/HomePage/HomePage";
 import EditPackage from "./containers/EditPackage/EditPackage";
+import FAQ from "./containers/FAQ/FAQ";
 
 const App = () => {
     return (
@@ -19,6 +21,7 @@ const App = () => {
             <Routes>
                 <Route path='/register' element={<Register/>}/>
                 <Route path='/' element={<HomePage/>}/>
+                <Route path='/register' element={<Register/>}/>
                 <Route path='/package-register' element={<PackageRegister/>}/>
                 <Route path='/package-edit/:id' element={<EditPackage/>}/>
                 <Route path='/login' element={<Login/>}/>
@@ -27,7 +30,9 @@ const App = () => {
                 <Route path='/contacts' element={<Contacts/>}/>
                 <Route path='/how_it_works' element={<HowItWorks/>}/>
                 <Route path='/news' element={<News/>}/>
+                <Route path='/news/:id' element={<SingleNews/>}/>
                 <Route path='/sites' element={<MarketSites/>}/>
+                <Route path='/FAQ' element={<FAQ/>}/>
             </Routes>
         </Layout>
     );

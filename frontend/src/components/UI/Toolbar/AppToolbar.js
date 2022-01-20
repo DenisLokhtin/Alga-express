@@ -3,12 +3,12 @@ import Anonymous from "./Menu/Anonymous";
 import './AppToolbar.css';
 import {Button, Grid, IconButton, Toolbar} from "@mui/material";
 import {Link} from "react-router-dom";
-import './AppToolbar.css';
 import BurgerMenu from "../BurgerMenu/BurgerMenu";
 import MenuIcon from "@mui/icons-material/Menu";
 import UserMenu from "./Menu/UserMenu";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import {useSelector} from "react-redux";
+import logo from '../../../assets/logo.svg';
 
 const AppToolbar = () => {
     const user = useSelector(state => state.users.user);
@@ -23,16 +23,16 @@ const AppToolbar = () => {
 
     let renderComponent = (
         <Toolbar className="toolbar">
-            <Grid container justifyContent="space-between" alignItems="center">
+            <Grid container justifyContent="space-between" alignItems="center" >
                 <Grid item>
-                    <Link to="/" className="homeLink">
-                        Alga Express
+                    <Link to="/">
+                        <img src={logo} alt="logo" style={{width: "40px"}}/>
                     </Link>
                 </Grid>
                 <Grid item>
                     {
                         user
-                            ? <UserMenu/>
+                            ? <UserMenu setOpen={setOpen}/>
                             : <Anonymous/>
                     }
                 </Grid>
@@ -58,8 +58,8 @@ const AppToolbar = () => {
                         </BurgerMenu>
                     </Grid>
                     <Grid item xs={4} display={"flex"} justifyContent={"center"}>
-                        <Link to="/" className="homeLink">
-                            Alga Express
+                        <Link to="/">
+                            <img src={logo} alt="logo" style={{width: "40px"}}/>
                         </Link>
                     </Grid>
                     <Grid item xs={4} display={"flex"} justifyContent={"flex-end"}>
@@ -68,8 +68,9 @@ const AppToolbar = () => {
                                 <Button
                                     sx={{borderColor: "#F5F5F7", color: "#F5F5F7", '&:hover': {borderColor: "#F5F5F7"}}}
                                     startIcon={<AccountBalanceWalletIcon/>}
+                                    variant={"text"}
                                 >
-                                    {user.user.balance + ' сом'}
+                                    {user?.balance + ' сом'}
                                 </Button> : <Anonymous/>
                         }
                     </Grid>

@@ -4,7 +4,6 @@ import {useDispatch, useSelector} from "react-redux";
 import FormElement from "../../components/UI/Form/FormElement";
 import {clearError, loginUser} from "../../store/actions/usersActions";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
-import GoogleLogin from "../../components/UI/GoogleLogin/GoogleLogin";
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import {makeStyles} from "@mui/styles";
 import Container from "@mui/material/Container";
@@ -119,10 +118,6 @@ const Login = () => {
                         >
                             Войти
                         </ButtonWithProgress>
-                    </Grid>
-
-                    <Grid item xs={12}>
-                        <GoogleLogin/>
                     </Grid>
 
                     <Grid item container justifyContent="flex-end">

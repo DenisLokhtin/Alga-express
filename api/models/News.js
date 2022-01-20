@@ -11,9 +11,8 @@ const NewsSchema = new mongoose.Schema({
   },
   image: String,
   datetime: {
-    type: Date,
+    type: String,
     required: true,
-    min: (new Date()).toISOString(),
   },
   deleted: {
     type: Boolean,
