@@ -67,11 +67,8 @@ const EditPackage = () => {
     const dispatch = useDispatch();
     const params = useParams();
     const error = useSelector(state => state.package.changePackageError);
-    console.log(error)
     const loading = useSelector(state => state.package.createPackageRequest);
     const onePackage = useSelector(state => state.package.onePackage);
-
-
 
 
     const [packageRegister, setPackageRegister] = useState({
@@ -82,9 +79,9 @@ const EditPackage = () => {
         country: '',
         width: '',
         height: '',
-        length: ''
+        length: '',
+        urlPackage: '',
     });
-
 
 
     const inputChangeHandler = e => {
@@ -102,19 +99,28 @@ const EditPackage = () => {
     };
 
 
-
-    useEffect(async () => {
-        await dispatch(getPackageByIdRequest(params.id));
+    useEffect( () => {
+        dispatch(getPackageByIdRequest(params.id));
+        onePackage && setPackageRegister(prevState => ({
+            ...prevState,
+            trackNumber: onePackage.trackNumber,
+            title: onePackage.title,
+            amount: onePackage.amount,
+            price: onePackage.price,
+            country: onePackage.country,
+            width: onePackage.width,
+            height: onePackage.height,
+            length: onePackage.length,
+            urlPackage: onePackage.urlPackage,
+        }));
         return () => {
             dispatch(clearTextFieldsErrors());
         };
-    }, [dispatch]);
+    }, [dispatch, onePackage.trackNumber, onePackage.title, onePackage.amount, onePackage.price,
+        onePackage.country, onePackage.width, onePackage.height, onePackage.length, onePackage.urlPackage
+    ]);
 
-    useEffect(() => {
-        setPackageRegister(onePackage)
-    }, [dispatch, onePackage]);
 
-    console.log(onePackage);
 
     const changePackage = (e) => {
         e.preventDefault();
@@ -219,6 +225,18 @@ const EditPackage = () => {
                     </Grid>
                     <Grid item xs={12} sm={8} md={7} lg={7}>
                         <TextField
+                            name="urlPackage"
+                            value={packageRegister.urlPackage || ''}
+                            onChange={inputChangeHandler}
+                            fullWidth
+                            variant="outlined"
+                            label="URL"
+                            error={Boolean(getFieldError('urlPackage'))}
+                            helperText={getFieldError('urlPackage')}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={8} md={7} lg={7}>
+                        <TextField
                             name="width"
                             type="number"
                             value={packageRegister.width || ''}
@@ -256,6 +274,7 @@ const EditPackage = () => {
                             helperText={getFieldError('length')}
                         />
                     </Grid>
+
                     <Grid item xs={12} sm={8} md={7} lg={7}
                           className={classes.packageBtnContainer}>
                         <ButtonWithProgress

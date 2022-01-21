@@ -9,13 +9,13 @@ const checkHistory = (data, user_id) => {
     if (data.history) {
 
         if (filterData.status) {
-            filterData.status = 'ISSUED';
+            filterData.status = 'DONE';
         }
 
     } else {
 
         if (filterData.status) {
-            filterData.status = {$in: ['NEW', 'REGISTERED', 'ON_WAREHOUSE', 'ON_WAY', 'PROCESSED', 'ISSUE']};
+            filterData.status = {$in: ['NEW', 'REGISTERED', 'ON_WAREHOUSE', 'ON_WAY', 'PROCESSED', 'DELIVERED']};
         }
 
     }

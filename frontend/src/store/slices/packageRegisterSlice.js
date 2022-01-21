@@ -1,9 +1,15 @@
 import {createSlice} from "@reduxjs/toolkit";
 
 const initialState = {
+    orders: [],
+    order: null,
     onePackage: {},
     createPackageLoading: false,
     createPackageError: false,
+    getOrdersLoading: false,
+    getOrderError: null,
+    getOrderByIdLoading: false,
+    getOrderByIdError: null,
     changePackageError: false,
     packageAdmin:{},
     editAdminLoading: false,
@@ -13,7 +19,7 @@ const initialState = {
 };
 
 const packageSlice = createSlice({
-    name: 'packageRegister',
+    name: 'package',
     initialState,
 
     reducers: {
@@ -28,6 +34,34 @@ const packageSlice = createSlice({
         createPackageFailure(state, {payload: packageRegisterError}) {
             state.createPackageRequest = false;
             state.createPackageError = packageRegisterError;
+        },
+
+        getOrdersHistoryRequest(state) {
+            state.getOrdersLoading = true;
+        },
+
+        getOrdersHistorySuccess(state, {payload: orders}) {
+            state.getOrdersLoading = false;
+            state.orders = orders;
+        },
+
+        getOrdersHistoryError(state, {payload: orderHistoryError}) {
+            state.getOrdersLoading = false;
+            state.getOrdersError = orderHistoryError;
+        },
+
+        getOrderByIdRequest(state) {
+            state.getOrderByIdLoading = true;
+        },
+
+        getOrderByIdSuccess(state, {payload: order}) {
+            state.order = order;
+            state.getOrderByIdLoading = false;
+        },
+
+        getOrderByIdError(state, {payload: getOrderByIdError}) {
+            state.getOrderByIdError = getOrderByIdError;
+            state.getOrderByIdLoading = false;
         },
 
         getPackageByIdRequest(state) {
