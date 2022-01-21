@@ -3,7 +3,7 @@ import {createSlice} from "@reduxjs/toolkit";
 const name = 'news'
 const initialState = {
     news: [],
-    oneNews:null,
+    oneNews:{},
     singleLoading: false,
     fetchLoading: false,
     addLoading: false,
@@ -45,7 +45,21 @@ const newsSlice = createSlice({
         fetchOneNewsFailure(state) {
             state.singleLoading = false;
         },
+        clearNewsErrors(state) {
+            state.addError = null;
+        },
+        changeNewsRequest(state) {
+            state.singleLoading = true;
+        },
 
+        changeNewsSuccess(state) {
+            state.singleLoading = false;
+        },
+
+        changeNewsFailure(state, {payload: error}) {
+            state.singleLoading = false;
+            state.addError = error;
+        },
 
     }
 });
