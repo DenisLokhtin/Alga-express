@@ -21,7 +21,6 @@ const App = () => {
     return (
         <Layout>
             <Routes>
-                <Route path='/register' element={<Register/>}/>
                 <Route path='/' element={<HomePage/>}/>
                 <Route path='/register' element={<Register/>}/>
                 <Route path="order_history" element={<OrderHistory/>}/>
