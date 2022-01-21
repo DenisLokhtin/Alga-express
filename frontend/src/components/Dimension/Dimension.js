@@ -1,50 +1,47 @@
 import React from 'react';
 import {Grid} from "@mui/material";
-import TextField from "@mui/material/TextField";
+import FormElement from "../UI/Form/FormElement";
 
 const Dimension = (props) => {
-    const {width, height, length, getFieldError, dimensionsHandler} = props;
+    const {width, height, length, getFieldError, packageHandler} = props;
 
     return (
         <>
             <Grid item xs={12} sm={4} md={4} lg={4}>
-                <TextField
+                <FormElement
                     name="width"
                     value={width}
-                    onChange={dimensionsHandler}
+                    onChange={packageHandler}
                     type="number"
                     required
                     variant="outlined"
-                    error={Boolean(getFieldError('width'))}
-                    helperText={getFieldError('width')}
+                    error={getFieldError('width')}
                     fullWidth
                     label="Ширина"
                 />
             </Grid>
             <Grid item xs={12} sm={4} md={4} lg={4}>
-                <TextField
+                <FormElement
                     name="height"
                     value={height}
-                    onChange={dimensionsHandler}
+                    onChange={packageHandler}
                     type="number"
                     required
                     variant="outlined"
-                    error={Boolean(getFieldError('height'))}
-                    helperText={getFieldError('height')}
+                    error={getFieldError('height')}
                     fullWidth
                     label="Высота"
                 />
             </Grid>
             <Grid item xs={12} sm={4} md={4} lg={4}>
-                <TextField
+                <FormElement
                     name="length"
                     value={length}
-                    onChange={dimensionsHandler}
+                    onChange={packageHandler}
                     type="number"
                     required
                     variant="outlined"
-                    error={Boolean(getFieldError('length'))}
-                    helperText={getFieldError('length')}
+                    error={getFieldError('length')}
                     fullWidth
                     label="Длина"
                 />

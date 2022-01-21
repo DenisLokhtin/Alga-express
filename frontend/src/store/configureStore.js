@@ -3,7 +3,7 @@ import {loadFromLocalStorage, saveToLocalStorage} from "./localStorage";
 import axiosApi from "../axiosApi";
 import createSagaMiddleware from 'redux-saga';
 import {rootSagas} from "./rootSagas";
-import {configureStore, getDefaultMiddleware} from "@reduxjs/toolkit";
+import {configureStore} from "@reduxjs/toolkit";
 import packageSlice from "./slices/packageRegisterSlice";
 import usersSlice, {initialState} from "./slices/usersSlice";
 import newsSlice from "./slices/newsSlice";
@@ -20,7 +20,7 @@ const persistedState = loadFromLocalStorage();
 
 const sagaMiddleware = createSagaMiddleware();
 
-const middleware = [...getDefaultMiddleware(), sagaMiddleware];
+const middleware = [sagaMiddleware];
 
 const store = configureStore({
     reducer: rootReducer,
