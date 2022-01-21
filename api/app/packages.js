@@ -38,7 +38,6 @@ router.get('/', auth, permit('admin', 'warehouseman', 'user'), async (req, res) 
         query.sort = 'date';
     }
 
-
     query.role = req.user.role;
     query.user_id = req.user._id;
     let findFilter = {};
@@ -54,10 +53,7 @@ router.get('/', auth, permit('admin', 'warehouseman', 'user'), async (req, res) 
             .limit(limit)
             .skip(page * limit);
 
-        res.send({
-            pageCount: Math.ceil(size.length / limit),
-            result: packages
-        });
+        res.send([{totalPage: Math.ceil(size.length / limit), packages: packages}]);
     } catch (e) {
         res.status(400).send(e);
     }
