@@ -38,7 +38,6 @@ router.get('/', auth, permit('admin', 'warehouseman', 'user'), async (req, res) 
         query.sort = 'date';
     }
 
-
     query.role = req.user.role;
     query.user_id = req.user._id;
     let findFilter = {};
