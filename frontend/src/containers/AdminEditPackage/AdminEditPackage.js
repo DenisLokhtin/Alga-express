@@ -1,6 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {clearAdminErrors, fetchPackageAdminRequest} from "../../store/actions/packageRegisterActions";
+import {
+    clearAdminErrors,
+    editAdminPackageRequest,
+    fetchPackageAdminRequest
+} from "../../store/actions/packageRegisterActions";
 import {
     Container,
     FormControl,
@@ -58,34 +62,50 @@ const AdminEditPackage = () => {
     const classes = useStyles();
     const loading = useSelector(state => state.package.editAdminLoading);
     const dispatch = useDispatch();
-    // const error = useSelector(state => state.package.editAdminError);
+    const error = useSelector(state => state.package.editAdminError);
+    console.log('In edit error - ', error)
     const packageAdmin = useSelector(state => state.package.packageAdmin);
     const {id} = useParams();
-    console.log(packageAdmin)
-
-    useEffect(() => {
-        dispatch(fetchPackageAdminRequest(id))
-    }, [dispatch]);
-
 
     const [packageEdit, setPackageEdit] = useState({
         trackNumber: '',
-        title: '',
-        amount: '',
-        price: '',
+        title: '' ,
+        amount: '' ,
+        price: '' ,
         country: '',
         width: '',
-        height: '',
-        length: '',
-        urlPackage: '',
+        height: '' ,
+        length: '' ,
+        urlPackage: '' ,
         cargoPrice: '',
         cargoWeight: '',
-        status: '',
+        status:'' ,
     });
 
     useEffect(() => {
-        setPackageEdit(packageAdmin);
-    }, [dispatch])
+        dispatch(fetchPackageAdminRequest(id));
+        packageAdmin && setPackageEdit(prev=>({
+            ...prev,
+            trackNumber: packageAdmin.trackNumber,
+            title: packageAdmin.title ,
+            amount: packageAdmin.amount ,
+            price: packageAdmin.price ,
+            country: packageAdmin.country,
+            width: packageAdmin.width ,
+            height: packageAdmin.height ,
+            length: packageAdmin.length ,
+            urlPackage: packageAdmin.urlPackage ,
+            cargoPrice: packageAdmin.cargoPrice ,
+            cargoWeight: packageAdmin.cargoWeight,
+            status:packageAdmin.status ,
+        }));
+        return () => {
+            dispatch(clearAdminErrors());
+        };
+    }, [dispatch,id, packageAdmin.trackNumber, packageAdmin.title, packageAdmin.price,
+        packageAdmin.amount, packageAdmin.country, packageAdmin.width, packageAdmin.height,
+        packageAdmin.length, packageAdmin.urlPackage, packageAdmin.cargoPrice, packageAdmin.cargoWeight,
+        packageAdmin.status]);
 
 
     const inputChangeHandler = e => {
@@ -93,26 +113,19 @@ const AdminEditPackage = () => {
         setPackageEdit(prevState => ({...prevState, [name]: value}));
     };
 
-
-    // const getFieldError = fieldName => {
-    //     try {
-    //         return error.errors[fieldName].message;
-    //     } catch (e) {
-    //         return undefined;
-    //     }
-    // };
+    const getFieldError = fieldName => {
+        try {
+            return error.errors[fieldName].message;
+        } catch (e) {
+            return undefined;
+        }
+    };
 
     const submitFormHandler = e => {
         e.preventDefault();
-        console.log('submit')
+        dispatch(editAdminPackageRequest({obj: packageEdit, id}))
     };
 
-
-    useEffect(() => {
-        return () => {
-            dispatch(clearAdminErrors());
-        };
-    }, [dispatch]);
     return (
         <ThemeProvider theme={theme}>
             <Container
@@ -135,8 +148,7 @@ const AdminEditPackage = () => {
                     spacing={5}
                 >
                     <Grid item xs={12} sm={8} md={7} lg={7}>
-                        {/*<FormControl fullWidth error={Boolean(getFieldError('country'))}>*/}
-                        <FormControl fullWidth>
+                        <FormControl fullWidth error={Boolean(getFieldError('country'))}>
                             <InputLabel id="demo-controlled-open-select-label">Country</InputLabel>
                             <Select
                                 labelId="demo-controlled-open-select-label"
@@ -152,12 +164,11 @@ const AdminEditPackage = () => {
                                 <MenuItem value={'Turkey'}>Turkey</MenuItem>
                                 <MenuItem value={'China'}>China</MenuItem>
                             </Select>
-                            {/*<FormHelperText error={true}>{error.errors?.['country']?.message}</FormHelperText>*/}
+                            <FormHelperText error={true}>{error.errors?.['country']?.message}</FormHelperText>
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} sm={8} md={7} lg={7}>
-                        {/*<FormControl fullWidth error={Boolean(getFieldError('status'))}>*/}
-                        <FormControl fullWidth>
+                        <FormControl fullWidth error={Boolean(getFieldError('status'))}>
                             <InputLabel id="demo-controlled-open-select-label">Status</InputLabel>
                             <Select
                                 labelId="demo-controlled-open-select-label"
@@ -177,7 +188,7 @@ const AdminEditPackage = () => {
                                 <MenuItem value={'ISSUE'}>Готово к выдаче</MenuItem>
                                 <MenuItem value={'ISSUED'}>Выдано</MenuItem>
                             </Select>
-                            {/*<FormHelperText error={true}>{error.errors?.['status']?.message}</FormHelperText>*/}
+                            <FormHelperText error={true}>{error.errors?.['status']?.message}</FormHelperText>
                         </FormControl>
                     </Grid>
 
@@ -190,8 +201,8 @@ const AdminEditPackage = () => {
                             onChange={inputChangeHandler}
                             variant="outlined"
                             label="Трек-номер"
-                            // error={Boolean(getFieldError('trackNumber'))}
-                            // helperText={getFieldError('trackNumber')}
+                            error={Boolean(getFieldError('trackNumber'))}
+                            helperText={getFieldError('trackNumber')}
                         />
                     </Grid>
                     <Grid item xs={12} sm={8} md={7} lg={7}>
@@ -203,8 +214,8 @@ const AdminEditPackage = () => {
                             fullWidth
                             variant="outlined"
                             label="Название"
-                            // error={Boolean(getFieldError('title'))}
-                            // helperText={getFieldError('title')}
+                            error={Boolean(getFieldError('title'))}
+                            helperText={getFieldError('title')}
                         />
                     </Grid>
                     <Grid item xs={12} sm={8} md={7} lg={7}>
@@ -217,8 +228,51 @@ const AdminEditPackage = () => {
                             required
                             variant="outlined"
                             label="Количество"
-                            // error={Boolean(getFieldError('amount'))}
-                            // helperText={getFieldError('amount')}
+                            error={Boolean(getFieldError('amount'))}
+                            helperText={getFieldError('amount')}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={8} md={7} lg={7}>
+                        <TextField
+                            name="cargoPrice"
+                            type="number"
+                            value={packageEdit.cargoPrice}
+                            onChange={inputChangeHandler}
+                            fullWidth
+                            required
+                            variant="outlined"
+                            label="Стоимость доставки"
+                            error={Boolean(getFieldError('amount'))}
+                            helperText={getFieldError('amount')}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={8} md={7} lg={7}>
+                        <TextField
+                            name="cargoWeight"
+                            type="number"
+                            value={packageEdit.cargoWeight}
+                            onChange={inputChangeHandler}
+                            fullWidth
+                            required
+                            variant="outlined"
+                            label="Вес посылки"
+                            error={Boolean(getFieldError('amount'))}
+                            helperText={getFieldError('amount')}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={8} md={7} lg={7}>
+                        <TextField
+                            name="urlPackage"
+                            type="text"
+                            value={packageEdit.urlPackage}
+                            onChange={inputChangeHandler}
+                            className={classes.textField}
+                            fullWidth
+                            required
+                            variant="outlined"
+                            label="Ссылка"
+                            error={Boolean(getFieldError('price'))}
+                            helperText={getFieldError('price')}
                         />
                     </Grid>
                     <Grid item xs={12} sm={8} md={7} lg={7}>
@@ -232,17 +286,21 @@ const AdminEditPackage = () => {
                             required
                             variant="outlined"
                             label="Цена"
-                            // error={Boolean(getFieldError('price'))}
-                            // helperText={getFieldError('price')}
+                            error={Boolean(getFieldError('price'))}
+                            helperText={getFieldError('price')}
                         />
                     </Grid>
+
+
+                    <Grid item xs={12} sm={8} md={7} lg={7}>
                         <Dimension
                             width={packageEdit.width}
                             height={packageEdit.height}
                             length={packageEdit.length}
-                            // getFieldError={getFieldError}
+                            getFieldError={getFieldError}
                             dimensionsHandler={inputChangeHandler}
                         />
+                    </Grid>
                     <Grid item xs={12} sm={8} md={7} lg={7}
                           className={classes.packageBtnContainer}>
                         <ButtonWithProgress

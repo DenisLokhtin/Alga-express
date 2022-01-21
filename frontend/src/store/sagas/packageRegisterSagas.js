@@ -5,7 +5,7 @@ import {
     changePackageSuccess,
     createPackageFailure,
     createPackageRequest,
-    createPackageSuccess,
+    createPackageSuccess, editAdminPackageRequest, editAdminPackageSuccess,
     fetchPackageAdminFailure, fetchPackageAdminRequest,
     fetchPackageAdminSuccess,
     getPackageByIdFailure,
@@ -55,6 +55,18 @@ function* adminPackageEditSaga({payload: id}) {
 }
 
 
+function* packageEditAdminSagas({payload}) {
+    try {
+        console.log('in saga id', payload.id);
+        console.log('in saga data', payload.obj);
+        yield axiosApi.put(`/packages/`+ payload.id, payload.obj);
+        yield put(editAdminPackageSuccess());
+        toast.success('Заказ был успешно отредактирован');
+    } catch (e) {
+        yield put(changePackageFailure(e.response.data));
+    }
+}
+
 
 
 const packageSagas = [
@@ -62,6 +74,7 @@ const packageSagas = [
     takeEvery(changePackageRequest, packageChangeSagas),
     takeEvery(getPackageByIdRequest, packageGetByIdSagas),
     takeEvery(fetchPackageAdminRequest, adminPackageEditSaga),
+    takeEvery(editAdminPackageRequest, packageEditAdminSagas),
 ];
 
 export default packageSagas;

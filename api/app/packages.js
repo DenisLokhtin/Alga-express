@@ -93,7 +93,7 @@ router.post('/', auth, packageValidate, permit('admin', 'warehouseman', 'user'),
 
 router.put('/:id', auth, packageValidate, permit('admin', 'warehouseman', 'user'), async (req, res) => {
     let result = {};
-
+    console.log('token', req.user._id);
     try {
         const packageFind = await Package.findById(req.params.id);
         const prices = await Tariff.findOne({user: packageFind.user});

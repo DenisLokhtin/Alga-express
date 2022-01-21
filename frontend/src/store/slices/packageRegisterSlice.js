@@ -7,7 +7,7 @@ const initialState = {
     changePackageError: false,
     packageAdmin:{},
     editAdminLoading: false,
-    editAdminError: null,
+    editAdminError: false,
     packageAdminLoading: false,
 
 };
@@ -88,7 +88,7 @@ const packageSlice = createSlice({
         },
 
         clearAdminErrors(state) {
-            state.editAdminError = null;
+            state.editAdminError = false;
         },
 
     },
