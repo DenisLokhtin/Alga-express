@@ -19,10 +19,16 @@ router.get('/', auth, permit('admin', 'warehouseman', 'user'), async (req, res) 
     let page = null;
     let limit = null;
 
-    if (req.body.page)
-        page = parseInt(req.query.page) || 0;
-    if (req.body.limit)
-        limit = parseInt(req.query.limit) || 20;
+    if (req.query.page) {
+        page = Number(req.query.page);
+    } else {
+        page = 0
+    }
+    if (req.query.limit) {
+        limit = Number(req.query.limit);
+    } else {
+        limit = 20;
+    }
 
     if (req.query.id) query.id = req.query.id;
     if (req.query.history) query.history = req.query.history;
@@ -32,45 +38,59 @@ router.get('/', auth, permit('admin', 'warehouseman', 'user'), async (req, res) 
         query.sort = 'date';
     }
 
+
     query.role = req.user.role;
     query.user_id = req.user._id;
     let findFilter = {};
 
     try {
         findFilter = filter(query);
+        const size = await Package.find(findFilter);
+
         const packages = await Package.find(findFilter)
             .populate('user', 'name')
+            .select('title trackNumber country cargoNumber status description')
             .sort(query.sort)
             .limit(limit)
             .skip(page * limit);
 
-        res.send(packages);
+        res.send({
+            pageCount: Math.ceil(size.length / limit),
+            result: packages
+        });
     } catch (e) {
-        res.status(500).send({error: 'some error'});
+        res.status(400).send(e);
     }
 });
 
 router.get('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req, res) => {
     try {
-        const packageFind = await Package.findById(req.params.id)
-                                    .populate('user', 'name');
 
-        if ((req.user.role === 'user') && (packageFind.user._id.toString() === req.user._id.toString())) {
-            return res.send(packageFind);
+        if (req.user.role === 'user') {
+            const packageFind = await Package.findById(req.params.id)
+                .populate('user', 'name')
+                .select('trackNumber title amount price country status date cargoNumber urlPackage');
+         if (packageFind.user._id.toString() === req.user._id.toString()) {
+             return res.send(packageFind);
+         }
         }
 
         if ((req.user.role === 'admin') || (req.user.role === 'warehouseman')) {
-            return  res.send(packageFind);
+            const packageFind = await Package.findById(req.params.id)
+                .populate('user', 'name')
+                .select('trackNumber title amount price country status ' +
+                    'date cargoNumber width length height cargoWeight cargoPrice urlPackage');
+            return res.send(packageFind);
         }
 
         res.status(403).send({error: 'Доступ запрещен'});
     } catch (e) {
-        res.status(500).send({error: 'some error'});
+        res.status(400).send(e);
     }
 
 });
 
-router.post('/', auth, packageValidate, permit('admin', 'warehouseman', 'user'), async (req, res) => {
+router.post('/', auth, permit('admin', 'warehouseman', 'user'), async (req, res) => {
     try {
         const packageData = {
             country: req.body.country,
@@ -126,7 +146,7 @@ router.delete('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req,
     try {
         const erasePackage = await Package.findById(req.params.id);
 
-        if (erasePackage.status === 'ISSUED')
+        if (erasePackage.status === 'DONE')
             return res.status(403).send({error: 'Доступ запрещен'});
 
         if (req.user.role === 'admin')

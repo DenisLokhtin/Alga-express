@@ -25,12 +25,14 @@ const PackageSchema = new mongoose.Schema({
         required: 'Поле Цена обязательное',
         min: [0, 'Цена не может быть меньше нуля'],
     },
-    date_depart: Date,
-    date_arrival: Date,
+    flight: {
+        type: mongoose.Types.ObjectId,
+        ref: 'Flight'
+    },
     country: {
         type: String,
         trim: true,
-        enum: ['USA', 'Turkey', 'China'],
+        enum: ['USA', 'Turkey', 'China', 'China_ground'],
         required: 'Поле Страна обязательное',
     },
     width: {
@@ -48,7 +50,7 @@ const PackageSchema = new mongoose.Schema({
     status: {
         type: String,
         trim: true,
-        enum: ['NEW', 'REGISTERED', 'ON_WAREHOUSE', 'ON_WAY', 'PROCESSED', 'ISSUE', 'ISSUED', 'ERASED'],
+        enum: ['NEW', 'REGISTERED', 'ON_WAREHOUSE', 'ON_WAY', 'PROCESSED', 'DELIVERED', 'DONE', 'ERASED'],
         default: 'REGISTERED',
     },
     deleted: Boolean,
@@ -75,6 +77,10 @@ const PackageSchema = new mongoose.Schema({
     urlPackage: {
         type: String,
         trim: true,
+    },
+    description: {
+        type: String,
+        trim: true
     },
 
 });
