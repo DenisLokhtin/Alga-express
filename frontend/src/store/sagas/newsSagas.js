@@ -1,15 +1,20 @@
-import {takeEvery} from 'redux-saga/effects';
+import {put, takeEvery} from 'redux-saga/effects';
 import axiosApi from "../../axiosApi";
-import {put} from 'redux-saga/effects';
 import {toast} from "react-toastify";
 import {
-    addNewsFailure, addNewsRequest,
+    addNewsFailure,
+    addNewsRequest,
     addNewsSuccess,
+    changeNewsFailure,
+    changeNewsRequest,
+    changeNewsSuccess,
     fetchNewsFailure,
     fetchNewsRequest,
-    fetchNewsSuccess, fetchOneNewsFailure, fetchOneNewsRequest, fetchOneNewsSuccess
+    fetchNewsSuccess,
+    fetchOneNewsFailure,
+    fetchOneNewsRequest,
+    fetchOneNewsSuccess
 } from "../actions/newsActions";
-import {changePackageFailure, changePackageRequest, changePackageSuccess} from "../actions/packageRegisterActions";
 
 export function* newsSagas() {
     try {
@@ -23,8 +28,7 @@ export function* newsSagas() {
 
 export function* oneNewsSagas({payload:id}) {
     try {
-        const response = yield axiosApi.get('/news/'+
-        id);
+        const response = yield axiosApi.get('/news/'+ id);
         yield put(fetchOneNewsSuccess(response.data));
     } catch (e) {
         toast.error('Не удалось загрузить новость');
@@ -45,12 +49,13 @@ export function* addNewsSaga({payload: newNews}) {
 }
 
 function* newsEditSaga({payload}) {
+
     try {
-        yield axiosApi.put(`/news/${payload._id}`, payload);
-        yield put(changePackageSuccess());
+        yield axiosApi.put(`/news/${payload.id}`, payload.news);
+        yield put(changeNewsSuccess());
         toast.success('Новость отредактирована');
     } catch (e) {
-        yield put(changePackageFailure(e.response.data));
+        yield put(changeNewsFailure(e.response.data));
     }
 }
 
@@ -59,7 +64,7 @@ const newsSaga = [
     takeEvery(fetchNewsRequest, newsSagas),
     takeEvery(addNewsRequest, addNewsSaga),
     takeEvery(fetchOneNewsRequest, oneNewsSagas),
-    takeEvery(changePackageRequest, newsEditSaga),
+    takeEvery(changeNewsRequest, newsEditSaga),
 ];
 
 export default newsSaga;

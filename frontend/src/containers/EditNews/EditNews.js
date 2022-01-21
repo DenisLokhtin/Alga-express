@@ -4,10 +4,9 @@ import {Container, TextField, Typography} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {useDispatch, useSelector} from "react-redux";
-import {clearTextFieldsErrors} from "../../store/actions/packageRegisterActions";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
 import {useParams} from "react-router-dom";
-import {fetchOneNewsRequest} from "../../store/actions/newsActions";
+import {changeNewsRequest, clearNewsErrors, fetchOneNewsRequest} from "../../store/actions/newsActions";
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -55,20 +54,15 @@ const EditNews = () => {
     const params = useParams();
     const oneNews = useSelector(state => state.news.oneNews);
 
-    console.log(oneNews)
-
     const [news, setNews] = useState({
         title: '',
         description: '',
     });
 
-
-
     const inputChangeHandler = e => {
         const {name, value} = e.target;
         setNews(prevState => ({...prevState, [name]: value}));
     };
-
 
     // const getFieldError = fieldName => {
     //     try {
@@ -78,27 +72,23 @@ const EditNews = () => {
     //     }
     // };
 
-
-
-    useEffect(async () => {
-        await dispatch(fetchOneNewsRequest(params.id));
-        return () => {
-            dispatch(clearTextFieldsErrors());
-        };
-    }, [dispatch,params.id]);
-
-    useEffect(() => {
+    useEffect( () => {
         setNews(prev=>({
             ...prev,
             title: oneNews.title,
             description: oneNews.description,
         }));
-    }, [dispatch, oneNews.title, oneNews.description]);
 
-    // const changePackage = (e) => {
-    //     e.preventDefault();
-    //     dispatch(changePackageRequest(packageRegister));
-    // };
+        dispatch(fetchOneNewsRequest(params.id));
+        return () => {
+            dispatch(clearNewsErrors());
+        };
+    }, [dispatch,params.id, oneNews.title, oneNews.description]);
+
+    const changeNews = (e) => {
+        e.preventDefault();
+        dispatch(changeNewsRequest({news, id: params.id}));
+    };
 
     return (
         <ThemeProvider theme={theme}>
@@ -115,7 +105,7 @@ const EditNews = () => {
                 </Grid>
                 <Grid
                     component="form"
-                    // onSubmit={changePackage}
+                    onSubmit={changeNews}
                     justifyContent="center"
                     container
                     noValidate

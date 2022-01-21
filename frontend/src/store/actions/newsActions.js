@@ -13,5 +13,5 @@ export const {
     changeNewsRequest,
     changeNewsSuccess,
     changeNewsFailure,
-
+    clearNewsErrors,
 } = newsSlice.actions;
