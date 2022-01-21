@@ -9,6 +9,7 @@ import {
     fetchNewsRequest,
     fetchNewsSuccess, fetchOneNewsFailure, fetchOneNewsRequest, fetchOneNewsSuccess
 } from "../actions/newsActions";
+import {changePackageFailure, changePackageRequest, changePackageSuccess} from "../actions/packageRegisterActions";
 
 export function* newsSagas() {
     try {
@@ -43,11 +44,22 @@ export function* addNewsSaga({payload: newNews}) {
     }
 }
 
+function* newsEditSaga({payload}) {
+    try {
+        yield axiosApi.put(`/news/${payload._id}`, payload);
+        yield put(changePackageSuccess());
+        toast.success('Новость отредактирована');
+    } catch (e) {
+        yield put(changePackageFailure(e.response.data));
+    }
+}
+
 
 const newsSaga = [
     takeEvery(fetchNewsRequest, newsSagas),
     takeEvery(addNewsRequest, addNewsSaga),
     takeEvery(fetchOneNewsRequest, oneNewsSagas),
+    takeEvery(changePackageRequest, newsEditSaga),
 ];
 
 export default newsSaga;

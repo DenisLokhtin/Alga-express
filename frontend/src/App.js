@@ -14,6 +14,7 @@ import SingleNews from "./containers/SingleNews/SingleNews";
 import HomePage from "./containers/HomePage/HomePage";
 import EditPackage from "./containers/EditPackage/EditPackage";
 import FAQ from "./containers/FAQ/FAQ";
+import EditNews from "./containers/EditNews/EditNews";
 
 const App = () => {
     return (
@@ -31,6 +32,7 @@ const App = () => {
                 <Route path='/how_it_works' element={<HowItWorks/>}/>
                 <Route path='/news' element={<News/>}/>
                 <Route path='/news/:id' element={<SingleNews/>}/>
+                <Route path='/news/edit/:id' element={<EditNews/>}/>
                 <Route path='/sites' element={<MarketSites/>}/>
                 <Route path='/FAQ' element={<FAQ/>}/>
             </Routes>
