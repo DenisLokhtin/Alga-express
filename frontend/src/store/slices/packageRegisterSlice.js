@@ -11,6 +11,11 @@ const initialState = {
     getOrderByIdLoading: false,
     getOrderByIdError: null,
     changePackageError: false,
+    packageAdmin:{},
+    editAdminLoading: false,
+    editAdminError: false,
+    packageAdminLoading: false,
+
 };
 
 const packageSlice = createSlice({
@@ -89,6 +94,37 @@ const packageSlice = createSlice({
         clearTextFieldsErrors(state) {
             state.createPackageError = null;
         },
+
+        editAdminPackageRequest(state){
+            state.editAdminLoading = true;
+        },
+
+        editAdminPackageSuccess(state){
+            state.editAdminLoading = false;
+        },
+
+        editAdminPackageFailure(state,{payload: editAdminError}){
+            state.editAdminLoading = false;
+            state.editAdminError = editAdminError;
+        },
+
+        fetchPackageAdminRequest(state){
+            state.packageAdminLoading = true;
+        },
+
+        fetchPackageAdminSuccess(state,{payload: packageAdmin}){
+            state.packageAdminLoading = false;
+            state.packageAdmin = packageAdmin;
+        },
+
+        fetchPackageAdminFailure(state){
+            state.packageAdminLoading = false;
+        },
+
+        clearAdminErrors(state) {
+            state.editAdminError = false;
+        },
+
     },
 });
 

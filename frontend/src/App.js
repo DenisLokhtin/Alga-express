@@ -14,6 +14,7 @@ import SingleNews from "./containers/SingleNews/SingleNews";
 import HomePage from "./containers/HomePage/HomePage";
 import EditPackage from "./containers/EditPackage/EditPackage";
 import FAQ from "./containers/FAQ/FAQ";
+import AdminEditPackage from "./containers/AdminEditPackage/AdminEditPackage";
 import OrderHistory from "./containers/OrderHistory/OrderHistory";
 import SpecificPackage from "./containers/SpecificPackage/SpecificPackage";
 
@@ -36,6 +37,7 @@ const App = () => {
                 <Route path='/news/:id' element={<SingleNews/>}/>
                 <Route path='/sites' element={<MarketSites/>}/>
                 <Route path='/FAQ' element={<FAQ/>}/>
+                <Route path='/admin_package/:id' element={<AdminEditPackage/>}/>
             </Routes>
         </Layout>
     );
