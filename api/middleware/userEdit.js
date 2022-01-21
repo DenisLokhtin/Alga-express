@@ -6,7 +6,7 @@ const userEdit = (user, packageOrder, updateData) => {
         result.error = 'Доступ запрещен';
     }
 
-    if (packageOrder.status === 'ISSUED') {
+    if (packageOrder.status === 'DONE') {
         result.code = 403;
         result.error = 'Заказ выполнен - редактировнию не подлежит';
     }

@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {clearTextFieldsErrors, createPackageRequest} from "../../store/actions/packageRegisterActions";
-import {Checkbox, Container, FormControl, FormHelperText, Grid, InputLabel, MenuItem, Select, TextField, Typography} from "@mui/material";
-import {createTheme, ThemeProvider} from '@mui/material/styles';
+import {Checkbox, Container, FormControl, FormHelperText, Grid, InputLabel, MenuItem, Select, Typography} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import Dimension from "../../components/Dimension/Dimension";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
+import {useNavigate} from "react-router-dom";
+import theme from "../../theme";
+import FormElement from "../../components/UI/Form/FormElement";
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -14,6 +16,7 @@ const useStyles = makeStyles(() => ({
 
     packageBtnContainer: {
         textAlign: 'center',
+        margin: '50px',
     },
 
     packageMainTitle: {
@@ -24,14 +27,10 @@ const useStyles = makeStyles(() => ({
         },
     },
 
-    textField: {
-        '&:last-child': {
-            marginBottom: '50px',
-        },
+    checkboxContainer: {
+        marginTop: '50px',
     },
 }));
-
-const theme = createTheme();
 
 theme.typography.h4 = {
     fontSize: '1.3rem',
@@ -45,6 +44,7 @@ theme.typography.h4 = {
 
 const PackageRegister = () => {
     const classes = useStyles();
+    const navigate = useNavigate();
     const user = useSelector(state => state.users.user);
     const loading = useSelector(state => state.package.createPackageRequest);
     const dispatch = useDispatch();
@@ -56,28 +56,28 @@ const PackageRegister = () => {
         amount: '',
         price: '',
         country: '',
-    });
-
-    const [checked, setChecked] = useState(false);
-
-    const [dimensions, setDimensions] = useState({
         width: '',
         height: '',
         length: '',
     });
 
+    const [checked, setChecked] = useState(false);
+
     const inputChangeHandler = e => {
-        const {name, value} = e.target;
+        let {name, value} = e.target;
+
+        if (name === 'amount' || name === 'price' || name === 'width' || name === 'length' || name === 'height') {
+            if (e.target.value < 0) {
+                value = 0;
+                setPackageRegister(prevState => ({...prevState, [name]: value}));
+            }
+        }
+
         setPackageRegister(prevState => ({...prevState, [name]: value}));
     };
 
     const onCheckedChange = e => {
         setChecked(e.target.checked);
-    };
-
-    const dimensionsHandler = e => {
-        const {name, value} = e.target;
-        setDimensions(prevState => ({...prevState, [name]: value}));
     };
 
     const getFieldError = fieldName => {
@@ -90,12 +90,7 @@ const PackageRegister = () => {
 
     const submitFormHandler = e => {
         e.preventDefault();
-
-        if (checked) {
-            dispatch(createPackageRequest({...packageRegister, ...dimensions, ...user}));
-        } else {
-            dispatch(createPackageRequest({...packageRegister, ...user}));
-        }
+        dispatch(createPackageRequest({...packageRegister, ...user, navigate}));
     };
 
     useEffect(() => {
@@ -105,129 +100,140 @@ const PackageRegister = () => {
     }, [dispatch]);
 
     return (
-        <ThemeProvider theme={theme}>
-            <Container
-                component="section"
-                maxWidth="md"
-                className={classes.container}>
-                <Grid item>
-                    <Typography
-                        variant="h4"
-                        className={classes.packageMainTitle}>
-                        Регистрация посылки
-                    </Typography>
+        <Container
+            component="section"
+            maxWidth="md"
+            className={classes.container}>
+            <Grid item>
+                <Typography
+                    variant="h4"
+                    className={classes.packageMainTitle}>
+                    Регистрация посылки
+                </Typography>
+            </Grid>
+            <Grid
+                component="form"
+                onSubmit={submitFormHandler}
+                justifyContent="center"
+                container
+                noValidate
+                spacing={5}
+            >
+                <Grid item xs={12} sm={8} md={7} lg={7}>
+                    <FormControl variant="standard" fullWidth error={Boolean(getFieldError('country'))}>
+                        <InputLabel id="demo-controlled-open-select-label">Страна</InputLabel>
+                        <Select
+                            labelId="demo-controlled-open-select-label"
+                            id="demo-controlled-open-select"
+                            value={packageRegister.country}
+                            label="Страна"
+                            name="country"
+                            required
+                            onChange={inputChangeHandler}
+                        >
+                            <MenuItem value={'USA'}>Америка</MenuItem>
+                            <MenuItem value={'Turkey'}>Турция</MenuItem>
+                            <MenuItem value={'China'}>Китай (Авия доставка)</MenuItem>
+                        </Select>
+                        <FormHelperText error={true}>{error?.errors?.['country']?.message}</FormHelperText>
+                    </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={8} md={7} lg={7}>
+                    <FormElement
+                        name="trackNumber"
+                        value={packageRegister.trackNumber}
+                        required
+                        fullWidth
+                        onChange={inputChangeHandler}
+                        variant="outlined"
+                        label="Трек-номер"
+                        error={getFieldError('trackNumber')}
+                    />
+                </Grid>
+                <Grid item xs={12} sm={8} md={7} lg={7}>
+                    <FormElement
+                        name="title"
+                        value={packageRegister.title}
+                        onChange={inputChangeHandler}
+                        required
+                        fullWidth
+                        variant="outlined"
+                        label="Название"
+                        error={getFieldError('title')}
+                    />
+                </Grid>
+                <Grid item xs={12} sm={8} md={7} lg={7}>
+                    <FormElement
+                        name="amount"
+                        type="number"
+                        value={packageRegister.amount}
+                        onChange={inputChangeHandler}
+                        fullWidth
+                        required
+                        variant="outlined"
+                        label="Количество"
+                        error={getFieldError('amount')}
+                    />
+                </Grid>
+                <Grid item xs={12} sm={8} md={7} lg={7}>
+                    <FormElement
+                        name="price"
+                        type="number"
+                        value={packageRegister.price}
+                        onChange={inputChangeHandler}
+                        className={classes.textField}
+                        fullWidth
+                        required
+                        variant="outlined"
+                        label="Цена"
+                        error={getFieldError('price')}
+                    />
                 </Grid>
                 <Grid
-                    component="form"
-                    onSubmit={submitFormHandler}
-                    justifyContent="center"
                     container
-                    noValidate
-                    spacing={5}
-                >
-                    <Grid item xs={12} sm={8} md={7} lg={7}>
-                        <FormControl fullWidth error={Boolean(getFieldError('country'))}>
-                            <InputLabel id="demo-controlled-open-select-label">Country</InputLabel>
-                            <Select
-                                labelId="demo-controlled-open-select-label"
-                                id="demo-controlled-open-select"
-                                value={packageRegister.country}
-                                label="Страна"
-                                name="country"
-                                required
-                                onChange={inputChangeHandler}
-                            >
-                                <MenuItem value="">None</MenuItem>
-                                <MenuItem value={'USA'}>USA</MenuItem>
-                                <MenuItem value={'Turkey'}>Turkey</MenuItem>
-                                <MenuItem value={'China'}>China</MenuItem>
-                            </Select>
-                            <FormHelperText error={true}>{error.errors?.['country']?.message}</FormHelperText>
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={8} md={7} lg={7}>
-                        <TextField
-                            name="trackNumber"
-                            value={packageRegister.trackNumber}
-                            required
-                            fullWidth
-                            onChange={inputChangeHandler}
-                            variant="outlined"
-                            label="Трек-номер"
-                            error={Boolean(getFieldError('trackNumber'))}
-                            helperText={getFieldError('trackNumber')}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={8} md={7} lg={7}>
-                        <TextField
-                            name="title"
-                            value={packageRegister.title}
-                            onChange={inputChangeHandler}
-                            required
-                            fullWidth
-                            variant="outlined"
-                            label="Название"
-                            error={Boolean(getFieldError('title'))}
-                            helperText={getFieldError('title')}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={8} md={7} lg={7}>
-                        <TextField
-                            name="amount"
-                            type="number"
-                            value={packageRegister.amount}
-                            onChange={inputChangeHandler}
-                            fullWidth
-                            required
-                            variant="outlined"
-                            label="Количество"
-                            error={Boolean(getFieldError('amount'))}
-                            helperText={getFieldError('amount')}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={8} md={7} lg={7}>
-                        <TextField
-                            name="price"
-                            type="number"
-                            value={packageRegister.price}
-                            onChange={inputChangeHandler}
-                            className={classes.textField}
-                            fullWidth
-                            required
-                            variant="outlined"
-                            label="Цена"
-                            error={Boolean(getFieldError('price'))}
-                            helperText={getFieldError('price')}
-                        />
-                    </Grid>
-                    <Grid
-                        container
-                        justifyContent="center"
-                        alignItems="center">
-                        <Typography variant="h4">Габариты</Typography>
-                        <Checkbox checked={checked} onChange={onCheckedChange}/>
-                    </Grid>
-                    {checked ? (
-                        <Dimension
-                            width={dimensions.width}
-                            height={dimensions.height}
-                            length={dimensions.length}
-                            getFieldError={getFieldError}
-                            dimensionsHandler={dimensionsHandler}
-                        />) : null}
-                    <Grid item xs={12} sm={8} md={7} lg={7}
-                          className={classes.packageBtnContainer}>
-                        <ButtonWithProgress
-                            loading={loading}
-                            disabled={loading}
-                            type="submit"
-                            variant="contained">
-                            Оформить
-                        </ButtonWithProgress>
-                    </Grid>
+                    justifyContent="center"
+                    className={classes.checkboxContainer}
+                    alignItems="center">
+                    <Typography variant="h4">Габариты</Typography>
+                    <Checkbox checked={checked} onChange={onCheckedChange}/>
                 </Grid>
-            </Container>
-        </ThemeProvider>
+                {checked ? (
+                    <Dimension
+                        width={packageRegister.width}
+                        height={packageRegister.height}
+                        length={packageRegister.length}
+                        getFieldError={getFieldError}
+                        packageHandler={inputChangeHandler}
+                    />) : null}
+                <Grid container
+                      justifyContent="center"
+                      alignItems="center"
+                      className={classes.packageBtnContainer}>
+                    {
+                        packageRegister.country &&
+                        packageRegister.amount &&
+                        packageRegister.price &&
+                        packageRegister.trackNumber &&
+                        packageRegister.title ? (
+                            <ButtonWithProgress
+                                loading={loading}
+                                disabled={loading}
+                                type="submit"
+                                variant="contained">
+                                Оформить
+                            </ButtonWithProgress>
+                        ) : (
+                            <ButtonWithProgress
+                                loading={loading}
+                                disabled={true}
+                                type="submit"
+                                variant="contained">
+                                Оформить
+                            </ButtonWithProgress>
+                        )}
+                </Grid>
+            </Grid>
+        </Container>
     );
 };
 

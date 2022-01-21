@@ -1,24 +1,24 @@
 import React, {useEffect, useState} from 'react';
-import Grid from "@mui/material/Grid";
+import {useDispatch, useSelector} from "react-redux";
 import {
-    Button,
+    clearAdminErrors,
+    editAdminPackageRequest,
+    fetchPackageAdminRequest
+} from "../../store/actions/packageRegisterActions";
+import {
     Container,
     FormControl,
     FormHelperText,
+    Grid,
     InputLabel,
     MenuItem,
     Select,
     TextField,
     Typography
 } from "@mui/material";
+import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {makeStyles} from "@mui/styles";
-import {createTheme, ThemeProvider} from "@mui/material/styles";
-import {useDispatch, useSelector} from "react-redux";
-import {
-    changePackageRequest,
-    clearTextFieldsErrors,
-    getPackageByIdRequest
-} from "../../store/actions/packageRegisterActions";
+import Dimension from "../../components/Dimension/Dimension";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
 import {useParams} from "react-router-dom";
 
@@ -29,10 +29,6 @@ const useStyles = makeStyles(() => ({
 
     packageBtnContainer: {
         textAlign: 'center',
-    },
-
-    form: {
-        display: 'flex'
     },
 
     packageMainTitle: {
@@ -62,33 +58,60 @@ theme.typography.h4 = {
     },
 };
 
-const EditPackage = () => {
+const AdminEditPackage = () => {
     const classes = useStyles();
+    const loading = useSelector(state => state.package.editAdminLoading);
     const dispatch = useDispatch();
-    const params = useParams();
-    const error = useSelector(state => state.package.changePackageError);
-    const loading = useSelector(state => state.package.createPackageRequest);
-    const onePackage = useSelector(state => state.package.onePackage);
+    const error = useSelector(state => state.package.editAdminError);
+    console.log('In edit error - ', error)
+    const packageAdmin = useSelector(state => state.package.packageAdmin);
+    const {id} = useParams();
 
-
-    const [packageRegister, setPackageRegister] = useState({
+    const [packageEdit, setPackageEdit] = useState({
         trackNumber: '',
-        title: '',
-        amount: '',
-        price: '',
+        title: '' ,
+        amount: '' ,
+        price: '' ,
         country: '',
         width: '',
-        height: '',
-        length: '',
-        urlPackage: '',
+        height: '' ,
+        length: '' ,
+        urlPackage: '' ,
+        cargoPrice: '',
+        cargoWeight: '',
+        status:'' ,
     });
+
+    useEffect(() => {
+        dispatch(fetchPackageAdminRequest(id));
+        packageAdmin && setPackageEdit(prev=>({
+            ...prev,
+            trackNumber: packageAdmin.trackNumber,
+            title: packageAdmin.title ,
+            amount: packageAdmin.amount ,
+            price: packageAdmin.price ,
+            country: packageAdmin.country,
+            width: packageAdmin.width ,
+            height: packageAdmin.height ,
+            length: packageAdmin.length ,
+            urlPackage: packageAdmin.urlPackage ,
+            cargoPrice: packageAdmin.cargoPrice ,
+            cargoWeight: packageAdmin.cargoWeight,
+            status:packageAdmin.status ,
+        }));
+        return () => {
+            dispatch(clearAdminErrors());
+        };
+    }, [dispatch,id, packageAdmin.trackNumber, packageAdmin.title, packageAdmin.price,
+        packageAdmin.amount, packageAdmin.country, packageAdmin.width, packageAdmin.height,
+        packageAdmin.length, packageAdmin.urlPackage, packageAdmin.cargoPrice, packageAdmin.cargoWeight,
+        packageAdmin.status]);
 
 
     const inputChangeHandler = e => {
         const {name, value} = e.target;
-        setPackageRegister(prevState => ({...prevState, [name]: value}));
+        setPackageEdit(prevState => ({...prevState, [name]: value}));
     };
-
 
     const getFieldError = fieldName => {
         try {
@@ -98,33 +121,9 @@ const EditPackage = () => {
         }
     };
 
-
-    useEffect( () => {
-        dispatch(getPackageByIdRequest(params.id));
-        onePackage && setPackageRegister(prevState => ({
-            ...prevState,
-            trackNumber: onePackage.trackNumber,
-            title: onePackage.title,
-            amount: onePackage.amount,
-            price: onePackage.price,
-            country: onePackage.country,
-            width: onePackage.width,
-            height: onePackage.height,
-            length: onePackage.length,
-            urlPackage: onePackage.urlPackage,
-        }));
-        return () => {
-            dispatch(clearTextFieldsErrors());
-        };
-    }, [dispatch, onePackage.trackNumber, onePackage.title, onePackage.amount, onePackage.price,
-        onePackage.country, onePackage.width, onePackage.height, onePackage.length, onePackage.urlPackage
-    ]);
-
-
-
-    const changePackage = (e) => {
+    const submitFormHandler = e => {
         e.preventDefault();
-        dispatch(changePackageRequest(packageRegister));
+        dispatch(editAdminPackageRequest({obj: packageEdit, id}))
     };
 
     return (
@@ -137,25 +136,24 @@ const EditPackage = () => {
                     <Typography
                         variant="h4"
                         className={classes.packageMainTitle}>
-                        Редактирование посылки
+                        Регистрация посылки
                     </Typography>
                 </Grid>
                 <Grid
                     component="form"
-                    onSubmit={changePackage}
+                    onSubmit={submitFormHandler}
                     justifyContent="center"
                     container
                     noValidate
                     spacing={5}
                 >
-
                     <Grid item xs={12} sm={8} md={7} lg={7}>
                         <FormControl fullWidth error={Boolean(getFieldError('country'))}>
                             <InputLabel id="demo-controlled-open-select-label">Country</InputLabel>
                             <Select
                                 labelId="demo-controlled-open-select-label"
                                 id="demo-controlled-open-select"
-                                value={packageRegister.country || ''}
+                                value={packageEdit.country}
                                 label="Страна"
                                 name="country"
                                 required
@@ -170,9 +168,34 @@ const EditPackage = () => {
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} sm={8} md={7} lg={7}>
+                        <FormControl fullWidth error={Boolean(getFieldError('status'))}>
+                            <InputLabel id="demo-controlled-open-select-label">Status</InputLabel>
+                            <Select
+                                labelId="demo-controlled-open-select-label"
+                                id="demo-controlled-open-select"
+                                value={packageEdit.status}
+                                label="Статус"
+                                name="status"
+                                required
+                                onChange={inputChangeHandler}
+                            >
+                                <MenuItem value="">None</MenuItem>
+                                <MenuItem value={'NEW'}>Новый</MenuItem>
+                                <MenuItem value={'REGISTERED'}>Оформлен</MenuItem>
+                                <MenuItem value={'ON_WAREHOUSE'}>На складе</MenuItem>
+                                <MenuItem value={'ON_WAY'}>Вылетел</MenuItem>
+                                <MenuItem value={'PROCESSED'}>Обрабатывается</MenuItem>
+                                <MenuItem value={'ISSUE'}>Готово к выдаче</MenuItem>
+                                <MenuItem value={'ISSUED'}>Выдано</MenuItem>
+                            </Select>
+                            <FormHelperText error={true}>{error.errors?.['status']?.message}</FormHelperText>
+                        </FormControl>
+                    </Grid>
+
+                    <Grid item xs={12} sm={8} md={7} lg={7}>
                         <TextField
                             name="trackNumber"
-                            value={packageRegister.trackNumber || ''}
+                            value={packageEdit.trackNumber}
                             required
                             fullWidth
                             onChange={inputChangeHandler}
@@ -185,7 +208,7 @@ const EditPackage = () => {
                     <Grid item xs={12} sm={8} md={7} lg={7}>
                         <TextField
                             name="title"
-                            value={packageRegister.title || ''}
+                            value={packageEdit.title}
                             onChange={inputChangeHandler}
                             required
                             fullWidth
@@ -199,7 +222,7 @@ const EditPackage = () => {
                         <TextField
                             name="amount"
                             type="number"
-                            value={packageRegister.amount || ''}
+                            value={packageEdit.amount}
                             onChange={inputChangeHandler}
                             fullWidth
                             required
@@ -211,10 +234,54 @@ const EditPackage = () => {
                     </Grid>
                     <Grid item xs={12} sm={8} md={7} lg={7}>
                         <TextField
+                            name="cargoPrice"
+                            type="number"
+                            value={packageEdit.cargoPrice}
+                            onChange={inputChangeHandler}
+                            fullWidth
+                            required
+                            variant="outlined"
+                            label="Стоимость доставки"
+                            error={Boolean(getFieldError('amount'))}
+                            helperText={getFieldError('amount')}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={8} md={7} lg={7}>
+                        <TextField
+                            name="cargoWeight"
+                            type="number"
+                            value={packageEdit.cargoWeight}
+                            onChange={inputChangeHandler}
+                            fullWidth
+                            required
+                            variant="outlined"
+                            label="Вес посылки"
+                            error={Boolean(getFieldError('amount'))}
+                            helperText={getFieldError('amount')}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={8} md={7} lg={7}>
+                        <TextField
+                            name="urlPackage"
+                            type="text"
+                            value={packageEdit.urlPackage}
+                            onChange={inputChangeHandler}
+                            className={classes.textField}
+                            fullWidth
+                            required
+                            variant="outlined"
+                            label="Ссылка"
+                            error={Boolean(getFieldError('price'))}
+                            helperText={getFieldError('price')}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={8} md={7} lg={7}>
+                        <TextField
                             name="price"
                             type="number"
-                            value={packageRegister.price || ''}
+                            value={packageEdit.price}
                             onChange={inputChangeHandler}
+                            className={classes.textField}
                             fullWidth
                             required
                             variant="outlined"
@@ -223,58 +290,17 @@ const EditPackage = () => {
                             helperText={getFieldError('price')}
                         />
                     </Grid>
-                    <Grid item xs={12} sm={8} md={7} lg={7}>
-                        <TextField
-                            name="urlPackage"
-                            value={packageRegister.urlPackage || ''}
-                            onChange={inputChangeHandler}
-                            fullWidth
-                            variant="outlined"
-                            label="URL"
-                            error={Boolean(getFieldError('urlPackage'))}
-                            helperText={getFieldError('urlPackage')}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={8} md={7} lg={7}>
-                        <TextField
-                            name="width"
-                            type="number"
-                            value={packageRegister.width || ''}
-                            onChange={inputChangeHandler}
-                            fullWidth
-                            variant="outlined"
-                            label="Ширина"
-                            error={Boolean(getFieldError('width'))}
-                            helperText={getFieldError('width')}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={8} md={7} lg={7}>
-                        <TextField
-                            name="height"
-                            type="number"
-                            value={packageRegister.height || ''}
-                            onChange={inputChangeHandler}
-                            fullWidth
-                            variant="outlined"
-                            label="Высота"
-                            error={Boolean(getFieldError('height'))}
-                            helperText={getFieldError('height')}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={8} md={7} lg={7}>
-                        <TextField
-                            name="length"
-                            type="number"
-                            value={packageRegister.length || ''}
-                            onChange={inputChangeHandler}
-                            fullWidth
-                            variant="outlined"
-                            label="Длина"
-                            error={Boolean(getFieldError('length'))}
-                            helperText={getFieldError('length')}
-                        />
-                    </Grid>
 
+
+                    <Grid item xs={12} sm={8} md={7} lg={7}>
+                        <Dimension
+                            width={packageEdit.width}
+                            height={packageEdit.height}
+                            length={packageEdit.length}
+                            getFieldError={getFieldError}
+                            dimensionsHandler={inputChangeHandler}
+                        />
+                    </Grid>
                     <Grid item xs={12} sm={8} md={7} lg={7}
                           className={classes.packageBtnContainer}>
                         <ButtonWithProgress
@@ -291,4 +317,4 @@ const EditPackage = () => {
     );
 };
 
-export default EditPackage;
+export default AdminEditPackage;

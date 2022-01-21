@@ -1,7 +1,7 @@
 const adminEdit = (user, packageOrder, updateData, price) => {
     const result = {};
     console.log('adminEdit', updateData.status);
-    if (packageOrder.status === 'ISSUED') {
+    if (packageOrder.status === 'DONE') {
         result.code = 406;
         result.error = 'Заказ выполнен - редактировнию не подлежит';
     }
