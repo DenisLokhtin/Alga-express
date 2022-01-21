@@ -14,6 +14,8 @@ import SingleNews from "./containers/SingleNews/SingleNews";
 import HomePage from "./containers/HomePage/HomePage";
 import EditPackage from "./containers/EditPackage/EditPackage";
 import FAQ from "./containers/FAQ/FAQ";
+import OrderHistory from "./containers/OrderHistory/OrderHistory";
+import SpecificPackage from "./containers/SpecificPackage/SpecificPackage";
 
 const App = () => {
     return (
@@ -22,6 +24,8 @@ const App = () => {
                 <Route path='/register' element={<Register/>}/>
                 <Route path='/' element={<HomePage/>}/>
                 <Route path='/register' element={<Register/>}/>
+                <Route path="order_history" element={<OrderHistory/>}/>
+                <Route path='/specific_package/:id' element={<SpecificPackage/>}/>
                 <Route path='/package-register' element={<PackageRegister/>}/>
                 <Route path='/package-edit/:id' element={<EditPackage/>}/>
                 <Route path='/login' element={<Login/>}/>
