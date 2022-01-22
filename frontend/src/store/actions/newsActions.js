@@ -10,5 +10,8 @@ export const {
     fetchOneNewsRequest,
     fetchOneNewsSuccess,
     fetchOneNewsFailure,
-
+    changeNewsRequest,
+    changeNewsSuccess,
+    changeNewsFailure,
+    clearNewsErrors,
 } = newsSlice.actions;

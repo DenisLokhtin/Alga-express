@@ -5,6 +5,12 @@ import {
     changePackageSuccess,
     createPackageFailure,
     createPackageRequest,
+    createPackageSuccess, editAdminPackageRequest, editAdminPackageSuccess,
+    fetchPackageAdminFailure, fetchPackageAdminRequest,
+    fetchPackageAdminSuccess,
+    getPackageByIdFailure,
+    getPackageByIdRequest,
+    getPackageByIdSuccess
     createPackageSuccess, getOrderByIdError, getOrderByIdRequest,
     getOrderByIdSuccess, getOrdersHistoryError, getOrdersHistoryRequest,
     getOrdersHistorySuccess,
@@ -45,6 +51,30 @@ function* packageChangeSagas({payload}) {
     }
 }
 
+function* adminPackageEditSaga({payload: id}) {
+    try {
+        const response = yield axiosApi.get(`/packages/${id}`);
+        yield put(fetchPackageAdminSuccess(response.data));
+    } catch (e) {
+        yield put(fetchPackageAdminFailure(e.response.data));
+    }
+}
+
+
+function* packageEditAdminSagas({payload}) {
+    try {
+        console.log('in saga id', payload.id);
+        console.log('in saga data', payload.obj);
+        yield axiosApi.put(`/packages/`+ payload.id, payload.obj);
+        yield put(editAdminPackageSuccess());
+        toast.success('Заказ был успешно отредактирован');
+    } catch (e) {
+        yield put(changePackageFailure(e.response.data));
+    }
+}
+
+
+
 function* getOrdersHistorySagas({payload: pageData}) {
     try {
         const response = yield axiosApi.get(`/packages?page=${pageData.page - 1}&limit=${pageData.limit}`);
@@ -73,6 +103,8 @@ const packageSagas = [
     takeEvery(createPackageRequest, packageRegisterSagas),
     takeEvery(changePackageRequest, packageChangeSagas),
     takeEvery(getPackageByIdRequest, packageGetByIdSagas),
+    takeEvery(fetchPackageAdminRequest, adminPackageEditSaga),
+    takeEvery(editAdminPackageRequest, packageEditAdminSagas),
     takeEvery(getOrdersHistoryRequest, getOrdersHistorySagas),
     takeEvery(getOrderByIdRequest, getOrderById),
 ];
