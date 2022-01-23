@@ -8,6 +8,11 @@ export const {
   loginUserSuccess,
   loginUserFailure,
   clearError,
-  googleLoginRequest,
+  userDateResponse,
+  userDateSuccess,
+  userDateFailure,
+  editUserDataRequest,
+  editUserDataSuccess,
+  editUserDataFailure,
   logout,
 } = usersSlice.actions;

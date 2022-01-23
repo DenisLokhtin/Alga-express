@@ -14,6 +14,23 @@ const validateEmail = value => {
     if (!re.test(value)) return false;
 };
 
+const phoneNumbers = new mongoose.Schema({
+    number: String,
+    type: {
+        type:String,
+        trim: true,
+        enum: ['TELEGRAM', 'PHONE'],
+        default: 'PHONE',
+    }
+});
+
+const imagePassport = new mongoose.Schema({
+    image: {
+        type: String,
+        trim:true
+    },
+});
+
 const UserSchema = new mongoose.Schema({
     email: {
         type: String,
@@ -49,7 +66,6 @@ const UserSchema = new mongoose.Schema({
     },
     avatar: {
         type: String,
-        required: false,
     },
     balance: {
         type: Number,
@@ -57,14 +73,13 @@ const UserSchema = new mongoose.Schema({
         required: true,
     },
     passport: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Passports',
-        required: false,
+        type: Array,
+        image: {
+            type: String,
+            trim: true,
+        },
     },
-    phone: {
-        type: String,
-        required: true,
-    },
+    phone: [phoneNumbers],
 });
 
 UserSchema.pre('save', async function (next) {

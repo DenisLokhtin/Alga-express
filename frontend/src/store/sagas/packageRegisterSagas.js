@@ -5,18 +5,22 @@ import {
     changePackageSuccess,
     createPackageFailure,
     createPackageRequest,
-    createPackageSuccess, editAdminPackageRequest, editAdminPackageSuccess,
-    fetchPackageAdminFailure, fetchPackageAdminRequest,
+    createPackageSuccess,
+    editAdminPackageRequest,
+    editAdminPackageSuccess,
+    fetchPackageAdminFailure,
+    fetchPackageAdminRequest,
     fetchPackageAdminSuccess,
     getPackageByIdFailure,
     getPackageByIdRequest,
-    getPackageByIdSuccess
-    createPackageSuccess, getOrderByIdError, getOrderByIdRequest,
-    getOrderByIdSuccess, getOrdersHistoryError, getOrdersHistoryRequest,
+    getPackageByIdSuccess,
+    getOrderByIdError,
+    getOrderByIdRequest,
+    getOrderByIdSuccess,
+    getOrdersHistoryError,
+    getOrdersHistoryRequest,
     getOrdersHistorySuccess,
-    getPackageByIdFailure,
-    getPackageByIdRequest,
-    getPackageByIdSuccess
+
 } from "../actions/packageRegisterActions";
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
@@ -65,7 +69,7 @@ function* packageEditAdminSagas({payload}) {
     try {
         console.log('in saga id', payload.id);
         console.log('in saga data', payload.obj);
-        yield axiosApi.put(`/packages/`+ payload.id, payload.obj);
+        yield axiosApi.put(`/packages/` + payload.id, payload.obj);
         yield put(editAdminPackageSuccess());
         toast.success('Заказ был успешно отредактирован');
     } catch (e) {
@@ -74,14 +78,13 @@ function* packageEditAdminSagas({payload}) {
 }
 
 
-
 function* getOrdersHistorySagas({payload: pageData}) {
     try {
         const response = yield axiosApi.get(`/packages?page=${pageData.page - 1}&limit=${pageData.limit}`);
         yield put(getOrdersHistorySuccess(response.data));
     } catch (error) {
         yield put(getOrdersHistoryError(error.response.statusText || error.essage));
-        toast.error( error.response.statusText || error.message, {
+        toast.error(error.response.statusText || error.message, {
             autoClose: 5000,
         });
     }
@@ -93,7 +96,7 @@ function* getOrderById({payload: orderId}) {
         yield put(getOrderByIdSuccess(response.data));
     } catch (error) {
         yield put(getOrderByIdError(error.response.data));
-        toast.error( error.response.statusText || error.message, {
+        toast.error(error.response.statusText || error.message, {
             autoClose: 5000,
         });
     }

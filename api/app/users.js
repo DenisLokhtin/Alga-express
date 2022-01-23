@@ -8,7 +8,7 @@ router.post('/', async (req, res) => {
     const user = new User({
       email: req.body.email,
       password: req.body.password,
-      phone: req.body.phone,
+      phone: {number: req.body.phone},
       name: req.body.name,
     });
 
@@ -21,8 +21,9 @@ router.post('/', async (req, res) => {
 });
 
 router.post('/sessions', async (req, res) => {
-  const user = await User.findOne({email: req.body.email});
+  let user = await User.findOne({email: req.body.email});
 
+  console.log(user);
   if (!user) {
     return res.status(401).send({message: 'Credentials are wrong!'});
   }
@@ -35,6 +36,9 @@ router.post('/sessions', async (req, res) => {
 
   user.generateToken();
   await user.save({validateBeforeSave: false});
+
+  user = await User.findOne({email: req.body.email})
+      .select('token role name balance phone avatar');
 
   res.send(user);
 });

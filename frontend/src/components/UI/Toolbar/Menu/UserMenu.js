@@ -98,7 +98,7 @@ const UserMenu = ({setOpen}) => {
                     <ListItemIcon>
                         <AccountBalanceWalletIcon/>
                     </ListItemIcon>
-                    Ваш баланс {user?.balance + ' сом'}
+                    Ваш баланс {user?.user?.balance + ' сом'}
                 </MenuItem>
                 <MenuItem onClick={toLogOut}>
                     <ListItemIcon>

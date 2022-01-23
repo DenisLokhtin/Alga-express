@@ -18,6 +18,7 @@ import EditNews from "./containers/EditNews/EditNews";
 import AdminEditPackage from "./containers/AdminEditPackage/AdminEditPackage";
 import OrderHistory from "./containers/OrderHistory/OrderHistory";
 import SpecificPackage from "./containers/SpecificPackage/SpecificPackage";
+import UserProfileEdit from "./containers/UserProfileEdit/UserProfileEdit";
 
 const App = () => {
     return (
@@ -25,7 +26,6 @@ const App = () => {
             <Routes>
                 <Route path='/register' element={<Register/>}/>
                 <Route path='/' element={<HomePage/>}/>
-                <Route path='/register' element={<Register/>}/>
                 <Route path="order_history" element={<OrderHistory/>}/>
                 <Route path='/specific_package/:id' element={<SpecificPackage/>}/>
                 <Route path='/package-register' element={<PackageRegister/>}/>
@@ -40,6 +40,7 @@ const App = () => {
                 <Route path='/news/edit/:id' element={<EditNews/>}/>
                 <Route path='/sites' element={<MarketSites/>}/>
                 <Route path='/FAQ' element={<FAQ/>}/>
+                <Route path='/userProfile/edit/:id' element={<UserProfileEdit/>}/>
                 <Route path='/admin_package/:id' element={<AdminEditPackage/>}/>
             </Routes>
         </Layout>
