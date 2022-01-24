@@ -20,7 +20,7 @@ import {
     getPackageByIdRequest
 } from "../../store/actions/packageRegisterActions";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -66,6 +66,7 @@ const EditPackage = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const params = useParams();
+    const navigate = useNavigate();
     const error = useSelector(state => state.package.changePackageError);
     const loading = useSelector(state => state.package.createPackageRequest);
     const onePackage = useSelector(state => state.package.onePackage);
@@ -124,7 +125,7 @@ const EditPackage = () => {
 
     const changePackage = (e) => {
         e.preventDefault();
-        dispatch(changePackageRequest(packageRegister));
+        dispatch(changePackageRequest({packageRegister, navigate}));
     };
 
     return (

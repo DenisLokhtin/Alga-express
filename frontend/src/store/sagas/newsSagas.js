@@ -53,6 +53,7 @@ function* newsEditSaga({payload}) {
         yield axiosApi.put(`/news/${payload.id}`, payload.news);
         yield put(changeNewsSuccess());
         toast.success('Новость отредактирована');
+        payload.navigate('/news');
     } catch (e) {
         yield put(changeNewsFailure(e.response.data));
     }
