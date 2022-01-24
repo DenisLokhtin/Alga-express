@@ -74,7 +74,7 @@ function* getOrdersHistorySagas({payload: pageData}) {
         const response = yield axiosApi.get(`/packages?page=${pageData.page - 1}&limit=${pageData.limit}`);
         yield put(getOrdersHistorySuccess(response.data));
     } catch (error) {
-        yield put(getOrdersHistoryError(error.response.statusText || error.essage));
+        yield put(getOrdersHistoryError(error.response.statusText || error.message));
         toast.error( error.response.statusText || error.message, {
             autoClose: 5000,
         });
