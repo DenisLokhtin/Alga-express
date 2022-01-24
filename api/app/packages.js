@@ -107,7 +107,7 @@ router.post('/', auth, permit('admin', 'warehouseman', 'user'), async (req, res)
     }
 });
 
-router.put('/:id', auth, packageValidate, permit('admin', 'warehouseman', 'user'), async (req, res) => {
+router.put('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req, res) => {
     let result = {};
     console.log('token', req.user._id);
     try {
