@@ -10,13 +10,9 @@ import {
     fetchPackageAdminSuccess,
     getPackageByIdFailure,
     getPackageByIdRequest,
-    getPackageByIdSuccess
-    createPackageSuccess, getOrderByIdError, getOrderByIdRequest,
+    getPackageByIdSuccess, getOrderByIdError, getOrderByIdRequest,
     getOrderByIdSuccess, getOrdersHistoryError, getOrdersHistoryRequest,
     getOrdersHistorySuccess,
-    getPackageByIdFailure,
-    getPackageByIdRequest,
-    getPackageByIdSuccess
 } from "../actions/packageRegisterActions";
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
