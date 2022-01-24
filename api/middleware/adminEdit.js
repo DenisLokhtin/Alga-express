@@ -53,6 +53,12 @@ const adminEdit = (user, packageOrder, updateData, price) => {
                 if (sizePrice >= weightPrice) packageOrder.cargoPrice = sizePrice;
                 if (sizePrice <= weightPrice) packageOrder.cargoPrice = weightPrice;
             }
+            if (packageOrder.country === "China_ground") {
+                const sizePrice = packageOrder.width * packageOrder.length * packageOrder.height / 6000;
+                const weightPrice = updateData.cargoWeight * price.chinaGround;
+                if (sizePrice >= weightPrice) packageOrder.cargoPrice = sizePrice;
+                if (sizePrice <= weightPrice) packageOrder.cargoPrice = weightPrice;
+            }
         }
 
         if (updateData.width) {
@@ -74,6 +80,12 @@ const adminEdit = (user, packageOrder, updateData, price) => {
             if (packageOrder.country === "CHINA") {
                 const sizePrice = updateData.width * packageOrder.length * packageOrder.height / 6000;
                 const weightPrice = packageOrder.cargoWeight * price.china;
+                if (sizePrice >= weightPrice) packageOrder.cargoPrice = sizePrice;
+                if (sizePrice <= weightPrice) packageOrder.cargoPrice = weightPrice;
+            }
+            if  (packageOrder.country === "China_ground") {
+                const sizePrice = updateData.width * packageOrder.length * packageOrder.height / 6000;
+                const weightPrice = packageOrder.cargoWeight * price.chinaGround;
                 if (sizePrice >= weightPrice) packageOrder.cargoPrice = sizePrice;
                 if (sizePrice <= weightPrice) packageOrder.cargoPrice = weightPrice;
             }
@@ -101,6 +113,12 @@ const adminEdit = (user, packageOrder, updateData, price) => {
                 if (sizePrice >= weightPrice) packageOrder.cargoPrice = sizePrice;
                 if (sizePrice <= weightPrice) packageOrder.cargoPrice = weightPrice;
             }
+            if (packageOrder.country === 'China_ground') {
+                const sizePrice = (packageOrder.width * updateData.height * packageOrder.length / 6000) * price.china;
+                const weightPrice = packageOrder.cargoWeight * price.chinaGround;
+                if (sizePrice >= weightPrice) packageOrder.cargoPrice = sizePrice;
+                if (sizePrice <= weightPrice) packageOrder.cargoPrice = weightPrice;
+            }
         }
 
         if (updateData.length) {
@@ -120,6 +138,12 @@ const adminEdit = (user, packageOrder, updateData, price) => {
                 if (sizePrice <= weightPrice) packageOrder.cargoPrice = weightPrice;
             }
             if (packageOrder.country === "CHINA") {
+                const sizePrice = (packageOrder.width * packageOrder.height * updateData.length / 6000) * price.china;
+                const weightPrice = packageOrder.cargoWeight * price.china;
+                if (sizePrice >= weightPrice) packageOrder.cargoPrice = sizePrice;
+                if (sizePrice <= weightPrice) packageOrder.cargoPrice = weightPrice;
+            }
+            if (packageOrder.country === "China_ground") {
                 const sizePrice = (packageOrder.width * packageOrder.height * updateData.length / 6000) * price.china;
                 const weightPrice = packageOrder.cargoWeight * price.china;
                 if (sizePrice >= weightPrice) packageOrder.cargoPrice = sizePrice;
