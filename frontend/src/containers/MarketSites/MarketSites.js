@@ -30,43 +30,47 @@ const useStyles = makeStyles({
 
 const MarketSites = () => {
     const classes = useStyles();
-        const dispatch = useDispatch();
-        const market = useSelector(state => state.market.sites);
-        console.log(market)
+    const dispatch = useDispatch();
+    const market = useSelector(state => state.market.sites);
+    const user = useSelector((state => state.users.user));
 
         useEffect(()=>{
             dispatch(fetchMarketRequest());
         },[dispatch])
 
-        return (
-            <Grid container justifyContent={"center"} direction={"column"}>
-                    <Typography variant={"h6"} className={classes.title} textAlign={"center"}>
-                        Где вы можете купить товар
-                    </Typography>
-                <Grid container direction="row" spacing={2} justifyContent={"center"}>
-                        {market && market.map(m=>(
-                            <>
-                                <Grid item xs={6} sm={3} md={3} lg={2} key={m._id} style={{position: "relative",}}>
-                                    <Link href={m.url} target={'_blank'} rel={'noopener'}>
-                                        <Card className={classes.card}>
-                                            <CardMedia
-                                                image={apiURL+'/'+m.image}
-                                                className={classes.media}
-                                                title={m.title}
-                                            />
-                                        </Card>
-                                    </Link>
-                                    <IconButton
-                                        onClick={()=>dispatch(deleteMarketRequest(m._id))}
-                                        className={classes.removeBtn}>
-                                        <HighlightOffIcon/>
-                                    </IconButton>
-                                </Grid>
-                            </>
-                        ))}
-                </Grid>
-                <MarketAdmin/>
+    return (
+        <Grid container justifyContent={"center"} direction={"column"}>
+            <Typography variant={"h6"} className={classes.title} textAlign={"center"}>
+                Где вы можете купить товар
+            </Typography>
+            <Grid container direction="row" spacing={2} justifyContent={"center"}>
+                {market && market.map(m => (
+                    <>
+                        <Grid item xs={6} sm={3} md={3} lg={2} key={m._id} style={{position: "relative",}}>
+                            <Link href={m.url} target={'_blank'} rel={'noopener'}>
+                                <Card className={classes.card}>
+                                    <CardMedia
+                                        image={apiURL + '/' + m.image}
+                                        className={classes.media}
+                                        title={m.title}
+                                    />
+                                </Card>
+                            </Link>
+                            {user && user.role === 'admin' && (
+                                <IconButton
+                                    onClick={() => dispatch(deleteMarketRequest(m._id))}
+                                    className={classes.removeBtn}>
+                                    <HighlightOffIcon/>
+                                </IconButton>
+                            )}
+                        </Grid>
+                    </>
+                ))}
             </Grid>
-        );
-    };
+            {user && user.role === 'admin' && (
+                <MarketAdmin/>
+            )}
+        </Grid>
+    );
+};
 export default MarketSites;

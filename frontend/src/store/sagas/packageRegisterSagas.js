@@ -5,18 +5,12 @@ import {
     changePackageSuccess,
     createPackageFailure,
     createPackageRequest,
-    createPackageSuccess, editAdminPackageRequest, editAdminPackageSuccess,
+    editAdminPackageRequest, editAdminPackageSuccess,
     fetchPackageAdminFailure, fetchPackageAdminRequest,
     fetchPackageAdminSuccess,
-    getPackageByIdFailure,
-    getPackageByIdRequest,
-    getPackageByIdSuccess
     createPackageSuccess, getOrderByIdError, getOrderByIdRequest,
     getOrderByIdSuccess, getOrdersHistoryError, getOrdersHistoryRequest,
-    getOrdersHistorySuccess,
-    getPackageByIdFailure,
-    getPackageByIdRequest,
-    getPackageByIdSuccess
+    getOrdersHistorySuccess, getPackageByIdSuccess, getPackageByIdFailure, getPackageByIdRequest,
 } from "../actions/packageRegisterActions";
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
