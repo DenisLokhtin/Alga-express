@@ -5,7 +5,7 @@ import {makeStyles} from "@mui/styles";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {useDispatch, useSelector} from "react-redux";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {changeNewsRequest, clearNewsErrors, fetchOneNewsRequest} from "../../store/actions/newsActions";
 
 const useStyles = makeStyles(() => ({
@@ -51,6 +51,7 @@ theme.typography.h4 = {
 const EditNews = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const params = useParams();
     const oneNews = useSelector(state => state.news.oneNews);
 
@@ -87,7 +88,7 @@ const EditNews = () => {
 
     const changeNews = (e) => {
         e.preventDefault();
-        dispatch(changeNewsRequest({news, id: params.id}));
+        dispatch(changeNewsRequest({news, id: params.id, navigate}));
     };
 
     return (

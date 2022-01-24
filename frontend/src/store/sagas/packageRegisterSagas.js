@@ -37,8 +37,9 @@ function* packageGetByIdSagas({payload: id}) {
 
 function* packageChangeSagas({payload}) {
     try {
-        yield axiosApi.put(`/packages/${payload._id}`, payload);
+        yield axiosApi.put(`/packages/${payload._id}`, payload.packageRegister);
         yield put(changePackageSuccess());
+        payload.navigate('/');
         toast.success('Ваш заказ был успешно отредактирован');
     } catch (e) {
         yield put(changePackageFailure(e.response.data));
