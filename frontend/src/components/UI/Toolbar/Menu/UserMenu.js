@@ -91,7 +91,7 @@ const UserMenu = ({setOpen}) => {
                     <ListItemIcon>
                         <AddIcon/>
                     </ListItemIcon>
-                    Оформить заказ
+                    Офрмить заказ
                 </MenuItem>
                 <Divider/>
                 <MenuItem>

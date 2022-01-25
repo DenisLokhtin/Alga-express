@@ -8,6 +8,7 @@ const users = require('./app/users');
 const market=require('./app/market');
 const config = require('./config');
 const packages = require('./app/packages');
+const flight = require('./app/flights');
 
 const app = express();
 app.use(express.json());
@@ -20,6 +21,7 @@ app.use('/news', news);
 app.use('/users', users);
 app.use('/market',market);
 app.use('/packages', packages);
+app.use('/flights', flight);
 
 const run = async () => {
     await mongoose.connect(config.db.url);
