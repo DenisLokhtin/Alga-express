@@ -47,7 +47,7 @@ router.get('/', auth, permit('admin', 'warehouseman', 'user'), async (req, res) 
         const size = await Package.find(findFilter);
 
         const packages = await Package.find(findFilter)
-            .populate('user', 'name')
+            .populate({path: 'flight user', select: 'name number description depart_date arrived_date'})
             .select('title trackNumber country cargoNumber status description')
             .sort(query.sort)
             .limit(limit)
@@ -64,7 +64,7 @@ router.get('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req, re
 
         if (req.user.role === 'user') {
             const packageFind = await Package.findById(req.params.id)
-                .populate('user', 'name')
+                .populate({path: 'flight user', select: 'name number description depart_date arrived_date'})
                 .select('trackNumber title amount price country status date cargoNumber urlPackage');
          if (packageFind.user._id.toString() === req.user._id.toString()) {
              return res.send(packageFind);
@@ -73,7 +73,7 @@ router.get('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req, re
 
         if ((req.user.role === 'admin') || (req.user.role === 'warehouseman')) {
             const packageFind = await Package.findById(req.params.id)
-                .populate('user', 'name')
+                .populate({path: 'flight user', select: 'name number description depart_date arrived_date'})
                 .select('trackNumber title amount price country status ' +
                     'date cargoNumber width length height cargoWeight cargoPrice urlPackage');
             return res.send(packageFind);

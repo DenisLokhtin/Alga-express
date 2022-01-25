@@ -11,6 +11,7 @@ const adminEdit = (user, packageOrder, updateData, price) => {
         updateData.amount ||
         updateData.price ||
         updateData.country ||
+        updateData.flight ||
         updateData.width ||
         updateData.length ||
         updateData.height ||
@@ -25,6 +26,7 @@ const adminEdit = (user, packageOrder, updateData, price) => {
         packageOrder.amount = updateData.amount || packageOrder.amount;
         packageOrder.price = updateData.price || packageOrder.price;
         packageOrder.country = updateData.country || packageOrder.country;
+        packageOrder.flight = updateData.flight || packageOrder.flight;
         packageOrder.width = updateData.width || packageOrder.width;
         packageOrder.length = updateData.length || packageOrder.length;
         packageOrder.height = updateData.height || packageOrder.height;
