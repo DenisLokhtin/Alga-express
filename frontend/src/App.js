@@ -25,7 +25,6 @@ const App = () => {
             <Routes>
                 <Route path='/register' element={<Register/>}/>
                 <Route path='/' element={<HomePage/>}/>
-                <Route path='/register' element={<Register/>}/>
                 <Route path="order_history" element={<OrderHistory/>}/>
                 <Route path='/specific_package/:id' element={<SpecificPackage/>}/>
                 <Route path='/package-register' element={<PackageRegister/>}/>
