@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Link as RouterLink} from "react-router-dom";
+import {Link as RouterLink, useLocation, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import FormElement from "../../components/UI/Form/FormElement";
 import {clearError, loginUser} from "../../store/actions/usersActions";
@@ -38,6 +38,7 @@ const useStyles = makeStyles(theme => ({
 const Login = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const loading = useSelector(state => state.users.loginLoading);
 
     const [user, setUser] = useState({
@@ -59,7 +60,7 @@ const Login = () => {
 
     const submitFormHandler = e => {
         e.preventDefault();
-        dispatch(loginUser({...user}));
+        dispatch(loginUser({...user, navigate}));
     };
 
     const buttonDisable = () => {

@@ -5,18 +5,12 @@ import {
     changePackageSuccess,
     createPackageFailure,
     createPackageRequest,
-    createPackageSuccess, editAdminPackageRequest, editAdminPackageSuccess,
+    editAdminPackageRequest, editAdminPackageSuccess,
     fetchPackageAdminFailure, fetchPackageAdminRequest,
     fetchPackageAdminSuccess,
-    getPackageByIdFailure,
-    getPackageByIdRequest,
-    getPackageByIdSuccess
     createPackageSuccess, getOrderByIdError, getOrderByIdRequest,
     getOrderByIdSuccess, getOrdersHistoryError, getOrdersHistoryRequest,
-    getOrdersHistorySuccess,
-    getPackageByIdFailure,
-    getPackageByIdRequest,
-    getPackageByIdSuccess
+    getOrdersHistorySuccess, getPackageByIdSuccess, getPackageByIdFailure, getPackageByIdRequest,
 } from "../actions/packageRegisterActions";
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
@@ -43,8 +37,9 @@ function* packageGetByIdSagas({payload: id}) {
 
 function* packageChangeSagas({payload}) {
     try {
-        yield axiosApi.put(`/packages/${payload._id}`, payload);
+        yield axiosApi.put(`/packages/${payload._id}`, payload.packageRegister);
         yield put(changePackageSuccess());
+        payload.navigate('/');
         toast.success('Ваш заказ был успешно отредактирован');
     } catch (e) {
         yield put(changePackageFailure(e.response.data));
@@ -80,7 +75,7 @@ function* getOrdersHistorySagas({payload: pageData}) {
         const response = yield axiosApi.get(`/packages?page=${pageData.page - 1}&limit=${pageData.limit}`);
         yield put(getOrdersHistorySuccess(response.data));
     } catch (error) {
-        yield put(getOrdersHistoryError(error.response.statusText || error.essage));
+        yield put(getOrdersHistoryError(error.response.statusText || error.message));
         toast.error( error.response.statusText || error.message, {
             autoClose: 5000,
         });
