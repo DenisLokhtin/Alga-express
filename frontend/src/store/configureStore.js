@@ -8,12 +8,14 @@ import packageSlice from "./slices/packageRegisterSlice";
 import usersSlice, {initialState} from "./slices/usersSlice";
 import newsSlice from "./slices/newsSlice";
 import marketSlice from "./slices/marketSlice";
+import flightSlice from "./slices/flightSlice";
 
 const rootReducer = combineReducers({
     'users': usersSlice.reducer,
     'market': marketSlice.reducer,
     'package': packageSlice.reducer,
     'news':newsSlice.reducer,
+    'flights': flightSlice.reducer,
 });
 
 const persistedState = loadFromLocalStorage();
