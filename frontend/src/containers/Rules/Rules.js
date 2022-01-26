@@ -15,14 +15,19 @@ const Rules = () => {
     const classes = useStyles();
 
     return (
-        <Container style={{'border': '2px solid #2E2E2E', 'borderRadius': '3px', 'margin': '10px 0 20px 0'}}
-                   component='div'>
-            <div className={classes.paper}>
-                <Typography component="h1" variant="h3">
-                    Правила
-                </Typography>
-            </div>
-            <Grid style={{'marginBottom': '15px'}} component='div'>
+        <Container style={{'textAlign': 'center'}} component='div'>
+            <Container style={{
+                'border': '2px solid #2E2E2E',
+                'borderRadius': '3px',
+                'margin': '10px 0 20px 0',
+                'textAlign': 'left'
+            }} component='div'>
+                <div className={classes.paper}>
+                    <Typography component="h1" variant="h3">
+                        Правила
+                    </Typography>
+                </div>
+                <Grid style={{'marginBottom': '15px'}} component='div'>
                     <div className="page-content">
                         <p><strong>Запрещенные товары</strong></p>
                         <ul>
@@ -140,7 +145,8 @@ const Rules = () => {
                             Уникальному почтовому адресу;</p>
                         <p>- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;информировать
                             Пользователя о движении Заказа через систему сайта <a
-                                href="http://AlgaExpress.kg/">http://AlgaExpress.kg/</a>, а также по электронной почте (при
+                                href="http://AlgaExpress.kg/">http://AlgaExpress.kg/</a>, а также по электронной почте
+                            (при
                             условии верного оформления заказа Пользователем);</p>
                         <p>- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Исполнитель строго
                             следит за тем, чтобы к отправлению в Кыргызстан не попали товары, запрещенные к пересылке.
@@ -249,7 +255,8 @@ const Rules = () => {
                         <p>В отношении оказания Услуг применяется законодательство Кыргызской
                             Республики.</p>
                     </div>
-            </Grid>
+                </Grid>
+            </Container>
         </Container>
     )
 };
