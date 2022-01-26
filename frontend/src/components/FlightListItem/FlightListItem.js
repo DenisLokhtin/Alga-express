@@ -5,7 +5,6 @@ import {DatePicker, LocalizationProvider} from "@mui/lab";
 import AdapterDateFns from '@mui/lab/AdapterDayjs';
 import {useDispatch} from "react-redux";
 import {putFlightRequest} from "../../store/actions/flightActions";
-import {toast} from "react-toastify";
 
 const FlightListItem = ({flight, id}) => {
     const dispatch = useDispatch();
