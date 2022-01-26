@@ -10,4 +10,5 @@ export const {
     putFlightRequest,
     putFlightSuccess,
     putFlightFailure,
+    clearFlightsError
 } = flightSlice.actions;
