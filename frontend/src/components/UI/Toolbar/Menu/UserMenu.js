@@ -81,13 +81,13 @@ const UserMenu = ({setOpen}) => {
                     </ListItemIcon>
                     Личный кабинет
                 </MenuItem>
-                <MenuItem>
+                <MenuItem component={Link} to={'/orders/history'}>
                     <ListItemIcon>
                         <HistoryIcon/>
                     </ListItemIcon>
                     История заказов
                 </MenuItem>
-                <MenuItem component={Link} to={'/package-register'}>
+                <MenuItem component={Link} to={'/package/register'}>
                     <ListItemIcon>
                         <AddIcon/>
                     </ListItemIcon>
@@ -136,6 +136,7 @@ const UserMenu = ({setOpen}) => {
                 </ListItemButton>
                 <ListItemButton
                     sx={{color: "#F5F5F7"}}
+                    component={Link} to={'/orders/history'}
                     //Здесь будет onclick
                 >
                     <ListItemIcon>
@@ -147,7 +148,7 @@ const UserMenu = ({setOpen}) => {
                 </ListItemButton>
                 <ListItemButton
                     sx={{color: "#F5F5F7"}}
-                    component={Link} to={'/package-register'}
+                    component={Link} to={'/package/register'}
                     // onClick={setOpen}
                 >
                     <ListItemIcon>
