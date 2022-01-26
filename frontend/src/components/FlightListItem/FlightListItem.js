@@ -40,10 +40,8 @@ const FlightListItem = ({flight, id}) => {
     const statusChanger = () => {
         if (flightData.status === 'ACTIVE') {
             setFlightData(prevState => ({...prevState, status: 'DONE'}));
-            dispatch(putFlightRequest({id, flightData}));
         } else {
             setFlightData(prevState => ({...prevState, status: 'ACTIVE'}));
-            dispatch(putFlightRequest({id, flightData}));
         }
     }
 
@@ -155,6 +153,7 @@ const FlightListItem = ({flight, id}) => {
 
                         <Grid item>
                             <Button
+                                disabled={editStatus}
                                 fullWidth
                                 variant='contained'
                                 onClick={statusChanger}
