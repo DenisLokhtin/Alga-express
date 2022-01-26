@@ -11,8 +11,8 @@ const FlightListItem = ({flight, id}) => {
     const [editStatus, setEditStatus] = useState(true);
     const [flightData, setFlightData] = useState({
         number: flight.number,
-        depart_date: flight.depart_date,
-        arrived_date: flight.arrived_date,
+        depart_date: flight.depart_date || null,
+        arrived_date: flight.arrived_date || null,
         description: flight.description
     });
 
