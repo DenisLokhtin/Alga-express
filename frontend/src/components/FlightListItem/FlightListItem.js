@@ -5,6 +5,7 @@ import {DatePicker, LocalizationProvider} from "@mui/lab";
 import AdapterDateFns from '@mui/lab/AdapterDayjs';
 import {useDispatch} from "react-redux";
 import {putFlightRequest} from "../../store/actions/flightActions";
+import {toast} from "react-toastify";
 
 const FlightListItem = ({flight, id}) => {
     const dispatch = useDispatch();
@@ -13,7 +14,8 @@ const FlightListItem = ({flight, id}) => {
         number: flight.number,
         depart_date: flight.depart_date || null,
         arrived_date: flight.arrived_date || null,
-        description: flight.description
+        description: flight.description,
+        status: flight.status
     });
 
     const onChangeHandler = (e) => {
@@ -36,6 +38,16 @@ const FlightListItem = ({flight, id}) => {
         setEditStatus(!editStatus);
     };
 
+    const statusChanger = () => {
+        if (flightData.status === 'ACTIVE') {
+            setFlightData(prevState => ({...prevState, status: 'DONE'}));
+            dispatch(putFlightRequest({id, flightData}));
+        } else {
+            setFlightData(prevState => ({...prevState, status: 'ACTIVE'}));
+            dispatch(putFlightRequest({id, flightData}));
+        }
+    }
+
     return (
         <Grid item>
             <Card>
@@ -54,7 +66,7 @@ const FlightListItem = ({flight, id}) => {
                         flexDirection='column'
                         spacing={2}
                         justifyContent='space-evenly'
-                        sx={{marginRight: {sm: '8px'}, marginBottom: {xs: '8px'}}}
+                        sx={{marginRight: {sm: '8px'}, marginBottom: {xs: '16px'}}}
                     >
                         <Grid item>
                             <TextField
@@ -84,7 +96,7 @@ const FlightListItem = ({flight, id}) => {
                         flexDirection='column'
                         spacing={2}
                         justifyContent='space-evenly'
-                        sx={{marginBottom: {xs: '8px'}}}
+                        sx={{marginBottom: {xs: '16px'}}}
                     >
                         <Grid item>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -128,20 +140,34 @@ const FlightListItem = ({flight, id}) => {
                     <Grid
                         container
                         flexDirection='column'
-                        spacing={2}
+                        spacing={1}
                         justifyContent='space-evenly'
-                        alignItems='center'
+                        alignContent="center"
                     >
                         <Grid item>
                             <Button
+                                fullWidth
                                 variant='contained'
                                 onClick={edit}
                             >
                                 Редактировать
                             </Button>
                         </Grid>
+
                         <Grid item>
                             <Button
+                                fullWidth
+                                variant='contained'
+                                onClick={statusChanger}
+                                color={flightData.status === 'ACTIVE' ? "success" : "secondary"}
+                            >
+                                {flightData.status}
+                            </Button>
+                        </Grid>
+
+                        <Grid item>
+                            <Button
+                                fullWidth
                                 disabled={editStatus || flightData.number.length === 0}
                                 variant='contained'
                                 onClick={saveAfterEdit}
