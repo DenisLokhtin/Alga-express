@@ -3,10 +3,13 @@ import {IconButton} from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import "./BurgerMenu.css";
 import HomeIcon from '@mui/icons-material/Home';
+import {useNavigate} from "react-router-dom";
 
 const BurgerMenu = ({open, setOpen, children}) => {
+    const navigate = useNavigate();
+
     const toHome = () => {
-        //здесь пушить домой
+        navigate('/');
         setOpen(false);
     }
 
