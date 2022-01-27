@@ -4,15 +4,15 @@ const idValidator = require('mongoose-id-validator');
 const MarketSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: true,
+        required: 'Название * обязательное поле',
     },
     image: {
         type: String,
-        required: true
+        required: 'Логотип * обязательное поле',
     },
     url: {
         type: String,
-        required: true
+        required: 'Ссылка * обязательное поле',
     },
     deleted: {
         type: Boolean,

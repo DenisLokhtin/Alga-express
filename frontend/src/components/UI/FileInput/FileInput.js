@@ -8,7 +8,7 @@ const useStyles = makeStyles({
   }
 });
 
-const FileInput = ({onChange, name, label, required}) => {
+const FileInput = ({onChange, name, label, required, error, helperText}) => {
   const classes = useStyles();
 
   const inputRef = useRef();
@@ -44,6 +44,8 @@ const FileInput = ({onChange, name, label, required}) => {
             disabled
             label={label}
             value={filename}
+            error={error}
+            helperText={helperText}
             onClick={activateInput}
           />
         </Grid>
