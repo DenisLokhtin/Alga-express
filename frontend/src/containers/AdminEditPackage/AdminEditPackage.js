@@ -108,8 +108,22 @@ const AdminEditPackage = () => {
         packageAdmin.status]);
 
 
-    const inputChangeHandler = e => {
-        const {name, value} = e.target;
+    const inputChangeHandler = event => {
+        let {name, value} = event.target;
+
+        if (name === 'amount' ||
+            name === 'price' ||
+            name === 'width' ||
+            name === 'length' ||
+            name === 'height' ||
+            name === 'cargoPrice' ||
+            name === 'cargoWeight') {
+            if (event.target.value < 0) {
+                value = 0;
+                setPackageEdit(prevState => ({...prevState, [name]: value}));
+            }
+        }
+
         setPackageEdit(prevState => ({...prevState, [name]: value}));
     };
 
@@ -159,12 +173,11 @@ const AdminEditPackage = () => {
                                 required
                                 onChange={inputChangeHandler}
                             >
-                                <MenuItem value="">None</MenuItem>
                                 <MenuItem value={'USA'}>USA</MenuItem>
                                 <MenuItem value={'Turkey'}>Turkey</MenuItem>
                                 <MenuItem value={'China'}>China</MenuItem>
                             </Select>
-                            <FormHelperText error={true}>{error.errors?.['country']?.message}</FormHelperText>
+                            <FormHelperText error={true}>{error?.errors?.['country']?.message}</FormHelperText>
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} sm={8} md={7} lg={7}>
@@ -179,7 +192,6 @@ const AdminEditPackage = () => {
                                 required
                                 onChange={inputChangeHandler}
                             >
-                                <MenuItem value="">None</MenuItem>
                                 <MenuItem value={'NEW'}>Новый</MenuItem>
                                 <MenuItem value={'REGISTERED'}>Оформлен</MenuItem>
                                 <MenuItem value={'ON_WAREHOUSE'}>На складе</MenuItem>
@@ -291,14 +303,13 @@ const AdminEditPackage = () => {
                         />
                     </Grid>
 
-
                     <Grid item xs={12} sm={8} md={7} lg={7}>
                         <Dimension
                             width={packageEdit.width}
                             height={packageEdit.height}
                             length={packageEdit.length}
                             getFieldError={getFieldError}
-                            dimensionsHandler={inputChangeHandler}
+                            packageHandler={inputChangeHandler}
                         />
                     </Grid>
                     <Grid item xs={12} sm={8} md={7} lg={7}

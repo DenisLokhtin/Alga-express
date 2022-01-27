@@ -24,13 +24,13 @@ router.post('/sessions', async (req, res) => {
   const user = await User.findOne({email: req.body.email});
 
   if (!user) {
-    return res.status(401).send({message: 'Credentials are wrong!'});
+    return res.status(401).send({message: 'Пожалуйста, введите корректный email-адрес или Пароль'});
   }
 
   const isMatch = await user.checkPassword(req.body.password);
 
   if (!isMatch) {
-    return res.status(401).send({message: 'Credentials are wrong!'});
+    return res.status(401).send({message: 'Пожалуйста, введите корректный email-адрес или Пароль'});
   }
 
   user.generateToken();

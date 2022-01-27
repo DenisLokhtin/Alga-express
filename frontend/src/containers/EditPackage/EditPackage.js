@@ -84,9 +84,16 @@ const EditPackage = () => {
         urlPackage: '',
     });
 
+    const inputChangeHandler = event => {
+        let {name, value} = event.target;
 
-    const inputChangeHandler = e => {
-        const {name, value} = e.target;
+        if (name === 'amount' || name === 'price' || name === 'width' || name === 'length' || name === 'height') {
+            if (event.target.value < 0) {
+                value = 0;
+                setPackageRegister(prevState => ({...prevState, [name]: value}));
+            }
+        }
+
         setPackageRegister(prevState => ({...prevState, [name]: value}));
     };
 
@@ -125,7 +132,7 @@ const EditPackage = () => {
 
     const changePackage = (e) => {
         e.preventDefault();
-        dispatch(changePackageRequest({packageRegister, navigate}));
+        dispatch(changePackageRequest({packageRegister, packageId: params.id, navigate}));
     };
 
     return (
@@ -151,8 +158,8 @@ const EditPackage = () => {
                 >
 
                     <Grid item xs={12} sm={8} md={7} lg={7}>
-                        <FormControl fullWidth error={Boolean(getFieldError('country'))}>
-                            <InputLabel id="demo-controlled-open-select-label">Country</InputLabel>
+                        <FormControl variant="standard" fullWidth error={Boolean(getFieldError('country'))}>
+                            <InputLabel id="demo-controlled-open-select-label">Страна</InputLabel>
                             <Select
                                 labelId="demo-controlled-open-select-label"
                                 id="demo-controlled-open-select"
@@ -162,12 +169,11 @@ const EditPackage = () => {
                                 required
                                 onChange={inputChangeHandler}
                             >
-                                <MenuItem value="">None</MenuItem>
                                 <MenuItem value={'USA'}>USA</MenuItem>
                                 <MenuItem value={'Turkey'}>Turkey</MenuItem>
                                 <MenuItem value={'China'}>China</MenuItem>
                             </Select>
-                            <FormHelperText error={true}>{error.errors?.['country']?.message}</FormHelperText>
+                            <FormHelperText error={true}>{error?.errors?.['country']?.message}</FormHelperText>
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} sm={8} md={7} lg={7}>
@@ -177,7 +183,7 @@ const EditPackage = () => {
                             required
                             fullWidth
                             onChange={inputChangeHandler}
-                            variant="outlined"
+                            variant="standard"
                             label="Трек-номер"
                             error={Boolean(getFieldError('trackNumber'))}
                             helperText={getFieldError('trackNumber')}
@@ -190,7 +196,7 @@ const EditPackage = () => {
                             onChange={inputChangeHandler}
                             required
                             fullWidth
-                            variant="outlined"
+                            variant="standard"
                             label="Название"
                             error={Boolean(getFieldError('title'))}
                             helperText={getFieldError('title')}
@@ -204,7 +210,7 @@ const EditPackage = () => {
                             onChange={inputChangeHandler}
                             fullWidth
                             required
-                            variant="outlined"
+                            variant="standard"
                             label="Количество"
                             error={Boolean(getFieldError('amount'))}
                             helperText={getFieldError('amount')}
@@ -218,7 +224,7 @@ const EditPackage = () => {
                             onChange={inputChangeHandler}
                             fullWidth
                             required
-                            variant="outlined"
+                            variant="standard"
                             label="Цена"
                             error={Boolean(getFieldError('price'))}
                             helperText={getFieldError('price')}
@@ -230,7 +236,7 @@ const EditPackage = () => {
                             value={packageRegister.urlPackage || ''}
                             onChange={inputChangeHandler}
                             fullWidth
-                            variant="outlined"
+                            variant="standard"
                             label="URL"
                             error={Boolean(getFieldError('urlPackage'))}
                             helperText={getFieldError('urlPackage')}
@@ -243,7 +249,7 @@ const EditPackage = () => {
                             value={packageRegister.width || ''}
                             onChange={inputChangeHandler}
                             fullWidth
-                            variant="outlined"
+                            variant="standard"
                             label="Ширина"
                             error={Boolean(getFieldError('width'))}
                             helperText={getFieldError('width')}
@@ -256,7 +262,7 @@ const EditPackage = () => {
                             value={packageRegister.height || ''}
                             onChange={inputChangeHandler}
                             fullWidth
-                            variant="outlined"
+                            variant="standard"
                             label="Высота"
                             error={Boolean(getFieldError('height'))}
                             helperText={getFieldError('height')}
@@ -269,7 +275,7 @@ const EditPackage = () => {
                             value={packageRegister.length || ''}
                             onChange={inputChangeHandler}
                             fullWidth
-                            variant="outlined"
+                            variant="standard"
                             label="Длина"
                             error={Boolean(getFieldError('length'))}
                             helperText={getFieldError('length')}
