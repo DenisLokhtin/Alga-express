@@ -28,6 +28,16 @@ const AppToolbar = () => {
                     <Link to="/">
                         <img src={logo} alt="logo" style={{width: "40px"}}/>
                     </Link>
+
+                </Grid>
+                <Grid item>
+                    <Link style={{color: "white", textDecoration: 'none', margin: '10px'}} to='/rules'>правила</Link>
+                    <Link style={{color: "white", textDecoration: 'none', margin: '10px'}} to='/about'>о нас</Link>
+                    <Link style={{color: "white", textDecoration: 'none', margin: '10px'}} to='/contacts'>контакты</Link>
+                    <Link style={{color: "white", textDecoration: 'none', margin: '10px'}} to='/how'>как это работает</Link>
+                    <Link style={{color: "white", textDecoration: 'none', margin: '10px'}} to='/news'>новости</Link>
+                    <Link style={{color: "white", textDecoration: 'none', margin: '10px'}} to='/sites'>сайты</Link>
+                    <Link style={{color: "white", textDecoration: 'none', margin: '10px'}} to='/faq'>FAQ</Link>
                 </Grid>
                 <Grid item>
                     {
