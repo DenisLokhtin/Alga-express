@@ -92,7 +92,7 @@ const UserMenu = ({setOpen}) => {
                     <ListItemIcon>
                         <AddIcon/>
                     </ListItemIcon>
-                    Офрмить заказ
+                    Оформить заказ
                 </MenuItem>
                 <Divider/>
                 {user.role === 'admin' &&
