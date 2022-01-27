@@ -2,9 +2,18 @@ import React, {useState} from 'react';
 import {Button, Card, CardContent, TextField} from "@mui/material";
 import Grid from "@mui/material/Grid";
 import {DatePicker, LocalizationProvider} from "@mui/lab";
-import AdapterDateFns from '@mui/lab/AdapterDayjs';
 import {useDispatch} from "react-redux";
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import {putFlightRequest} from "../../store/actions/flightActions";
+import ruLocale from 'date-fns/locale/ru';
+
+const localeMap = {
+    ru: ruLocale,
+};
+
+const maskMap = {
+    ru: '__.__.____',
+};
 
 const FlightListItem = ({flight, id}) => {
     const dispatch = useDispatch();
@@ -44,7 +53,7 @@ const FlightListItem = ({flight, id}) => {
             setFlightData(prevState => ({...prevState, status: 'ACTIVE'}));
         }
     }
-
+    console.log(flight);
     return (
         <Grid item>
             <Card>
@@ -96,11 +105,12 @@ const FlightListItem = ({flight, id}) => {
                         sx={{marginBottom: {xs: '16px'}}}
                     >
                         <Grid item>
-                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <LocalizationProvider dateAdapter={AdapterDateFns} locale={localeMap['ru']}>
                                 <DatePicker
+                                    mask={maskMap['ru']}
                                     disabled={editStatus}
                                     label="Дата вылета"
-                                    openTo="year"
+                                    openTo="month"
                                     views={['year', 'month', 'day']}
                                     value={flightData.depart_date}
                                     onChange={(newValue) => {
@@ -115,11 +125,12 @@ const FlightListItem = ({flight, id}) => {
                         </Grid>
 
                         <Grid item>
-                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <LocalizationProvider dateAdapter={AdapterDateFns} locale={localeMap['ru']}>
                                 <DatePicker
+                                    mask={maskMap['ru']}
                                     disabled={editStatus}
                                     label="Дата вылета"
-                                    openTo="year"
+                                    openTo="month"
                                     views={['year', 'month', 'day']}
                                     value={flightData.arrived_date}
                                     onChange={(newValue) => {

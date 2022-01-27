@@ -23,7 +23,7 @@ router.post('/', auth, permit('admin'),async (req, res) => {
     }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id',  auth, permit('admin'), async (req, res) => {
     try {
         const oldFlight = await Flight.findById(req.params.id);
 
@@ -49,7 +49,7 @@ router.put('/:id', async (req, res) => {
 
 router.get('/', auth, permit('admin'),async (req, res) => {
     try {
-        const flights = await Flight.find();
+        const flights = await Flight.find().sort({depart_date: -1});
 
         res.send(flights);
     } catch (e) {
