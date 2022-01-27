@@ -32,7 +32,6 @@ const MarketAdmin = () => {
     const dispatch = useDispatch();
     const loading = useSelector(state => state.market.createLoading);
     const error = useSelector(state => state.market.createError);
-    console.log('error',error);
 
     const [picture, setPicture] = useState({
         title: "",
@@ -46,7 +45,7 @@ const MarketAdmin = () => {
         Object.keys(picture).forEach(key => {
             formData.append(key, picture[key]);
         });
-        console.log("enter",picture);
+
         dispatch(addMarketRequest(formData));
         setPicture({
             title: "",
@@ -116,7 +115,8 @@ const MarketAdmin = () => {
                     label="Логотип"
                     name="image"
                     onChange={fileChangeHandler}
-                    error={getFieldError('image')}
+                    error={Boolean(getFieldError('image'))}
+                    helperText={getFieldError('image')}
                 />
             </Grid>
 

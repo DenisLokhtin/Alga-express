@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, Fragment} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {deleteMarketRequest, fetchMarketRequest} from "../../store/actions/marketActions";
 import {Card, CardMedia, Grid, IconButton, Link, Typography} from "@mui/material";
@@ -34,7 +34,7 @@ const MarketSites = () => {
     const market = useSelector(state => state.market.sites);
     const user = useSelector((state => state.users.user));
 
-        useEffect(()=>{
+    useEffect(()=>{
             dispatch(fetchMarketRequest());
         },[dispatch])
 
@@ -45,8 +45,8 @@ const MarketSites = () => {
             </Typography>
             <Grid container direction="row" spacing={2} justifyContent={"center"}>
                 {market && market.map(m => (
-                    <>
-                        <Grid item xs={6} sm={3} md={3} lg={2} key={m._id} style={{position: "relative",}}>
+                    <Fragment key={m._id}>
+                        <Grid item xs={6} sm={3} md={3} lg={2} style={{position: "relative",}}>
                             <Link href={m.url} target={'_blank'} rel={'noopener'}>
                                 <Card className={classes.card}>
                                     <CardMedia
@@ -64,7 +64,7 @@ const MarketSites = () => {
                                 </IconButton>
                             )}
                         </Grid>
-                    </>
+                    </Fragment>
                 ))}
             </Grid>
             {user && user.role === 'admin' && (

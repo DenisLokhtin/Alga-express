@@ -103,6 +103,8 @@ router.post('/', auth, permit('admin', 'warehouseman', 'user'), async (req, res)
         res.send(newPackage);
 
     } catch (error) {
+        console.log('==========================================');
+        console.log(await Package.find({type: Number}));
         res.status(400).send(error);
     }
 });

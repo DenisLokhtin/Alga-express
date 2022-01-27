@@ -31,7 +31,7 @@ const AddNewsAdmin = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const loading = useSelector(state => state.news.createLoading);
-    const error = useSelector(state => state.news.createError);
+    const error = useSelector(state => state.news.addError);
 
     const [news, setNews] = useState({
         title: "",
@@ -113,7 +113,6 @@ const AddNewsAdmin = () => {
                     label="Добавить картинку"
                     name="image"
                     onChange={fileChangeHandler}
-                    error={getFieldError('image')}
                 />
             </Grid>
 

@@ -43,7 +43,6 @@ export function* addNewsSaga({payload: newNews}) {
         yield put(fetchNewsRequest());
         toast.success('Свежая новость добавлена!');
     } catch (error) {
-        toast.error('Произошла ошибка');
         yield put(addNewsFailure(error.response.data));
     }
 }
