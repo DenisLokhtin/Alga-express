@@ -27,11 +27,16 @@ router.put('/:id', async (req, res) => {
     try {
         const oldFlight = await Flight.findById(req.params.id);
 
+        if (!req.body.number) {
+            return res.status(500).send({message: 'Заполните пустое поле!'});
+        }
+
         const flightData = {
-            number: req.body.number || oldFlight.number,
+            number: req.body.number,
             depart_date: req.body.depart_date || oldFlight.depart_date,
             arrived_date: req.body.arrived_date || oldFlight.arrived_date,
-            description: req.body.description || oldFlight.description,
+            description: req.body.description,
+            status: req.body.status
         }
 
         const flight = await Flight.findByIdAndUpdate(req.params.id, flightData);

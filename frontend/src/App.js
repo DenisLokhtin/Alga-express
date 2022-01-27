@@ -18,6 +18,8 @@ import EditNews from "./containers/EditNews/EditNews";
 import AdminEditPackage from "./containers/AdminEditPackage/AdminEditPackage";
 import OrderHistory from "./containers/OrderHistory/OrderHistory";
 import SpecificPackage from "./containers/SpecificPackage/SpecificPackage";
+import AddFlight from "./containers/AddFlight/AddFlight";
+import FlightsList from "./containers/FlightsList/FlightsList";
 
 const App = () => {
     return (
@@ -40,6 +42,8 @@ const App = () => {
                 <Route path='/sites' element={<MarketSites/>}/>
                 <Route path='/faq' element={<FAQ/>}/>
                 <Route path='/admin/package/:id' element={<AdminEditPackage/>}/>
+                <Route path='/newFlight' element={<AddFlight/>}/>
+                <Route path='/flights' element={<FlightsList/>}/>
             </Routes>
         </Layout>
     );
