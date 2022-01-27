@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {Button, Card, CardContent, TextField} from "@mui/material";
 import Grid from "@mui/material/Grid";
 import {DatePicker, LocalizationProvider} from "@mui/lab";
-// import AdapterDateFns from '@mui/lab/AdapterDayjs';
 import {useDispatch} from "react-redux";
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import {putFlightRequest} from "../../store/actions/flightActions";
