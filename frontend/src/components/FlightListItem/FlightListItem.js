@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Button, Card, CardContent, TextField} from "@mui/material";
 import Grid from "@mui/material/Grid";
 import {DatePicker, LocalizationProvider} from "@mui/lab";
 import {useDispatch} from "react-redux";
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import {getFlightsRequest, putFlightRequest} from "../../store/actions/flightActions";
+import {putFlightRequest} from "../../store/actions/flightActions";
 import ruLocale from 'date-fns/locale/ru';
 
 const localeMap = {
