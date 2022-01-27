@@ -110,7 +110,7 @@ const FlightListItem = ({flight, id}) => {
                                     mask={maskMap['ru']}
                                     disabled={editStatus}
                                     label="Дата вылета"
-                                    openTo="year"
+                                    openTo="moth"
                                     views={['year', 'month', 'day']}
                                     value={flightData.depart_date}
                                     onChange={(newValue) => {
@@ -130,7 +130,7 @@ const FlightListItem = ({flight, id}) => {
                                     mask={maskMap['ru']}
                                     disabled={editStatus}
                                     label="Дата вылета"
-                                    openTo="year"
+                                    openTo="month"
                                     views={['year', 'month', 'day']}
                                     value={flightData.arrived_date}
                                     onChange={(newValue) => {
