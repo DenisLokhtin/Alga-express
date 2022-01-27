@@ -84,15 +84,15 @@ router.delete('/:id', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   try {
-    await News.findByIdAndUpdate(req.params.id, {
+    const updatedNews = await News.findByIdAndUpdate(req.params.id, {
       title: req.body.title,
-      description: req.body.description
-    });
+      description: req.body.description,
+    }, {new: true, runValidators: true});
 
-    res.send('Новость обновлена');
+    res.send(updatedNews);
 
   } catch(error) {
-    res.send(400).send('Server Error');
+    res.status(400).send(error);
   }
 });
 

@@ -17,6 +17,11 @@ const TariffSchema = new mongoose.Schema({
         min: [0],
         default: 14,
     },
+    chinaGround: {
+        type: Number,
+        min: [0],
+        default: 5,
+    },
 
     group: {
         type: String,

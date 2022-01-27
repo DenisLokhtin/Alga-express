@@ -18,27 +18,33 @@ import EditNews from "./containers/EditNews/EditNews";
 import AdminEditPackage from "./containers/AdminEditPackage/AdminEditPackage";
 import OrderHistory from "./containers/OrderHistory/OrderHistory";
 import SpecificPackage from "./containers/SpecificPackage/SpecificPackage";
+import AddFlight from "./containers/AddFlight/AddFlight";
+import FlightsList from "./containers/FlightsList/FlightsList";
 import UserProfileEdit from "./containers/UserProfileEdit/UserProfileEdit";
 
 const App = () => {
     return (
         <Layout>
             <Routes>
+                <Route path='/' element={<HomePage/>} />
                 <Route path='/register' element={<Register/>}/>
-                <Route path='/' element={<HomePage/>}/>
-                <Route path="order_history" element={<OrderHistory/>}/>
-                <Route path='/specific_package/:id' element={<SpecificPackage/>}/>
-                <Route path='/package-register' element={<PackageRegister/>}/>
-                <Route path='/package-edit/:id' element={<EditPackage/>}/>
+                <Route path="/orders/history" element={<OrderHistory/>}/>
+                <Route path='/package/info/:id' element={<SpecificPackage/>}/>
+                <Route path='/package/register' element={<PackageRegister/>}/>
+                <Route path='/package/edit/:id' element={<EditPackage/>}/>
                 <Route path='/login' element={<Login/>}/>
                 <Route path='/rules' element={<Rules/>}/>
-                <Route path='/about_us' element={<AboutUs/>}/>
+                <Route path='/about' element={<AboutUs/>}/>
                 <Route path='/contacts' element={<Contacts/>}/>
-                <Route path='/how_it_works' element={<HowItWorks/>}/>
+                <Route path='/how' element={<HowItWorks/>}/>
                 <Route path='/news' element={<News/>}/>
                 <Route path='/news/:id' element={<SingleNews/>}/>
                 <Route path='/news/edit/:id' element={<EditNews/>}/>
                 <Route path='/sites' element={<MarketSites/>}/>
+                <Route path='/faq' element={<FAQ/>}/>
+                <Route path='/admin/package/:id' element={<AdminEditPackage/>}/>
+                <Route path='/newFlight' element={<AddFlight/>}/>
+                <Route path='/flights' element={<FlightsList/>}/>
                 <Route path='/FAQ' element={<FAQ/>}/>
                 <Route path='/userProfile/edit/:id' element={<UserProfileEdit/>}/>
                 <Route path='/admin_package/:id' element={<AdminEditPackage/>}/>

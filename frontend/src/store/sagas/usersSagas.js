@@ -22,6 +22,7 @@ import {toast} from "react-toastify";
 export function* registerUserSaga({payload: userData}) {
     try {
         const response = yield axiosApi.post('/users', userData);
+        userData.navigate('/');
         yield put(registerUserSuccess(response.data));
         toast.success('Вы зарегистрированны');
     } catch (e) {
@@ -33,6 +34,7 @@ export function* registerUserSaga({payload: userData}) {
 export function* loginUserSaga({payload: user}) {
     try {
         const response = yield axiosApi.post('/users/sessions', user);
+        user.navigate('/', true);
         yield put(loginUserSuccess(response.data));
         toast.success('Вы авторизированы!');
     } catch (e) {

@@ -14,13 +14,16 @@ import {
     getPackageByIdFailure,
     getPackageByIdRequest,
     getPackageByIdSuccess,
+    createPackageSuccess,
     getOrderByIdError,
     getOrderByIdRequest,
     getOrderByIdSuccess,
     getOrdersHistoryError,
     getOrdersHistoryRequest,
     getOrdersHistorySuccess,
-
+    getPackageByIdFailure,
+    getPackageByIdRequest,
+    getPackageByIdSuccess
 } from "../actions/packageRegisterActions";
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
@@ -78,13 +81,14 @@ function* packageEditAdminSagas({payload}) {
 }
 
 
+
 function* getOrdersHistorySagas({payload: pageData}) {
     try {
         const response = yield axiosApi.get(`/packages?page=${pageData.page - 1}&limit=${pageData.limit}`);
         yield put(getOrdersHistorySuccess(response.data));
     } catch (error) {
-        yield put(getOrdersHistoryError(error.response.statusText || error.essage));
-        toast.error(error.response.statusText || error.message, {
+        yield put(getOrdersHistoryError(error.response.statusText || error.message));
+        toast.error( error.response.statusText || error.message, {
             autoClose: 5000,
         });
     }

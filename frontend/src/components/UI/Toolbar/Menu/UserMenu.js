@@ -11,6 +11,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {logout} from "../../../../store/actions/usersActions";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import {Link} from "react-router-dom";
+import FlightIcon from '@mui/icons-material/Flight';
 
 const UserMenu = ({setOpen}) => {
     const dispatch = useDispatch();
@@ -81,18 +82,42 @@ const UserMenu = ({setOpen}) => {
                     </ListItemIcon>
                     Личный кабинет
                 </MenuItem>
-                <MenuItem>
+                <MenuItem component={Link} to={'/orders/history'}>
                     <ListItemIcon>
                         <HistoryIcon/>
                     </ListItemIcon>
                     История заказов
                 </MenuItem>
-                <MenuItem component={Link} to={'/package-register'}>
+                <MenuItem component={Link} to={'/package/register'}>
                     <ListItemIcon>
                         <AddIcon/>
                     </ListItemIcon>
                     Офрмить заказ
                 </MenuItem>
+                <Divider/>
+                {user.role === 'admin' &&
+                    <>
+                        <MenuItem
+                            component={Link}
+                            to={'/flights'}
+                        >
+                            <ListItemIcon>
+                                <FlightIcon/>
+                            </ListItemIcon>
+                            Рейсы
+                        </MenuItem>
+
+                        <MenuItem
+                            component={Link}
+                            to={'/newFlight'}
+                        >
+                            <ListItemIcon>
+                                <AddIcon/>
+                            </ListItemIcon>
+                            Добавить рейс
+                        </MenuItem>
+                    </>
+                }
                 <Divider/>
                 <MenuItem>
                     <ListItemIcon>
@@ -136,6 +161,7 @@ const UserMenu = ({setOpen}) => {
                 </ListItemButton>
                 <ListItemButton
                     sx={{color: "#F5F5F7"}}
+                    component={Link} to={'/orders/history'}
                     //Здесь будет onclick
                 >
                     <ListItemIcon>
@@ -147,7 +173,7 @@ const UserMenu = ({setOpen}) => {
                 </ListItemButton>
                 <ListItemButton
                     sx={{color: "#F5F5F7"}}
-                    component={Link} to={'/package-register'}
+                    component={Link} to={'/package/register'}
                     // onClick={setOpen}
                 >
                     <ListItemIcon>
@@ -157,6 +183,39 @@ const UserMenu = ({setOpen}) => {
                         Оформить заказ
                     </ListItemText>
                 </ListItemButton>
+
+                <Divider/>
+                {user.role === 'admin' &&
+                    <>
+                        <ListItemButton
+                            sx={{color: "#F5F5F7"}}
+                            component={Link}
+                            to='/flights'
+                        >
+                            <ListItemIcon>
+                                <FlightIcon sx={{color: "#F5F5F7", fontSize: 30}}/>
+                            </ListItemIcon>
+                            <ListItemText>
+                                Рейсы
+                            </ListItemText>
+                        </ListItemButton>
+
+                        <ListItemButton
+                            sx={{color: "#F5F5F7"}}
+                            component={Link}
+                            to='/newFlight'
+                        >
+                            <ListItemIcon>
+                                <AddIcon sx={{color: "#F5F5F7", fontSize: 30}}/>
+                            </ListItemIcon>
+                            <ListItemText>
+                                Добавить рейс
+                            </ListItemText>
+                        </ListItemButton>
+                    </>
+                }
+                <Divider/>
+
                 <ListItemButton
                     sx={{color: "#F5F5F7"}}
                     onClick={toLogOut}

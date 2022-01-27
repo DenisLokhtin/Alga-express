@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Link as RouterLink} from 'react-router-dom';
+import {Link as RouterLink, useNavigate} from 'react-router-dom';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -40,6 +40,7 @@ const useStyles = makeStyles(theme => ({
 const Register = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const error = useSelector(state => state.users.registerError);
     const loading = useSelector(state => state.users.registerLoading);
 
@@ -77,7 +78,7 @@ const Register = () => {
     const submitFormHandler = e => {
         e.preventDefault();
 
-        dispatch(registerUser({...user}));
+        dispatch(registerUser({...user, navigate}));
     };
 
     const passwordInputError = () => {

@@ -17,7 +17,7 @@ const useStyles = makeStyles({
         backgroundSize: "cover",
         width: "100%",
         textAlign: "center",
-        padding: "300px 0 50px 0",
+        padding: "400px 0 50px 0",
         margin: "0",
         color: "white",
     },

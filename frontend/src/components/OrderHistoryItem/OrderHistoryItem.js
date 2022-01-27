@@ -55,7 +55,7 @@ const OrderHistoryItem = ({orders}) => {
                     {orders[0]?.packages.map((order) => (
                         <StyledTableRow key={order._id}>
                             <StyledTableCell align="center">
-                                <Link to={`/specific_package/${order._id}`}>{order.title}</Link>
+                                <Link to={`/package/info/${order._id}`}>{order.title}</Link>
                             </StyledTableCell>
                             <StyledTableCell align="center">{order.cargoNumber}</StyledTableCell>
                             <StyledTableCell

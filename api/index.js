@@ -9,7 +9,7 @@ const userEdit = require('./app/usersProfileEdit');
 const market=require('./app/market');
 const config = require('./config');
 const packages = require('./app/packages');
-
+const flight = require('./app/flights');
 
 const app = express();
 app.use(express.json());
@@ -23,6 +23,7 @@ app.use('/users', users);
 app.use('/market',market);
 app.use('/packages', packages);
 app.use('/userEdit', userEdit);
+app.use('/flights', flight);
 
 const run = async () => {
     await mongoose.connect(config.db.url);

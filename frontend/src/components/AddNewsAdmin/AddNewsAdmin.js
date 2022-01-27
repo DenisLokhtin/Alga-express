@@ -5,7 +5,7 @@ import FileInput from "../../components/UI/FileInput/FileInput";
 import {useDispatch, useSelector} from "react-redux";
 import {Grid} from "@mui/material";
 import {makeStyles} from "@mui/styles";
-import {addMarketRequest} from "../../store/actions/marketActions";
+import {addNewsRequest} from "../../store/actions/newsActions";
 
 const useStyles = makeStyles(theme => ({
     submit: {
@@ -16,8 +16,8 @@ const useStyles = makeStyles(theme => ({
         margin: "0 auto",
         marginTop: theme.spacing(2),
         [theme.breakpoints.up('sm')]: {
-                width: '60%',
-             },
+            width: '60%',
+        },
         [theme.breakpoints.up('md')]: {
             width: '50%',
         },
@@ -27,37 +27,36 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const MarketAdmin = () => {
+const AddNewsAdmin = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const loading = useSelector(state => state.market.createLoading);
-    const error = useSelector(state => state.market.createError);
+    const loading = useSelector(state => state.news.createLoading);
+    const error = useSelector(state => state.news.addError);
 
-    const [picture, setPicture] = useState({
+    const [news, setNews] = useState({
         title: "",
         image: null,
-        url: "",
+        description: "",
     });
 
     const submitFormHandler = e => {
         e.preventDefault();
         const formData = new FormData();
-        Object.keys(picture).forEach(key => {
-            formData.append(key, picture[key]);
+        Object.keys(news).forEach(key => {
+            formData.append(key, news[key]);
         });
-
-        dispatch(addMarketRequest(formData));
-        setPicture({
+        dispatch(addNewsRequest(formData));
+        setNews({
             title: "",
             image: null,
-            url: "",
+            description: "",
         })
     };
 
     const inputChangeHandler = e => {
         const name = e.target.name;
         const value=e.target.value;
-        setPicture(prevState => {
+        setNews(prevState => {
             return {...prevState, [name]: value};
         });
     };
@@ -65,7 +64,7 @@ const MarketAdmin = () => {
     const fileChangeHandler = e => {
         const name = e.target.name;
         const file = e.target.files[0];
-        setPicture(prevState => {
+        setNews(prevState => {
             return {...prevState, [name]: file};
         });
     };
@@ -89,34 +88,31 @@ const MarketAdmin = () => {
             className={classes.container}
             noValidate
         >
-            <h3 className={classes.title}>Добавить в список сайтов</h3>
+            <h3 className={classes.title}>Добавить новость</h3>
             <FormElement
                 required
                 label="Название"
                 name="title"
-                value={picture.title}
+                value={news.title}
                 onChange={inputChangeHandler}
                 error={getFieldError('title')}
             />
 
             <FormElement
                 required
-                label="Ссылка"
-                name="url"
-                value={picture.url}
+                label="Текст новости"
+                name="description"
+                value={news.description}
                 onChange={inputChangeHandler}
-                error={getFieldError('url')}
+                error={getFieldError('description')}
 
             />
-
             <Grid item xs>
                 <FileInput
                     required
-                    label="Логотип"
+                    label="Добавить картинку"
                     name="image"
                     onChange={fileChangeHandler}
-                    error={Boolean(getFieldError('image'))}
-                    helperText={getFieldError('image')}
                 />
             </Grid>
 
@@ -137,4 +133,4 @@ const MarketAdmin = () => {
     );
 };
 
-export default MarketAdmin;
+export default AddNewsAdmin;

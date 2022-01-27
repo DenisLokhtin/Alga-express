@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Link as RouterLink} from "react-router-dom";
+import {Link as RouterLink, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import FormElement from "../../components/UI/Form/FormElement";
 import {clearError, loginUser} from "../../store/actions/usersActions";
@@ -11,6 +11,8 @@ import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
+import Alert from '@mui/material/Alert';
+import {AlertTitle} from "@mui/material";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -38,7 +40,9 @@ const useStyles = makeStyles(theme => ({
 const Login = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const loading = useSelector(state => state.users.loginLoading);
+    const error = useSelector(state => state.users.loginError);
 
     const [user, setUser] = useState({
         email: '',
@@ -59,7 +63,7 @@ const Login = () => {
 
     const submitFormHandler = e => {
         e.preventDefault();
-        dispatch(loginUser({...user}));
+        dispatch(loginUser({...user, navigate}));
     };
 
     const buttonDisable = () => {
@@ -78,6 +82,12 @@ const Login = () => {
                 <Typography component="h1" variant="h6">
                     Вход
                 </Typography>
+                {
+                    error &&
+                    <Alert align="center" severity="error" className={classes.alert}>
+                        <AlertTitle>{error.message || error.global}</AlertTitle>
+                    </Alert>
+                }
 
                 <Grid
                     component="form"

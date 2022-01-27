@@ -43,17 +43,16 @@ export function* addNewsSaga({payload: newNews}) {
         yield put(fetchNewsRequest());
         toast.success('Свежая новость добавлена!');
     } catch (error) {
-        toast.error('Произошла ошибка');
         yield put(addNewsFailure(error.response.data));
     }
 }
 
 function* newsEditSaga({payload}) {
-
     try {
         yield axiosApi.put(`/news/${payload.id}`, payload.news);
         yield put(changeNewsSuccess());
         toast.success('Новость отредактирована');
+        payload.navigate('/news');
     } catch (e) {
         yield put(changeNewsFailure(e.response.data));
     }

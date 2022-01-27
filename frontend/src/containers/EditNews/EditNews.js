@@ -5,7 +5,7 @@ import {makeStyles} from "@mui/styles";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {useDispatch, useSelector} from "react-redux";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {changeNewsRequest, clearNewsErrors, fetchOneNewsRequest} from "../../store/actions/newsActions";
 
 const useStyles = makeStyles(() => ({
@@ -51,8 +51,11 @@ theme.typography.h4 = {
 const EditNews = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const params = useParams();
     const oneNews = useSelector(state => state.news.oneNews);
+    const error = useSelector(state => state.news.addError);
+    const loading = useSelector(state => state.news.singleLoading);
 
     const [news, setNews] = useState({
         title: '',
@@ -64,13 +67,13 @@ const EditNews = () => {
         setNews(prevState => ({...prevState, [name]: value}));
     };
 
-    // const getFieldError = fieldName => {
-    //     try {
-    //         return error.errors[fieldName].message;
-    //     } catch (e) {
-    //         return undefined;
-    //     }
-    // };
+    const getFieldError = fieldName => {
+        try {
+            return error.errors[fieldName].message;
+        } catch (e) {
+            return undefined;
+        }
+    };
 
     useEffect( () => {
         setNews(prev=>({
@@ -87,7 +90,7 @@ const EditNews = () => {
 
     const changeNews = (e) => {
         e.preventDefault();
-        dispatch(changeNewsRequest({news, id: params.id}));
+        dispatch(changeNewsRequest({news, id: params.id, navigate}));
     };
 
     return (
@@ -121,8 +124,8 @@ const EditNews = () => {
                             fullWidth
                             variant="outlined"
                             label="Название"
-                            // error={Boolean(getFieldError('title'))}
-                            // helperText={getFieldError('title')}
+                            error={Boolean(getFieldError('title'))}
+                            helperText={getFieldError('title')}
                         />
                     </Grid>
                     <Grid item xs={12} sm={8} md={7} lg={7}>
@@ -135,15 +138,15 @@ const EditNews = () => {
                             required
                             variant="outlined"
                             label="Описание"
-                            // error={Boolean(getFieldError('amount'))}
-                            // helperText={getFieldError('amount')}
+                            error={Boolean(getFieldError('description'))}
+                            helperText={getFieldError('description')}
                         />
                     </Grid>
                     <Grid item xs={12} sm={8} md={7} lg={7}
                           className={classes.newsBtnContainer}>
                         <ButtonWithProgress
-                            // loading={loading}
-                            // disabled={loading}
+                            loading={loading}
+                            disabled={loading}
                             type="submit"
                             variant="contained">
                            Изменить
