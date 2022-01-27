@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Card, CardContent, TextField} from "@mui/material";
 import Grid from "@mui/material/Grid";
 import {DatePicker, LocalizationProvider} from "@mui/lab";
 import {useDispatch} from "react-redux";
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import {putFlightRequest} from "../../store/actions/flightActions";
+import {getFlightsRequest, putFlightRequest} from "../../store/actions/flightActions";
 import ruLocale from 'date-fns/locale/ru';
 
 const localeMap = {
@@ -53,7 +53,7 @@ const FlightListItem = ({flight, id}) => {
             setFlightData(prevState => ({...prevState, status: 'ACTIVE'}));
         }
     }
-
+    console.log(flight);
     return (
         <Grid item>
             <Card>
@@ -110,7 +110,7 @@ const FlightListItem = ({flight, id}) => {
                                     mask={maskMap['ru']}
                                     disabled={editStatus}
                                     label="Дата вылета"
-                                    openTo="moth"
+                                    openTo="month"
                                     views={['year', 'month', 'day']}
                                     value={flightData.depart_date}
                                     onChange={(newValue) => {
