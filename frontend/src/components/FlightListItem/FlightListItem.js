@@ -2,9 +2,19 @@ import React, {useState} from 'react';
 import {Button, Card, CardContent, TextField} from "@mui/material";
 import Grid from "@mui/material/Grid";
 import {DatePicker, LocalizationProvider} from "@mui/lab";
-import AdapterDateFns from '@mui/lab/AdapterDayjs';
+// import AdapterDateFns from '@mui/lab/AdapterDayjs';
 import {useDispatch} from "react-redux";
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import {putFlightRequest} from "../../store/actions/flightActions";
+import ruLocale from 'date-fns/locale/ru';
+
+const localeMap = {
+    ru: ruLocale,
+};
+
+const maskMap = {
+    ru: '__.__.____',
+};
 
 const FlightListItem = ({flight, id}) => {
     const dispatch = useDispatch();
@@ -96,8 +106,9 @@ const FlightListItem = ({flight, id}) => {
                         sx={{marginBottom: {xs: '16px'}}}
                     >
                         <Grid item>
-                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <LocalizationProvider dateAdapter={AdapterDateFns} locale={localeMap['ru']}>
                                 <DatePicker
+                                    mask={maskMap['ru']}
                                     disabled={editStatus}
                                     label="Дата вылета"
                                     openTo="year"
@@ -115,8 +126,9 @@ const FlightListItem = ({flight, id}) => {
                         </Grid>
 
                         <Grid item>
-                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <LocalizationProvider dateAdapter={AdapterDateFns} locale={localeMap['ru']}>
                                 <DatePicker
+                                    mask={maskMap['ru']}
                                     disabled={editStatus}
                                     label="Дата вылета"
                                     openTo="year"
