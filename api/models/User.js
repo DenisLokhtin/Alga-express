@@ -17,7 +17,7 @@ const validateEmail = value => {
 const phoneNumbers = new mongoose.Schema({
     number: String,
     type: {
-        type:String,
+        type: String,
         trim: true,
         enum: ['TELEGRAM', 'PHONE'],
         default: 'PHONE',
@@ -27,8 +27,8 @@ const phoneNumbers = new mongoose.Schema({
 const imagePassport = new mongoose.Schema({
     image: {
         type: String,
-        trim:true
-    },
+        trim: true
+    }
 });
 
 const UserSchema = new mongoose.Schema({
@@ -72,13 +72,7 @@ const UserSchema = new mongoose.Schema({
         default: 0,
         required: true,
     },
-    passport: {
-        type: Array,
-        image: {
-            type: String,
-            trim: true,
-        },
-    },
+    passport: [imagePassport],
     phone: [phoneNumbers],
 });
 

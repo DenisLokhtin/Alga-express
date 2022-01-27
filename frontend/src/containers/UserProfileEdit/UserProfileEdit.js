@@ -2,26 +2,42 @@ import React, {useEffect, useMemo, useState} from 'react';
 import {makeStyles} from "@mui/styles";
 import {createTheme} from "@mui/material/styles";
 import {useDispatch, useSelector} from "react-redux";
-import {Box, Button, Container, Grid, TextField, Typography,} from "@mui/material";
+import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
+    Box,
+    Button,
+    Container,
+    FormControl,
+    Grid,
+    ImageList,
+    ImageListItem,
+    MenuItem,
+    Paper,
+    Select,
+    Typography,
+} from "@mui/material";
 import IconButton from '@mui/material/IconButton';
-import Icon from '@mui/material/Icon';
-import SvgIcon from '@mui/material/SvgIcon';
-import AddCircleTwoToneIcon from '@mui/icons-material/AddCircleTwoTone';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import AddCircleOutlineTwoToneIcon from '@mui/icons-material/AddCircleOutlineTwoTone';
 import FormElement from "../../components/UI/Form/FormElement";
-import {clearError, editUserDataRequest, userDateResponse} from "../../store/actions/usersActions";
+import {clearError, editPassportRequest, editUserDataRequest, userDateRequest} from "../../store/actions/usersActions";
 import {useParams} from "react-router-dom";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
 import PhoneInput from "react-phone-input-2";
 import ru from 'react-phone-input-2/lang/ru.json'
 import Avatar from "@mui/material/Avatar";
+import noImage from '../../assets/no_avatar.png';
 import {apiURL} from "../../config";
+import FileInput from "../../components/UI/FileInput/FileInput";
 
 
 const useStyles = makeStyles(() => ({
     container: {
-        marginTop: '50px',
+        marginTop: '10px',
+        paddingBottom: '40px',
+        display: "flex"
     },
 
     packageBtnContainer: {
@@ -30,7 +46,6 @@ const useStyles = makeStyles(() => ({
 
     packageMainTitle: {
         textAlign: 'center',
-        paddingBottom: '50px',
         '@media (max-width:600px)': {
             padding: '10px',
         },
@@ -49,6 +64,19 @@ const useStyles = makeStyles(() => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
+    margin0: {
+        margin: 0,
+    },
+    addButton: {
+        position: "relative",
+        bottom: '-35px',
+    },
+    padding: {
+        padding: '15px',
+        marginTop: '20px',
+    }
+
+
 }));
 
 const theme = createTheme();
@@ -64,20 +92,22 @@ theme.typography.h4 = {
 };
 
 
+function ExpandMoreIcon() {
+    return null;
+}
+
 const UserProfileEdit = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const {id} = useParams();
-    const user = useSelector(state => state.users.user);
     const loading = useSelector(state => state.users.loadUserDate);
     const error = useSelector(state => state.users.userError);
-    const userDate = useSelector(state => state.users.userDate);
+    const userData = useSelector(state => state.users.userDate);
 
     const [dataUser, setDataUser] = useState({
         name: '',
         email: '',
         avatar: null,
-        passport: [],
     });
 
     const [phone, setPhone] = useState([
@@ -87,42 +117,61 @@ const UserProfileEdit = () => {
         }
     ]);
 
-    let imageURL = null;
+    const [passport, setPassport] = useState([]);
 
-    useEffect(async () => {
-        dispatch(userDateResponse(id));
 
-        return () => {
-            dispatch(clearError());
-            setDataUser({
-                name: '',
-                email: '',
-                avatar: null,
-                passport: [],
-            });
-            setPhone([
-                {
-                    number: '',
-                    type: '',
-                }
-            ]);
+    const [disabled, setDisabled] = useState(false);
 
-        };
-    }, [dispatch,
-    ]);
+    const [refresh, setRefresh] = useState(true);
 
-    useMemo(() => {
-        userDate && setDataUser(prevState => ({
-            name: userDate.name,
-            email: userDate.email,
-            avatar: userDate.avatar,
-            passport: userDate.passport,
+    let imageURL = noImage;
+    let imagesPassport = [];
+
+    const [expanded, setExpanded] = useState('panel1');
+
+    const handleChange = (panel) => (event, isExpanded) => {
+        setExpanded(isExpanded ? panel : false);
+    };
+
+    useEffect(() => {
+        dispatch(userDateRequest(id));
+        userData && setDataUser(prevState => ({
+            name: userData.name,
+            email: userData.email,
+            avatar: userData.avatar,
         }));
 
-        userDate && setPhone(prevState => ([
-            ...userDate.phone,
+        userData && setPhone(prevState => ([
+            ...userData.phone,
         ]));
-    }, [userDate]);
+
+        userData && setPassport([...userData.passport]);
+        return () => {
+            dispatch(clearError());
+        };
+    }, [dispatch, id]);
+
+    useMemo(() => {
+        userData && setDataUser(prevState => ({
+            name: userData.name,
+            email: userData.email,
+            avatar: userData.avatar,
+        }));
+
+        userData && setPhone(prevState => ([
+            ...userData.phone,
+        ]));
+
+        userData && setPassport([...userData.passport]);
+    }, [userData && userData.passport,
+        refresh,
+    ]);
+
+    useEffect(() => {
+        if (!(phone.length <= 3)) {
+            setDisabled(true);
+        }
+    }, [disabled, phone.length]);
 
     const inputChangeHandler = e => {
         const {name, value} = e.target;
@@ -130,7 +179,6 @@ const UserProfileEdit = () => {
     };
 
     const inputChangePhoneHandler = (i, name, value) => {
-        console.log(i, name, value);
         setPhone(prevState => {
             const copyPhone = {
                 ...prevState[i],
@@ -168,164 +216,327 @@ const UserProfileEdit = () => {
 
     const fileChangeHandler = e => {
         const name = e.target.name;
-        const file = e.target.files[0];
-        setDataUser(prevState => {
-            return {...prevState, [name]: file};
-        });
+        const files = e.target.files;
+
+        if (name === 'avatar') {
+            setDataUser(prevState => {
+                return {...prevState, [name]: files[0]};
+            });
+        }
+
+        for (let i = 0; i < files.length; i++) {
+            setPassport(prevState => ([
+                ...prevState,
+                files[i]
+            ]))
+        }
     };
 
-    const submitFormHandler = e => {
+    const submitFormProfileHandler = e => {
         e.preventDefault();
-
         dataUser.phone = JSON.stringify(phone);
-        dataUser.passport = JSON.stringify(dataUser.passport);
 
         const formData = new FormData();
 
         Object.keys(dataUser).forEach(key => {
+
             formData.append(key, dataUser[key]);
         });
         dispatch(editUserDataRequest({id, data: formData}));
+        setRefresh(!refresh);
     };
 
-    if (user.avatar) {
-        imageURL = apiURL + '/uploads/' + user.avatar;
+    const submitFormPassportHandler = e => {
+        e.preventDefault();
+
+        const formData = new FormData();
+
+        passport.forEach(key => {
+            formData.append(`passport`, key);
+        });
+
+        dispatch(editPassportRequest({id, data: formData}));
+        setRefresh(!refresh);
+    };
+
+    if (dataUser.avatar) {
+        imageURL = apiURL + '/uploads/' + userData.avatar;
     }
 
+    if (userData && userData.passport) {
+        userData.passport.forEach((pas, i) => {
+            imagesPassport[i] = apiURL + '/uploads/' + pas.image;
+        })
+    }
+    console.log('render');
     return (
         <Container
             component="section"
             maxWidth="md"
             className={classes.container}>
-            <Grid>
+            <Grid
+                item
+                position="relative"
+            >
                 <Avatar
                     alt="Remy Sharp"
                     src={imageURL}
                     sx={{width: 150, height: 150}}
                 />
             </Grid>
-            <Grid item>
-                <Typography
-                    variant="h4"
-                    className={classes.packageMainTitle}>
-                    профиль пользователя
-                </Typography>
-            </Grid>
-            <Grid
-                component="form"
-                onSubmit={submitFormHandler}
-                justifyContent="center"
-                container
-                noValidate
-                spacing={5}
-            >
-                <Grid item xs={12} sm={8} md={7} lg={7}>
-                    <FormElement
-                        name="email"
-                        type="email"
-                        value={dataUser.email}
-                        fullWidth
-                        onChange={inputChangeHandler}
-                        variant="outlined"
-                        label="E-mail"
-                        error={getFieldError('email')}
-                    />
-                </Grid>
-                <Grid item xs={12} sm={8} md={7} lg={7}>
-                    <FormElement
-                        name="name"
-                        type="text"
-                        value={dataUser.name}
-                        onChange={inputChangeHandler}
-                        fullWidth
-                        variant="outlined"
-                        label="ФИО"
-                        error={getFieldError('name')}
-                    />
-                </Grid>
-                <Grid container
-                      display="flex"
-                      item
-                      justifyContent="space-between"
-                      xs={12} sm={8} md={7} lg={7}>
-                    <Grid item xs={10}>
-                        {phone.map((phone, id) => (
-                            <Box
-                                key={id}
-                                display="flex"
-                                container
-                                flexWrap="nowrap"
-                                alignItems="center"
-                                justifyContent="space-between"
-                            >
-                                    <PhoneInput
-                                        style={{'margin': '8px'}}
-                                        country={'kg'}
-                                        localization={ru}
-                                        required
-                                        type="text"
-                                        label="Номер"
-                                        name="number"
-                                        value={phone.number}
-                                        className={classes.phoneField}
-                                        onChange={e => inputChangePhoneHandler(id, 'number', e)}
-                                        error={getFieldError('phone')}
-                                    />
-                                    <IconButton
-                                        aria-label="erase"
-                                        className={classes.submit}
-                                        type='button'
-                                        onClick={() => eraseInputPhone(id)}
-                                    >
-                                        <DeleteForeverIcon/>
-                                    </IconButton>
-                            </Box>
-                        ))}
 
-                    </Grid>
-                    <Grid item
-                          alignSelf='flex-end'
+            <Grid container item>
+                <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon/>}
+                        aria-controls="panel1bh-content"
+                        id="panel1bh-header"
                     >
-                        <IconButton
-                            aria-label="add"
-                            className={classes.submit}
-                            type='button'
-                            onClick={inputPhone}
+                        <Typography
+                            variant="h4"
+                            className={classes.packageMainTitle}
                         >
-                            <AddCircleOutlineTwoToneIcon/>
-                        </IconButton>
-                    </Grid>
-
-                </Grid>
-
-                <Grid item xs={12} sm={8} md={7} lg={7}>
-                    <label>
-                        Аватар
-                        <TextField
-                            name="avatar"
-                            type="file"
-                            fullWidth
-                            // value="ВВедите"
-                            onChange={fileChangeHandler}
-                            error={getFieldError('avatar')}
+                            профиль пользователя
+                        </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <Grid
+                            container
+                            item
+                            justifyContent='center'
                         >
-                            <Button>Text</Button>
-                        </TextField>
-                    </label>
-                </Grid>
-                <Grid item xs={12} sm={8} md={7} lg={7}
-                      className={classes.packageBtnContainer}>
-                    <ButtonWithProgress
-                        loading={loading}
-                        disabled={loading}
-                        type="submit"
-                        variant="contained">
-                        Сохранить
-                    </ButtonWithProgress>
-                </Grid>
+                            <Grid
+                                component="form"
+                                onSubmit={submitFormProfileHandler}
+                                justifyContent="center"
+                                container
+                                noValidate
+                                spacing={5}
+                            >
+                                <Grid item xs={12} sm={9} md={8} lg={8}>
+                                    <FormElement
+                                        name="email"
+                                        type="email"
+                                        value={dataUser.email}
+                                        fullWidth
+                                        onChange={inputChangeHandler}
+                                        variant="outlined"
+                                        label="E-mail"
+                                        error={getFieldError('email')}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={9} md={8} lg={8}>
+                                    <FormElement
+                                        name="name"
+                                        type="text"
+                                        value={dataUser.name}
+                                        onChange={inputChangeHandler}
+                                        fullWidth
+                                        variant="outlined"
+                                        label="ФИО"
+                                        error={getFieldError('name')}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={8} md={7} lg={7}>
+                                    {phone.map((phone, id) => (
+                                        <Box
+                                            key={id}
+                                            display="flex"
+                                            container
+                                            flexWrap="nowrap"
+                                            alignItems="center"
+                                            justifyContent="space-between"
+                                        >
+                                            <Grid
+                                                item
+                                                container
+                                                // flexGrow={20}
+                                                display="flex"
+                                                flexWrap="nowrap"
+                                                flexDirection='column'
+                                                justifyContent="space-between"
+
+                                                className={classes.margin0}
+                                            >
+                                                <PhoneInput
+                                                    style={{'margin': '8px'}}
+                                                    country={'kg'}
+                                                    localization={ru}
+                                                    required
+                                                    type="text"
+                                                    label="Номер"
+                                                    name="number"
+                                                    value={phone.number}
+                                                    className={classes.phoneField}
+                                                    onChange={e => inputChangePhoneHandler(id, 'number', e)}
+                                                    error={getFieldError('phone')}
+                                                />
+                                            </Grid>
+                                            <Grid
+                                                item
+                                                alignSelf='center'
+                                                justifySelf='center'
+                                            >
+                                                <IconButton
+                                                    aria-label="erase"
+                                                    className={classes.submit}
+                                                    type='button'
+                                                    onClick={() => eraseInputPhone(id)}
+                                                >
+                                                    <DeleteForeverIcon/>
+                                                </IconButton>
+                                            </Grid>
+                                            <Grid
+                                                item
+                                                alignSelf='center'
+                                                width="50px"
+                                            >
+                                                <FormControl sx={{m: 1, minWidth: 120}}>
+                                                    <Select
+                                                        defaultValue="PHONE"
+                                                        labelId="demo-simple-select-helper-label"
+                                                        id="demo-simple-select-helper"
+                                                        value={phone.type}
+                                                        onChange={e => inputChangePhoneHandler(id, 'type', e.target.value)}
+                                                    >
+                                                        <MenuItem value="PHONE">Phone</MenuItem>
+                                                        <MenuItem value="TELEGRAM">Telegram</MenuItem>
+                                                    </Select>
+                                                </FormControl>
+                                            </Grid>
+                                        </Box>
+                                    ))}
+                                </Grid>
+                                <Grid item
+                                      justifySelf='center'
+                                      alignSelf='end'
+
+                                >
+                                    <IconButton
+                                        className={classes.addButton}
+                                        aria-label="add"
+                                        type='button'
+                                        onClick={inputPhone}
+                                        disabled={disabled}
+                                        error={getFieldError('add')}
+                                    >
+                                        <AddCircleOutlineTwoToneIcon/>
+                                    </IconButton>
+                                </Grid>
+                                <Grid
+                                    item
+                                    xs={12} sm={8} md={7} lg={7}
+                                >
+                                    <label>
+                                        Аватар
+                                        <FileInput
+                                            name="avatar"
+                                            type="file"
+                                            fullWidth
+                                            onChange={fileChangeHandler}
+                                            error={getFieldError('avatar')}
+                                        >
+                                            <Button>Text</Button>
+                                        </FileInput>
+                                    </label>
+                                </Grid>
+                                <Grid item xs={12} sm={8} md={7} lg={7}
+                                      className={classes.packageBtnContainer}>
+                                    <ButtonWithProgress
+                                        loading={loading}
+                                        disabled={loading}
+                                        type="submit"
+                                        variant="contained">
+                                        Сохранить
+                                    </ButtonWithProgress>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </AccordionDetails>
+                </Accordion>
+                <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon/>}
+                        aria-controls="panel2bh-content"
+                        id="panel2bh-header"
+                    >
+                        <Typography
+                            variant="h5"
+                            className={classes.packageMainTitle}
+                        >
+                            Доверенные Лица
+                        </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <Grid
+                            container
+                            item
+                            justifyContent='center'
+                        >
+                            <Grid
+                                component="form"
+                                onSubmit={submitFormPassportHandler}
+                                justifyContent="center"
+                                container
+                                noValidate
+                                spacing={5}
+                            >
+                                <Grid
+                                    item
+                                    xs={12} sm={8} md={8} lg={8}
+
+                                >
+                                    <FileInput
+                                        name="image"
+                                        type="file"
+                                        multiple="multiple"
+                                        fullWidth
+                                        onChange={fileChangeHandler}
+                                        error={getFieldError('passport')}
+                                    >
+
+                                    </FileInput>
+                                </Grid>
+                                <Grid item xs={12} sm={8} md={7} lg={7}
+                                      className={classes.packageBtnContainer}>
+                                    <ButtonWithProgress
+                                        loading={loading}
+                                        disabled={loading}
+                                        type="submit"
+                                        variant="contained">
+                                        Сохранить
+                                    </ButtonWithProgress>
+                                </Grid>
+                            </Grid>
+                            <Grid item>
+                                <Paper
+                                    className={classes.padding}
+                                >
+                                    <ImageList sx={{width: 500, height: 450}}>
+                                        {imagesPassport.map(passport => (
+                                            <Grid item
+                                                  key={passport}
+                                            >
+                                                <ImageListItem>
+                                                    <img
+                                                        alt={passport}
+                                                        src={`${passport}?w=248&fit=crop&auto=format`}
+                                                        srcSet={`${passport}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                                                    />
+                                                </ImageListItem>
+                                            </Grid>
+                                        ))}
+                                    </ImageList>
+                                </Paper>
+                            </Grid>
+                        </Grid>
+                    </AccordionDetails>
+
+                </Accordion>
             </Grid>
         </Container>
-    );
+    )
+        ;
 };
 
 export default UserProfileEdit;

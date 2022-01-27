@@ -1,5 +1,7 @@
 import {put, takeEvery} from "redux-saga/effects";
 import {
+    editPassportFailure,
+    editPassportRequest, editPassportSuccess,
     editUserDataFailure,
     editUserDataRequest,
     editUserDataSuccess,
@@ -11,7 +13,7 @@ import {
     registerUserFailure,
     registerUserSuccess,
     userDateFailure,
-    userDateResponse,
+    userDateRequest,
     userDateSuccess,
 } from "../actions/usersActions";
 import axiosApi from "../../axiosApi";
@@ -44,7 +46,7 @@ export function* getUserSaga({payload: id}) {
         const response = yield  axiosApi.get('/userEdit/' + id);
         yield put(userDateSuccess(response.data));
     } catch (e) {
-        toast.error(e.response.data.global);
+        toast.error(e.response.data.error);
         yield put(userDateFailure(e.response.data));
     }
 }
@@ -55,8 +57,20 @@ export function* editUserSaga({payload}) {
         yield put(editUserDataSuccess(response.data));
         toast.success('Редактирование успешно!');
     } catch (e) {
-        toast.error(e.response.data.global);
+        toast.error(e.response.data.error);
         yield put(editUserDataFailure(e.response.data));
+    }
+}
+
+export function* editPassportSaga({payload}) {
+    console.log(payload);
+    try {
+        const response = yield  axiosApi.put('/userEdit/' + payload.id, payload.data);
+        yield put(editPassportSuccess(response.data));
+        toast.success('Добавление прошло успешно!');
+    } catch (e) {
+        toast.error(e.response.data.error);
+        yield put(editPassportFailure(e.response.data));
     }
 }
 
@@ -76,8 +90,9 @@ const usersSaga = [
     takeEvery(registerUser, registerUserSaga),
     takeEvery(loginUser, loginUserSaga),
     takeEvery(logout, logoutUserSaga),
-    takeEvery(userDateResponse, getUserSaga),
+    takeEvery(userDateRequest, getUserSaga),
     takeEvery(editUserDataRequest, editUserSaga),
+    takeEvery(editPassportRequest, editPassportSaga),
 ];
 
 export default usersSaga;

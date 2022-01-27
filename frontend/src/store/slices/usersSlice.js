@@ -47,7 +47,7 @@ const usersSlice = createSlice({
             state.error = null;
             state.userError = null;
         },
-        userDateResponse(state, action) {
+        userDateRequest(state, action) {
             state.loadUserDate = true;
         },
         userDateSuccess(state, action) {
@@ -68,6 +68,16 @@ const usersSlice = createSlice({
         },
         editUserDataFailure(state, action) {
             state.loadUserDate = false;
+            state.userError = action.payload;
+        },
+        editPassportRequest(state, action) {
+
+        },
+        editPassportSuccess(state, action) {
+            state.userDate = action.payload;
+        },
+        editPassportFailure(state, action) {
+
         },
 
         logout(state, action) {
