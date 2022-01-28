@@ -1,5 +1,5 @@
-import React from 'react';
-import {Divider, ListItemIcon, Menu, MenuItem} from "@mui/material";
+import React, {useState} from 'react';
+import {Button, Divider, ListItemIcon, Menu, MenuItem} from "@mui/material";
 import {Link} from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
@@ -8,6 +8,9 @@ import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import HistoryIcon from "@mui/icons-material/History";
 import AddIcon from "@mui/icons-material/Add";
 import FlightIcon from "@mui/icons-material/Flight";
+import PersonIcon from "@mui/icons-material/Person";
+import {logout} from "../../../../store/actions/usersActions";
+import {useDispatch} from "react-redux";
 
 const userSettings = [
     {url: '', title: 'Личный кабинет', icon: <ManageAccountsIcon sx={{fontSize: 30}}/>},
@@ -20,9 +23,36 @@ const adminSettings = [
     {url: '/newFlight', title: 'Добавить рейс', icon: <AddIcon sx={{fontSize: 30}}/>}
 ];
 
-const UserMenu = ({user, anchorEl, open, handleClose, toLogOut}) => {
+const UserMenu = ({user}) => {
+    const dispatch = useDispatch();
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const toLogOut = () => {
+        setAnchorEl(false);
+        dispatch(logout());
+    };
+
     return (
         <>
+            <Button
+                sx={{color: '#F5F5F7',}}
+                color='inherit'
+                size='large'
+                onClick={handleClick}
+                startIcon={<PersonIcon/>}
+            >
+                {user?.name}
+            </Button>
+
             <Menu
                 anchorEl={anchorEl}
                 id="account-menu"
@@ -82,7 +112,7 @@ const UserMenu = ({user, anchorEl, open, handleClose, toLogOut}) => {
                     <ListItemIcon>
                         <AccountBalanceWalletIcon/>
                     </ListItemIcon>
-                    Ваш баланс {user?.user?.balance + ' сом'}
+                    Ваш баланс {user?.balance + ' сом'}
                 </MenuItem>
                 <MenuItem onClick={toLogOut}>
                     <ListItemIcon>
