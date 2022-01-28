@@ -5,7 +5,6 @@ import {
     changePackageSuccess,
     createPackageFailure,
     createPackageRequest,
-    createPackageSuccess,
     editAdminPackageRequest,
     editAdminPackageSuccess,
     fetchPackageAdminFailure,
@@ -21,9 +20,6 @@ import {
     getOrdersHistoryError,
     getOrdersHistoryRequest,
     getOrdersHistorySuccess,
-    getPackageByIdFailure,
-    getPackageByIdRequest,
-    getPackageByIdSuccess
 } from "../actions/packageRegisterActions";
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";

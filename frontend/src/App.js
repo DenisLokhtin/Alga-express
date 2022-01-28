@@ -48,6 +48,14 @@ const App = () => {
                 <Route path='/FAQ' element={<FAQ/>}/>
                 <Route path='/userProfile/edit/:id' element={<UserProfileEdit/>}/>
                 <Route path='/admin_package/:id' element={<AdminEditPackage/>}/>
+                <Route
+                    path="*"
+                    element={
+                        <main style={{ padding: "1rem" }}>
+                            <h1>Page Not Found</h1>
+                        </main>
+                    }
+                />
             </Routes>
         </Layout>
     );
