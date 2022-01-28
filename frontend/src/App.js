@@ -20,6 +20,7 @@ import OrderHistory from "./containers/OrderHistory/OrderHistory";
 import SpecificPackage from "./containers/SpecificPackage/SpecificPackage";
 import AddFlight from "./containers/AddFlight/AddFlight";
 import FlightsList from "./containers/FlightsList/FlightsList";
+import UserProfileEdit from "./containers/UserProfileEdit/UserProfileEdit";
 
 const App = () => {
     return (
@@ -44,6 +45,17 @@ const App = () => {
                 <Route path='/admin/package/:id' element={<AdminEditPackage/>}/>
                 <Route path='/newFlight' element={<AddFlight/>}/>
                 <Route path='/flights' element={<FlightsList/>}/>
+                <Route path='/FAQ' element={<FAQ/>}/>
+                <Route path='/userProfile/edit/:id' element={<UserProfileEdit/>}/>
+                <Route path='/admin_package/:id' element={<AdminEditPackage/>}/>
+                <Route
+                    path="*"
+                    element={
+                        <main style={{ padding: "1rem" }}>
+                            <h1>Page Not Found</h1>
+                        </main>
+                    }
+                />
             </Routes>
         </Layout>
     );
