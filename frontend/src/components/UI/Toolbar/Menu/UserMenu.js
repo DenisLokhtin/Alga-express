@@ -82,7 +82,7 @@ const UserMenu = ({user, anchorEl, open, handleClose, toLogOut}) => {
                     <ListItemIcon>
                         <AccountBalanceWalletIcon/>
                     </ListItemIcon>
-                    Ваш баланс {user?.balance + ' сом'}
+                    Ваш баланс {user?.user?.balance + ' сом'}
                 </MenuItem>
                 <MenuItem onClick={toLogOut}>
                     <ListItemIcon>
