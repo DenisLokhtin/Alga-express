@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    Box, Divider,
+    Box,
     IconButton,
     List,
     ListItemButton,
@@ -11,29 +11,8 @@ import {
 } from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import CloseIcon from '@mui/icons-material/Close';
-import LogoutIcon from '@mui/icons-material/Logout';
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import HistoryIcon from '@mui/icons-material/History';
-import PersonIcon from '@mui/icons-material/Person';
-import AddIcon from '@mui/icons-material/Add';
-import FlightIcon from '@mui/icons-material/Flight';
-import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import {Link} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {logout} from "../../../store/actions/usersActions";
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
-
-const usersButton = [
-    {url: '', title: 'Личный кабинет', icon: <ManageAccountsIcon sx={{color: "#F5F5F7", fontSize: 30}}/>},
-    {url: '/orders/history', title: 'История заказов', icon: <HistoryIcon sx={{color: "#F5F5F7", fontSize: 30}}/>},
-    {url: '/package/register', title: 'Оформить заказ', icon: <AddIcon sx={{color: "#F5F5F7", fontSize: 30}}/>},
-];
-
-const adminButton = [
-    {url: '/flights', title: 'Рейсы', icon: <FlightIcon sx={{color: "#F5F5F7", fontSize: 30}}/>},
-    {url: '/newFlight', title: 'Добавить рейс', icon: <AddIcon sx={{color: "#F5F5F7", fontSize: 30}}/>}
-];
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 const useStyles = makeStyles({
     paper: {
@@ -49,15 +28,8 @@ const useStyles = makeStyles({
     }
 })
 
-const BurgerMenu = ({open, setOpen}) => {
+const BurgerMenu = ({open, setOpen, pages}) => {
     const classes = useStyles();
-    const dispatch = useDispatch();
-    const user = useSelector(state => state.users.user);
-
-    const toLogOut = () => {
-        setOpen(false);
-        dispatch(logout());
-    };
 
     return (
         <SwipeableDrawer
@@ -87,7 +59,7 @@ const BurgerMenu = ({open, setOpen}) => {
 
                 <Box className={classes.contentPaper}>
                     <List>
-                        {usersButton.map(item => (
+                        {pages.map(item => (
                             <ListItemButton
                                 key={item.title}
                                 sx={{color: "#F5F5F7"}}
@@ -96,43 +68,13 @@ const BurgerMenu = ({open, setOpen}) => {
                                 onClick={() => setOpen(false)}
                             >
                                 <ListItemIcon>
-                                    {item.icon}
+                                    <ArrowForwardIosIcon sx={{color: "#F5F5F7"}}/>
                                 </ListItemIcon>
                                 <ListItemText>
                                     {item.title}
                                 </ListItemText>
                             </ListItemButton>
                         ))}
-                        <Divider/>
-                        {user.role === 'admin' &&
-                            adminButton.map(item => (
-                                <ListItemButton
-                                    key={item.title}
-                                    component={Link}
-                                    to={item.url}
-                                    onClick={() => setOpen(false)}
-                                >
-                                    <ListItemIcon>
-                                        {item.icon}
-                                    </ListItemIcon>
-                                    <ListItemText>
-                                        {item.title}
-                                    </ListItemText>
-                                </ListItemButton>
-                            ))
-                        }
-                        <Divider/>
-
-                        <ListItemButton
-                            onClick={toLogOut}
-                        >
-                            <ListItemIcon>
-                                <LogoutIcon sx={{color: "#F5F5F7", fontSize: 30}}/>
-                            </ListItemIcon>
-                            <ListItemText>
-                                Выйти
-                            </ListItemText>
-                        </ListItemButton>
                     </List>
                 </Box>
             </Box>
