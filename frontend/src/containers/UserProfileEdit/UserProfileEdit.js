@@ -252,6 +252,7 @@ const UserProfileEdit = () => {
         const formData = new FormData();
 
         passport.forEach(key => {
+            console.log(key);
             formData.append(`passport`, key);
         });
 

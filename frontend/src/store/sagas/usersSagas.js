@@ -4,7 +4,7 @@ import {
     editPassportRequest, editPassportSuccess,
     editUserDataFailure,
     editUserDataRequest,
-    editUserDataSuccess,
+    editUserDataSuccess, fetchUserPaymentFailure, fetchUserPaymentRequest, fetchUserPaymentSuccess,
     loginUser,
     loginUserFailure,
     loginUserSuccess,
@@ -18,6 +18,7 @@ import {
 } from "../actions/usersActions";
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
+import UserPayment from "../../components/UserPayment/UserPayment";
 
 export function* registerUserSaga({payload: userData}) {
     try {
@@ -72,9 +73,22 @@ export function* editPassportSaga({payload}) {
         toast.success('Добавление прошло успешно!');
     } catch (e) {
         toast.error(e.response.data.error);
-        yield put(editPassportFailure(e.response.data));
+        yield put(editPassportFailure(e.response.data.error));
     }
 }
+
+export function* userPaymentSaga({payload}) {
+    console.log(payload);
+    try {
+        const response = yield  axiosApi.post('/userEdit/payment/', payload);
+        yield put(fetchUserPaymentSuccess(response.data));
+        // toast.success('Добавление прошло успешно!');
+    } catch (e) {
+        toast.error(e.response.data.error);
+        yield put(fetchUserPaymentFailure(e.response.data.error));
+    }
+}
+
 
 export function* logoutUserSaga() {
     try {
@@ -95,6 +109,7 @@ const usersSaga = [
     takeEvery(userDateRequest, getUserSaga),
     takeEvery(editUserDataRequest, editUserSaga),
     takeEvery(editPassportRequest, editPassportSaga),
+    takeEvery(fetchUserPaymentRequest, userPaymentSaga),
 ];
 
 export default usersSaga;
