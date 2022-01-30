@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchOneNewsRequest} from "../../store/actions/newsActions";
 import {useParams} from "react-router-dom";
 import {Paper} from "@mui/material";
+import {apiURL} from "../../config";
 
 
 const SingleNews = () => {
@@ -19,6 +20,7 @@ const SingleNews = () => {
                 <Paper>
                     <p>{news.title}</p>
                     <p>{news.description}</p>
+                    <img src={apiURL+'/'+news.image} alt={'news'}/>
                 </Paper>
             )}
         </>
