@@ -102,6 +102,7 @@ export function* fetchUserPaymentSaga ({payload}) {
     try{
         const response = yield axiosApi.get(`/userEdit/payment?page=${page}&limit=${limit}`);
         yield put(addUserPaymentSuccess(response.data));
+        toast.success('Оплата отправлена');
     } catch (e) {
         toast.error(e.response.data.error);
         yield put(addUserPaymentFailure(e.response.data.error));
