@@ -17,5 +17,11 @@ export const {
   editPassportRequest,
   editPassportSuccess,
   editPassportFailure,
+  fetchUserPaymentRequest,
+  fetchUserPaymentSuccess,
+  fetchUserPaymentFailure,
+  addUserPaymentRequest,
+  addUserPaymentSuccess,
+  addUserPaymentFailure,
   logout,
 } = usersSlice.actions;
