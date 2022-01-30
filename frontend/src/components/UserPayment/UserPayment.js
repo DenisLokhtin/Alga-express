@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Container, Grid, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
-import {editUserDataRequest, fetchUserPaymentRequest} from "../../store/actions/usersActions";
+import {addUserPaymentRequest, editUserDataRequest, fetchUserPaymentRequest} from "../../store/actions/usersActions";
 import FormElement from "../UI/Form/FormElement";
 import FileInput from "../UI/FileInput/FileInput";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
@@ -72,16 +72,13 @@ const UserPayment = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
 
+    const error = useSelector(state => state.users.userError);
+
+
     const [pay, setPay] = useState({
         description: '',
         image: null,
     });
-
-    const paymentData = useSelector(state => state.users.payment);
-
-    useEffect(() => {
-        dispatch(fetchUserPaymentRequest());
-    }, [dispatch]);
 
     const inputChangeHandler = e => {
         const {name, value} = e.target;
@@ -107,10 +104,16 @@ const UserPayment = () => {
         Object.keys(pay).forEach(key => {
             formData.append('payment', pay[key]);
         });
-        dispatch(fetchUserPaymentRequest(formData));
+        dispatch(addUserPaymentRequest(formData));
     };
 
-        console.log(paymentData, pay);
+    const getFieldError = fieldName => {
+        try {
+            return error.errors[fieldName].message;
+        } catch (e) {
+            return undefined;
+        }
+    };
 
     return (
         <Container
@@ -143,10 +146,11 @@ const UserPayment = () => {
                             type="text"
                             value={pay.description}
                             fullWidth
+                            required={true}
                             onChange={inputChangeHandler}
                             variant="outlined"
                             label="Описание"
-                            // error={getFieldError('email')}
+                            error={getFieldError('description')}
                         />
                     </Grid>
                     <Grid
@@ -159,6 +163,7 @@ const UserPayment = () => {
                                 name="payment"
                                 type="file"
                                 fullWidth
+                                required={true}
                                 onChange={fileChangeHandler}
                                 // error={getFieldError('payment')}
                             >

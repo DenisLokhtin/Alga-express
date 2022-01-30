@@ -1,10 +1,17 @@
 import {put, takeEvery} from "redux-saga/effects";
 import {
+    addUserPaymentFailure,
+    addUserPaymentRequest,
+    addUserPaymentSuccess,
     editPassportFailure,
-    editPassportRequest, editPassportSuccess,
+    editPassportRequest,
+    editPassportSuccess,
     editUserDataFailure,
     editUserDataRequest,
-    editUserDataSuccess, fetchUserPaymentFailure, fetchUserPaymentRequest, fetchUserPaymentSuccess,
+    editUserDataSuccess,
+    fetchUserPaymentFailure,
+    fetchUserPaymentRequest,
+    fetchUserPaymentSuccess,
     loginUser,
     loginUserFailure,
     loginUserSuccess,
@@ -18,7 +25,6 @@ import {
 } from "../actions/usersActions";
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
-import UserPayment from "../../components/UserPayment/UserPayment";
 
 export function* registerUserSaga({payload: userData}) {
     try {
@@ -78,14 +84,27 @@ export function* editPassportSaga({payload}) {
 }
 
 export function* userPaymentSaga({payload}) {
-    console.log(payload);
     try {
         const response = yield  axiosApi.post('/userEdit/payment/', payload);
-        yield put(fetchUserPaymentSuccess(response.data));
+        yield put(addUserPaymentSuccess(response.data));
         // toast.success('Добавление прошло успешно!');
     } catch (e) {
         toast.error(e.response.data.error);
-        yield put(fetchUserPaymentFailure(e.response.data.error));
+        yield put(addUserPaymentFailure(e.response.data.error));
+    }
+}
+
+export function* fetchUserPaymentSaga ({payload}) {
+    console.log('payload', payload);
+    const page = payload.page;
+    const limit = payload.limit;
+
+    try{
+        const response = yield axiosApi.get(`/userEdit/payment?page=${page}&limit=${limit}`);
+        yield put(addUserPaymentSuccess(response.data));
+    } catch (e) {
+        toast.error(e.response.data.error);
+        yield put(addUserPaymentFailure(e.response.data.error));
     }
 }
 
@@ -109,7 +128,8 @@ const usersSaga = [
     takeEvery(userDateRequest, getUserSaga),
     takeEvery(editUserDataRequest, editUserSaga),
     takeEvery(editPassportRequest, editPassportSaga),
-    takeEvery(fetchUserPaymentRequest, userPaymentSaga),
+    takeEvery(addUserPaymentRequest, userPaymentSaga),
+    takeEvery(fetchUserPaymentRequest, fetchUserPaymentSaga),
 ];
 
 export default usersSaga;

@@ -6,7 +6,10 @@ const PaymentSchema = new mongoose.Schema({
         type: String,
         trim: true,
     },
-    image: String,
+    image: {
+        type: String,
+        required: true,
+    },
     user: {
         type: mongoose.Types.ObjectId,
         ref: 'User',
@@ -14,6 +17,10 @@ const PaymentSchema = new mongoose.Schema({
     date: {
         type: Date,
         default: Date.now,
+    },
+    status: {
+        type: Boolean,
+        default: false,
     },
 
 });

@@ -20,5 +20,8 @@ export const {
   fetchUserPaymentRequest,
   fetchUserPaymentSuccess,
   fetchUserPaymentFailure,
+  addUserPaymentRequest,
+  addUserPaymentSuccess,
+  addUserPaymentFailure,
   logout,
 } = usersSlice.actions;

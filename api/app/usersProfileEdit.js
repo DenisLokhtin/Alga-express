@@ -34,7 +34,7 @@ const storage = multer.diskStorage({
                 const secondIndex = str.indexOf('_', 0);
                 index = parseInt(str.substr(firstIndex + 1, (secondIndex - firstIndex) - 1)) + 1;
             }
-            for (const key in req.files['passport']){
+            for (const key in req.files['passport']) {
                 cb(null, 'passport/' + index + '_' + dayjs(new Date()).format('DDMMYYYY') + '_' + req.user._id + path.extname(file.originalname))
                 index++;
                 console.log(index);
@@ -53,7 +53,7 @@ const storage = multer.diskStorage({
             if (str.length > 0) {
                 const firstIndex = str[str.length - 1].image.indexOf('/', 0);
                 const secondIndex = str[str.length - 1].image.indexOf('_', 0);
-                index = parseInt(str[str.length -1].image.substr(firstIndex + 1, (secondIndex - firstIndex) - 1)) +1;
+                index = parseInt(str[str.length - 1].image.substr(firstIndex + 1, (secondIndex - firstIndex) - 1)) + 1;
             }
             cb(null, 'payment/' + index + '_' + dayjs(new Date()).format('DDMMYYYY') + '_' + req.user._id + path.extname(file.originalname))
         }
@@ -62,7 +62,35 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage});
 
-router.get('/:id', auth, upload.single('avatar'), async (req, res) => {
+router.get('/payment', auth, async (req, res) => {
+    let page = 0;
+    let limit = 10;
+
+    if (req.query.page) {
+        page = req.query.page
+    }
+
+    if (req.query.limit) {
+        limit = req.query.limit
+    }
+
+    try {
+        const size = await Payment.find({user: req.user._id});
+        const response = await Payment.find({user: req.user._id})
+            .select('image description date status')
+            .sort({date: -1})
+            .populate('user', 'name')
+            .limit(limit)
+            .skip(page * limit);
+
+        console.log(response.length);
+        res.send({totalElements: size.length, data: response});
+    } catch (e) {
+        res.send(403).send({error: e.response.data.error});
+    }
+});
+
+router.get('/:id', auth, async (req, res) => {
     try {
         const user = await User.findById(req.params.id)
             .select('email name passport phone avatar');
