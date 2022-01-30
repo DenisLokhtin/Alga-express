@@ -1,24 +1,32 @@
-import React, {useEffect, useState} from 'react';
-import './UserMenu.css';
-import PersonIcon from '@mui/icons-material/Person';
-import {Divider, IconButton, List, ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem} from "@mui/material";
-import LogoutIcon from '@mui/icons-material/Logout';
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import HistoryIcon from '@mui/icons-material/History';
-import AddIcon from '@mui/icons-material/Add';
-import {Logout} from "@mui/icons-material";
-import {useDispatch, useSelector} from "react-redux";
-import {logout} from "../../../../store/actions/usersActions";
-import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import React, {useState} from 'react';
+import {Button, Divider, ListItemIcon, Menu, MenuItem} from "@mui/material";
 import {Link} from "react-router-dom";
-import FlightIcon from '@mui/icons-material/Flight';
+import Typography from "@mui/material/Typography";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import {Logout} from "@mui/icons-material";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import HistoryIcon from "@mui/icons-material/History";
+import AddIcon from "@mui/icons-material/Add";
+import FlightIcon from "@mui/icons-material/Flight";
+import PersonIcon from "@mui/icons-material/Person";
+import {logout} from "../../../../store/actions/usersActions";
+import {useDispatch} from "react-redux";
 
-const UserMenu = ({setOpen}) => {
+const userSettings = [
+    {url: '', title: 'Личный кабинет', icon: <ManageAccountsIcon sx={{fontSize: 30}}/>},
+    {url: '/orders/history', title: 'История заказов', icon: <HistoryIcon sx={{fontSize: 30}}/>},
+    {url: '/package/register', title: 'Оформить заказ', icon: <AddIcon sx={{fontSize: 30}}/>},
+];
+
+const adminSettings = [
+    {url: '/flights', title: 'Рейсы', icon: <FlightIcon sx={{fontSize: 30}}/>},
+    {url: '/newFlight', title: 'Добавить рейс', icon: <AddIcon sx={{fontSize: 30}}/>}
+];
+
+const UserMenu = ({user}) => {
     const dispatch = useDispatch();
-    const [width, setWidth] = useState(window.innerWidth);
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
-    const user = useSelector(state => state.users.user);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -29,18 +37,22 @@ const UserMenu = ({setOpen}) => {
     };
 
     const toLogOut = () => {
-        setOpen(false);
+        setAnchorEl(false);
         dispatch(logout());
     };
 
-    let renderComponent = (
+    return (
         <>
-            <IconButton
+            <Button
+                sx={{color: '#F5F5F7',}}
+                color='inherit'
+                size='large'
                 onClick={handleClick}
+                startIcon={<PersonIcon/>}
             >
-                <PersonIcon sx={{fontSize: 30, color: "#F5F5F7"}}/>
-                <span className="text">{user?.name}</span>
-            </IconButton>
+                {user?.name}
+            </Button>
+
             <Menu
                 anchorEl={anchorEl}
                 id="account-menu"
@@ -53,12 +65,6 @@ const UserMenu = ({setOpen}) => {
                         overflow: 'visible',
                         filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
                         mt: 1.5,
-                        '& .MuiAvatar-root': {
-                            width: 32,
-                            height: 32,
-                            ml: -0.5,
-                            mr: 1,
-                        },
                         '&:before': {
                             content: '""',
                             display: 'block',
@@ -76,54 +82,37 @@ const UserMenu = ({setOpen}) => {
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-                <MenuItem>
-                    <ListItemIcon>
-                        <ManageAccountsIcon/>
-                    </ListItemIcon>
-                    Личный кабинет
-                </MenuItem>
-                <MenuItem component={Link} to={'/orders/history'}>
-                    <ListItemIcon>
-                        <HistoryIcon/>
-                    </ListItemIcon>
-                    История заказов
-                </MenuItem>
-                <MenuItem component={Link} to={'/package/register'}>
-                    <ListItemIcon>
-                        <AddIcon/>
-                    </ListItemIcon>
-                    Офрмить заказ
-                </MenuItem>
+                {userSettings.map((setting) => (
+                    <MenuItem
+                        key={setting.title}
+                        component={Link}
+                        to={setting.url}
+                    >
+                        <ListItemIcon>
+                            {setting.icon}
+                        </ListItemIcon>
+                        <Typography textAlign="center">{setting.title}</Typography>
+                    </MenuItem>
+                ))}
                 <Divider/>
-                {user.role === 'admin' &&
-                    <>
-                        <MenuItem
-                            component={Link}
-                            to={'/flights'}
-                        >
-                            <ListItemIcon>
-                                <FlightIcon/>
-                            </ListItemIcon>
-                            Рейсы
-                        </MenuItem>
-
-                        <MenuItem
-                            component={Link}
-                            to={'/newFlight'}
-                        >
-                            <ListItemIcon>
-                                <AddIcon/>
-                            </ListItemIcon>
-                            Добавить рейс
-                        </MenuItem>
-                    </>
-                }
+                {user.role === 'admin' && adminSettings.map(setting => (
+                    <MenuItem
+                        key={setting.title}
+                        component={Link}
+                        to={setting.url}
+                    >
+                        <ListItemIcon>
+                            {setting.icon}
+                        </ListItemIcon>
+                        <Typography textAlign="center">{setting.title}</Typography>
+                    </MenuItem>
+                ))}
                 <Divider/>
                 <MenuItem>
                     <ListItemIcon>
                         <AccountBalanceWalletIcon/>
                     </ListItemIcon>
-                    Ваш баланс {user?.user?.balance + ' сом'}
+                    Ваш баланс {user?.balance + ' сом'}
                 </MenuItem>
                 <MenuItem onClick={toLogOut}>
                     <ListItemIcon>
@@ -133,105 +122,7 @@ const UserMenu = ({setOpen}) => {
                 </MenuItem>
             </Menu>
         </>
-    )
-
-    useEffect(() => {
-        window.addEventListener("resize", () => {
-            setWidth(window.innerWidth);
-        });
-
-        return () => {
-            setWidth(window.innerWidth);
-        }
-    }, []);
-
-    if (width < 900) {
-        renderComponent = (
-            <List>
-                <ListItemButton
-                    sx={{color: "#F5F5F7"}}
-                    //Здесь будет onclick
-                >
-                    <ListItemIcon>
-                        <ManageAccountsIcon sx={{color: "#F5F5F7", fontSize: 30}}/>
-                    </ListItemIcon>
-                    <ListItemText>
-                        Личный кабинет
-                    </ListItemText>
-                </ListItemButton>
-                <ListItemButton
-                    sx={{color: "#F5F5F7"}}
-                    component={Link} to={'/orders/history'}
-                    //Здесь будет onclick
-                >
-                    <ListItemIcon>
-                        <HistoryIcon sx={{color: "#F5F5F7", fontSize: 30}}/>
-                    </ListItemIcon>
-                    <ListItemText>
-                        История заказов
-                    </ListItemText>
-                </ListItemButton>
-                <ListItemButton
-                    sx={{color: "#F5F5F7"}}
-                    component={Link} to={'/package/register'}
-                    // onClick={setOpen}
-                >
-                    <ListItemIcon>
-                        <AddIcon sx={{color: "#F5F5F7", fontSize: 30}}/>
-                    </ListItemIcon>
-                    <ListItemText>
-                        Оформить заказ
-                    </ListItemText>
-                </ListItemButton>
-
-                <Divider/>
-                {user.role === 'admin' &&
-                    <>
-                        <ListItemButton
-                            sx={{color: "#F5F5F7"}}
-                            component={Link}
-                            to='/flights'
-                        >
-                            <ListItemIcon>
-                                <FlightIcon sx={{color: "#F5F5F7", fontSize: 30}}/>
-                            </ListItemIcon>
-                            <ListItemText>
-                                Рейсы
-                            </ListItemText>
-                        </ListItemButton>
-
-                        <ListItemButton
-                            sx={{color: "#F5F5F7"}}
-                            component={Link}
-                            to='/newFlight'
-                        >
-                            <ListItemIcon>
-                                <AddIcon sx={{color: "#F5F5F7", fontSize: 30}}/>
-                            </ListItemIcon>
-                            <ListItemText>
-                                Добавить рейс
-                            </ListItemText>
-                        </ListItemButton>
-                    </>
-                }
-                <Divider/>
-
-                <ListItemButton
-                    sx={{color: "#F5F5F7"}}
-                    onClick={toLogOut}
-                >
-                    <ListItemIcon>
-                        <LogoutIcon sx={{color: "#F5F5F7", fontSize: 30}}/>
-                    </ListItemIcon>
-                    <ListItemText>
-                        Выйти
-                    </ListItemText>
-                </ListItemButton>
-            </List>
-        );
-    }
-
-    return renderComponent;
+    );
 };
 
 export default UserMenu;
