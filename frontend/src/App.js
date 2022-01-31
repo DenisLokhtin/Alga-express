@@ -34,7 +34,7 @@ const App = () => {
                 <Route path='/package/info/:id' element={<SpecificPackage/>}/>
                 <Route path='/package/register' element={<PackageRegister/>}/>
                 <Route path='/package/edit/:id' element={<EditPackage/>}/>
-                <Route path='/login' element={<Login/>}git />
+                <Route path='/login' element={<Login/>}/>
                 <Route path='/rules' element={<Rules/>}/>
                 <Route path='/about' element={<AboutUs/>}/>
                 <Route path='/contacts' element={<Contacts/>}/>
