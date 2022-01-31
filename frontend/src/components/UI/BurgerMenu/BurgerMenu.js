@@ -1,38 +1,99 @@
-import React, {useEffect} from 'react';
-import {IconButton} from "@mui/material";
+import React, {useState} from 'react';
+import {
+    Box,
+    IconButton,
+    List,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    SwipeableDrawer,
+    Toolbar
+} from "@mui/material";
+import {makeStyles} from "@mui/styles";
 import CloseIcon from '@mui/icons-material/Close';
-import "./BurgerMenu.css";
-import HomeIcon from '@mui/icons-material/Home';
-import {useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import MenuIcon from "@mui/icons-material/Menu";
 
-const BurgerMenu = ({open, setOpen, children}) => {
-    const navigate = useNavigate();
-
-    const toHome = () => {
-        navigate('/');
-        setOpen(false);
+const useStyles = makeStyles({
+    paper: {
+        width: '80vw',
+        height: '100%',
+        zIndex: 99,
+        color: '#F5F5F7',
+    },
+    contentPaper: {
+        background: '#424245',
+        width: '100%',
+        height: '100%'
     }
+})
 
-    useEffect(() => {
-        return () => {
-            setOpen(false);
-        }
-    }, []);
+const BurgerMenu = ({pages}) => {
+    const classes = useStyles();
+    const [open, setOpen] = useState(false);
 
     return (
-        <div className={open ? 'menu active' : 'menu'} onClick={() => setOpen(false)}>
-            <div className="menu__content" onClick={e => e.stopPropagation()}>
-                <div className="menu-header">
-                    <IconButton type="button" onClick={() => setOpen(false)}>
-                        <CloseIcon sx={{fontSize: 30, color: "#F5F5F7"}}/>
-                    </IconButton>
-                    <IconButton type="button" onClick={toHome}>
-                        <HomeIcon sx={{fontSize: 30, color: "#F5F5F7"}}/>
-                    </IconButton>
-                </div>
-                {children}
-            </div>
-        </div>
+        <>
+            <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={() => setOpen(true)}
+                color="inherit"
+            >
+                <MenuIcon />
+            </IconButton>
+
+            <SwipeableDrawer
+                anchor='left'
+                open={open}
+                onClose={() => setOpen(false)}
+                onOpen={() => {}}
+            >
+                <Box
+                    className={classes.paper}
+                    onKeyDown={() => setOpen(false)}
+                >
+                    <Box>
+                        <Toolbar sx={{background: 'rgba(0,0,0,0.82)'}}>
+                            <IconButton
+                                size="large"
+                                aria-label="account of current user"
+                                aria-controls="menu-appbar"
+                                aria-haspopup="true"
+                                onClick={() => setOpen(false)}
+                                color="inherit"
+                            >
+                                <CloseIcon />
+                            </IconButton>
+                        </Toolbar>
+                    </Box>
+
+                    <Box className={classes.contentPaper}>
+                        <List>
+                            {pages.map(item => (
+                                <ListItemButton
+                                    key={item.title}
+                                    sx={{color: "#F5F5F7"}}
+                                    component={Link}
+                                    to={item.url}
+                                    onClick={() => setOpen(false)}
+                                >
+                                    <ListItemIcon>
+                                        <ArrowForwardIosIcon sx={{color: "#F5F5F7"}}/>
+                                    </ListItemIcon>
+                                    <ListItemText>
+                                        {item.title}
+                                    </ListItemText>
+                                </ListItemButton>
+                            ))}
+                        </List>
+                    </Box>
+                </Box>
+            </SwipeableDrawer>
+        </>
     );
 };
 

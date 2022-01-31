@@ -5,12 +5,21 @@ import {
     changePackageSuccess,
     createPackageFailure,
     createPackageRequest,
-    editAdminPackageRequest, editAdminPackageSuccess,
-    fetchPackageAdminFailure, fetchPackageAdminRequest,
+    editAdminPackageRequest,
+    editAdminPackageSuccess,
+    fetchPackageAdminFailure,
+    fetchPackageAdminRequest,
     fetchPackageAdminSuccess,
-    createPackageSuccess, getOrderByIdError, getOrderByIdRequest,
-    getOrderByIdSuccess, getOrdersHistoryError, getOrdersHistoryRequest,
-    getOrdersHistorySuccess, getPackageByIdSuccess, getPackageByIdFailure, getPackageByIdRequest,
+    getPackageByIdFailure,
+    getPackageByIdRequest,
+    getPackageByIdSuccess,
+    createPackageSuccess,
+    getOrderByIdError,
+    getOrderByIdRequest,
+    getOrderByIdSuccess,
+    getOrdersHistoryError,
+    getOrdersHistoryRequest,
+    getOrdersHistorySuccess,
 } from "../actions/packageRegisterActions";
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
@@ -37,9 +46,8 @@ function* packageGetByIdSagas({payload: id}) {
 
 function* packageChangeSagas({payload}) {
     try {
-        yield axiosApi.put(`/packages/${payload.packageId}`, payload.packageRegister);
+        yield axiosApi.put(`/packages/${payload._id}`, payload);
         yield put(changePackageSuccess());
-        payload.navigate('/');
         toast.success('Ваш заказ был успешно отредактирован');
     } catch (e) {
         yield put(changePackageFailure(e.response.data));
@@ -60,7 +68,7 @@ function* packageEditAdminSagas({payload}) {
     try {
         console.log('in saga id', payload.id);
         console.log('in saga data', payload.obj);
-        yield axiosApi.put(`/packages/`+ payload.id, payload.obj);
+        yield axiosApi.put(`/packages/` + payload.id, payload.obj);
         yield put(editAdminPackageSuccess());
         toast.success('Заказ был успешно отредактирован');
     } catch (e) {
@@ -88,7 +96,7 @@ function* getOrderById({payload: orderId}) {
         yield put(getOrderByIdSuccess(response.data));
     } catch (error) {
         yield put(getOrderByIdError(error.response.data));
-        toast.error( error.response.statusText || error.message, {
+        toast.error(error.response.statusText || error.message, {
             autoClose: 5000,
         });
     }
