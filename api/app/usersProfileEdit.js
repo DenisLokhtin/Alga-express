@@ -5,6 +5,7 @@ const multer = require("multer");
 const config = require("../config");
 const path = require("path");
 const dayjs = require('dayjs');
+const Payment = require("../models/Payment");
 
 const router = express.Router();
 
@@ -12,27 +13,84 @@ const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, config.uploadPath);
     },
-    filename: (req, file, cb) => {
+    filename: async (req, file, cb) => {
+        console.log(req.params.id);
         if (file.fieldname === 'avatar') {
             cb(null, file.fieldname + '/' + req.user._id + path.extname(file.originalname))
         }
 
         if (file.fieldname === 'passport') {
-            const str = req.user.passport[(req.user.passport.length) - 1].image;
-            const firstIndex = str.indexOf('/', 0);
-            const secondIndex = str.indexOf('_', 0);
-            let index = parseInt(str.substr(firstIndex + 1, (secondIndex - firstIndex) - 1));
-            req.files['passport'].map(passport => {
-                index++;
+            let index = 0;
+            let passport = null;
+            try {
+                passport = await User.findById(req.params.id);
+            } catch (e) {
+                console.log(e);
+            }
+
+            if (passport.passport.length > 0) {
+                const str = passport.passport[(req.user.passport.length) - 1].image;
+                const firstIndex = str.indexOf('/', 0);
+                const secondIndex = str.indexOf('_', 0);
+                index = parseInt(str.substr(firstIndex + 1, (secondIndex - firstIndex) - 1)) + 1;
+            }
+            for (const key in req.files['passport']) {
                 cb(null, 'passport/' + index + '_' + dayjs(new Date()).format('DDMMYYYY') + '_' + req.user._id + path.extname(file.originalname))
-            });
+                index++;
+                console.log(index);
+            }
+        }
+
+        if (file.fieldname === 'payment') {
+            let index = 0;
+            let str = null;
+            try {
+                str = await Payment.find({user: req.user._id});
+            } catch (e) {
+                console.log(e);
+            }
+
+            if (str.length > 0) {
+                const firstIndex = str[str.length - 1].image.indexOf('/', 0);
+                const secondIndex = str[str.length - 1].image.indexOf('_', 0);
+                index = parseInt(str[str.length - 1].image.substr(firstIndex + 1, (secondIndex - firstIndex) - 1)) + 1;
+            }
+            cb(null, 'payment/' + index + '_' + dayjs(new Date()).format('DDMMYYYY') + '_' + req.user._id + path.extname(file.originalname))
         }
     }
 });
 
 const upload = multer({storage});
 
-router.get('/:id', auth, upload.single('avatar'), async (req, res) => {
+router.get('/payment', auth, async (req, res) => {
+    let page = 0;
+    let limit = 10;
+
+    if (req.query.page) {
+        page = req.query.page
+    }
+
+    if (req.query.limit) {
+        limit = req.query.limit
+    }
+
+    try {
+        const size = await Payment.find({user: req.user._id});
+        const response = await Payment.find({user: req.user._id})
+            .select('image description date status')
+            .sort({date: -1})
+            .populate('user', 'name')
+            .limit(limit)
+            .skip(page * limit);
+
+        console.log(response.length);
+        res.send({totalElements: size.length, data: response});
+    } catch (e) {
+        res.send(403).send({error: e.response.data.error});
+    }
+});
+
+router.get('/:id', auth, async (req, res) => {
     try {
         const user = await User.findById(req.params.id)
             .select('email name passport phone avatar');
@@ -58,23 +116,15 @@ router.put('/:id', auth, upload.fields([
         }, {
             name: 'passport',
             maxCount: 2,
-            onError: function (err, next) {
-                console.log('error', err);
-                next(err);
-
-            },
         }
     ]),
     async (req, res) => {
         const userData = {};
-        console.log('put ', req.body);
-
         try {
             const user = await User.findById(req.params.id);
 
             for (const key in req.files) {
                 userData.passport = user.passport;
-
                 if (key === 'passport') {
                     Object.keys(req.files['passport']).map(keys => {
                         console.log(req.files.passport[keys].filename);
@@ -108,6 +158,31 @@ router.put('/:id', auth, upload.fields([
             res.status(400).send(e);
         }
     });
+
+router.post('/payment', auth, upload.single('payment'), async (req, res) => {
+    const paymentData = {};
+
+    try {
+        if (req.body.payment) {
+            paymentData.description = req.body.payment;
+        }
+
+        if (req.file) {
+            paymentData.image = req.file.filename;
+        }
+
+        paymentData.user = req.user._id;
+
+        console.log(paymentData);
+
+        const payment = new Payment(paymentData);
+        await payment.save();
+
+        res.send('payment');
+    } catch (e) {
+
+    }
+});
 
 
 module.exports = router;

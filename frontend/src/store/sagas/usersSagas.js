@@ -1,10 +1,17 @@
 import {put, takeEvery} from "redux-saga/effects";
 import {
+    addUserPaymentFailure,
+    addUserPaymentRequest,
+    addUserPaymentSuccess,
     editPassportFailure,
-    editPassportRequest, editPassportSuccess,
+    editPassportRequest,
+    editPassportSuccess,
     editUserDataFailure,
     editUserDataRequest,
     editUserDataSuccess,
+    fetchUserPaymentFailure,
+    fetchUserPaymentRequest,
+    fetchUserPaymentSuccess,
     loginUser,
     loginUserFailure,
     loginUserSuccess,
@@ -72,9 +79,36 @@ export function* editPassportSaga({payload}) {
         toast.success('Добавление прошло успешно!');
     } catch (e) {
         toast.error(e.response.data.error);
-        yield put(editPassportFailure(e.response.data));
+        yield put(editPassportFailure(e.response.data.error));
     }
 }
+
+export function* userPaymentSaga({payload}) {
+    try {
+        const response = yield  axiosApi.post('/userEdit/payment/', payload);
+        yield put(addUserPaymentSuccess(response.data));
+        // toast.success('Добавление прошло успешно!');
+    } catch (e) {
+        toast.error(e.response.data.error);
+        yield put(addUserPaymentFailure(e.response.data.error));
+    }
+}
+
+export function* fetchUserPaymentSaga ({payload}) {
+    console.log('payload', payload);
+    const page = payload.page;
+    const limit = payload.limit;
+
+    try{
+        const response = yield axiosApi.get(`/userEdit/payment?page=${page}&limit=${limit}`);
+        yield put(addUserPaymentSuccess(response.data));
+        toast.success('Оплата отправлена');
+    } catch (e) {
+        toast.error(e.response.data.error);
+        yield put(addUserPaymentFailure(e.response.data.error));
+    }
+}
+
 
 export function* logoutUserSaga() {
     try {
@@ -95,6 +129,8 @@ const usersSaga = [
     takeEvery(userDateRequest, getUserSaga),
     takeEvery(editUserDataRequest, editUserSaga),
     takeEvery(editPassportRequest, editPassportSaga),
+    takeEvery(addUserPaymentRequest, userPaymentSaga),
+    takeEvery(fetchUserPaymentRequest, fetchUserPaymentSaga),
 ];
 
 export default usersSaga;

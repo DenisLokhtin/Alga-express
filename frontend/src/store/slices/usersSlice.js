@@ -1,4 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
+import {addUserPaymentRequest} from "../actions/usersActions";
 
 export const initialState = {
     user: null,
@@ -9,6 +10,7 @@ export const initialState = {
     loadUserDate: false,
     userDate: null,
     userError: null,
+    payment: null,
 };
 
 const name = 'users';
@@ -71,16 +73,40 @@ const usersSlice = createSlice({
             state.userError = action.payload;
         },
         editPassportRequest(state, action) {
-
+            state.loadUserDate = true;
         },
         editPassportSuccess(state, action) {
             state.userDate = action.payload;
+            state.loadUserDate = false;
         },
         editPassportFailure(state, action) {
+            state.loadUserDate = false;
 
         },
+        fetchUserPaymentRequest(state) {
+            state.loadUserDate = true;
 
-        logout(state, action) {
+        },
+        fetchUserPaymentSuccess(state, action) {
+            state.loadUserDate = false;
+            state.payment = action.payload;
+        },
+        fetchUserPaymentFailure(state) {
+            state.loadUserDate = false;
+
+        },
+        addUserPaymentRequest(state) {
+            state.loadUserDate = true;
+        },
+        addUserPaymentSuccess(state, action){
+            state.loadUserDate = false;
+            state.payment = action.payload;
+        },
+        addUserPaymentFailure(state){
+            state.loadUserDate = false;
+
+        },
+        logout(state) {
             state.user = null;
         },
     },
