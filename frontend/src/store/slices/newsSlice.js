@@ -60,7 +60,18 @@ const newsSlice = createSlice({
             state.singleLoading = false;
             state.addError = error;
         },
-
+        deleteNewsRequest(state){
+            state.deleteLoading = true;
+        },
+        deleteNewsSuccess(state, {payload: newsId}) {
+            state.deleteLoading = false;
+            state.deleteError = null;
+            state.news = state.news.filter(news => news._id !== newsId);
+        },
+        deleteNewsFailure(state,action ){
+            state.deleteLoading = false;
+            state.deleteError = action.payload;
+        },
     }
 });
 
