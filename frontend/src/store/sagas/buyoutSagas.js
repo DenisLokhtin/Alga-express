@@ -55,7 +55,6 @@ export function* deleteBuyoutSaga({payload: id}) {
 }
 
 
-
 const marketSaga = [
     takeEvery(fetchBuyoutsRequest, getBuyoutSagas),
     takeEvery(addBuyoutRequest, addBuyoutSaga),
