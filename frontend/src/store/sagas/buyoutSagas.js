@@ -1,19 +1,21 @@
-import {takeEvery} from 'redux-saga/effects';
+import {put, takeEvery} from 'redux-saga/effects';
 import axiosApi from "../../axiosApi";
-import {put} from 'redux-saga/effects';
 import {toast} from "react-toastify";
 import {
-    addBuyoutRequest, addBuyoutSuccess, deleteBuyoutRequest,
+    addBuyoutRequest,
+    addBuyoutSuccess,
+    deleteBuyoutFailure,
+    deleteBuyoutRequest,
+    deleteBuyoutSuccess,
     fetchBuyoutsFailure,
     fetchBuyoutsRequest,
     fetchBuyoutsSuccess
 } from "../actions/buyoutActions";
 
 
-
 export function* getBuyoutSagas() {
     try {
-        const response = yield axiosApi.get('/buyout');
+        const response = yield axiosApi.get('/buyouts');
         yield put(fetchBuyoutsSuccess(response.data));
     } catch (e) {
         toast.error('Не удалось загрузить');
@@ -21,34 +23,34 @@ export function* getBuyoutSagas() {
     }
 }
 
-export function* addBuyoutSaga({payload: newMarket}) {
+export function* addBuyoutSaga({payload: data}) {
     try {
-        yield axiosApi.post( '/market', newMarket);
+        yield axiosApi.post( '/buyouts', data);
         yield put(addBuyoutSuccess());
         // yield put(fetchBuyoutsRequest());
-        toast.success('Новая ссылка добавлена!');
+        toast.success('Новый заказ выкупа добавлен!');
     } catch (error) {
         if (!error.response) {
             toast.error(error.message);
         }
         toast.error('Произошла ошибка');
-        yield put(addMarketFailure(error.response.data));
+        yield put(addBuyoutFailure(error.response.data));
     }
 }
 
 
-export function* deleteMarketSaga({payload: id}) {
+export function* deleteBuyoutSaga({payload: id}) {
     try {
-        yield axiosApi.delete('/market/'+id);
-        yield put(deleteMarketSuccess(id));
-        toast.success('Deleted');
+        yield axiosApi.delete('/buyouts/'+id);
+        yield put(deleteBuyoutSuccess(id));
+        toast.success('Успешно удален');
     } catch (error) {
         if (!error.response) {
             toast.error(error.message);
         } else {
             toast.error(error.response?.data?.global);
         }
-        yield put(deleteMarketFailure(error.response?.data));
+        yield put(deleteBuyoutFailure(error.response?.data));
     }
 }
 
@@ -56,8 +58,8 @@ export function* deleteMarketSaga({payload: id}) {
 
 const marketSaga = [
     takeEvery(fetchBuyoutsRequest, getBuyoutSagas),
-    takeEvery(addBuyoutRequest, addMarketSaga),
-    takeEvery(deleteBuyoutRequest, deleteMarketSaga),
+    takeEvery(addBuyoutRequest, addBuyoutSaga),
+    takeEvery(deleteBuyoutRequest, deleteBuyoutSaga),
 ];
 
 export default marketSaga;
