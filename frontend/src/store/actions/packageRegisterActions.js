@@ -23,5 +23,8 @@ export const {
     fetchPackageAdminRequest,
     fetchPackageAdminSuccess,
     fetchPackageAdminFailure,
+    changeStatusesRequest,
+    changeStatusesSuccess,
+    changeStatusesError,
     clearAdminErrors,
 } = packageSlice.actions;

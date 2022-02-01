@@ -5,17 +5,19 @@ const initialState = {
     order: null,
     onePackage: {},
     createPackageLoading: false,
-    createPackageError: false,
+    createPackageError: null,
     getOrdersLoading: false,
     getOrderError: null,
     getOrderByIdLoading: false,
     getOrderByIdError: null,
-    changePackageError: false,
-    packageAdmin:{},
+    changePackageError: null,
+    packageAdmin: {},
     editAdminLoading: false,
-    editAdminError: false,
+    editAdminError: null,
     packageAdminLoading: false,
-
+    notFoundTrackNumbers: [],
+    changeStatusesLoading: false,
+    changeStatusesError: null,
 };
 
 const packageSlice = createSlice({
@@ -93,32 +95,47 @@ const packageSlice = createSlice({
 
         clearTextFieldsErrors(state) {
             state.createPackageError = null;
+            state.changeStatusesError = null;
         },
 
-        editAdminPackageRequest(state){
+        editAdminPackageRequest(state) {
             state.editAdminLoading = true;
         },
 
-        editAdminPackageSuccess(state){
+        editAdminPackageSuccess(state) {
             state.editAdminLoading = false;
         },
 
-        editAdminPackageFailure(state,{payload: editAdminError}){
+        editAdminPackageFailure(state, {payload: editAdminError}) {
             state.editAdminLoading = false;
             state.editAdminError = editAdminError;
         },
 
-        fetchPackageAdminRequest(state){
+        fetchPackageAdminRequest(state) {
             state.packageAdminLoading = true;
         },
 
-        fetchPackageAdminSuccess(state,{payload: packageAdmin}){
+        fetchPackageAdminSuccess(state, {payload: packageAdmin}) {
             state.packageAdminLoading = false;
             state.packageAdmin = packageAdmin;
         },
 
-        fetchPackageAdminFailure(state){
+        fetchPackageAdminFailure(state) {
             state.packageAdminLoading = false;
+        },
+
+        changeStatusesRequest(state) {
+            state.changeStatusesLoading = true;
+        },
+
+        changeStatusesSuccess(state) {
+            state.changeStatusesLoading = false;
+        },
+
+        changeStatusesError(state, {payload: error}) {
+            state.changeStatusesError = error;
+            state.changeStatusesLoading = false;
+            state.notFoundTrackNumbers = error;
         },
 
         clearAdminErrors(state) {

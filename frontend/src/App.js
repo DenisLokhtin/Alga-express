@@ -23,6 +23,7 @@ import FlightsList from "./containers/FlightsList/FlightsList";
 import UserProfileEdit from "./containers/UserProfileEdit/UserProfileEdit";
 import UserPayment from "./components/UserPayment/UserPayment";
 import UserPayments from "./components/UserPayments/UserPayments";
+import WarehousemanStatusEdit from "./containers/WarehousemanStatusEdit/WarehousemanStatusEdit";
 import AdminPaymentsProcessing from "./components/AdminPaymentsProcessing/AdminPaymentsProcessing";
 
 const App = () => {
@@ -40,6 +41,11 @@ const App = () => {
                 <Route path='/user/payments' element={<UserPayments/>}/>
                 <Route path='/user/userProfile/payments/add' element={<UserPayment/>}/>
                 <Route path='/register' element={<Register/>}/>
+                <Route path="/orders/history" element={<OrderHistory/>}/>
+                <Route path='/package/info/:id' element={<SpecificPackage/>}/>
+                <Route path='/package/register' element={<PackageRegister/>}/>
+                <Route path='/package/edit/:id' element={<EditPackage/>}/>
+                <Route path='/warehouseman/status/edit' element={<WarehousemanStatusEdit/>}/>
                 <Route path='/login' element={<Login/>}/>
                 <Route path='/rules' element={<Rules/>}/>
                 <Route path='/about' element={<AboutUs/>}/>
