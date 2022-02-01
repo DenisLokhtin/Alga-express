@@ -5,6 +5,7 @@ import {makeStyles} from "@mui/styles";
 import {Grid} from "@mui/material";
 import {Link} from "react-router-dom";
 import AddNewsAdmin from "../../components/AddNewsAdmin/AddNewsAdmin";
+import {newsOneCompany} from "../../paths";
 
 const useStyles = makeStyles({
     newsBlock: {
@@ -55,7 +56,7 @@ const News = () => {
                     }}>
                         <p className={classes.date}>{item.datetime}</p>
                         <p className={classes.news} style={{flexGrow: 1, paddingLeft: "30px"}}>{item.title}</p>
-                        <Link to={'/news/' + item._id} style={{paddingRight: "40px"}} >
+                        <Link to={newsOneCompany + item._id} style={{paddingRight: "40px"}} >
                             Подробнее...
                         </Link>
                         <button onClick={() => deleteNews(item._id)}

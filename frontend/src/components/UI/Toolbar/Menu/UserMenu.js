@@ -13,16 +13,23 @@ import FlightIcon from "@mui/icons-material/Flight";
 import PersonIcon from "@mui/icons-material/Person";
 import {logout} from "../../../../store/actions/usersActions";
 import {useDispatch, useSelector} from "react-redux";
+import {
+    addFlightAdmin,
+    listFlightAdmin,
+    listPaymentsAdmin,
+    newPackageRegister,
+    packageHistory
+} from "../../../../paths";
 
 const userSettings = [
     {url: '', title: 'Личный кабинет', icon: <ManageAccountsIcon sx={{fontSize: 30}}/>},
-    {url: '/orders/history', title: 'История заказов', icon: <HistoryIcon sx={{fontSize: 30}}/>},
-    {url: '/package/register', title: 'Оформить заказ', icon: <AddIcon sx={{fontSize: 30}}/>},
+    {url: packageHistory, title: 'История заказов', icon: <HistoryIcon sx={{fontSize: 30}}/>},
+    {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon sx={{fontSize: 30}}/>},
 ];
 
 const adminSettings = [
-    {url: '/flights', title: 'Рейсы', icon: <FlightIcon sx={{fontSize: 30}}/>},
-    {url: '/newFlight', title: 'Добавить рейс', icon: <AddIcon sx={{fontSize: 30}}/>}
+    {url: listFlightAdmin, title: 'Рейсы', icon: <FlightIcon sx={{fontSize: 30}}/>},
+    {url: addFlightAdmin, title: 'Добавить рейс', icon: <AddIcon sx={{fontSize: 30}}/>}
 ];
 
 const UserMenu = ({user}) => {
@@ -51,7 +58,7 @@ const UserMenu = ({user}) => {
             <IconButton
                 color="inherit"
                 component={Link}
-                to='/cargo/payments'
+                to={listPaymentsAdmin}
             >
                 <Badge badgeContent={payments && payments.totalElements} color="error">
                     <NotificationsIcon/>

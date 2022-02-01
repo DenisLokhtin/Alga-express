@@ -9,15 +9,25 @@ import logo from '../../../assets/logo.svg';
 import {makeStyles} from "@mui/styles";
 import UserMenu from "./Menu/UserMenu";
 import Anonymous from "./Menu/Anonymous";
+import {
+    aboutCompany,
+    contactsCompany,
+    faqCompany,
+    howCompany,
+    newsCompany,
+    root,
+    rulesCompany,
+    sitesCompany
+} from "../../../paths";
 
 const pages = [
-    {url: '/rules', title: 'правила'},
-    {url: '/about', title: 'о нас'},
-    {url: '/contacts', title: 'контакты'},
-    {url: '/how', title: 'как это работает ?'},
-    {url: '/news', title: 'новости'},
-    {url: '/sites', title: 'сайты'},
-    {url: '/faq', title: 'FAQ'},
+    {url: rulesCompany, title: 'правила'},
+    {url: aboutCompany, title: 'о нас'},
+    {url: contactsCompany, title: 'контакты'},
+    {url: howCompany, title: 'как это работает ?'},
+    {url: newsCompany, title: 'новости'},
+    {url: sitesCompany, title: 'сайты'},
+    {url: faqCompany, title: 'FAQ'},
 ];
 
 const useStyles = makeStyles({
@@ -51,7 +61,7 @@ const AppToolbar = () => {
                         component="div"
                         sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
                     >
-                        <Link to="/" className={classes.logo}>
+                        <Link to={root} className={classes.logo}>
                             <img src={logo} alt="logo" style={{width: "40px"}}/>
                             <span>Alga-Express</span>
                         </Link>
@@ -67,7 +77,7 @@ const AppToolbar = () => {
                         component="div"
                         sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
                     >
-                        <Link to="/" className={classes.logo} >
+                        <Link to={root} className={classes.logo} >
                             <img src={logo} alt="logo" style={{width: "40px"}}/>
                             <span>Alga-Express</span>
                         </Link>

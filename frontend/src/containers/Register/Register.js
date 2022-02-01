@@ -17,6 +17,7 @@ import PhoneInput from 'react-phone-input-2'
 import ru from 'react-phone-input-2/lang/ru.json'
 import './Register.css'
 import 'react-phone-input-2/lib/bootstrap.css'
+import {rulesCompany, userLogin} from "../../paths";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -183,7 +184,7 @@ const Register = () => {
 
                     <Grid item xs={12}>
                         <FormControlLabel label={<Typography component="span">
-                            Я согласен с <Link component={RouterLink} to="/rules">правилами</Link>
+                            Я согласен с <Link component={RouterLink} to={rulesCompany}>правилами</Link>
                         </Typography>} onClick={() => setCheckbox(!checkbox)} style={{'marginBottom': '5px'}}
                                           control={<Checkbox size='medium'/>}/>
                     </Grid>
@@ -209,7 +210,7 @@ const Register = () => {
                     </Grid>
 
                     <Grid item container justifyContent="flex-end">
-                        <Link component={RouterLink} variant="body2" to="/login">
+                        <Link component={RouterLink} variant="body2" to={userLogin}>
                             Уже есть аккаунт? Войти
                         </Link>
                     </Grid>
