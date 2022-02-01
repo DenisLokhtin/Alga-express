@@ -189,7 +189,7 @@ const Register = () => {
                     </Grid>
 
                     <Grid item xs={12}>
-                        <Typography component="p">
+                        <Typography>
                             Перед совершением покупок необходимо будет подробнее заполнить информацию о себе в личном кабинете
                         </Typography>
                     </Grid>
