@@ -50,7 +50,7 @@ const PackageSchema = new mongoose.Schema({
     status: {
         type: String,
         trim: true,
-        enum: ['NEW', 'REGISTERED', 'ON_WAREHOUSE', 'ON_WAY', 'PROCESSED', 'DELIVERED', 'DONE', 'ERASED'],
+        enum: ['REGISTERED', 'ON_WAREHOUSE', 'ON_WAY', 'PROCESSED', 'DELIVERED', 'DONE', 'ERASED'],
         default: 'REGISTERED',
     },
     deleted: Boolean,
