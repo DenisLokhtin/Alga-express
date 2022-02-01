@@ -86,10 +86,10 @@ const PackageSchema = new mongoose.Schema({
 });
 
 PackageSchema.pre('save',  function (next) {
-    const package = this;
+    const packages = this;
     Package.find({}, function (error, pack) {
         if (error) throw error;
-        package.checkNumber = pack.length + 1;
+        packages.cargoNumber = pack.length + 1;
         next();
     })
 });
