@@ -1,16 +1,18 @@
 import React, {useState} from 'react';
-import {Button, Divider, ListItemIcon, Menu, MenuItem} from "@mui/material";
+import {Button, Divider, IconButton, ListItemIcon, Menu, MenuItem} from "@mui/material";
 import {Link} from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import {Logout} from "@mui/icons-material";
+import Badge from "@mui/material/Badge";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import HistoryIcon from "@mui/icons-material/History";
 import AddIcon from "@mui/icons-material/Add";
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import FlightIcon from "@mui/icons-material/Flight";
 import PersonIcon from "@mui/icons-material/Person";
 import {logout} from "../../../../store/actions/usersActions";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 const userSettings = [
     {url: '', title: 'Личный кабинет', icon: <ManageAccountsIcon sx={{fontSize: 30}}/>},
@@ -28,6 +30,9 @@ const UserMenu = ({user}) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
+    const payments = useSelector(state => state.payments.payment);
+
+
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -43,6 +48,15 @@ const UserMenu = ({user}) => {
 
     return (
         <>
+            <IconButton
+                color="inherit"
+                component={Link}
+                to='/cargo/payments'
+            >
+                <Badge badgeContent={payments && payments.totalElements} color="error">
+                    <NotificationsIcon/>
+                </Badge>
+            </IconButton>
             <Button
                 sx={{color: '#F5F5F7',}}
                 color='inherit'
@@ -52,7 +66,6 @@ const UserMenu = ({user}) => {
             >
                 {user?.name}
             </Button>
-
             <Menu
                 anchorEl={anchorEl}
                 id="account-menu"
@@ -79,8 +92,8 @@ const UserMenu = ({user}) => {
                         },
                     },
                 }}
-                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                transformOrigin={{horizontal: 'right', vertical: 'top'}}
+                anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
             >
                 {userSettings.map((setting) => (
                     <MenuItem
@@ -116,7 +129,7 @@ const UserMenu = ({user}) => {
                 </MenuItem>
                 <MenuItem onClick={toLogOut}>
                     <ListItemIcon>
-                        <Logout fontSize="small" />
+                        <Logout fontSize="small"/>
                     </ListItemIcon>
                     Выйти
                 </MenuItem>

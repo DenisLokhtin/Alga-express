@@ -1,5 +1,4 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {addUserPaymentRequest} from "../actions/usersActions";
 
 export const initialState = {
     user: null,
