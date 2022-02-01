@@ -1,17 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {fetchUserPaymentRequest} from "../../store/actions/usersActions";
-import {Container, Grid, Paper, Stack, TableCell, TablePagination} from "@mui/material";
+import {Container, Grid} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import {createTheme} from "@mui/material/styles";
-import TableContainer from "@mui/material/TableContainer";
-import Table from "@mui/material/Table";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import TableBody from "@mui/material/TableBody";
-import {apiURL} from "../../config";
-import dayjs from "dayjs";
-import {Pagination} from "@mui/lab";
+import TableListPaginations from "../TableListPaginations/TableListPaginations";
 
 
 const useStyles = makeStyles(() => ({
@@ -79,7 +72,13 @@ const UserPayments = () => {
     const paymentData = useSelector(state => state.users.payment);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [totalElements, setTotalElements] = useState(0);
+
+    useEffect(() => {
+        dispatch(fetchUserPaymentRequest({page: page, limit: rowsPerPage}));
+    }, [dispatch,
+        page,
+        rowsPerPage,
+    ]);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -89,17 +88,6 @@ const UserPayments = () => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
-
-    useEffect(() => {
-        dispatch(fetchUserPaymentRequest({page: page, limit: rowsPerPage}));
-        paymentData && setTotalElements(paymentData.totalElements);
-
-    }, [dispatch,
-        paymentData && paymentData.totalElements,
-        page,
-    ]);
-
-    console.log('render', paymentData);
 
     return (
         <Container
@@ -112,54 +100,13 @@ const UserPayments = () => {
                 item
                 justifyContent='center'
             >
-                <Grid item>
-                    <TableContainer component={Paper}>
-                        <Table sx={{minWidth: 650}} aria-label="simple table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>Дата</TableCell>
-                                    <TableCell align="right">Описание</TableCell>
-                                    <TableCell align="right">Фото</TableCell>
-                                    <TableCell align="right">Текущий статус оплаты</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {paymentData && paymentData.data.map(key => (
-                                    <TableRow
-                                        key={key._id}
-                                        sx={{'&:last-child td, &:last-child th': {border: 0}}}
-                                    >
-                                        <TableCell component="th" scope="row">
-                                            {dayjs(key.date).format('DD/MM/YYYY')}
-                                        </TableCell>
-                                        <TableCell align="right">
-                                            {key.description}
-                                        </TableCell>
-                                        <TableCell align="right">
-                                            <img src={apiURL + '/uploads/' + key.image} width={200}/>
-                                        </TableCell>
-                                        <TableCell align="right">
-                                            {key && key.status ? (<p>Принят</p>) : (<p>В обработке</p>)}
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                    <Grid
-                        item
-                        justifyContent="center"
-                    >
-                        <TablePagination
-                            component="div"
-                            count={totalElements}
-                            page={page}
-                            onPageChange={handleChangePage}
-                            rowsPerPage={rowsPerPage}
-                            onRowsPerPageChange={handleChangeRowsPerPage}
-                        />
-                    </Grid>
-                </Grid>
+                {paymentData && <TableListPaginations
+                data={paymentData}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                changePage={handleChangePage}
+                changeRowsPerPage={handleChangeRowsPerPage}
+                />}
             </Grid>
         </Container>
     );

@@ -85,6 +85,15 @@ const PackageSchema = new mongoose.Schema({
 
 });
 
+PackageSchema.pre('save',  function (next) {
+    const packages = this;
+    Package.find({}, function (error, pack) {
+        if (error) throw error;
+        packages.cargoNumber = pack.length + 1;
+        next();
+    })
+});
+
 PackageSchema.plugin(idValidator);
 
 const Package = mongoose.model('Package', PackageSchema);

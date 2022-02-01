@@ -23,17 +23,22 @@ import FlightsList from "./containers/FlightsList/FlightsList";
 import UserProfileEdit from "./containers/UserProfileEdit/UserProfileEdit";
 import UserPayment from "./components/UserPayment/UserPayment";
 import UserPayments from "./components/UserPayments/UserPayments";
+import AdminPaymentsProcessing from "./components/AdminPaymentsProcessing/AdminPaymentsProcessing";
 
 const App = () => {
     return (
         <Layout>
             <Routes>
                 <Route path='/' element={<HomePage/>} />
+                <Route path='/user' element={<Register/>}/>
+                <Route path='/user/package/info/:id' element={<SpecificPackage/>}/>
+                <Route path='/user/package/register' element={<PackageRegister/>}/>
+                <Route path='/user/package/edit/:id' element={<EditPackage/>}/>
+                <Route path="/user/orders/history" element={<OrderHistory/>}/>
+                <Route path='/user/userProfile/edit/:id' element={<UserProfileEdit/>}/>
+                <Route path='/user/payments' element={<UserPayments/>}/>
+                <Route path='/user/userProfile/payments/add' element={<UserPayment/>}/>
                 <Route path='/register' element={<Register/>}/>
-                <Route path="/orders/history" element={<OrderHistory/>}/>
-                <Route path='/package/info/:id' element={<SpecificPackage/>}/>
-                <Route path='/package/register' element={<PackageRegister/>}/>
-                <Route path='/package/edit/:id' element={<EditPackage/>}/>
                 <Route path='/login' element={<Login/>}/>
                 <Route path='/rules' element={<Rules/>}/>
                 <Route path='/about' element={<AboutUs/>}/>
@@ -48,9 +53,7 @@ const App = () => {
                 <Route path='/newFlight' element={<AddFlight/>}/>
                 <Route path='/flights' element={<FlightsList/>}/>
                 <Route path='/FAQ' element={<FAQ/>}/>
-                <Route path='/userProfile/edit/:id' element={<UserProfileEdit/>}/>
-                <Route path='/userProfile/payments' element={<UserPayments/>}/>
-                <Route path='/userProfile/payments/add' element={<UserPayment/>}/>
+                <Route path='/cargo/payments' element={<AdminPaymentsProcessing/>}/>
                 <Route path='/admin_package/:id' element={<AdminEditPackage/>}/>
                 <Route
                     path="*"
