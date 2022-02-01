@@ -87,7 +87,9 @@ const AppToolbar = () => {
 
                     <Box sx={{ flexGrow: 0 }}>
                         {user ?
-                            <UserMenu user={user}/>
+                            <UserMenu
+                                user={user}
+                            />
                             :
                             <Anonymous/>
                         }

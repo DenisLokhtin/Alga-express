@@ -67,11 +67,11 @@ router.get('/payment', auth, async (req, res) => {
     let limit = 10;
 
     if (req.query.page) {
-        page = req.query.page
+        page = req.query.page;
     }
 
     if (req.query.limit) {
-        limit = req.query.limit
+        limit = req.query.limit;
     }
 
     try {
@@ -83,7 +83,6 @@ router.get('/payment', auth, async (req, res) => {
             .limit(limit)
             .skip(page * limit);
 
-        console.log(response.length);
         res.send({totalElements: size.length, data: response});
     } catch (e) {
         res.send(403).send({error: e.response.data.error});

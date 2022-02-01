@@ -35,6 +35,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "start:test": "PORT=3010 REACT_APP_ENV=test BROWSER=none react-script start",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
