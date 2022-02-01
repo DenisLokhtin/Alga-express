@@ -19,9 +19,13 @@ const SingleNews = () => {
         <>
             {news && (
                 <Paper>
-                    <p>{news.title}</p>
-                    <div id='description'  dangerouslySetInnerHTML={{ __html: news.description }}></div>
-                    <img src={apiURL+'/'+news.image} alt={'news'}/>
+                    <div>
+                        <p>{news.title}</p>
+                        <div id='description'  dangerouslySetInnerHTML={{ __html: news.description }}></div>
+                    </div>
+                   <div style={{display: "flex" ,justifyContent:"center"}}>
+                       <img style={{maxWidth: "500px", height: "100%"}} src={apiURL+'/'+news.image} alt={'news'}/>
+                   </div>
                 </Paper>
             )}
         </>
