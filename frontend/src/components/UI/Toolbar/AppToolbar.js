@@ -65,99 +65,64 @@ const AppToolbar = (props) => {
     }
 
     return (
-        <AppBar position="static" sx={{background: 'rgba(0,0,0,0.82)'}}>
-            <Container maxWidth="xl">
-                <Toolbar disableGutters>
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="div"
-                        sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
-                    >
-                        <Link to={root} className={classes.logo}>
-                            <img src={logo} alt="logo" style={{width: "40px"}}/>
-                            <span>Alga-Express</span>
-                        </Link>
-                    </Typography>
         <>
             <CssBaseline/>
             <HideOnScroll {...props}>
-            <AppBar sx={{background: 'rgba(0,0,0,0.82)'}}>
-                <Container maxWidth="xl">
-                    <Toolbar disableGutters>
-                        <Typography
-                            variant="h6"
-                            noWrap
-                            component="div"
-                            sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
-                        >
-                            <Link to="/" className={classes.logo}>
-                                <img src={logo} alt="logo" style={{width: "40px"}}/>
-                                <span>Alga-Express</span>
-                            </Link>
-                        </Typography>
+                <AppBar sx={{background: 'rgba(0,0,0,0.82)'}}>
+                    <Container maxWidth="xl">
+                        <Toolbar disableGutters>
+                            <Typography
+                                variant="h6"
+                                noWrap
+                                component="div"
+                                sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+                            >
+                                <Link to="/" className={classes.logo}>
+                                    <img src={logo} alt="logo" style={{width: "40px"}}/>
+                                    <span>Alga-Express</span>
+                                </Link>
+                            </Typography>
 
-                        <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-                            <BurgerMenu pages={pages}/>
-                        </Box>
+                            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+                                <BurgerMenu pages={pages}/>
+                            </Box>
 
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="div"
-                        sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
-                    >
-                        <Link to={root} className={classes.logo} >
-                            <img src={logo} alt="logo" style={{width: "40px"}}/>
-                            <span>Alga-Express</span>
-                        </Link>
-                    </Typography>
-                        <Typography
-                            variant="h6"
-                            noWrap
-                            component="div"
-                            sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
-                        >
-                            <Link to="/" className={classes.logo} >
-                                <img src={logo} alt="logo" style={{width: "40px"}}/>
-                                <span>Alga-Express</span>
-                            </Link>
-                        </Typography>
+                            <Typography
+                                variant="h6"
+                                noWrap
+                                component="div"
+                                sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
+                            >
+                                <Link to={root} className={classes.logo} >
+                                    <img src={logo} alt="logo" style={{width: "40px"}}/>
+                                    <span>Alga-Express</span>
+                                </Link>
+                            </Typography>
 
-                        <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                            {pages.map((page) => (
-                                <Button
-                                    key={page.title}
-                                    onClick={() => navigateTo(page.url)}
-                                    sx={{ my: 2, color: 'white', display: 'block' }}
-                                >
-                                    {page.title}
-                                </Button>
-                            ))}
-                        </Box>
+                            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                                {pages.map((page) => (
+                                    <Button
+                                        key={page.title}
+                                        onClick={() => navigateTo(page.url)}
+                                        sx={{ my: 2, color: 'white', display: 'block' }}
+                                    >
+                                        {page.title}
+                                    </Button>
+                                ))}
+                            </Box>
 
-                    <Box sx={{ flexGrow: 0 }}>
-                        {user ?
-                            <UserMenu
-                                user={user}
-                            />
-                            :
-                            <Anonymous/>
-                        }
-                    </Box>
-                </Toolbar>
-            </Container>
-        </AppBar>
-                        <Box sx={{ flexGrow: 0 }}>
-                            {user ?
-                                <UserMenu user={user}/>
-                                :
-                                <Anonymous/>
-                            }
-                        </Box>
-                    </Toolbar>
-                </Container>
-            </AppBar>
+                            <Box sx={{ flexGrow: 0 }}>
+                                {user ?
+                                    <UserMenu
+                                        user={user}
+                                    />
+                                    :
+                                    <Anonymous/>
+                                }
+                            </Box>
+                        </Toolbar>
+                    </Container>
+                </AppBar>
             </HideOnScroll>
             <Toolbar />
         </>
