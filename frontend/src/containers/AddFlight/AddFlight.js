@@ -58,9 +58,6 @@ const AddFlight = () => {
         dispatch(postFlightRequest({flightNumber, navigate}));
     }
 
-    const buttonDisable = () => {
-        return flightNumber.number.length === 0;
-    };
 
     const getFieldError = fieldName => {
         try {
@@ -98,7 +95,7 @@ const AddFlight = () => {
                             color="primary"
                             className={classes.btn}
                             loading={loading}
-                            disabled={buttonDisable()}
+                            disabled={!flightNumber.number}
                         >
                             Сохранить рейс
                         </ButtonWithProgress>

@@ -17,16 +17,11 @@ import MenuIcon from "@mui/icons-material/Menu";
 
 const useStyles = makeStyles({
     paper: {
-        width: '80vw',
+        width: '100%',
         height: '100%',
         zIndex: 99,
         color: '#F5F5F7',
     },
-    contentPaper: {
-        background: '#424245',
-        width: '100%',
-        height: '100%'
-    }
 })
 
 const BurgerMenu = ({pages}) => {
@@ -47,6 +42,15 @@ const BurgerMenu = ({pages}) => {
             </IconButton>
 
             <SwipeableDrawer
+                sx={{
+                    width: 240,
+                    flexShrink: 0,
+                    '& .MuiDrawer-paper': {
+                        height: '100%' ,
+                        width: '70vw',
+                        boxSizing: 'border-box',
+                        background: '#424245',
+                    },}}
                 anchor='left'
                 open={open}
                 onClose={() => setOpen(false)}
@@ -57,7 +61,7 @@ const BurgerMenu = ({pages}) => {
                     onKeyDown={() => setOpen(false)}
                 >
                     <Box>
-                        <Toolbar sx={{background: 'rgba(0,0,0,0.82)'}}>
+                        <Toolbar sx={{background: 'grey'}}>
                             <IconButton
                                 size="large"
                                 aria-label="account of current user"
@@ -71,7 +75,7 @@ const BurgerMenu = ({pages}) => {
                         </Toolbar>
                     </Box>
 
-                    <Box className={classes.contentPaper}>
+                    <Box>
                         <List>
                             {pages.map(item => (
                                 <ListItemButton
