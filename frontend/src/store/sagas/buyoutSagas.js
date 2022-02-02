@@ -2,6 +2,7 @@ import {put, takeEvery} from 'redux-saga/effects';
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
 import {
+    addBuyoutFailure,
     addBuyoutRequest,
     addBuyoutSuccess,
     deleteBuyoutFailure,

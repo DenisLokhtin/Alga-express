@@ -1,18 +1,18 @@
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {addMarketRequest} from "../../store/actions/marketActions";
-import {Grid} from "@mui/material";
+import {Container, Grid} from "@mui/material";
 import FormElement from "../UI/Form/FormElement";
 import FileInput from "../UI/FileInput/FileInput";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {makeStyles} from "@mui/styles";
+import {addBuyoutRequest} from "../../store/actions/buyoutActions";
 
 
 const useStyles = makeStyles(theme => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
-    container:{
+    container: {
         width: "90%",
         margin: "0 auto",
         marginTop: theme.spacing(2),
@@ -33,10 +33,10 @@ const Buyout = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const loading = useSelector(state => state.buyouts.createLoading);
-    const error = useSelector(state => state.market.createError);
+    const error = useSelector(state => state.buyouts.createError);
 
-    const [picture, setPicture] = useState({
-        title: "",
+    const [buyout, setBuyout] = useState({
+        description: "",
         image: null,
         url: "",
     });
@@ -44,13 +44,13 @@ const Buyout = () => {
     const submitFormHandler = e => {
         e.preventDefault();
         const formData = new FormData();
-        Object.keys(picture).forEach(key => {
-            formData.append(key, picture[key]);
+        Object.keys(buyout).forEach(key => {
+            formData.append(key, buyout[key]);
         });
 
-        dispatch(addMarketRequest(formData));
-        setPicture({
-            title: "",
+        dispatch(addBuyoutRequest(formData));
+        setBuyout({
+            description: "",
             image: null,
             url: "",
         })
@@ -58,8 +58,8 @@ const Buyout = () => {
 
     const inputChangeHandler = e => {
         const name = e.target.name;
-        const value=e.target.value;
-        setPicture(prevState => {
+        const value = e.target.value;
+        setBuyout(prevState => {
             return {...prevState, [name]: value};
         });
     };
@@ -67,7 +67,7 @@ const Buyout = () => {
     const fileChangeHandler = e => {
         const name = e.target.name;
         const file = e.target.files[0];
-        setPicture(prevState => {
+        setBuyout(prevState => {
             return {...prevState, [name]: file};
         });
     };
@@ -81,61 +81,65 @@ const Buyout = () => {
     };
 
     return (
-        <Grid
-            container
-            direction="column"
-            spacing={2}
-            component="form"
-            autoComplete="off"
-            onSubmit={submitFormHandler}
-            className={classes.container}
-            noValidate
-        >
-            <h3 className={classes.title}>Добавить в список сайтов</h3>
-            <FormElement
-                required
-                label="Название"
-                name="title"
-                value={picture.title}
-                onChange={inputChangeHandler}
-                error={getFieldError('title')}
-            />
-
-            <FormElement
-                required
-                label="Ссылка"
-                name="url"
-                value={picture.url}
-                onChange={inputChangeHandler}
-                error={getFieldError('url')}
-
-            />
-
-            <Grid item xs>
-                <FileInput
+        <Container
+            component="section"
+            maxWidth="md"
+            className={classes.container}>
+            <Grid
+                container
+                direction="column"
+                spacing={2}
+                component="form"
+                autoComplete="off"
+                onSubmit={submitFormHandler}
+                noValidate
+            >
+                <h3 className={classes.title}>Заказать выкуп</h3>
+                <FormElement
                     required
-                    label="Логотип"
-                    name="image"
-                    onChange={fileChangeHandler}
-                    error={Boolean(getFieldError('image'))}
-                    helperText={getFieldError('image')}
+                    label="Описание товара (размер, цвет и тд.)"
+                    name="description"
+                    value={buyout.description}
+                    onChange={inputChangeHandler}
+                    error={getFieldError('description')}
                 />
-            </Grid>
 
-            <Grid item xs={12}>
-                <ButtonWithProgress
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    className={classes.submit}
-                    loading={loading}
-                    disabled={loading}
-                >
-                    Добавить
-                </ButtonWithProgress>
+                <FormElement
+                    required
+                    label="Ссылка"
+                    name="url"
+                    value={buyout.url}
+                    onChange={inputChangeHandler}
+                    error={getFieldError('url')}
+
+                />
+
+                <Grid item xs>
+                    <FileInput
+                        required
+                        label="Скриншот или фото желаемого товара"
+                        name="image"
+                        onChange={fileChangeHandler}
+                        error={Boolean(getFieldError('image'))}
+                        helperText={getFieldError('image')}
+                    />
+                </Grid>
+
+                <Grid item xs={12}>
+                    <ButtonWithProgress
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                        loading={loading}
+                        disabled={loading}
+                    >
+                        Заказать
+                    </ButtonWithProgress>
+                </Grid>
             </Grid>
-        </Grid>
+        </Container>
     );
 };
 
