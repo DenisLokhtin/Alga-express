@@ -25,9 +25,10 @@ function* postFlight({payload: data}) {
     }
 }
 
-function* getFlights() {
+function* getFlights({payload}) {
     try {
-        const response = yield axiosApi.get('/flights');
+        const response = yield axiosApi.get(`/flights?page=${payload.page}&limit=${payload.limit}&status=${payload.status}`);
+        console.log(response.data);
         yield put(getFlightsSuccess(response.data));
     } catch (e) {
         yield put(getFlightsFailure(e.response.data));
