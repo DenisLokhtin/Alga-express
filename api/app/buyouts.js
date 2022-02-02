@@ -10,6 +10,7 @@ const permit = require("../middleware/permit");
 
 
 
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, config.uploadPath);
@@ -23,10 +24,10 @@ const upload = multer({storage});
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/', auth, permit('admin'),async (req, res) => {
     try {
-        const buyouts = await Buyout.find({deleted: {$ne : true}});
-        res.send(buyouts);
+        const buyouts = await Buyout.find({deleted: {$ne : true}}).populate('user', 'name');
+        res.send({total: buyouts.length, data: buyouts});
     } catch (e) {
         res.sendStatus(500);
     }
@@ -38,7 +39,8 @@ router.post('/', auth ,upload.single('image'), async (req, res) => {
             description: req.body.description,
             url: req.body.url,
             datetime:dayjs().format('DD/MM/YYYY'),
-            user: req.user._id
+            user: req.user._id,
+            country: req.body.country,
         };
 
         if(req.file){

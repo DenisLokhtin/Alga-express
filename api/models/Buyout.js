@@ -8,7 +8,7 @@ const BuyoutSchema = new mongoose.Schema({
     },
     image: {
         type: String,
-        required: 'Логотип * обязательное поле',
+        required: 'Скриншот или фото * обязательное поле',
     },
     country: {
         type: String,
@@ -33,6 +33,11 @@ const BuyoutSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
+    status: {
+        type: Boolean,
+        default: false,
+    },
+
 });
 
 BuyoutSchema.plugin(idValidator);

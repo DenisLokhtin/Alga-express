@@ -58,6 +58,8 @@ const Buyout = () => {
         })
     };
 
+    console.log('state', buyout)
+
     const inputChangeHandler = e => {
         const name = e.target.name;
         const value = e.target.value;
