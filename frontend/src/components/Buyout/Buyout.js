@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {Container, Grid} from "@mui/material";
+import {Container, FormControl, FormHelperText, Grid, InputLabel, MenuItem, Select} from "@mui/material";
 import FormElement from "../UI/Form/FormElement";
 import FileInput from "../UI/FileInput/FileInput";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
@@ -39,6 +39,7 @@ const Buyout = () => {
         description: "",
         image: null,
         url: "",
+        country:"",
     });
 
     const submitFormHandler = e => {
@@ -53,6 +54,7 @@ const Buyout = () => {
             description: "",
             image: null,
             url: "",
+            country: "",
         })
     };
 
@@ -95,6 +97,23 @@ const Buyout = () => {
                 noValidate
             >
                 <h3 className={classes.title}>Заказать выкуп</h3>
+                <FormControl variant="standard" fullWidth error={Boolean(getFieldError('country'))}>
+                    <InputLabel id="demo-controlled-open-select-label">Страна</InputLabel>
+                    <Select
+                        labelId="demo-controlled-open-select-label"
+                        id="demo-controlled-open-select"
+                        value={buyout.country}
+                        label="Из какой страны выкупить"
+                        name="country"
+                        required
+                        onChange={inputChangeHandler}
+                    >
+                        <MenuItem value={'USA'}>Америка</MenuItem>
+                        <MenuItem value={'Turkey'}>Турция</MenuItem>
+                        <MenuItem value={'China'}>Китай</MenuItem>
+                    </Select>
+                    <FormHelperText error={true}>{error?.errors?.['country']?.message}</FormHelperText>
+                </FormControl>
                 <FormElement
                     required
                     label="Описание товара (размер, цвет и тд.)"
