@@ -23,35 +23,55 @@ import FlightsList from "./containers/FlightsList/FlightsList";
 import UserProfileEdit from "./containers/UserProfileEdit/UserProfileEdit";
 import UserPayment from "./components/UserPayment/UserPayment";
 import UserPayments from "./components/UserPayments/UserPayments";
+import WarehousemanStatusEdit from "./containers/WarehousemanStatusEdit/WarehousemanStatusEdit";
+import AdminPaymentsProcessing from "./components/AdminPaymentsProcessing/AdminPaymentsProcessing";
+import {
+    aboutCompany, addFlightAdmin,
+    addUserPayment, contactsCompany, editPackageAdmin,
+    editPackageUser,
+    editUserProfile, faqCompany, howCompany, listFlightAdmin, listPaymentsAdmin,
+    newPackageRegister, newsCompany, newsEditCompany, newsIdCompany,
+    newUserRegister,
+    packageHistory,
+    packageInfoId, processingTrackNumbersAdmin,
+    root, rulesCompany, sitesCompany,
+    user,
+    userLogin,
+    userPackageHistory,
+    userPaymentsList
+} from "./paths";
 
 const App = () => {
+
     return (
         <Layout>
             <Routes>
-                <Route path='/' element={<HomePage/>} />
-                <Route path='/register' element={<Register/>}/>
-                <Route path="/orders/history" element={<OrderHistory/>}/>
-                <Route path='/package/info/:id' element={<SpecificPackage/>}/>
-                <Route path='/package/register' element={<PackageRegister/>}/>
-                <Route path='/package/edit/:id' element={<EditPackage/>}/>
-                <Route path='/login' element={<Login/>}/>
-                <Route path='/rules' element={<Rules/>}/>
-                <Route path='/about' element={<AboutUs/>}/>
-                <Route path='/contacts' element={<Contacts/>}/>
-                <Route path='/how' element={<HowItWorks/>}/>
-                <Route path='/news' element={<News/>}/>
-                <Route path='/news/:id' element={<SingleNews/>}/>
-                <Route path='/news/edit/:id' element={<EditNews/>}/>
-                <Route path='/sites' element={<MarketSites/>}/>
-                <Route path='/faq' element={<FAQ/>}/>
-                <Route path='/admin/package/:id' element={<AdminEditPackage/>}/>
-                <Route path='/newFlight' element={<AddFlight/>}/>
-                <Route path='/flights' element={<FlightsList/>}/>
-                <Route path='/FAQ' element={<FAQ/>}/>
-                <Route path='/userProfile/edit/:id' element={<UserProfileEdit/>}/>
-                <Route path='/userProfile/payments' element={<UserPayments/>}/>
-                <Route path='/userProfile/payments/add' element={<UserPayment/>}/>
-                <Route path='/admin_package/:id' element={<AdminEditPackage/>}/>
+                <Route path={root} element={<HomePage/>} />
+                <Route path={user} element={<Register/>}/>
+                <Route path={packageInfoId} element={<SpecificPackage/>}/>
+                <Route path={newPackageRegister} element={<PackageRegister/>}/>
+                <Route path={editPackageUser} element={<EditPackage/>}/>
+                <Route path={packageHistory} element={<OrderHistory/>}/>
+                <Route path={editUserProfile} element={<UserProfileEdit/>}/>
+                <Route path={userPaymentsList} element={<UserPayments/>}/>
+                <Route path={addUserPayment} element={<UserPayment/>}/>
+                <Route path={newUserRegister} element={<Register/>}/>
+                <Route path={userPackageHistory} element={<OrderHistory/>}/>
+                <Route path={processingTrackNumbersAdmin} element={<WarehousemanStatusEdit/>}/>
+                <Route path={userLogin} element={<Login/>}/>
+                <Route path={rulesCompany} element={<Rules/>}/>
+                <Route path={aboutCompany} element={<AboutUs/>}/>
+                <Route path={contactsCompany} element={<Contacts/>}/>
+                <Route path={howCompany} element={<HowItWorks/>}/>
+                <Route path={newsCompany} element={<News/>}/>
+                <Route path={newsIdCompany} element={<SingleNews/>}/>
+                <Route path={newsEditCompany} element={<EditNews/>}/>
+                <Route path={sitesCompany} element={<MarketSites/>}/>
+                <Route path={faqCompany} element={<FAQ/>}/>
+                <Route path={editPackageAdmin} element={<AdminEditPackage/>}/>
+                <Route path={addFlightAdmin} element={<AddFlight/>}/>
+                <Route path={listFlightAdmin} element={<FlightsList/>}/>
+                <Route path={listPaymentsAdmin} element={<AdminPaymentsProcessing/>}/>
                 <Route
                     path="*"
                     element={
