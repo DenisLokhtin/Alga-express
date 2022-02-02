@@ -14,7 +14,7 @@ export function* rootSagas() {
         ...newsSaga,
         ...marketSaga,
         ...flightSagas,
-        ...paymentSagas
+        ...paymentSagas,
         ...buyoutSagas,
     ]);
 }
