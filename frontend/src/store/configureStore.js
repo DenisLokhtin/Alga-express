@@ -9,6 +9,7 @@ import usersSlice, {initialState} from "./slices/usersSlice";
 import newsSlice from "./slices/newsSlice";
 import marketSlice from "./slices/marketSlice";
 import flightSlice from "./slices/flightSlice";
+import paymentSlice from "./slices/paymentSlices";
 
 const rootReducer = combineReducers({
     'users': usersSlice.reducer,
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
     'package': packageSlice.reducer,
     'news':newsSlice.reducer,
     'flights': flightSlice.reducer,
+    'payments': paymentSlice.reducer,
 });
 
 const persistedState = loadFromLocalStorage();

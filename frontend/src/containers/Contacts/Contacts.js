@@ -18,7 +18,12 @@ const Contacts = () => {
 
     return (
         <Container style={{'textAlign': 'center'}} component='div'>
-            <Container style={{'border': '2px solid #2E2E2E', 'borderRadius': '3px', 'margin': '10px 0 20px 0', 'textAlign': 'left'}}
+            <Container style={{
+                'border': '2px solid #2E2E2E',
+                'borderRadius': '3px',
+                'margin': '10px 0 20px 0',
+                'textAlign': 'left'
+            }}
                        component='div'>
                 <div className={classes.paper}>
                     <Typography component="h1" variant="h3">
@@ -27,23 +32,23 @@ const Contacts = () => {
                 </div>
                 <Grid style={{'marginBottom': '15px'}} component='div'>
                     <Typography component="div">
-                        <Typography style={{'fontWeight': 'Bold'}} component="p">
+                        <Typography style={{'fontWeight': 'Bold'}}>
                             Бишкек
                         </Typography>
-                        <Typography component="p">
+                        <Typography>
                             Юнусалиева, 142
                         </Typography>
-                        <Typography component="p">
+                        <Typography>
                             Тел.: 0 774 769 434 (Выкуп), ️0 702 465 333 (Склад)
                         </Typography>
-                        <Typography component="p">
+                        <Typography>
                             <Link href="https://api.whatsapp.com/send?phone=996774769434" component="a">WhatsApp</Link>
                         </Typography>
-                        <Typography component="p">
+                        <Typography>
                             <Link href="https://www.instagram.com/alga_express/" component="a">Instagram</Link>
                         </Typography>
                         <Typography component="div">
-                            <Typography component="p">
+                            <Typography>
                                 График работы:
                             </Typography>
                             <ul style={{'margin': '0px'}}>
@@ -56,14 +61,14 @@ const Contacts = () => {
                                 <li>Вс: 11:00-15:00</li>
                             </ul>
                         </Typography>
-                        <Typography style={{'fontWeight': 'Bold', 'marginTop': '10px'}} component="p">
+                        <Typography style={{'fontWeight': 'Bold', 'marginTop': '10px'}}>
                             Склад в Китае
                         </Typography>
                         <Typography component="div">
                             Адрес склада в Китае
                         </Typography>
 
-                        <Typography style={{'fontWeight': 'Bold', 'marginTop': '10px'}} component="p">
+                        <Typography style={{'fontWeight': 'Bold', 'marginTop': '10px'}}>
                             Склад в Турции
                         </Typography>
                         <Typography component="div">
@@ -78,11 +83,11 @@ const Contacts = () => {
                             <Typography component="div">Soyad: Фамилия</Typography>
                         </Typography>
 
-                        <Typography style={{'fontWeight': 'Bold', 'marginTop': '10px'}} component="p">
+                        <Typography style={{'fontWeight': 'Bold', 'marginTop': '10px'}}>
                             Склад в США
                         </Typography>
                         <Typography component="div">
-                            <Typography style={{'fontStyle': 'italic', 'margin': '5px 0 5px 0'}} component="p">
+                            <Typography style={{'fontStyle': 'italic', 'margin': '5px 0 5px 0'}}>
                                 Безналоговый штат (по поводу заказа электроники: мобильных телефонов, смарт часов,
                                 ноутбуков
                                 обращайтесь к менеджеру)
@@ -97,27 +102,25 @@ const Contacts = () => {
                             <Typography component="div">Телефон: *+1 (302) 669-1014*</Typography>
                         </Typography>
 
-                        <Typography style={{'fontWeight': 'Bold', 'marginTop': '10px'}} component="p">
+                        <Typography style={{'fontWeight': 'Bold', 'marginTop': '10px'}}>
                             Информация
                         </Typography>
                         <Typography component="div">
-                            <Typography style={{'margin': '5px 0 5px 0'}} component="p">
+                            <Typography style={{'margin': '5px 0 5px 0'}}>
                                 От вас требуется фото вашего паспорта с обеих сторон для растаможки, email.
                                 Прошу Вас обратить внимание на адрес 41 "B" не пропустите, при сохранении адреса на
                                 сайтах
                                 сохраняйте тот, который вы ввели вручную, а не тот который предлагает сайт). После
                                 оформления заказа на наш склад, как только вам выдадут трек-код, отправьте мне в
-                                обязательном порядке следующую информацию трек-код, вид посылки, цены, магазин.
-                                <b> Это для регистрации, иначе ваша посылка не вылетит!</b>
+                                обязательном порядке следующую информацию трек-код, вид посылки, цены, магазин. Это для регистрации, иначе ваша посылка не вылетит!
                             </Typography>
-                            <Typography style={{'margin': '5px 0 5px 0'}} component="p">
-                                <Typography component="p">
+                            <Typography style={{'margin': '5px 0 5px 0'}} component="div">
+                                <Typography>
                                     Сроки: 5-7 дней с момента вылета груза. Отправка каждые 10-12 дней.
                                 </Typography>
                                 Округление от 0,1 до 0,5 - как 0,5, выше всё по факту.
                             </Typography>
                         </Typography>
-
                     </Typography>
                 </Grid>
             </Container>

@@ -109,25 +109,19 @@ const UserProfileEdit = () => {
         email: '',
         avatar: null,
     });
-
     const [phone, setPhone] = useState([
         {
             number: '',
             type: '',
         }
     ]);
-
     const [passport, setPassport] = useState([]);
-
-
     const [disabled, setDisabled] = useState(false);
-
     const [refresh, setRefresh] = useState(true);
+    const [expanded, setExpanded] = useState('panel1');
 
     let imageURL = noImage;
     let imagesPassport = [];
-
-    const [expanded, setExpanded] = useState('panel1');
 
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
@@ -171,6 +165,11 @@ const UserProfileEdit = () => {
         if (!(phone.length <= 3)) {
             setDisabled(true);
         }
+        if (phone.length <= 3) {
+            setDisabled(false);
+        }
+
+        console.log(phone.length);
     }, [disabled, phone.length]);
 
     const inputChangeHandler = e => {

@@ -10,6 +10,7 @@ import Paper from '@mui/material/Paper';
 import dayjs from "dayjs";
 import {makeStyles} from "@mui/styles";
 import {Link} from "react-router-dom";
+import {packageInfo} from "../../paths";
 
 const useStyles = makeStyles({
     tableContainer: {
@@ -55,7 +56,7 @@ const OrderHistoryItem = ({orders}) => {
                     {orders[0]?.packages.map((order) => (
                         <StyledTableRow key={order._id}>
                             <StyledTableCell align="center">
-                                <Link to={`/package/info/${order._id}`}>{order.title}</Link>
+                                <Link to={`${packageInfo}${order._id}`}>{order.title}</Link>
                             </StyledTableCell>
                             <StyledTableCell align="center">{order.cargoNumber}</StyledTableCell>
                             <StyledTableCell

@@ -192,7 +192,6 @@ const AdminEditPackage = () => {
                                 required
                                 onChange={inputChangeHandler}
                             >
-                                <MenuItem value={'NEW'}>Новый</MenuItem>
                                 <MenuItem value={'REGISTERED'}>Оформлен</MenuItem>
                                 <MenuItem value={'ON_WAREHOUSE'}>На складе</MenuItem>
                                 <MenuItem value={'ON_WAY'}>Вылетел</MenuItem>

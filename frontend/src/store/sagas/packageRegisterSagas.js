@@ -19,7 +19,7 @@ import {
     getOrderByIdSuccess,
     getOrdersHistoryError,
     getOrdersHistoryRequest,
-    getOrdersHistorySuccess,
+    getOrdersHistorySuccess, changeStatusesError, changeStatusesSuccess, changeStatusesRequest,
 } from "../actions/packageRegisterActions";
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
@@ -63,7 +63,6 @@ function* adminPackageEditSaga({payload: id}) {
     }
 }
 
-
 function* packageEditAdminSagas({payload}) {
     try {
         console.log('in saga id', payload.id);
@@ -76,15 +75,13 @@ function* packageEditAdminSagas({payload}) {
     }
 }
 
-
-
 function* getOrdersHistorySagas({payload: pageData}) {
     try {
         const response = yield axiosApi.get(`/packages?page=${pageData.page - 1}&limit=${pageData.limit}`);
         yield put(getOrdersHistorySuccess(response.data));
     } catch (error) {
         yield put(getOrdersHistoryError(error.response.statusText || error.message));
-        toast.error( error.response.statusText || error.message, {
+        toast.error(error.response.statusText || error.message, {
             autoClose: 5000,
         });
     }
@@ -102,6 +99,25 @@ function* getOrderById({payload: orderId}) {
     }
 }
 
+function* changeStatuses({payload: packageData}) {
+    try {
+        const response = yield axiosApi.put('/packages', packageData);
+        yield put(changeStatusesSuccess());
+
+        if (!response.data.length) {
+            toast.success(response.data.message);
+        }
+
+    } catch (error) {
+        if (error.response.data && error.response.data.length > 0) {
+            toast.error('Некоторые трек-номера не были найдены в базе', {
+                autoClose: 5000,
+            });
+        }
+        yield put(changeStatusesError(error.response.data));
+    }
+}
+
 const packageSagas = [
     takeEvery(createPackageRequest, packageRegisterSagas),
     takeEvery(changePackageRequest, packageChangeSagas),
@@ -110,6 +126,7 @@ const packageSagas = [
     takeEvery(editAdminPackageRequest, packageEditAdminSagas),
     takeEvery(getOrdersHistoryRequest, getOrdersHistorySagas),
     takeEvery(getOrderByIdRequest, getOrderById),
+    takeEvery(changeStatusesRequest, changeStatuses),
 ];
 
 export default packageSagas;

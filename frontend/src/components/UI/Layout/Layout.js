@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container, CssBaseline} from "@mui/material";
+import {CssBaseline} from "@mui/material";
 import AppToolbar from "../Toolbar/AppToolbar";
 import Footer from "../Footer/Footer";
 import "./Layout.css";

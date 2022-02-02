@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {Grid} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import {addNewsRequest} from "../../store/actions/newsActions";
+import {Editor} from "@tinymce/tinymce-react";
 
 const useStyles = makeStyles(theme => ({
     submit: {
@@ -39,6 +40,7 @@ const AddNewsAdmin = () => {
         description: "",
     });
 
+
     const submitFormHandler = e => {
         e.preventDefault();
         const formData = new FormData();
@@ -52,6 +54,7 @@ const AddNewsAdmin = () => {
             description: "",
         })
     };
+
 
     const inputChangeHandler = e => {
         const name = e.target.name;
@@ -77,6 +80,12 @@ const AddNewsAdmin = () => {
         }
     };
 
+    const handleEditorChange = (e) => {
+        setNews(prevState => {
+            return { ...prevState,description: e.target.getContent()}
+                })
+    }
+
     return (
         <Grid
             container
@@ -98,15 +107,26 @@ const AddNewsAdmin = () => {
                 error={getFieldError('title')}
             />
 
-            <FormElement
-                required
-                label="Текст новости"
-                name="description"
-                value={news.description}
-                onChange={inputChangeHandler}
-                error={getFieldError('description')}
+            <Grid item>
+                <Editor
+                    apiKey='rd2sys4x7q7uu8l0tvehv3sl6wisqzs1pp15gvq3jwssgvft'
+                    initialValue="<p>Текст новости ... </p>"
+                    init={{
+                        height: 500,
+                        menubar: false,
+                        plugins: [
+                            'advlist autolink lists link image',
+                            'charmap print preview anchor help',
+                            'searchreplace visualblocks code',
+                            'insertdatetime media table paste wordcount'
+                        ],
+                        toolbar:
+                            'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolory | outdent indent'
+                    }}
+                    onChange={handleEditorChange}
+                />
+            </Grid>
 
-            />
             <Grid item xs>
                 <FileInput
                     required

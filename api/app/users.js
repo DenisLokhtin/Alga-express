@@ -23,7 +23,6 @@ router.post('/', async (req, res) => {
 router.post('/sessions', async (req, res) => {
   let user = await User.findOne({email: req.body.email});
 
-  console.log(user);
   if (!user) {
     return res.status(401).send({message: 'Пожалуйста, введите корректный email-адрес или Пароль'});
   }
