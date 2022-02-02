@@ -5,6 +5,7 @@ import newsSaga from "./sagas/newsSagas";
 import marketSaga from "./sagas/marketSagas";
 import flightSagas from "./sagas/flightSagas";
 import buyoutSagas from "./sagas/buyoutSagas";
+import paymentSagas from "./sagas/paymentSagas";
 
 export function* rootSagas() {
     yield all([
@@ -13,6 +14,7 @@ export function* rootSagas() {
         ...newsSaga,
         ...marketSaga,
         ...flightSagas,
+        ...paymentSagas
         ...buyoutSagas,
     ]);
 }

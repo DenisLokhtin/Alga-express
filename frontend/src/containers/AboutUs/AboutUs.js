@@ -29,7 +29,7 @@ const AboutUs = () => {
                     </Typography>
                 </div>
                 <Grid style={{'marginBottom': '15px'}} component='div'>
-                    <Typography style={{'fontWeight': 'Bold', 'marginTop': '10px'}} component="p">
+                    <Typography style={{'fontWeight': 'Bold', 'marginTop': '10px'}}>
                         Мы ценим своих клиентов
                     </Typography>
                     В Alga Express мы понимаем, что наши клиенты ценят свое время, деньги и хотят получать только лучшие
@@ -39,7 +39,7 @@ const AboutUs = () => {
                     на
                     рынке Бишкека.
                     Цель нашей компании - сделать интернет-шоппинг доступным для большинства кыргызстанцев.
-                    <Typography style={{'fontWeight': 'Bold', 'marginTop': '10px'}} component="p">
+                    <Typography style={{'fontWeight': 'Bold', 'marginTop': '10px'}}>
                         Почему именно мы?
                     </Typography>
                     Количество людей, которые заказывают товары в интернет-магазинах, постоянно растет. Доставка из
@@ -48,7 +48,7 @@ const AboutUs = () => {
                     Alga Express. Мы используем опыт самых успешных компаний в этой сфере, чтобы подарить своим клиентам
                     наиболее качественные, доступные и быстрые услуги по доставке товаров из интернет-магазинов.
 
-                    <Typography style={{'fontWeight': 'Bold', 'marginTop': '10px'}} component="p">
+                    <Typography style={{'fontWeight': 'Bold', 'marginTop': '10px'}}>
                         Как это работает?
                     </Typography>
                     После оформления покупок в интернет-магазинах все заказы поступают на наш основной склад. Далее

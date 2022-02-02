@@ -11,13 +11,13 @@ const config = require('./config');
 const packages = require('./app/packages');
 const flight = require('./app/flights');
 const buyouts = require('./app/buyouts');
+const administration = require('./app/administration');
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(express.static('public'));
 
-const port = 8000;
 
 app.use('/news', news);
 app.use('/users', users);
@@ -26,12 +26,13 @@ app.use('/packages', packages);
 app.use('/userEdit', userEdit);
 app.use('/flights', flight);
 app.use('/buyouts', buyouts);
+app.use('/cargo', administration);
 
 const run = async () => {
     await mongoose.connect(config.db.url);
 
-    app.listen(port, () => {
-        console.log('Port start on port: ', port);
+    app.listen(config.port, () => {
+        console.log('Port start on port: ', config.port);
     });
 
     exitHook(() => {

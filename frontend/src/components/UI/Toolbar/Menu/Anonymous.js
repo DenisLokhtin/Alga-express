@@ -2,6 +2,7 @@ import React from 'react';
 import LoginIcon from "@mui/icons-material/Login";
 import {Link} from "react-router-dom";
 import {Button} from "@mui/material";
+import {userLogin} from "../../../../paths";
 
 const Anonymous = () => {
     return (
@@ -11,7 +12,7 @@ const Anonymous = () => {
             startIcon={<LoginIcon sx={{fontSize: 30, color: "#F5F5F7"}}/>}
             variant="text"
             component={Link}
-            to={'/login'}
+            to={userLogin}
         >
             Войти
         </Button>

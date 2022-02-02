@@ -2,11 +2,11 @@ const express = require("express");
 const Package = require('../models/Package');
 const filter = require("../middleware/filter");
 const auth = require("../middleware/auth");
-const packageValidate = require("../middleware/packageValidate");
 const permit = require("../middleware/permit");
 const userEdit = require("../middleware/userEdit");
 const adminEdit = require("../middleware/adminEdit");
 const Tariff = require("../models/Tariff");
+const NotFoundTrackNumber = require('../models/NotFoundTrackNumber');
 
 const router = express.Router();
 
@@ -66,9 +66,9 @@ router.get('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req, re
             const packageFind = await Package.findById(req.params.id)
                 .populate({path: 'flight user', select: 'name number description depart_date arrived_date'})
                 .select('trackNumber title amount price country status date cargoNumber urlPackage');
-         if (packageFind.user._id.toString() === req.user._id.toString()) {
-             return res.send(packageFind);
-         }
+            if (packageFind.user._id.toString() === req.user._id.toString()) {
+                return res.send(packageFind);
+            }
         }
 
         if ((req.user.role === 'admin') || (req.user.role === 'warehouseman')) {
@@ -97,17 +97,80 @@ router.post('/', auth, permit('admin', 'warehouseman', 'user'), async (req, res)
             user: req.user._id
         };
 
+        const notFoundTrackNumber = await NotFoundTrackNumber.findOne({trackNumber: req.body.trackNumber});
+
+        if (packageData) {
+            packageData.status = notFoundTrackNumber.status;
+        }
+
         const newPackage = new Package(packageData);
 
         await newPackage.save();
         res.send(newPackage);
 
     } catch (error) {
-        console.log('==========================================');
         console.log(await Package.find({type: Number}));
         res.status(400).send(error);
     }
 });
+
+router.put('/', async (req, res) => {
+    const notFoundTrackNumbers = [];
+
+    const separatedBySpaces = req.body.trackNumbers.split(' ');
+
+    const trackNumbersData = separatedBySpaces.map(trackNumber => (
+        {trackNumber: trackNumber.replace(/(\r\n|\n|\r)/gm, ''), status: req.body.status})
+    );
+
+    const filtered = trackNumbersData.filter(packageStatus => packageStatus.trackNumber !== '');
+
+    const uniquePackages = filtered.filter((packageInfo, index, self) =>
+            index === self.findIndex((packageData) => (
+                packageData.trackNumber === packageInfo.trackNumber
+            ))
+    );
+
+    try {
+        if (req.body.trackNumbers.length === 0) {
+            return res.status(400).send({
+                errors: {
+                    trackNumber: {message: "Введите трек-номера"},
+                },
+            });
+        }
+
+        for (const key of uniquePackages) {
+            const updatedStatuses = await Package.findOneAndUpdate(
+                {trackNumber: key.trackNumber},
+                {status: key.status},
+                {new: true, runValidators: true});
+
+            if (!updatedStatuses) {
+                const notFoundTrackNumbersData = {
+                    notFoundTrackNumber: key.trackNumber,
+                    status: key.status,
+                };
+
+                const notFoundTrackNumber = new NotFoundTrackNumber(notFoundTrackNumbersData);
+
+                await notFoundTrackNumber.save();
+
+                notFoundTrackNumbers.push({trackNumber: key.trackNumber});
+            }
+        }
+
+        if (notFoundTrackNumbers.length > 0) {
+            res.status(404).send(notFoundTrackNumbers);
+        } else {
+            res.send({message: 'Трек-номера были успешно изменены'});
+        }
+
+    } catch (error) {
+        res.sendStatus(500)
+    }
+});
+
 
 router.put('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req, res) => {
     let result = {};

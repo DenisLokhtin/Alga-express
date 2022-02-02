@@ -13,6 +13,7 @@ import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import Alert from '@mui/material/Alert';
 import {AlertTitle} from "@mui/material";
+import {newUserRegister} from "../../paths";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -131,7 +132,7 @@ const Login = () => {
                     </Grid>
 
                     <Grid item container justifyContent="flex-end">
-                        <Link component={RouterLink} variant="body2" to="/register">
+                        <Link component={RouterLink} variant="body2" to={newUserRegister}>
                             Нет аккаунта? Зарегистрироваться
                         </Link>
                     </Grid>
