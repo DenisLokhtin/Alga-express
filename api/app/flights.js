@@ -48,10 +48,33 @@ router.put('/:id',  auth, permit('admin'), async (req, res) => {
 });
 
 router.get('/', auth, permit('admin'),async (req, res) => {
-    try {
-        const flights = await Flight.find().sort({depart_date: -1});
+    let page = 0;
+    let limit = 10;
+    let status = null;
 
-        res.send(flights);
+    if (req.query.page) {
+        page = req.query.page;
+    }
+
+    if (req.query.limit) {
+        limit = req.query.limit;
+    }
+
+    if (req.query.status) {
+        status = req.query.status;
+    }
+
+    console.log(limit, page, status);
+    try {
+        const size = await Flight.find({status: status});
+
+        const flights = await Flight.find({status: status})
+            .sort({depart_date: -1})
+            .limit(limit)
+            .skip(page * limit);
+
+        res.send({totalElements: size.length, data: flights});
+        console.log(flights);
     } catch (e) {
         res.status(500).send(e);
     }

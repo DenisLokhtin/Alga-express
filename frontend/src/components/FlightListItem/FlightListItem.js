@@ -15,7 +15,7 @@ const maskMap = {
     ru: '__.__.____',
 };
 
-const FlightListItem = ({flight, id}) => {
+const FlightListItem = ({flight, id, update}) => {
     const dispatch = useDispatch();
     const [editStatus, setEditStatus] = useState(true);
     const [flightData, setFlightData] = useState({
@@ -44,6 +44,7 @@ const FlightListItem = ({flight, id}) => {
     const saveAfterEdit = () => {
         dispatch(putFlightRequest({id, flightData}));
         setEditStatus(!editStatus);
+        update();
     };
 
     const statusChanger = () => {
@@ -53,7 +54,6 @@ const FlightListItem = ({flight, id}) => {
             setFlightData(prevState => ({...prevState, status: 'ACTIVE'}));
         }
     }
-    console.log(flight);
     return (
         <Grid item>
             <Card>
