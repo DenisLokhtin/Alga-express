@@ -7,7 +7,8 @@ const flightSlice = createSlice({
     initialState: {
         flights: [],
         error: null,
-        loading: false
+        loading: false,
+        flightsCount: 0
     },
     reducers: {
         postFlightRequest(state) {
@@ -25,7 +26,8 @@ const flightSlice = createSlice({
         },
         getFlightsSuccess(state, action) {
             state.loading = false;
-            state.flights = action.payload;
+            state.flights = action.payload.data;
+            state.flightsCount = action.payload.totalElements;
         },
         getFlightsFailure(state, action) {
             state.loading = false;
