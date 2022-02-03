@@ -69,7 +69,7 @@ router.get('/', auth, permit('admin'),async (req, res) => {
         const size = await Flight.find({status: status});
 
         const flights = await Flight.find({status: status})
-            .sort({depart_date: -1})
+            .sort({date: -1})
             .limit(limit)
             .skip(page * limit);
 
