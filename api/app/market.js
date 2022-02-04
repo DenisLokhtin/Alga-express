@@ -4,6 +4,8 @@ const path = require('path');
 const {nanoid} = require('nanoid');
 const config = require('../config');
 const Market = require("../models/Market");
+const auth = require("../middleware/auth");
+const permit = require("../middleware/permit");
 
 
 const storage = multer.diskStorage({
@@ -30,7 +32,7 @@ router.get('/', async (req, res) => {
 });
 
 
-router.post('/', upload.single('image'), async (req, res) => {
+router.post('/', auth, permit('admin'),upload.single('image'), async (req, res) => {
     try {
         const marketData = {
             title: req.body.title,

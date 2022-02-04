@@ -127,7 +127,7 @@ const Login = () => {
                             loading={loading}
                             disabled={buttonDisable()}
                         >
-                            Войти
+                            войти
                         </ButtonWithProgress>
                     </Grid>
 

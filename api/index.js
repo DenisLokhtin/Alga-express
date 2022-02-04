@@ -10,6 +10,7 @@ const market=require('./app/market');
 const config = require('./config');
 const packages = require('./app/packages');
 const flight = require('./app/flights');
+const buyouts = require('./app/buyouts');
 const administration = require('./app/administration');
 
 const app = express();
@@ -24,6 +25,7 @@ app.use('/market',market);
 app.use('/packages', packages);
 app.use('/userEdit', userEdit);
 app.use('/flights', flight);
+app.use('/buyouts', buyouts);
 app.use('/cargo', administration);
 
 const run = async () => {

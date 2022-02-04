@@ -18,6 +18,7 @@
     "axios": "^0.24.0",
     "date-fns": "^2.28.0",
     "dayjs": "^1.10.7",
+    "draft-js": "^0.11.7",
     "material-ui-phone-number": "^3.0.0",
     "prop-types": "^15.8.1",
     "react": "^17.0.2",
@@ -36,7 +37,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "start:test": "PORT=3010 REACT_APP_ENV=test BROWSER=none react-script start",
+    "start:test": "PORT=3010 REACT_APP_ENV=test BROWSER=none react-scripts start",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

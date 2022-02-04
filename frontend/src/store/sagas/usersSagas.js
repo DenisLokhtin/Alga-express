@@ -31,7 +31,7 @@ export function* registerUserSaga({payload: userData}) {
         const response = yield axiosApi.post('/users', userData);
         userData.navigate('/');
         yield put(registerUserSuccess(response.data));
-        toast.success('Вы зарегистрированны');
+        toast.success('Вы зарегистрированы');
     } catch (e) {
         toast.error(e.response.data.global);
         yield put(registerUserFailure(e.response.data));
