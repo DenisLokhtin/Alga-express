@@ -97,9 +97,9 @@ router.post('/', auth, permit('admin', 'warehouseman', 'user'), async (req, res)
             user: req.user._id
         };
 
-        const notFoundTrackNumber = await NotFoundTrackNumber.findOne({trackNumber: req.body.trackNumber});
+        const notFoundTrackNumber = await NotFoundTrackNumber.findOne({notFoundTrackNumber: packageData.trackNumber});
 
-        if (packageData) {
+        if (notFoundTrackNumber) {
             packageData.status = notFoundTrackNumber.status;
         }
 
@@ -109,7 +109,6 @@ router.post('/', auth, permit('admin', 'warehouseman', 'user'), async (req, res)
         res.send(newPackage);
 
     } catch (error) {
-        console.log(await Package.find({type: Number}));
         res.status(400).send(error);
     }
 });
