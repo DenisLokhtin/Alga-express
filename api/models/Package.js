@@ -66,7 +66,6 @@ const PackageSchema = new mongoose.Schema({
     cargoNumber: {
         type: String,
         trim: true,
-        default: () => nanoid(),
         unique: true
     },
     cargoWeight: Number,
