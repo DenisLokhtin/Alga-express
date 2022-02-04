@@ -3,7 +3,7 @@ import FormElement from "../../components/UI/Form/FormElement";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
 import FileInput from "../../components/UI/FileInput/FileInput";
 import {useDispatch, useSelector} from "react-redux";
-import {Grid} from "@mui/material";
+import {Container, Grid} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import {addNewsRequest} from "../../store/actions/newsActions";
 import {Editor} from "@tinymce/tinymce-react";
@@ -87,6 +87,10 @@ const AddNewsAdmin = () => {
     }
 
     return (
+        <Container
+            component="section"
+            maxWidth="md"
+            className={classes.container}>
         <Grid
             container
             direction="column"
@@ -94,7 +98,6 @@ const AddNewsAdmin = () => {
             component="form"
             autoComplete="off"
             onSubmit={submitFormHandler}
-            className={classes.container}
             noValidate
         >
             <h3 className={classes.title}>Добавить новость</h3>
@@ -150,6 +153,7 @@ const AddNewsAdmin = () => {
                 </ButtonWithProgress>
             </Grid>
         </Grid>
+        </Container>
     );
 };
 

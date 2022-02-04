@@ -9,6 +9,7 @@ import usersSlice, {initialState} from "./slices/usersSlice";
 import newsSlice from "./slices/newsSlice";
 import marketSlice from "./slices/marketSlice";
 import flightSlice from "./slices/flightSlice";
+import buyoutSlice from "./slices/buyoutSlice";
 import paymentSlice from "./slices/paymentSlices";
 
 const rootReducer = combineReducers({
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
     'package': packageSlice.reducer,
     'news':newsSlice.reducer,
     'flights': flightSlice.reducer,
+    'buyouts':buyoutSlice.reducer,
     'payments': paymentSlice.reducer,
 });
 

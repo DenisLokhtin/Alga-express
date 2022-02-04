@@ -9,6 +9,7 @@ import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import HistoryIcon from "@mui/icons-material/History";
 import AddIcon from "@mui/icons-material/Add";
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import FlightIcon from "@mui/icons-material/Flight";
 import PersonIcon from "@mui/icons-material/Person";
 import {logout} from "../../../../store/actions/usersActions";
@@ -17,7 +18,7 @@ import {
     addFlightAdmin,
     listFlightAdmin,
     listPaymentsAdmin,
-    newPackageRegister,
+    newPackageRegister, orderBuyouts,
     packageHistory
 } from "../../../../paths";
 
@@ -38,6 +39,7 @@ const UserMenu = ({user}) => {
     const open = Boolean(anchorEl);
 
     const payments = useSelector(state => state.payments.payment);
+    const buyouts = useSelector(state => state.buyouts.buyouts);
 
 
     const handleClick = (event) => {
@@ -55,6 +57,15 @@ const UserMenu = ({user}) => {
 
     return (
         <>
+            <IconButton
+                color="inherit"
+                component={Link}
+                to={orderBuyouts}
+            >
+                <Badge badgeContent={buyouts && buyouts.total} color="error">
+                    <AddShoppingCartIcon/>
+                </Badge>
+            </IconButton>
             <IconButton
                 color="inherit"
                 component={Link}
