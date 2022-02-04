@@ -10,7 +10,7 @@
     Допустим я зашёл на страницу "user/register"
     Если я ввожу данные:
       | name                            | user user user      |
-      | //form//div//input[@type='tel'] | 550555555
+      | //form//div//input[@type='tel'] | 550555555           |
       | email                           | test_user@gmail.com |
       | password                        | 123456              |
       | password_2                      | 123456              |
