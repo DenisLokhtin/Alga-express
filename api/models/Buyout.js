@@ -34,9 +34,12 @@ const BuyoutSchema = new mongoose.Schema({
         required: true
     },
     status: {
-        type: Boolean,
-        default: false,
+        type: String,
+        trim: true,
+        enum: ['NEW', 'ORDERED', 'DONE'],
+        default: 'NEW',
     },
+
 
 });
 
