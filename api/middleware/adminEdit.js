@@ -36,30 +36,18 @@ const adminEdit = (user, packageOrder, updateData, price) => {
         if (updateData.cargoWeight) {
             packageOrder.cargoWeight = updateData.cargoWeight;
             packageOrder.status = 'PROCESSED';
-
+            console.log('in cargoWeight');
             if (packageOrder.country === "USA") {
-                const sizePrice = (packageOrder.width * packageOrder.length * packageOrder.height / 6000) * price.usa;
-                const weightPrice = updateData.cargoWeight * price.usa;
-                if (sizePrice >= weightPrice) packageOrder.cargoPrice = sizePrice;
-                if (sizePrice <= weightPrice) packageOrder.cargoPrice = weightPrice;
+                packageOrder.cargoPrice = updateData.cargoWeight * price.usa;
             }
             if (packageOrder.country === "TURKEY") {
-                const sizePrice = packageOrder.width * packageOrder.length * packageOrder.height / 6000;
-                const weightPrice = updateData.cargoWeight * price.turkey;
-                if (sizePrice >= weightPrice) packageOrder.cargoPrice = sizePrice;
-                if (sizePrice <= weightPrice) packageOrder.cargoPrice = weightPrice;
+                packageOrder.cargoPrice = updateData.cargoWeight * price.turkey;
             }
             if (packageOrder.country === "CHINA") {
-                const sizePrice = packageOrder.width * packageOrder.length * packageOrder.height / 6000;
-                const weightPrice = updateData.cargoWeight * price.china;
-                if (sizePrice >= weightPrice) packageOrder.cargoPrice = sizePrice;
-                if (sizePrice <= weightPrice) packageOrder.cargoPrice = weightPrice;
+                packageOrder.cargoPrice = updateData.cargoWeight * price.china;
             }
             if (packageOrder.country === "China_ground") {
-                const sizePrice = packageOrder.width * packageOrder.length * packageOrder.height / 6000;
-                const weightPrice = updateData.cargoWeight * price.chinaGround;
-                if (sizePrice >= weightPrice) packageOrder.cargoPrice = sizePrice;
-                if (sizePrice <= weightPrice) packageOrder.cargoPrice = weightPrice;
+                packageOrder.cargoPrice = updateData.cargoWeight * price.chinaGround;
             }
         }
 
@@ -161,6 +149,8 @@ const adminEdit = (user, packageOrder, updateData, price) => {
         result.error = 'Доступ запрещен';
 
     }
+
+    console.log(packageOrder);
     result.code = 200;
     result.success = packageOrder;
     return result;
