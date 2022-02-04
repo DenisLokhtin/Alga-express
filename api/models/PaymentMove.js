@@ -5,7 +5,7 @@ const PaymentMoveSchema = new mongoose.Schema({
     userPayment: {
         type: mongoose.Types.ObjectId,
         ref: 'Payment',
-        required: true,
+        // required: true,
     },
     date: {
         type: Date,
@@ -18,8 +18,13 @@ const PaymentMoveSchema = new mongoose.Schema({
     },
     replenish: {
         type: Number,
-        required: true,
+        // required: true,
         min: 0,
+        default: 0,
+    },
+    debit_amount: {
+        type: Number,
+        min:0,
         default: 0,
     },
     debit: mongoose.Types.ObjectId,

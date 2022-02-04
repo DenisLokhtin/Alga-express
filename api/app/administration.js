@@ -3,7 +3,7 @@ const express = require('express');
 const auth = require("../middleware/auth");
 const permit = require("../middleware/permit");
 const Payment = require("../models/Payment");
-const PaymentMove = require("../models/paymentMove");
+const PaymentMove = require("../models/PaymentMove");
 const User = require("../models/User");
 
 const router = express.Router();

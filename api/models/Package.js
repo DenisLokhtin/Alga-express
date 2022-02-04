@@ -50,7 +50,7 @@ const PackageSchema = new mongoose.Schema({
     status: {
         type: String,
         trim: true,
-        enum: ['REGISTERED', 'ON_WAREHOUSE', 'ON_WAY', 'PROCESSED', 'DELIVERED', 'DONE', 'ERASED'],
+        enum: ['REGISTERED', 'ON_WAREHOUSE', 'ON_WAY', 'PROCESSED','DELIVERED', 'DONE', 'ERASED'],
         default: 'REGISTERED',
     },
     deleted: Boolean,
@@ -68,7 +68,10 @@ const PackageSchema = new mongoose.Schema({
         trim: true,
         unique: true
     },
-    cargoWeight: Number,
+    cargoWeight: {
+        type: Number,
+        min: 0,
+    },
     cargoPrice: {
         type: Number,
         min: [0],
