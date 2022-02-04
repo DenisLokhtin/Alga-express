@@ -7,7 +7,7 @@ let port = 8000;
 
 if (process.env.NODE_ENV === 'test') {
     dbUrl = 'mongodb://localhost/alga-express_test';
-    port =8010;
+    port = 8010;
 }
 
 module.exports = {
