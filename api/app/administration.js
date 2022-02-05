@@ -33,14 +33,14 @@ router.get('/', auth, permit('admin'), async (req, res) => {
     }
 });
 
-router.post('/', auth, async (req, res) => {
+router.post('/', auth, permit('admin'), async (req, res) => {
     const pay = Number(req.body.pay);
     try {
         const checkPayment = await Payment.findById(req.body.id)
             .populate('user', 'name');
         const userPayment = await User.findById(checkPayment.user._id);
         if (checkPayment) {
-            const confirm = await Payment.findByIdAndUpdate(req.body.id, {status: true});
+            const confirm = await Payment.findByIdAndUpdate(req.body.id, {status: true, amount: pay});
 
             if (confirm) {
                 const permitData = {
@@ -61,12 +61,57 @@ router.post('/', auth, async (req, res) => {
                 return res.status(406).send({error: 'Ошибка оплаты'});
             }
         } else {
-            return res.status(404).send({error: 'Оплата не найдена'});
+            res.status(403).send({error: 'Оплата не найдена'});
         }
 
 
     } catch (e) {
         console.error(e);
+        res.status(403).send({error: 'Оплата не найдена'});
+
+    }
+});
+
+router.put('/:id', auth, permit('admin'), async (req, res) => {
+    const payId = req.params.id;
+    let pay = 0;
+    if (req.body.pay) {
+        pay = req.body.pay;
+    }
+    try {
+        const userPaymentMove = await PaymentMove.findById(payId)
+            .populate({path: 'userPayment', select: 'user'});
+        const userPayment = await Payment.findById(userPaymentMove.userPayment)
+            .populate('user', 'name');
+        const user = await User.findById(userPayment.user);
+
+
+        if (pay > 0) {
+            const permitData = {
+                replenish: pay,
+                userPayment: userPayment._id,
+                permitPayment: req.user._id,
+                lastBalance: user.balance,
+                status: 'REPLENISH_EDIT',
+            };
+
+            await User.findByIdAndUpdate(userPayment.user._id, {balance: user.balance - userPayment.amount + pay});
+
+            userPaymentMove.status = 'CANCELED';
+            await userPaymentMove.save();
+
+            userPayment.amount = pay;
+            await userPayment.save();
+
+            const paySave = new PaymentMove(permitData);
+            await paySave.save();
+
+            return  res.send(paySave);
+        } else {
+            return  res.status(203).send({error: 'Оплата не найдена'})
+        }
+    } catch (e) {
+        res.status(403).send({error: 'Оплата не найдена'});
     }
 });
 

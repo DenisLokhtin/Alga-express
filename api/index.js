@@ -27,6 +27,7 @@ app.use('/userEdit', userEdit);
 app.use('/flights', flight);
 app.use('/buyouts', buyouts);
 app.use('/cargo', administration);
+app.use('/payment', administration);
 
 const run = async () => {
     await mongoose.connect(config.db.url);

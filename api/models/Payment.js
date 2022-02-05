@@ -18,11 +18,14 @@ const PaymentSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    amount: {
+        type: Number,
+        min: 0,
+    },
     status: {
         type: Boolean,
         default: false,
     },
-
 });
 
 PaymentSchema.plugin(idValidator);

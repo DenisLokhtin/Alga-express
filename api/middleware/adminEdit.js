@@ -1,3 +1,14 @@
+const comparisonValue = (width, length, height, weight, price) => {
+    const sizePrice = width * length * height / 6000;
+    const weightPrice = weight * price;
+
+    if (sizePrice >= weightPrice) {
+        return sizePrice;
+    } else {
+        return weightPrice
+    }
+};
+
 const adminEdit = (user, packageOrder, updateData, price) => {
     const result = {};
     console.log('adminEdit', updateData.status);
@@ -51,96 +62,28 @@ const adminEdit = (user, packageOrder, updateData, price) => {
             }
         }
 
-        if (updateData.width) {
+        if (updateData.width && updateData.height && updateData.length) {
             packageOrder.width = updateData.width;
+            packageOrder.length = updateData.length;
+            packageOrder.height = updateData.height;
             packageOrder.status = 'PROCESSED';
 
             if (packageOrder.country === "USA") {
-                const sizePrice = updateData.width * packageOrder.length * packageOrder.height / 6000;
-                const weightPrice = packageOrder.cargoWeight * price.usa;
-                if (sizePrice >= weightPrice) packageOrder.cargoPrice = sizePrice;
-                if (sizePrice <= weightPrice) packageOrder.cargoPrice = weightPrice;
+                packageOrder.cargoPrice = comparisonValue(updateData.width, updateData.length, updateData.height, packageOrder.weight, price.usa);
             }
+
             if (packageOrder.country === "TURKEY") {
-                const sizePrice = updateData.width * packageOrder.length * packageOrder.height / 6000;
-                const weightPrice = packageOrder.cargoWeight * price.turkey;
-                if (sizePrice >= weightPrice) packageOrder.cargoPrice = sizePrice;
-                if (sizePrice <= weightPrice) packageOrder.cargoPrice = weightPrice;
+                packageOrder.cargoPrice = comparisonValue(updateData.width, updateData.length, updateData.height, packageOrder.weight, price.turkey);
             }
+
             if (packageOrder.country === "CHINA") {
-                const sizePrice = updateData.width * packageOrder.length * packageOrder.height / 6000;
-                const weightPrice = packageOrder.cargoWeight * price.china;
-                if (sizePrice >= weightPrice) packageOrder.cargoPrice = sizePrice;
-                if (sizePrice <= weightPrice) packageOrder.cargoPrice = weightPrice;
-            }
-            if  (packageOrder.country === "China_ground") {
-                const sizePrice = updateData.width * packageOrder.length * packageOrder.height / 6000;
-                const weightPrice = packageOrder.cargoWeight * price.chinaGround;
-                if (sizePrice >= weightPrice) packageOrder.cargoPrice = sizePrice;
-                if (sizePrice <= weightPrice) packageOrder.cargoPrice = weightPrice;
-            }
-        }
+                packageOrder.cargoPrice = comparisonValue(updateData.width, updateData.length, updateData.height, packageOrder.weight, price.china);
 
-        if (updateData.height) {
-            packageOrder.height = updateData.height;
-            packageOrder.status = "PROCESSED";
-
-            if (packageOrder.country === "USA") {
-                const sizePrice = (packageOrder.width * updateData.height * packageOrder.length / 6000) * price.usa;
-                const weightPrice = packageOrder.cargoWeight * price.usa;
-                if (sizePrice >= weightPrice) packageOrder.cargoPrice = sizePrice;
-                if (sizePrice <= weightPrice) packageOrder.cargoPrice = weightPrice;
-            }
-            if (packageOrder.country === "TURKEY") {
-                const sizePrice = (packageOrder.width * updateData.height * packageOrder.length / 6000) * price.turkey;
-                const weightPrice = packageOrder.cargoWeight * price.turkey;
-                if (sizePrice >= weightPrice) packageOrder.cargoPrice = sizePrice;
-                if (sizePrice <= weightPrice) packageOrder.cargoPrice = weightPrice;
-            }
-            if (packageOrder.country === "CHINA") {
-                const sizePrice = (packageOrder.width * updateData.height * packageOrder.length / 6000) * price.china;
-                const weightPrice = packageOrder.cargoWeight * price.china;
-                if (sizePrice >= weightPrice) packageOrder.cargoPrice = sizePrice;
-                if (sizePrice <= weightPrice) packageOrder.cargoPrice = weightPrice;
-            }
-            if (packageOrder.country === 'China_ground') {
-                const sizePrice = (packageOrder.width * updateData.height * packageOrder.length / 6000) * price.china;
-                const weightPrice = packageOrder.cargoWeight * price.chinaGround;
-                if (sizePrice >= weightPrice) packageOrder.cargoPrice = sizePrice;
-                if (sizePrice <= weightPrice) packageOrder.cargoPrice = weightPrice;
-            }
-        }
-
-        if (updateData.length) {
-            packageOrder.length = updateData.length;
-            packageOrder.status = "PROCESSED";
-
-            if (packageOrder.country === "USA") {
-                const sizePrice = (packageOrder.width * packageOrder.height * updateData.length / 6000) * price.usa;
-                const weightPrice = packageOrder.cargoWeight * price.usa;
-                if (sizePrice >= weightPrice) packageOrder.cargoPrice = sizePrice;
-                if (sizePrice <= weightPrice) packageOrder.cargoPrice = weightPrice;
-            }
-            if (packageOrder.country === "TURKEY") {
-                const sizePrice = (packageOrder.width * packageOrder.height * updateData.length / 6000) * price.turkey;
-                const weightPrice = packageOrder.cargoWeight * price.turkey;
-                if (sizePrice >= weightPrice) packageOrder.cargoPrice = sizePrice;
-                if (sizePrice <= weightPrice) packageOrder.cargoPrice = weightPrice;
-            }
-            if (packageOrder.country === "CHINA") {
-                const sizePrice = (packageOrder.width * packageOrder.height * updateData.length / 6000) * price.china;
-                const weightPrice = packageOrder.cargoWeight * price.china;
-                if (sizePrice >= weightPrice) packageOrder.cargoPrice = sizePrice;
-                if (sizePrice <= weightPrice) packageOrder.cargoPrice = weightPrice;
             }
             if (packageOrder.country === "China_ground") {
-                const sizePrice = (packageOrder.width * packageOrder.height * updateData.length / 6000) * price.china;
-                const weightPrice = packageOrder.cargoWeight * price.china;
-                if (sizePrice >= weightPrice) packageOrder.cargoPrice = sizePrice;
-                if (sizePrice <= weightPrice) packageOrder.cargoPrice = weightPrice;
+                packageOrder.cargoPrice = comparisonValue(updateData.width, updateData.length, updateData.height, packageOrder.weight, price.chinaGround);
             }
         }
-
 
         packageOrder.deleted = updateData.deleted || packageOrder.deleted;
 

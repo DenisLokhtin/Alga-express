@@ -5,7 +5,6 @@ const PaymentMoveSchema = new mongoose.Schema({
     userPayment: {
         type: mongoose.Types.ObjectId,
         ref: 'Payment',
-        // required: true,
     },
     date: {
         type: Date,
@@ -18,7 +17,6 @@ const PaymentMoveSchema = new mongoose.Schema({
     },
     replenish: {
         type: Number,
-        // required: true,
         min: 0,
         default: 0,
     },
@@ -34,7 +32,7 @@ const PaymentMoveSchema = new mongoose.Schema({
     status: {
         type: String,
         trim: true,
-        enum: ['DEBIT', 'REPLENISH','REPLENISH_CASH'],
+        enum: ['DEBIT', 'REPLENISH', 'REPLENISH_EDIT', 'REPLENISH_CASH', 'REPLENISH_CASH_EDIT', 'CANCELED'],
     }
 });
 
