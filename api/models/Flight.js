@@ -22,6 +22,10 @@ const FlightSchema = new mongoose.Schema({
         enum: ["ACTIVE", "DONE"],
     },
     description: String,
+    date: {
+        type: Date,
+        default: Date.now,
+    },
 });
 
 const Flight = mongoose.model('Flight', FlightSchema);
