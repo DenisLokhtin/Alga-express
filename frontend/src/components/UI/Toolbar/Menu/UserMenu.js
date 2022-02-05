@@ -18,7 +18,8 @@ import {
     addFlightAdmin,
     listFlightAdmin,
     listPaymentsAdmin,
-    newPackageRegister, orderBuyouts,
+    newPackageRegister,
+    orderBuyouts,
     packageHistory
 } from "../../../../paths";
 
@@ -39,6 +40,7 @@ const UserMenu = ({user}) => {
     const open = Boolean(anchorEl);
 
     const payments = useSelector(state => state.payments.payment);
+    const users = useSelector(state => state.users.user);
     const buyouts = useSelector(state => state.buyouts.buyouts);
 
 
@@ -66,7 +68,7 @@ const UserMenu = ({user}) => {
                     <AddShoppingCartIcon/>
                 </Badge>
             </IconButton>
-            <IconButton
+            {users?.role === 'admin' && (<IconButton
                 color="inherit"
                 component={Link}
                 to={listPaymentsAdmin}
@@ -74,7 +76,7 @@ const UserMenu = ({user}) => {
                 <Badge badgeContent={payments && payments.totalElements} color="error">
                     <NotificationsIcon/>
                 </Badge>
-            </IconButton>
+            </IconButton>)}
             <Button
                 sx={{color: '#F5F5F7',}}
                 color='inherit'

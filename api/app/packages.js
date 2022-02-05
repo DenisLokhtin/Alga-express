@@ -7,6 +7,8 @@ const userEdit = require("../middleware/userEdit");
 const adminEdit = require("../middleware/adminEdit");
 const Tariff = require("../models/Tariff");
 const NotFoundTrackNumber = require('../models/NotFoundTrackNumber');
+const PaymentMove = require("../models/PaymentMove");
+const User = require("../models/User");
 
 const router = express.Router();
 
@@ -175,7 +177,8 @@ router.put('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req, re
     let result = {};
     console.log('token', req.user._id);
     try {
-        const packageFind = await Package.findById(req.params.id);
+        const packageFind = await Package.findById(req.params.id)
+        const userDebit = await User.findById(packageFind.user._id);
         const prices = await Tariff.findOne({user: packageFind.user});
 
         if (req.user.role === 'user')
@@ -191,6 +194,20 @@ router.put('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req, re
             return res.status(result.code).send({message: result.message});
 
         if (result.success) {
+            if (result.success.cargoPrice) {
+                const permitData = {
+                    debit: packageFind._id,
+                    debit_amount: result.success.cargoPrice,
+                    permitPayment: req.user._id,
+                    lastBalance: packageFind.user.balance,
+                    status: 'DEBIT',
+                };
+
+                const paySave = new PaymentMove(permitData);
+                await paySave.save();
+                await User.findByIdAndUpdate(packageFind.user._id, {balance: userDebit.balance - result.success.cargoPrice});
+
+            }
             await result.success.save();
             return res.status(result.code).send(result.success);
         }
@@ -198,7 +215,6 @@ router.put('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req, re
         res.send(result.success);
     } catch (e) {
         res.status(400).send(e);
-
     }
 });
 
@@ -219,7 +235,7 @@ router.delete('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req,
 
         res.status(200).send({message: `Посылка ${erasePackage.cargoNumber} удалена успешно`});
     } catch (e) {
-        res.status(500).send({error: 'some error'});
+        res.status(400).send(e);
     }
 });
 module.exports = router;
