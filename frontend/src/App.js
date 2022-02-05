@@ -31,7 +31,7 @@ import {
     editPackageUser,
     editUserProfile, faqCompany, howCompany, listFlightAdmin, listPaymentsAdmin,
     newPackageRegister, newsCompany, newsEditCompany, newsIdCompany,
-    newUserRegister,
+    newUserRegister, orderBuyouts,
     packageHistory,
     packageInfoId, processingTrackNumbersAdmin,
     root, rulesCompany, sitesCompany,
@@ -40,6 +40,7 @@ import {
     userPackageHistory,
     userPaymentsList
 } from "./paths";
+import OrderBuyout from "./containers/OrderBuyout/OrderBuyout";
 
 const App = () => {
 
@@ -72,6 +73,7 @@ const App = () => {
                 <Route path={addFlightAdmin} element={<AddFlight/>}/>
                 <Route path={listFlightAdmin} element={<FlightsList/>}/>
                 <Route path={listPaymentsAdmin} element={<AdminPaymentsProcessing/>}/>
+                <Route path={orderBuyouts} element={<OrderBuyout/>}/>
                 <Route
                     path="*"
                     element={

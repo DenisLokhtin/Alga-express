@@ -1,7 +1,7 @@
 import React, {useEffect, Fragment} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {deleteMarketRequest, fetchMarketRequest} from "../../store/actions/marketActions";
-import {Card, CardMedia, Grid, IconButton, Link, Typography} from "@mui/material";
+import {Card, CardMedia, Container, Grid, IconButton, Link, Typography} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import {apiURL} from "../../config";
 import MarketAdmin from "../../components/MarketAdmin/MarketAdmin";
@@ -39,6 +39,9 @@ const MarketSites = () => {
         },[dispatch])
 
     return (
+        <Container
+            component="section"
+            maxWidth="md">
         <Grid container justifyContent={"center"} direction={"column"}>
             <Typography variant={"h6"} className={classes.title} textAlign={"center"}>
                 Где вы можете купить товар
@@ -71,6 +74,7 @@ const MarketSites = () => {
                 <MarketAdmin/>
             )}
         </Grid>
+        </Container>
     );
 };
 export default MarketSites;

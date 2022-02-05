@@ -10,6 +10,7 @@ const Market = require("./models/Market");
 
 const run = async () => {
     await mongoose.connect(config.db.url, config.db.options);
+    console.log('fixtures');
 
     const collections = await mongoose.connection.db.listCollections().toArray();
 
@@ -98,6 +99,7 @@ const run = async () => {
             length: 42,
             height: 42,
             deleted: false,
+            status: 'PROCESSED',
             user: admin,
             cargoWeight: 3,
             cargoPrice: 123,
@@ -116,6 +118,7 @@ const run = async () => {
             height: 42,
             deleted: false,
             user: admin,
+            status: 'REGISTERED',
             cargoWeight: 3,
             cargoPrice: 123,
             description: 'description 2',
@@ -149,7 +152,7 @@ const run = async () => {
             width: 42,
             length: 42,
             height: 42,
-            status: 'NEW',
+            status: 'ON_WAREHOUSE',
             deleted: false,
             user: user,
             cargoWeight: 3,

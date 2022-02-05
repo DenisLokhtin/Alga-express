@@ -5,7 +5,7 @@ exports.config = {
       url: 'http://localhost:3010',
       show: true,
       windowSize: '1200x900'
-    }
+    },
   },
   include: {
     I: './steps_file.js'
@@ -17,7 +17,7 @@ exports.config = {
   hooks: [],
   gherkin: {
     features: './features/*.feature',
-    steps: ['./step_definitions/steps.js']
+    steps: ['./step_definitions/authSteps.js', './step_definitions/packageRegisterSteps.js']
   },
   plugins: {
     screenshotOnFail: {
@@ -43,4 +43,4 @@ exports.config = {
   ],
   tests: './*_test.js',
   name: 'tests'
-}
+};
