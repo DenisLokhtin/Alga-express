@@ -203,9 +203,6 @@ router.put('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req, re
                     status: 'DEBIT',
                 };
 
-                console.log(permitData);
-                console.log(userDebit);
-
                 const paySave = new PaymentMove(permitData);
                 await paySave.save();
                 await User.findByIdAndUpdate(packageFind.user._id, {balance: userDebit.balance - result.success.cargoPrice});
@@ -218,7 +215,6 @@ router.put('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req, re
         res.send(result.success);
     } catch (e) {
         res.status(400).send(e);
-
     }
 });
 
@@ -239,7 +235,7 @@ router.delete('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req,
 
         res.status(200).send({message: `Посылка ${erasePackage.cargoNumber} удалена успешно`});
     } catch (e) {
-        res.status(500).send({error: 'some error'});
+        res.status(400).send(e);
     }
 });
 module.exports = router;

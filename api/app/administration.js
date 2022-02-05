@@ -29,7 +29,7 @@ router.get('/', auth, permit('admin'), async (req, res) => {
 
         res.send({totalElements: size.length, data: response});
     } catch (e) {
-        res.send(403).send({error: e.response.data.error});
+        res.status(400).send({error:e});
     }
 });
 
@@ -67,7 +67,8 @@ router.post('/', auth, permit('admin'), async (req, res) => {
 
     } catch (e) {
         console.error(e);
-        res.status(403).send({error: 'Оплата не найдена'});
+        res.status(400).send({error:e});
+
 
     }
 });
@@ -111,7 +112,8 @@ router.put('/:id', auth, permit('admin'), async (req, res) => {
             return  res.status(203).send({error: 'Оплата не найдена'})
         }
     } catch (e) {
-        res.status(403).send({error: 'Оплата не найдена'});
+        res.status(400).send({error:e});
+
     }
 });
 
