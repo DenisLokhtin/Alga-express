@@ -7,6 +7,7 @@ const Buyout = require("../models/Buyout");
 const auth = require("../middleware/auth");
 const dayjs = require("dayjs");
 const permit = require("../middleware/permit");
+const News = require("../models/News");
 
 
 const storage = multer.diskStorage({
@@ -77,7 +78,21 @@ router.delete('/:id', auth, permit('admin'),async (req, res) => {
     }
 });
 
+router.put('/:id', auth, async (req, res) => {
+    try {
+        const updatedBuyout = await Buyout.findByIdAndUpdate(req.params.id, {
+            description: req.body.description,
+            url: req.body.url,
+            datetime:dayjs().format('DD/MM/YYYY'),
+            country: req.body.country,
+        }, {new: true, runValidators: true});
 
+        res.send(updatedBuyout);
+
+    } catch(error) {
+        res.status(400).send(error);
+    }
+});
 
 
 module.exports = router;
