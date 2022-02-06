@@ -51,6 +51,10 @@ router.put('/:id',  auth, permit('admin'), async (req, res) => {
 
             console.log(users);
 
+            // sendMail('test@gmail.com', 'test', 'test body');
+
+            // sendMail.sendMail();
+
             // const mailData = {
             //     from: "timetotestmail@gmail.com",
             //     to: users.toString(),

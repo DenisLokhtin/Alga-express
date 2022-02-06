@@ -10,19 +10,24 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-module.exports = transporter;
 
-// const mailData = {
-//     from: "timetotestmail@gmail.com",
-//     to: сюда добавить мейл куда отправится письмо , писать мейл в ковычках,
-//     subject: `Рейс ${oldFlight.number} прибыл!`,
-//     text: `Вас приветствует компания Alga Express, рейс ${oldFlight.number} прибыл!`,
-// }
-//
-// await sendMail.sendMail(mailData, function (err, info) {
-//     if (err) {
-//         console.log(err);
-//         return;
-//     }
-//     console.log('Sent: ', info.response);
-// })
+const mailData = (sendTo, subject, text) => {
+    return {
+        from: "timetotestmail@gmail.com",
+        to: sendTo,
+        subject: subject,
+        text: text,
+    }
+};
+
+const sendMail = (sendTo, subject, text) => {
+    transporter.sendMail(mailData(sendTo, subject, text), function (err, info) {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        console.log('Sent: ', info.response);
+    });
+}
+
+module.exports = sendMail;

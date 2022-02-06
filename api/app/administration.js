@@ -4,6 +4,7 @@ const permit = require("../middleware/permit");
 const Payment = require("../models/Payment");
 const PaymentMove = require("../models/PaymentMove");
 const User = require("../models/User");
+const sendMail = require("../middleware/sendMail");
 
 const router = express.Router();
 
@@ -53,6 +54,7 @@ router.post('/', auth, permit('admin'), async (req, res) => {
                 const paySave = new PaymentMove(permitData);
                 await paySave.save();
 
+                // sendMail('test@gmail.com', 'test', 'test body');
                 await User.findByIdAndUpdate(userPayment, {balance: userPayment.balance + pay});
 
                 return res.status(200).send({status: true});
