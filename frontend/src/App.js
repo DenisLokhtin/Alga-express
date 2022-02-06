@@ -29,7 +29,7 @@ import {
     aboutCompany, addFlightAdmin,
     addUserPayment, contactsCompany, editBuyout, editPackageAdmin,
     editPackageUser,
-    editUserProfile, faqCompany, howCompany, listFlightAdmin, listPaymentsAdmin,
+    editUserProfile, faqCompany, howCompany, listBuyouts, listFlightAdmin, listPaymentsAdmin,
     newPackageRegister, newsCompany, newsEditCompany, newsIdCompany,
     newUserRegister, orderBuyouts, orderBuyoutsId,
     packageHistory,
@@ -42,6 +42,7 @@ import {
 } from "./paths";
 import OrderBuyout from "./containers/OrderBuyout/OrderBuyout";
 import EditBuyout from "./components/EditBuyout/EditBuyout";
+import BuyoutList from "./containers/BuyoutList/BuyoutList";
 
 const App = () => {
 
@@ -76,6 +77,7 @@ const App = () => {
                 <Route path={listPaymentsAdmin} element={<AdminPaymentsProcessing/>}/>
                 <Route path={orderBuyouts} element={<OrderBuyout/>}/>
                 <Route path={editBuyout} element={<EditBuyout/>}/>
+                <Route path={listBuyouts} element={<BuyoutList/>}/>
                 <Route
                     path="*"
                     element={

@@ -36,8 +36,6 @@ const Buyout = (effect, deps) => {
     const dispatch = useDispatch();
     const loading = useSelector(state => state.buyouts.createLoading);
     const error = useSelector(state => state.buyouts.createError);
-    const oneBuyout = useSelector(state => state.buyouts.singleBuyout);
-    console.log('one:',oneBuyout)
 
 
     const [buyout, setBuyout] = useState({
@@ -47,15 +45,15 @@ const Buyout = (effect, deps) => {
         country:"",
     });
 
-    useEffect(()=>{
-            oneBuyout && setBuyout(prevState => ({
-                ...prevState,
-                description: oneBuyout.description,
-                image: oneBuyout.image,
-                url: oneBuyout.url,
-                country:oneBuyout.country,
-            }))
-    },[oneBuyout.description,oneBuyout.url, oneBuyout.image, oneBuyout.country])
+    // useEffect(()=>{
+    //         oneBuyout && setBuyout(prevState => ({
+    //             ...prevState,
+    //             description: oneBuyout.description,
+    //             image: oneBuyout.image,
+    //             url: oneBuyout.url,
+    //             country:oneBuyout.country,
+    //         }))
+    // },[oneBuyout.description,oneBuyout.url, oneBuyout.image, oneBuyout.country])
 
 
 
@@ -74,8 +72,7 @@ const Buyout = (effect, deps) => {
             country: "",
         })
     };
-    console.log(oneBuyout);
-    console.log('state', buyout)
+
 
     const inputChangeHandler = e => {
         const name = e.target.name;

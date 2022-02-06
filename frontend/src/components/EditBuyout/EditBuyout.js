@@ -44,11 +44,12 @@ const EditBuyout = () => {
     const loading = useSelector(state => state.buyouts.createLoading);
     const {id} = useParams();
 
+    console.log(oneBuyout)
     const [buyout, setBuyout] = useState({
-        description: "",
+        description: '',
         image: null,
-        url: "",
-        country:"",
+        url:  '',
+        country: '',
     });
 
     useEffect(()=>{
@@ -60,8 +61,16 @@ const EditBuyout = () => {
             url: oneBuyout.url,
             country:oneBuyout.country,
         }))
-    },[dispatch,id])
+    },[dispatch,id]);
 
+
+    const inputChangeHandler = e => {
+        const name = e.target.name;
+        const value = e.target.value;
+        setBuyout(prevState => {
+            return {...prevState, [name]: value};
+        });
+    };
 
 
     const submitFormHandler = e => {
@@ -81,13 +90,6 @@ const EditBuyout = () => {
         console.log('submit')
     };
 
-    const inputChangeHandler = e => {
-        const name = e.target.name;
-        const value = e.target.value;
-        setBuyout(prevState => {
-            return {...prevState, [name]: value};
-        });
-    };
 
     const fileChangeHandler = e => {
         const name = e.target.name;
@@ -111,7 +113,7 @@ const EditBuyout = () => {
         };
     },[dispatch])
 
-    return (
+    return oneBuyout && (
         <Container
             component="section"
             maxWidth="md"
@@ -131,7 +133,7 @@ const EditBuyout = () => {
                     <Select
                         labelId="demo-controlled-open-select-label"
                         id="demo-controlled-open-select"
-                        value={buyout.country }
+                        value={buyout.country || ''}
                         label="Из какой страны выкупить"
                         name="country"
                         required
@@ -147,7 +149,7 @@ const EditBuyout = () => {
                     required
                     label="Описание товара (размер, цвет и тд.)"
                     name="description"
-                    value={buyout.description}
+                    value={buyout.description || ''}
                     onChange={inputChangeHandler}
                     error={getFieldError('description')}
                 />

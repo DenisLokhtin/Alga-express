@@ -15,6 +15,7 @@ import {
     fetchSingleBuyoutRequest,
     fetchSingleBuyoutSuccess
 } from "../actions/buyoutActions";
+import {listBuyouts} from "../../paths";
 
 
 export function* getBuyoutSagas() {
@@ -30,7 +31,7 @@ export function* getBuyoutSagas() {
 export function* getOneBuyoutSagas({payload:id}) {
     try {
         const response = yield axiosApi.get('/buyouts/'+ id);
-        yield put(fetchSingleBuyoutSuccess(response.data));
+        yield put(fetchSingleBuyoutSuccess(response.data[0]));
     } catch (e) {
         toast.error('Не удалось загрузить');
         yield put(fetchSingleBuyoutFailure());
@@ -43,7 +44,9 @@ export function* addBuyoutSaga({payload: data}) {
         yield axiosApi.post( '/buyouts', data);
         yield put(addBuyoutSuccess());
         // yield put(fetchBuyoutsRequest());
+        // data.navigate('/');
         toast.success('Новый заказ выкупа добавлен!');
+
     } catch (error) {
         if (!error.response) {
             toast.error(error.message);
