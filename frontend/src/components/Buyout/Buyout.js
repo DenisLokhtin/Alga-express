@@ -31,12 +31,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const Buyout = () => {
+const Buyout = (effect, deps) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const loading = useSelector(state => state.buyouts.createLoading);
     const error = useSelector(state => state.buyouts.createError);
     const oneBuyout = useSelector(state => state.buyouts.singleBuyout);
+    console.log('one:',oneBuyout)
 
 
     const [buyout, setBuyout] = useState({
@@ -46,16 +47,15 @@ const Buyout = () => {
         country:"",
     });
 
-            if(oneBuyout.length !== 0){
-                oneBuyout.status === 'NEW' && setBuyout(prevState => ({
+    useEffect(()=>{
+            oneBuyout && setBuyout(prevState => ({
                 ...prevState,
-                    description: oneBuyout.description,
-                        image: oneBuyout.image,
-                        url: oneBuyout.url,
-                        country:oneBuyout.country,
-                }))
-            }
-
+                description: oneBuyout.description,
+                image: oneBuyout.image,
+                url: oneBuyout.url,
+                country:oneBuyout.country,
+            }))
+    },[oneBuyout.description,oneBuyout.url, oneBuyout.image, oneBuyout.country])
 
 
 
@@ -127,7 +127,7 @@ const Buyout = () => {
                     <Select
                         labelId="demo-controlled-open-select-label"
                         id="demo-controlled-open-select"
-                        value={buyout.country}
+                        value={buyout.country }
                         label="Из какой страны выкупить"
                         name="country"
                         required

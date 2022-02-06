@@ -8,8 +8,9 @@ const OrderBuyout = () => {
     const dispatch = useDispatch();
     const buyouts= useSelector(state => state.buyouts.buyouts)
     const {id} = useParams();
-    console.log(id)
-    useEffect((id)=>{
+    console.log(buyouts)
+
+    useEffect(()=>{
         dispatch(fetchBuyoutsRequest());
         if(id){
             dispatch(fetchSingleBuyoutRequest(id));

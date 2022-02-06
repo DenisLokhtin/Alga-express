@@ -29,7 +29,7 @@ export function* getBuyoutSagas() {
 
 export function* getOneBuyoutSagas({payload:id}) {
     try {
-        const response = yield axiosApi.get('/news/'+ id);
+        const response = yield axiosApi.get('/buyouts/'+ id);
         yield put(fetchSingleBuyoutSuccess(response.data));
     } catch (e) {
         toast.error('Не удалось загрузить');

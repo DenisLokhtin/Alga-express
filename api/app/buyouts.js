@@ -7,7 +7,7 @@ const Buyout = require("../models/Buyout");
 const auth = require("../middleware/auth");
 const dayjs = require("dayjs");
 const permit = require("../middleware/permit");
-const News = require("../models/News");
+
 
 
 const storage = multer.diskStorage({
