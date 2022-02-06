@@ -178,7 +178,7 @@ const UserPayment = () => {
                             // disabled={loading}
                             type="submit"
                             variant="contained">
-                            Сохранить
+                            Отправить
                         </ButtonWithProgress>
                     </Grid>
                 </Grid>
