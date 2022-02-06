@@ -22,10 +22,17 @@ const upload = multer({storage});
 
 const router = express.Router();
 
-router.get('/', auth, permit('admin'),async (req, res) => {
+router.get('/', auth, permit('admin','user'),async (req, res) => {
     try {
-        const buyouts = await Buyout.find({deleted: {$ne : true}}).populate('user', 'name');
-        res.send({total: buyouts.length, data: buyouts});
+
+        if (req.user.role === 'user'){
+            const selfBuyouts = await Buyout.find({user: req.user._id}).populate('user', 'name ');
+            res.send(selfBuyouts);
+        } else{
+            const buyouts = await Buyout.find({deleted: {$ne : true}}).populate('user', 'name');
+            res.send({total: buyouts.length, data: buyouts});
+        }
+
     } catch (e) {
         res.sendStatus(500);
     }

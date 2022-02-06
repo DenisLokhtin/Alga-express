@@ -10,7 +10,10 @@ import {
     deleteBuyoutSuccess,
     fetchBuyoutsFailure,
     fetchBuyoutsRequest,
-    fetchBuyoutsSuccess
+    fetchBuyoutsSuccess,
+    fetchSingleBuyoutFailure,
+    fetchSingleBuyoutRequest,
+    fetchSingleBuyoutSuccess
 } from "../actions/buyoutActions";
 
 
@@ -23,6 +26,17 @@ export function* getBuyoutSagas() {
         yield put(fetchBuyoutsFailure());
     }
 }
+
+export function* getOneBuyoutSagas({payload:id}) {
+    try {
+        const response = yield axiosApi.get('/news/'+ id);
+        yield put(fetchSingleBuyoutSuccess(response.data));
+    } catch (e) {
+        toast.error('Не удалось загрузить');
+        yield put(fetchSingleBuyoutFailure());
+    }
+}
+
 
 export function* addBuyoutSaga({payload: data}) {
     try {
@@ -56,10 +70,13 @@ export function* deleteBuyoutSaga({payload: id}) {
 }
 
 
-const marketSaga = [
+
+
+const buyoutSaga = [
     takeEvery(fetchBuyoutsRequest, getBuyoutSagas),
     takeEvery(addBuyoutRequest, addBuyoutSaga),
     takeEvery(deleteBuyoutRequest, deleteBuyoutSaga),
+    takeEvery(fetchSingleBuyoutRequest, getOneBuyoutSagas),
 ];
 
-export default marketSaga;
+export default buyoutSaga;

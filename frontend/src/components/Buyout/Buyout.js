@@ -1,11 +1,13 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {Container, FormControl, FormHelperText, Grid, InputLabel, MenuItem, Select} from "@mui/material";
 import FormElement from "../UI/Form/FormElement";
 import FileInput from "../UI/FileInput/FileInput";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {makeStyles} from "@mui/styles";
-import {addBuyoutRequest} from "../../store/actions/buyoutActions";
+import {addBuyoutRequest, clearBuyoutsError, fetchSingleBuyoutRequest} from "../../store/actions/buyoutActions";
+import {useParams} from "react-router-dom";
+import {clearTextFieldsErrors} from "../../store/actions/packageRegisterActions";
 
 
 const useStyles = makeStyles(theme => ({
@@ -34,6 +36,8 @@ const Buyout = () => {
     const dispatch = useDispatch();
     const loading = useSelector(state => state.buyouts.createLoading);
     const error = useSelector(state => state.buyouts.createError);
+    const oneBuyout = useSelector(state => state.buyouts.singleBuyout);
+    const {id} = useParams();
 
     const [buyout, setBuyout] = useState({
         description: "",
@@ -41,6 +45,21 @@ const Buyout = () => {
         url: "",
         country:"",
     });
+
+    useEffect((id)=>{
+            if(id){
+                dispatch(fetchSingleBuyoutRequest(id));
+                oneBuyout.status === 'NEW' && setBuyout(prevState => ({
+                ...prevState,
+                    description: oneBuyout.description,
+                        image: oneBuyout.image,
+                        url: oneBuyout.url,
+                        country:oneBuyout.country,
+                }))
+            }
+        },[dispatch, id])
+
+
 
     const submitFormHandler = e => {
         e.preventDefault();
@@ -83,6 +102,12 @@ const Buyout = () => {
             return undefined;
         }
     };
+
+    useEffect(()=>{
+        return () => {
+            dispatch(clearBuyoutsError());
+        };
+    },[dispatch])
 
     return (
         <Container

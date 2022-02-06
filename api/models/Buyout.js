@@ -39,6 +39,10 @@ const BuyoutSchema = new mongoose.Schema({
         enum: ['NEW', 'ORDERED', 'DONE'],
         default: 'NEW',
     },
+    price: {
+        type: Number,
+        min: [0, 'Цена не может быть меньше нуля'],
+    },
 
 
 });

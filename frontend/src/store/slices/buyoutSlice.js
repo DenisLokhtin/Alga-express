@@ -3,6 +3,7 @@ import {createSlice} from "@reduxjs/toolkit";
 const name = 'buyout'
 const initialState = {
     buyouts: [],
+    singleBuyout:{},
     fetchLoading: false,
     createLoading: false,
     createError: null,
@@ -46,6 +47,19 @@ const buyoutSlice = createSlice({
         deleteBuyoutFailure(state,{payload:error}){
             state.deleteLoading = false;
             state.deleteError = error;
+        },
+        fetchSingleBuyoutRequest(state){
+            state.fetchLoading = true;
+        },
+        fetchSingleBuyoutSuccess(state,{payload: data}){
+            state.fetchLoading = false;
+            state.singleBuyout=data;
+        },
+        fetchSingleBuyoutFailure(state){
+            state.fetchLoading=false;
+        },
+        clearBuyoutsError(state){
+            state.createError=null;
         }
     }
 });
