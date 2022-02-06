@@ -37,7 +37,7 @@ const Buyout = () => {
     const loading = useSelector(state => state.buyouts.createLoading);
     const error = useSelector(state => state.buyouts.createError);
     const oneBuyout = useSelector(state => state.buyouts.singleBuyout);
-    const {id} = useParams();
+
 
     const [buyout, setBuyout] = useState({
         description: "",
@@ -46,9 +46,7 @@ const Buyout = () => {
         country:"",
     });
 
-    useEffect((id)=>{
-            if(id){
-                dispatch(fetchSingleBuyoutRequest(id));
+            if(oneBuyout.length !== 0){
                 oneBuyout.status === 'NEW' && setBuyout(prevState => ({
                 ...prevState,
                     description: oneBuyout.description,
@@ -57,7 +55,7 @@ const Buyout = () => {
                         country:oneBuyout.country,
                 }))
             }
-        },[dispatch, id])
+
 
 
 
@@ -76,7 +74,7 @@ const Buyout = () => {
             country: "",
         })
     };
-
+    console.log(oneBuyout);
     console.log('state', buyout)
 
     const inputChangeHandler = e => {

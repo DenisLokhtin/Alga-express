@@ -31,7 +31,7 @@ import {
     editPackageUser,
     editUserProfile, faqCompany, howCompany, listFlightAdmin, listPaymentsAdmin,
     newPackageRegister, newsCompany, newsEditCompany, newsIdCompany,
-    newUserRegister, orderBuyouts,
+    newUserRegister, orderBuyouts, orderBuyoutsId,
     packageHistory,
     packageInfoId, processingTrackNumbersAdmin,
     root, rulesCompany, sitesCompany,
@@ -74,6 +74,7 @@ const App = () => {
                 <Route path={listFlightAdmin} element={<FlightsList/>}/>
                 <Route path={listPaymentsAdmin} element={<AdminPaymentsProcessing/>}/>
                 <Route path={orderBuyouts} element={<OrderBuyout/>}/>
+                <Route path={orderBuyoutsId} element={<OrderBuyout/>}/>
                 <Route
                     path="*"
                     element={

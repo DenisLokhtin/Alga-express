@@ -39,6 +39,25 @@ router.get('/', auth, permit('admin','user'),async (req, res) => {
     }
 });
 
+router.get('/:id', auth, permit('admin','user'),async (req, res) => {
+    try {
+
+        if (req.user.role === 'user'){
+            const selfBuyout = await Buyout.find({user: req.user._id, _id: req.params.id}).populate('user', 'name ');
+            res.send(selfBuyout);
+        } else{
+            const buyout = await Buyout.find({_id: req.params.id,deleted: {$ne : true}}).populate('user', 'name');
+            res.send(buyout);
+        }
+
+    } catch (e) {
+        res.sendStatus(500);
+    }
+});
+
+
+
+
 router.post('/', auth ,upload.single('image'), async (req, res) => {
     try {
         const buyoutData = {
