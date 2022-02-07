@@ -22,7 +22,7 @@ const FlightListItem = ({flight, id, update}) => {
         number: flight.number,
         depart_date: flight.depart_date || null,
         arrived_date: flight.arrived_date || null,
-        description: flight.description,
+        description: flight.description || "",
         status: flight.status
     });
 
