@@ -173,6 +173,47 @@ router.put('/', async (req, res) => {
 });
 
 
+router.put('/single', async (req, res) => {
+    const notFoundTrackNumbers = [];
+    try {
+        if (req.body.trackNumber.length === 0) {
+            return res.status(400).send({
+                errors: {
+                    trackNumber: {message: "Введите трек-номер"},
+                },
+            });
+        }
+
+            const updatedStatus = await Package.findOneAndUpdate(
+                {trackNumber: req.body.trackNumber},
+                {status: req.body.status},
+                {new: true, runValidators: true});
+
+        if (!updatedStatus) {
+            const notFoundTrackNumberData = {
+                notFoundTrackNumber: req.body.trackNumber,
+                status: req.body.status,
+            };
+
+            const notFoundTrackNumber = new NotFoundTrackNumber(notFoundTrackNumberData);
+
+            await notFoundTrackNumber.save();
+
+            notFoundTrackNumbers.push({trackNumber: req.body.trackNumber});
+        }
+
+        if (notFoundTrackNumbers.length > 0) {
+            res.status(404).send(notFoundTrackNumbers);
+        } else {
+            res.send({message: 'Трек-номера были успешно изменены'});
+        }
+
+    } catch (error) {
+        res.sendStatus(500)
+    }
+});
+
+
 router.put('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req, res) => {
     let result = {};
     console.log('token', req.user._id);

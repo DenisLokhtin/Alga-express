@@ -106,7 +106,7 @@ function* getOrderById({payload: orderId}) {
 
 function* changeStatuses({payload: packageData}) {
     try {
-        const response = yield axiosApi.put('/packages', packageData);
+        const response = yield axiosApi.put('/packages/single', packageData);
         yield put(changeStatusesSuccess());
 
         if (!response.data.length) {
