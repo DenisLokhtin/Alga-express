@@ -1,4 +1,4 @@
-import React, {useEffect, Fragment} from 'react';
+import React, {useEffect, Fragment, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {deleteMarketRequest, fetchMarketRequest} from "../../store/actions/marketActions";
 import {Card, CardMedia, Container, Grid, IconButton, Link, Typography} from "@mui/material";
@@ -6,6 +6,7 @@ import {makeStyles} from "@mui/styles";
 import {apiURL} from "../../config";
 import MarketAdmin from "../../components/MarketAdmin/MarketAdmin";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import AppWindow from "../../components/UI/AppWindow/AppWindow";
 
 const useStyles = makeStyles({
     card: {
@@ -33,6 +34,7 @@ const MarketSites = () => {
     const dispatch = useDispatch();
     const market = useSelector(state => state.market.sites);
     const user = useSelector((state => state.users.user));
+    const [open, setOpen] = useState(false);
 
     useEffect(()=>{
             dispatch(fetchMarketRequest());
@@ -60,11 +62,14 @@ const MarketSites = () => {
                                 </Card>
                             </Link>
                             {user && user.role === 'admin' && (
-                                <IconButton
-                                    onClick={() => dispatch(deleteMarketRequest(m._id))}
-                                    className={classes.removeBtn}>
-                                    <HighlightOffIcon/>
-                                </IconButton>
+                                <>
+                                    <IconButton
+                                        onClick={() => setOpen(true)}
+                                        className={classes.removeBtn}>
+                                        <HighlightOffIcon/>
+                                    </IconButton>
+                                    <AppWindow open={open} onClose={() => setOpen(false)} confirm={() => dispatch(deleteMarketRequest(m._id))}/>
+                                </>
                             )}
                         </Grid>
                     </Fragment>
