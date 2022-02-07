@@ -16,8 +16,8 @@ exports.config = {
   teardown: null,
   hooks: [],
   gherkin: {
-    features: './features/*.feature',
-    steps: ['./step_definitions/authSteps.js', './step_definitions/packageRegisterSteps.js']
+    features: './features/*',
+    steps: './step_definitions/*',
   },
   plugins: {
     screenshotOnFail: {
