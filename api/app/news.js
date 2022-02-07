@@ -48,7 +48,7 @@ router.post('/', upload.single('image'), async (req, res) => {
     const newsData = {
       title: req.body.title,
       description: req.body.description,
-      datetime: dayjs().format('DD/MM/YYYY'),
+      datetime: dayjs().format('MMM D, YYYY'),
     };
 
     if (req.file) {

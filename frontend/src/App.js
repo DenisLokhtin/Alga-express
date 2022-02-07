@@ -27,7 +27,7 @@ import WarehousemanStatusEdit from "./containers/WarehousemanStatusEdit/Warehous
 import AdminPaymentsProcessing from "./components/AdminPaymentsProcessing/AdminPaymentsProcessing";
 import {
     aboutCompany, addFlightAdmin,
-    addUserPayment, contactsCompany, editPackageAdmin,
+    addUserPayment, contactsCompany, editingSingleTrackNumber, editPackageAdmin,
     editPackageUser,
     editUserProfile, faqCompany, howCompany, listFlightAdmin, listPaymentsAdmin,
     newPackageRegister, newsCompany, newsEditCompany, newsIdCompany,
@@ -41,6 +41,7 @@ import {
     userPaymentsList
 } from "./paths";
 import OrderBuyout from "./containers/OrderBuyout/OrderBuyout";
+import SingleStatusEdit from "./containers/SingleStatusEdit/SingleStatusEdit";
 
 const App = () => {
 
@@ -74,6 +75,7 @@ const App = () => {
                 <Route path={listFlightAdmin} element={<FlightsList/>}/>
                 <Route path={listPaymentsAdmin} element={<AdminPaymentsProcessing/>}/>
                 <Route path={orderBuyouts} element={<OrderBuyout/>}/>
+                <Route path={editingSingleTrackNumber} element={<SingleStatusEdit/>}/>
                 <Route
                     path="*"
                     element={
