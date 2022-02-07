@@ -19,7 +19,12 @@ import {
     getOrderByIdSuccess,
     getOrdersHistoryError,
     getOrdersHistoryRequest,
-    getOrdersHistorySuccess, changeStatusesError, changeStatusesSuccess, changeStatusesRequest,
+    getOrdersHistorySuccess,
+    changeStatusesError,
+    changeStatusesSuccess,
+    changeStatusesRequest,
+    changeStatusSuccess,
+    changeStatusError, changeStatusRequest,
 } from "../actions/packageRegisterActions";
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
@@ -118,6 +123,29 @@ function* changeStatuses({payload: packageData}) {
     }
 }
 
+
+function* changeSingleStatus({payload: packageData}) {
+    try {
+        const response = yield axiosApi.put('/packages', packageData);
+        yield put(changeStatusSuccess());
+
+        if (!response.data.length) {
+            toast.success(response.data.message);
+        }
+
+    } catch (error) {
+        if (error.response.data && error.response.data.length > 0) {
+            toast.error('Некоторые трек-номера не были найдены в базе', {
+                autoClose: 5000,
+            });
+        }
+        yield put(changeStatusError(error.response.data));
+    }
+}
+
+
+
+
 const packageSagas = [
     takeEvery(createPackageRequest, packageRegisterSagas),
     takeEvery(changePackageRequest, packageChangeSagas),
@@ -127,6 +155,7 @@ const packageSagas = [
     takeEvery(getOrdersHistoryRequest, getOrdersHistorySagas),
     takeEvery(getOrderByIdRequest, getOrderById),
     takeEvery(changeStatusesRequest, changeStatuses),
+    takeEvery(changeStatusRequest, changeSingleStatus),
 ];
 
 export default packageSagas;
