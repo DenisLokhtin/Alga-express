@@ -115,7 +115,7 @@ router.post('/', auth, permit('admin', 'warehouseman', 'user'), async (req, res)
     }
 });
 
-router.put('/', async (req, res) => {
+router.put('/', auth, permit('admin', 'warehouseman'),async (req, res) => {
     const notFoundTrackNumbers = [];
 
     const separatedBySpaces = req.body.trackNumbers.split(' ');
@@ -173,7 +173,7 @@ router.put('/', async (req, res) => {
 });
 
 
-router.put('/single', async (req, res) => {
+router.put('/single', auth, permit('admin', 'warehouseman'),async (req, res) => {
     const notFoundTrackNumbers = [];
     try {
         if (req.body.trackNumber.length === 0) {
@@ -205,7 +205,7 @@ router.put('/single', async (req, res) => {
         if (notFoundTrackNumbers.length > 0) {
             res.status(404).send(notFoundTrackNumbers);
         } else {
-            res.send({message: 'Трек-номера были успешно изменены'});
+            res.send({message: 'Статус трек-номера был успешно изменен'});
         }
 
     } catch (error) {
