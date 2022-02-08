@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
-    container:{
+    container: {
         width: "90%",
         margin: "0 auto",
         marginTop: theme.spacing(2),
@@ -58,7 +58,7 @@ const AddNewsAdmin = () => {
 
     const inputChangeHandler = e => {
         const name = e.target.name;
-        const value=e.target.value;
+        const value = e.target.value;
         setNews(prevState => {
             return {...prevState, [name]: value};
         });
@@ -80,79 +80,81 @@ const AddNewsAdmin = () => {
         }
     };
 
-    const handleEditorChange = (e) => {
+    const handleEditorChange = (content) => {
+        console.log(content);
         setNews(prevState => {
-            return { ...prevState,description: e.target.getContent()}
-                })
-    }
+            return {...prevState, description: content}
+        });
+    };
 
     return (
         <Container
             component="section"
             maxWidth="md"
             className={classes.container}>
-        <Grid
-            container
-            direction="column"
-            spacing={2}
-            component="form"
-            autoComplete="off"
-            onSubmit={submitFormHandler}
-            noValidate
-        >
-            <h3 className={classes.title}>Добавить новость</h3>
-            <FormElement
-                required
-                label="Название"
-                name="title"
-                value={news.title}
-                onChange={inputChangeHandler}
-                error={getFieldError('title')}
-            />
-
-            <Grid item>
-                <Editor
-                    apiKey='rd2sys4x7q7uu8l0tvehv3sl6wisqzs1pp15gvq3jwssgvft'
-                    initialValue="<p>Текст новости ... </p>"
-                    init={{
-                        height: 500,
-                        menubar: false,
-                        plugins: [
-                            'advlist autolink lists link image',
-                            'charmap print preview anchor help',
-                            'searchreplace visualblocks code',
-                            'insertdatetime media table paste wordcount'
-                        ],
-                        toolbar:
-                            'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolory | outdent indent'
-                    }}
-                    onChange={handleEditorChange}
-                />
-            </Grid>
-
-            <Grid item xs>
-                <FileInput
+            <Grid
+                container
+                direction="column"
+                spacing={2}
+                component="form"
+                autoComplete="off"
+                onSubmit={submitFormHandler}
+                noValidate
+            >
+                <h3 className={classes.title}>Добавить новость</h3>
+                <FormElement
                     required
-                    label="Добавить картинку"
-                    name="image"
-                    onChange={fileChangeHandler}
+                    label="Название"
+                    name="title"
+                    value={news.title}
+                    onChange={inputChangeHandler}
+                    error={getFieldError('title')}
                 />
-            </Grid>
 
-            <Grid item xs={12}>
-                <ButtonWithProgress
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    className={classes.submit}
-                    loading={loading}
-                    disabled={loading}
-                >
-                    Добавить
-                </ButtonWithProgress>
+                <Grid item>
+                    <Editor
+                        apiKey='rd2sys4x7q7uu8l0tvehv3sl6wisqzs1pp15gvq3jwssgvft'
+                        value={news.description}
+                        init={{
+                            height: 400,
+                            menubar: false,
+                            plugins: [
+                                'advlist autolink lists link image',
+                                'charmap print preview anchor help',
+                                'searchreplace visualblocks code',
+                                'insertdatetime media table paste wordcount'
+                            ],
+                            toolbar:
+                                'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolory | outdent indent'
+                        }}
+                        onEditorChange={handleEditorChange}
+                    />
+                </Grid>
+
+                <Grid item xs>
+                    <FileInput
+                        required
+                        label="Добавить картинку"
+                        type
+                        name="image"
+                        onChange={fileChangeHandler}
+                    />
+                </Grid>
+
+                <Grid item xs={12}>
+                    <ButtonWithProgress
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                        loading={loading}
+                        disabled={loading}
+                    >
+                        Добавить
+                    </ButtonWithProgress>
+                </Grid>
             </Grid>
-        </Grid>
         </Container>
     );
 };
