@@ -26,7 +26,7 @@ const useStyles = makeStyles({
         fontSize: "30px",
     },
 
-})
+});
 
 const News = () => {
     const classes = useStyles();
@@ -37,11 +37,11 @@ const News = () => {
 
     useEffect(() => {
         dispatch(fetchNewsRequest());
-    }, [dispatch])
+    }, [dispatch]);
 
     const deleteNews = newsId => {
         dispatch(deleteNewsRequest(newsId))
-    }
+    };
 
     return (
         <>
