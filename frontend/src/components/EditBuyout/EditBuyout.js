@@ -1,19 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import Buyout from "../../components/Buyout/Buyout";
 import {useDispatch, useSelector} from "react-redux";
-import {
-    addBuyoutRequest,
-    clearBuyoutsError,
-    fetchBuyoutsRequest,
-    fetchSingleBuyoutRequest
-} from "../../store/actions/buyoutActions";
+import {clearBuyoutsError, editBuyoutRequest, fetchSingleBuyoutRequest} from "../../store/actions/buyoutActions";
 import {useParams} from "react-router-dom";
 import {Container, FormControl, FormHelperText, Grid, InputLabel, MenuItem, Select} from "@mui/material";
 import FormElement from "../UI/Form/FormElement";
 import FileInput from "../UI/FileInput/FileInput";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {makeStyles} from "@mui/styles";
-
 
 
 const useStyles = makeStyles(theme => ({
@@ -42,52 +35,73 @@ const EditBuyout = () => {
     const oneBuyout = useSelector(state => state.buyouts.singleBuyout);
     const error = useSelector(state => state.buyouts.createError);
     const loading = useSelector(state => state.buyouts.createLoading);
+    const user = useSelector(state => state.users.user);
     const {id} = useParams();
 
-    console.log(oneBuyout)
     const [buyout, setBuyout] = useState({
         description: '',
         image: null,
         url:  '',
         country: '',
+        price: '',
     });
+    console.log(oneBuyout)
 
-    useEffect(()=>{
+    // const [show, setShow] = useState(false);
+
+    useEffect(()=> {
             dispatch(fetchSingleBuyoutRequest(id));
-        oneBuyout && setBuyout(prevState => ({
-            ...prevState,
-            description: oneBuyout.description,
-            image: oneBuyout.image,
-            url: oneBuyout.url,
-            country:oneBuyout.country,
-        }))
-    },[dispatch,id]);
+            if (oneBuyout)
+                setBuyout(prevState => ({
+                    ...prevState,
+                    description: oneBuyout?.description,
+                    image: oneBuyout?.image,
+                    url: oneBuyout?.url,
+                    country:oneBuyout?.country,
+                    price:oneBuyout?.price,
+                }))
+        // if(user && user.role === 'admin'){
+        //     setShow(true);
+        // }
+
+    },[dispatch,id, oneBuyout && oneBuyout.description
+    ]);
 
 
     const inputChangeHandler = e => {
         const name = e.target.name;
-        const value = e.target.value;
-        setBuyout(prevState => {
-            return {...prevState, [name]: value};
-        });
+        let value = e.target.value;
+
+        if (name === 'price') {
+            if (e.target.value < 0) {
+                value = 0;
+                setBuyout(prevState => ({...prevState, [name]: value}));
+            }
+        }
+        setBuyout(prevState => ({...prevState, [name]: value}))
     };
 
 
     const submitFormHandler = e => {
         e.preventDefault();
-        // const formData = new FormData();
-        // Object.keys(buyout).forEach(key => {
-        //     formData.append(key, buyout[key]);
-        // });
-        //
-        // dispatch(addBuyoutRequest(formData));
-        // setBuyout({
-        //     description: "",
-        //     image: null,
-        //     url: "",
-        //     country: "",
-        // })
-        console.log('submit')
+        if(user.role === 'user'){
+            const formData = new FormData();
+            Object.keys(buyout).forEach(key => {
+                formData.append(key, buyout[key]);
+            });
+            dispatch(editBuyoutRequest({id, obj: formData}));
+        } else{
+            dispatch(editBuyoutRequest({id, obj: buyout}));
+        }
+
+
+        setBuyout({
+            description: "",
+            image: null,
+            url: "",
+            country: "",
+            price:'',
+        })
     };
 
 
@@ -113,7 +127,7 @@ const EditBuyout = () => {
         };
     },[dispatch])
 
-    return oneBuyout && (
+    return (
         <Container
             component="section"
             maxWidth="md"
@@ -133,7 +147,7 @@ const EditBuyout = () => {
                     <Select
                         labelId="demo-controlled-open-select-label"
                         id="demo-controlled-open-select"
-                        value={buyout.country || ''}
+                        value={buyout?.country }
                         label="Из какой страны выкупить"
                         name="country"
                         required
@@ -145,11 +159,13 @@ const EditBuyout = () => {
                     </Select>
                     <FormHelperText error={true}>{error?.errors?.['country']?.message}</FormHelperText>
                 </FormControl>
+
                 <FormElement
+                    disabled={Boolean(user?.role)}
                     required
                     label="Описание товара (размер, цвет и тд.)"
                     name="description"
-                    value={buyout.description || ''}
+                    value={buyout?.description}
                     onChange={inputChangeHandler}
                     error={getFieldError('description')}
                 />
@@ -158,7 +174,7 @@ const EditBuyout = () => {
                     required
                     label="Ссылка"
                     name="url"
-                    value={buyout.url}
+                    value={buyout?.url}
                     onChange={inputChangeHandler}
                     error={getFieldError('url')}
 
@@ -166,6 +182,7 @@ const EditBuyout = () => {
 
                 <Grid item xs>
                     <FileInput
+                        // disabled={show}
                         required
                         label="Скриншот или фото желаемого товара"
                         name="image"
@@ -174,6 +191,17 @@ const EditBuyout = () => {
                         helperText={getFieldError('image')}
                     />
                 </Grid>
+                {user?.role === 'admin' && (
+                    <FormElement
+                        type="number"
+                        required
+                        label="Цена за выкуп"
+                        name="price"
+                        value={buyout?.price}
+                        onChange={inputChangeHandler}
+                        error={getFieldError('price')}
+                    />
+                )}
 
                 <Grid item xs={12}>
                     <ButtonWithProgress

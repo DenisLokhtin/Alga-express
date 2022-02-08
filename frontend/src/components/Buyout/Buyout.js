@@ -5,9 +5,7 @@ import FormElement from "../UI/Form/FormElement";
 import FileInput from "../UI/FileInput/FileInput";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {makeStyles} from "@mui/styles";
-import {addBuyoutRequest, clearBuyoutsError, fetchSingleBuyoutRequest} from "../../store/actions/buyoutActions";
-import {useParams} from "react-router-dom";
-import {clearTextFieldsErrors} from "../../store/actions/packageRegisterActions";
+import {addBuyoutRequest, clearBuyoutsError} from "../../store/actions/buyoutActions";
 
 
 const useStyles = makeStyles(theme => ({
@@ -43,6 +41,7 @@ const Buyout = (effect, deps) => {
         image: null,
         url: "",
         country:"",
+        price: '',
     });
 
     // useEffect(()=>{
@@ -70,6 +69,7 @@ const Buyout = (effect, deps) => {
             image: null,
             url: "",
             country: "",
+            price:'',
         })
     };
 

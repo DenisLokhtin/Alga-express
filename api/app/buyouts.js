@@ -28,7 +28,7 @@ router.get('/', auth, permit('admin','user'),async (req, res) => {
 
         if (req.user.role === 'user'){
             const selfBuyouts = await Buyout.find({user: req.user._id}).populate('user', 'name ');
-            res.send(selfBuyouts);
+            res.send({data:selfBuyouts});
         } else{
             const buyouts = await Buyout.find({deleted: {$ne : true}}).populate('user', 'name');
             res.send({total: buyouts.length, data: buyouts});
@@ -66,6 +66,7 @@ router.post('/', auth ,upload.single('image'), async (req, res) => {
             datetime:dayjs().format('DD/MM/YYYY'),
             user: req.user._id,
             country: req.body.country,
+            price: req.body.price,
         };
 
         if(req.file){
@@ -97,16 +98,33 @@ router.delete('/:id', auth, permit('admin'),async (req, res) => {
     }
 });
 
-router.put('/:id', auth, async (req, res) => {
+router.put('/:id', auth, upload.single('image'),permit('admin', 'user'),async (req, res) => {
     try {
-        const updatedBuyout = await Buyout.findByIdAndUpdate(req.params.id, {
-            description: req.body.description,
-            url: req.body.url,
-            datetime:dayjs().format('DD/MM/YYYY'),
-            country: req.body.country,
-        }, {new: true, runValidators: true});
+        console.log(req.body);
+        if(req.user.role === 'admin') {
+            const updatedPrice = await Buyout.findByIdAndUpdate(req.params.id, {
+                description: req.body.description,
+                url: req.body.url,
+                country: req.body.country,
+                price: req.body.price,
+            }, {new: true, runValidators: true});
 
-        res.send(updatedBuyout);
+            res.send(updatedPrice);
+        }
+         else if (req.user.role === 'user'){
+             const newObj = {
+                 description: req.body.description,
+                 url: req.body.url,
+                 datetime:dayjs().format('DD/MM/YYYY'),
+                 country: req.body.country,
+             }
+             if(req.file){
+                 newObj.image = req.file.filename;
+             }
+            const updatedBuyout = await Buyout.findByIdAndUpdate(req.params.id, {newObj}, {new: true, runValidators: true});
+
+            res.send(updatedBuyout);
+        }
 
     } catch(error) {
         res.status(400).send(error);

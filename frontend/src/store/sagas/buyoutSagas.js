@@ -8,6 +8,9 @@ import {
     deleteBuyoutFailure,
     deleteBuyoutRequest,
     deleteBuyoutSuccess,
+    editBuyoutFailure,
+    editBuyoutRequest,
+    editBuyoutSuccess,
     fetchBuyoutsFailure,
     fetchBuyoutsRequest,
     fetchBuyoutsSuccess,
@@ -15,7 +18,6 @@ import {
     fetchSingleBuyoutRequest,
     fetchSingleBuyoutSuccess
 } from "../actions/buyoutActions";
-import {listBuyouts} from "../../paths";
 
 
 export function* getBuyoutSagas() {
@@ -72,7 +74,16 @@ export function* deleteBuyoutSaga({payload: id}) {
     }
 }
 
-
+function* editBuyoutSagas({payload}) {
+    console.log(JSON.stringify(payload.formData));
+    try {
+        yield axiosApi.put(`/buyouts/` + payload.id, payload.obj);
+        yield put(editBuyoutSuccess());
+        toast.success('Успешно обновлен!');
+    } catch (e) {
+        yield put(editBuyoutFailure(e.response.data));
+    }
+}
 
 
 const buyoutSaga = [
@@ -80,6 +91,7 @@ const buyoutSaga = [
     takeEvery(addBuyoutRequest, addBuyoutSaga),
     takeEvery(deleteBuyoutRequest, deleteBuyoutSaga),
     takeEvery(fetchSingleBuyoutRequest, getOneBuyoutSagas),
+    takeEvery(editBuyoutRequest, editBuyoutSagas),
 ];
 
 export default buyoutSaga;

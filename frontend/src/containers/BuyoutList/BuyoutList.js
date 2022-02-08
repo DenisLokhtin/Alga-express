@@ -1,16 +1,17 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {fetchBuyoutsRequest} from "../../store/actions/buyoutActions";
-import {Card, CardMedia, Container, Grid} from "@mui/material";
-import Link from "@mui/material/Link";
+import {Card, CardMedia, Container, Grid, Link} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import {apiURL} from "../../config";
+
 
 
 const useStyles = makeStyles({
     card: {
         height: '100%',
-        textAlign: "center"
+        textAlign: "center",
+        padding: '10px',
     },
     media: {
         height: 0,
@@ -27,8 +28,11 @@ const useStyles = makeStyles({
 const BuyoutList = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
+    const user = useSelector(state => state.users.user);
     const buyouts = useSelector(state => state.buyouts.buyouts.data);
+
     console.log(buyouts)
+
 
     useEffect(() => {
         dispatch(fetchBuyoutsRequest())
@@ -38,14 +42,20 @@ const BuyoutList = () => {
         <Container>
             <Grid container>
                 {buyouts && buyouts.map(b => (
-                    <Grid item xs={8} sm={6} md={4} lg={2}>
+                    <Grid item xs={8} sm={6} md={4} lg={2} key={b._id}>
                         <Card className={classes.card}>
                             <CardMedia
                                 image={apiURL + '/' + b.image}
                                 className={classes.media}
                             />
                             <p>{b.description}</p>
-                            <Link to={b.url} className={classes.btn}>Ссылка на товар</Link>
+                            {user && user.role === 'admin' && (
+                                <p>Заказчик: {b.user.name}</p>
+                            )}
+                            <Link href={b.url} target={'_blank'} rel={'noopener'} className={classes.btn}>
+                           Ссылка на товар</Link>
+
+
                             {/*{showBtn && (*/}
                             {/*    <button onClick={()=>dispatch(deletePicture(id))}>X</button>*/}
                             {/*)}*/}

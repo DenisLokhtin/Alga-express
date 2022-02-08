@@ -54,13 +54,22 @@ const buyoutSlice = createSlice({
         fetchSingleBuyoutSuccess(state,{payload: data}){
             state.fetchLoading = false;
             state.singleBuyout=data;
-            console.log('in slice',data)
         },
         fetchSingleBuyoutFailure(state){
             state.fetchLoading=false;
         },
         clearBuyoutsError(state){
             state.createError=null;
+        },
+        editBuyoutRequest(state){
+            state.createLoading = true;
+        },
+        editBuyoutSuccess(state){
+            state.createLoading = false;
+        },
+        editBuyoutFailure(state,action){
+            state.createLoading =false;
+            state.createError = action.payload;
         }
     }
 });
