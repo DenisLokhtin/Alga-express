@@ -196,8 +196,8 @@ const AdminEditPackage = () => {
                                 <MenuItem value={'ON_WAREHOUSE'}>На складе</MenuItem>
                                 <MenuItem value={'ON_WAY'}>Вылетел</MenuItem>
                                 <MenuItem value={'PROCESSED'}>Обрабатывается</MenuItem>
-                                <MenuItem value={'ISSUE'}>Готово к выдаче</MenuItem>
-                                <MenuItem value={'ISSUED'}>Выдано</MenuItem>
+                                <MenuItem value={'DELIVERED'}>Готово к выдаче</MenuItem>
+                                <MenuItem value={'DONE'}>Выдано</MenuItem>
                             </Select>
                             <FormHelperText error={true}>{error.errors?.['status']?.message}</FormHelperText>
                         </FormControl>

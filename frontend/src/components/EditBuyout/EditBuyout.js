@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
+import {clearBuyoutsError, editBuyoutRequest, fetchSingleBuyoutRequest} from "../../store/actions/buyoutActions";
+import {useParams} from "react-router-dom";
 import {Container, FormControl, FormHelperText, Grid, InputLabel, MenuItem, Select} from "@mui/material";
 import FormElement from "../UI/Form/FormElement";
 import FileInput from "../UI/FileInput/FileInput";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {makeStyles} from "@mui/styles";
-import {addBuyoutRequest, clearBuyoutsError} from "../../store/actions/buyoutActions";
 
 
 const useStyles = makeStyles(theme => ({
@@ -28,42 +29,72 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-
-const Buyout = (effect, deps) => {
-    const classes = useStyles();
+const EditBuyout = () => {
     const dispatch = useDispatch();
-    const loading = useSelector(state => state.buyouts.createLoading);
+    const classes = useStyles();
+    const oneBuyout = useSelector(state => state.buyouts.singleBuyout);
     const error = useSelector(state => state.buyouts.createError);
-
+    const loading = useSelector(state => state.buyouts.createLoading);
+    const user = useSelector(state => state.users.user);
+    const {id} = useParams();
 
     const [buyout, setBuyout] = useState({
-        description: "",
+        description: '',
         image: null,
-        url: "",
-        country:"",
+        url:  '',
+        country: '',
         price: '',
     });
+    console.log(oneBuyout)
 
-    // useEffect(()=>{
-    //         oneBuyout && setBuyout(prevState => ({
-    //             ...prevState,
-    //             description: oneBuyout.description,
-    //             image: oneBuyout.image,
-    //             url: oneBuyout.url,
-    //             country:oneBuyout.country,
-    //         }))
-    // },[oneBuyout.description,oneBuyout.url, oneBuyout.image, oneBuyout.country])
+    // const [show, setShow] = useState(false);
 
+    useEffect(()=> {
+            dispatch(fetchSingleBuyoutRequest(id));
+            if (oneBuyout)
+                setBuyout(prevState => ({
+                    ...prevState,
+                    description: oneBuyout?.description,
+                    image: oneBuyout?.image,
+                    url: oneBuyout?.url,
+                    country:oneBuyout?.country,
+                    price:oneBuyout?.price,
+                }))
+        // if(user && user.role === 'admin'){
+        //     setShow(true);
+        // }
+
+    },[dispatch,id, oneBuyout && oneBuyout.description
+    ]);
+
+
+    const inputChangeHandler = e => {
+        const name = e.target.name;
+        let value = e.target.value;
+
+        if (name === 'price') {
+            if (e.target.value < 0) {
+                value = 0;
+                setBuyout(prevState => ({...prevState, [name]: value}));
+            }
+        }
+        setBuyout(prevState => ({...prevState, [name]: value}))
+    };
 
 
     const submitFormHandler = e => {
         e.preventDefault();
-        const formData = new FormData();
-        Object.keys(buyout).forEach(key => {
-            formData.append(key, buyout[key]);
-        });
+        if(user.role === 'user'){
+            const formData = new FormData();
+            Object.keys(buyout).forEach(key => {
+                formData.append(key, buyout[key]);
+            });
+            dispatch(editBuyoutRequest({id, obj: formData}));
+        } else{
+            dispatch(editBuyoutRequest({id, obj: buyout}));
+        }
 
-        dispatch(addBuyoutRequest(formData));
+
         setBuyout({
             description: "",
             image: null,
@@ -73,14 +104,6 @@ const Buyout = (effect, deps) => {
         })
     };
 
-
-    const inputChangeHandler = e => {
-        const name = e.target.name;
-        const value = e.target.value;
-        setBuyout(prevState => {
-            return {...prevState, [name]: value};
-        });
-    };
 
     const fileChangeHandler = e => {
         const name = e.target.name;
@@ -124,7 +147,7 @@ const Buyout = (effect, deps) => {
                     <Select
                         labelId="demo-controlled-open-select-label"
                         id="demo-controlled-open-select"
-                        value={buyout.country }
+                        value={buyout?.country }
                         label="Из какой страны выкупить"
                         name="country"
                         required
@@ -136,11 +159,13 @@ const Buyout = (effect, deps) => {
                     </Select>
                     <FormHelperText error={true}>{error?.errors?.['country']?.message}</FormHelperText>
                 </FormControl>
+
                 <FormElement
+                    disabled={Boolean(user?.role)}
                     required
                     label="Описание товара (размер, цвет и тд.)"
                     name="description"
-                    value={buyout.description}
+                    value={buyout?.description}
                     onChange={inputChangeHandler}
                     error={getFieldError('description')}
                 />
@@ -149,7 +174,7 @@ const Buyout = (effect, deps) => {
                     required
                     label="Ссылка"
                     name="url"
-                    value={buyout.url}
+                    value={buyout?.url}
                     onChange={inputChangeHandler}
                     error={getFieldError('url')}
 
@@ -157,6 +182,7 @@ const Buyout = (effect, deps) => {
 
                 <Grid item xs>
                     <FileInput
+                        // disabled={show}
                         required
                         label="Скриншот или фото желаемого товара"
                         name="image"
@@ -165,6 +191,17 @@ const Buyout = (effect, deps) => {
                         helperText={getFieldError('image')}
                     />
                 </Grid>
+                {user?.role === 'admin' && (
+                    <FormElement
+                        type="number"
+                        required
+                        label="Цена за выкуп"
+                        name="price"
+                        value={buyout?.price}
+                        onChange={inputChangeHandler}
+                        error={getFieldError('price')}
+                    />
+                )}
 
                 <Grid item xs={12}>
                     <ButtonWithProgress
@@ -176,7 +213,7 @@ const Buyout = (effect, deps) => {
                         loading={loading}
                         disabled={loading}
                     >
-                        Заказать
+                        Обновить
                     </ButtonWithProgress>
                 </Grid>
             </Grid>
@@ -184,4 +221,4 @@ const Buyout = (effect, deps) => {
     );
 };
 
-export default Buyout;
+export default EditBuyout;

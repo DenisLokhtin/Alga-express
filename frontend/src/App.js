@@ -26,15 +26,32 @@ import UserPayments from "./components/UserPayments/UserPayments";
 import WarehousemanStatusEdit from "./containers/WarehousemanStatusEdit/WarehousemanStatusEdit";
 import AdminPaymentsProcessing from "./components/AdminPaymentsProcessing/AdminPaymentsProcessing";
 import {
-    aboutCompany, addFlightAdmin,
-    addUserPayment, contactsCompany, editingSingleTrackNumber, editPackageAdmin,
+    aboutCompany,
+    addFlightAdmin,
+    addUserPayment,
+    contactsCompany,
+    editBuyout,
+    editingSingleTrackNumber,
+    editPackageAdmin,
     editPackageUser,
-    editUserProfile, faqCompany, howCompany, listFlightAdmin, listPaymentsAdmin,
-    newPackageRegister, newsCompany, newsEditCompany, newsIdCompany,
-    newUserRegister, orderBuyouts,
+    editUserProfile,
+    faqCompany,
+    howCompany,
+    listBuyouts,
+    listFlightAdmin,
+    listPaymentsAdmin,
+    newPackageRegister,
+    newsCompany,
+    newsEditCompany,
+    newsIdCompany,
+    newUserRegister,
+    orderBuyouts,
     packageHistory,
-    packageInfoId, processingTrackNumbersAdmin,
-    root, rulesCompany, sitesCompany,
+    packageInfoId,
+    processingTrackNumbersAdmin,
+    root,
+    rulesCompany,
+    sitesCompany,
     user,
     userLogin,
     userPackageHistory,
@@ -42,6 +59,8 @@ import {
 } from "./paths";
 import OrderBuyout from "./containers/OrderBuyout/OrderBuyout";
 import SingleStatusEdit from "./containers/SingleStatusEdit/SingleStatusEdit";
+import EditBuyout from "./components/EditBuyout/EditBuyout";
+import BuyoutList from "./containers/BuyoutList/BuyoutList";
 
 const App = () => {
 
@@ -76,6 +95,8 @@ const App = () => {
                 <Route path={listPaymentsAdmin} element={<AdminPaymentsProcessing/>}/>
                 <Route path={orderBuyouts} element={<OrderBuyout/>}/>
                 <Route path={editingSingleTrackNumber} element={<SingleStatusEdit/>}/>
+                <Route path={editBuyout} element={<EditBuyout/>}/>
+                <Route path={listBuyouts} element={<BuyoutList/>}/>
                 <Route
                     path="*"
                     element={

@@ -8,7 +8,7 @@ const useStyles = makeStyles({
   }
 });
 
-const FileInput = ({onChange, name, label, required, error, helperText, multiple}) => {
+const FileInput = ({onChange, name, label, required, error, helperText, multiple,disabled}) => {
   const classes = useStyles();
 
   const inputRef = useRef();
@@ -38,6 +38,7 @@ const FileInput = ({onChange, name, label, required, error, helperText, multiple
         ref={inputRef}
         multiple={multiple}
         required={required}
+        disabled={disabled}
       />
       <Grid container direction="row" spacing={2} alignItems="center">
         <Grid item xs>
@@ -51,7 +52,7 @@ const FileInput = ({onChange, name, label, required, error, helperText, multiple
           />
         </Grid>
         <Grid item>
-          <Button variant="contained" onClick={activateInput}>Загрузить</Button>
+          <Button variant="contained" onClick={activateInput} disabled={disabled}>Загрузить</Button>
         </Grid>
       </Grid>
     </>
