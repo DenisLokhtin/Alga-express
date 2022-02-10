@@ -1,6 +1,6 @@
 import React from 'react';
 import {useSelector} from "react-redux";
-import {AppBar, Box, Button, CssBaseline, Slide, Tab, Toolbar, useScrollTrigger} from "@mui/material";
+import {AppBar, Box, Button, CssBaseline, Slide, Toolbar, useScrollTrigger} from "@mui/material";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import BurgerMenu from "../BurgerMenu/BurgerMenu";
@@ -19,7 +19,7 @@ import {
     rulesCompany,
     sitesCompany
 } from "../../../paths";
-import {TabContext, TabList, TabPanel} from "@mui/lab";
+import WarehousePage from "../../WarehousePage/WarehousePage";
 
 
 const pages = [
@@ -56,6 +56,7 @@ const useStyles = makeStyles({
     }
 })
 
+
 const AppToolbar = (props) => {
     const classes = useStyles();
     const navigate = useNavigate();
@@ -65,13 +66,6 @@ const AppToolbar = (props) => {
     const navigateTo = (url) => {
         navigate(url);
     };
-
-    const [value, setValue] = React.useState("1");
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
-
 
     return (
         <>
@@ -134,23 +128,7 @@ const AppToolbar = (props) => {
                             </Box>
                         </Toolbar>
 
-                        <Box sx={{width: '100%', typography: 'body1'}}>
-                            <TabContext value={value}>
-                                <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
-                                    <TabList onChange={handleChange} aria-label="lab API tabs example">
-                                        {/*<Tab icon={<IconButton><IconFlagUS/></IconButton>} value="1" label="США"/>*/}
-                                        {/*<Tab icon={<IconButton><IconFlagCN/></IconButton>} value="2" label="Китай"/>*/}
-                                        {/*<Tab icon={<IconButton><IconFlagTR/></IconButton>} value="3" label="Турция"/>*/}
-                                        <Tab value="1" label="США"/>
-                                        <Tab value="2" label="Китай"/>
-                                        <Tab value="3" label="Турция"/>
-                                    </TabList>
-                                </Box>
-                                <TabPanel value="1">Item One</TabPanel>
-                                <TabPanel value="2">Item Two</TabPanel>
-                                <TabPanel value="3">Item Three</TabPanel>
-                            </TabContext>
-                        </Box>
+                        <WarehousePage/>
                     </Container>
 
 
