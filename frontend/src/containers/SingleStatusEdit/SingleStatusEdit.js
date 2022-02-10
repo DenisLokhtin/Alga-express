@@ -17,12 +17,12 @@ import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWit
 import FormElement from "../../components/UI/Form/FormElement";
 
 const menuItems = [
-        {value: 'REGISTERED', text: 'Оформлен'},
-        {value: 'ON_WAREHOUSE', text: 'На складе'},
-        {value: 'ON_WAY', text: 'Вылетел'},
-        {value: 'PROCESSED', text: 'Обрабатывается'},
-        {value: 'DELIVERED', text: 'Готово к выдаче'},
-        {value: 'DONE', text: 'Выдано'},
+    {value: 'REGISTERED', text: 'Оформлен'},
+    {value: 'ON_WAREHOUSE', text: 'На складе'},
+    {value: 'ON_WAY', text: 'Вылетел'},
+    {value: 'PROCESSED', text: 'Обрабатывается'},
+    {value: 'DELIVERED', text: 'Готово к выдаче'},
+    {value: 'DONE', text: 'Выдано'},
 ];
 
 const useStyles = makeStyles(() => ({
@@ -55,7 +55,7 @@ const WarehousemanStatusEdit = () => {
 
     const [packageStatus, setPackageStatus] = useState({
         status: '',
-        trackNumbers: '',
+        trackNumber: '',
     });
 
     const getFieldError = fieldName => {
@@ -74,6 +74,10 @@ const WarehousemanStatusEdit = () => {
     const submit = e => {
         e.preventDefault();
         dispatch(changeStatusesRequest(packageStatus));
+        setPackageStatus({
+            status: '',
+            trackNumber: '',
+        })
     };
 
     useEffect(() => {
@@ -87,7 +91,7 @@ const WarehousemanStatusEdit = () => {
             <Grid container component="form" onSubmit={submit} justifyContent="center" spacing={4}>
                 <Grid item xs={12} sm={8} md={7} lg={7}>
                     <FormControl variant="standard" fullWidth>
-                        <InputLabel id="demo-controlled-open-select-label" required>Выберите статус трек-номеров</InputLabel>
+                        <InputLabel id="demo-controlled-open-select-label" required>Выберите статус трек-номера</InputLabel>
                         <Select
                             labelId="demo-controlled-open-select-label"
                             id="demo-controlled-open-select"
@@ -106,11 +110,11 @@ const WarehousemanStatusEdit = () => {
                 </Grid>
                 <Grid item xs={12} sm={8} md={7} lg={7}>
                     <FormElement
-                        name="trackNumbers"
-                        value={packageStatus.trackNumbers}
+                        name="trackNumber"
+                        value={packageStatus.trackNumber}
                         onChange={onInputChange}
                         variant="outlined"
-                        label="Введите трек-номера"
+                        label="Введите один трек-номер"
                         multiline
                         error={getFieldError('trackNumber')}
                         minRows={3}
@@ -123,7 +127,7 @@ const WarehousemanStatusEdit = () => {
                         loading={loading}
                         disabled={loading}
                     >
-                        Обновить статус заказов
+                        Обновить статус заказа
                     </ButtonWithProgress>
                 </Grid>
                 {notFoundTrackNumbers.length > 0 ? (

@@ -128,20 +128,20 @@ const EditNews = () => {
                             helperText={getFieldError('title')}
                         />
                     </Grid>
-                    <Grid item xs={12} sm={8} md={7} lg={7}>
-                        <TextField
-                            name="description"
-                            type="text"
-                            value={news.description || ''}
-                            onChange={inputChangeHandler}
-                            fullWidth
-                            required
-                            variant="outlined"
-                            label="Описание"
-                            error={Boolean(getFieldError('description'))}
-                            helperText={getFieldError('description')}
-                        />
-                    </Grid>
+                    {/*<Grid item xs={12} sm={8} md={7} lg={7}>*/}
+                    {/*    <TextField*/}
+                    {/*        name="description"*/}
+                    {/*        type="text"*/}
+                    {/*        value={news.description || ''}*/}
+                    {/*        onChange={inputChangeHandler}*/}
+                    {/*        fullWidth*/}
+                    {/*        required*/}
+                    {/*        variant="outlined"*/}
+                    {/*        label="Описание"*/}
+                    {/*        error={Boolean(getFieldError('description'))}*/}
+                    {/*        helperText={getFieldError('description')}*/}
+                    {/*    />*/}
+                    {/*</Grid>*/}
                     <Grid item xs={12} sm={8} md={7} lg={7}
                           className={classes.newsBtnContainer}>
                         <ButtonWithProgress

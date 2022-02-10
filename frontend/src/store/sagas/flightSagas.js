@@ -13,13 +13,14 @@ import {
     putFlightRequest,
     putFlightSuccess
 } from '../actions/flightActions';
+import {listFlightAdmin} from "../../paths";
 
 function* postFlight({payload: data}) {
     try {
         yield axiosApi.post('/flights', data.flightNumber);
         yield put(postFlightSuccess());
         toast.success('Рейс добавлен!');
-        data.navigate('/');
+        data.navigate(listFlightAdmin);
     } catch (e) {
         yield put(postFlightFailure(e.response.data));
     }

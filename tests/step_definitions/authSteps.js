@@ -11,9 +11,6 @@ Given('я ввожу данные:', (table) => {
 
         I.fillField(name, value);
     });
-   if (table.rows.length === 4) {
-       I.fillField({css: 'input.form-control'}, '550555555');
-   }
 });
 
 When('нажимаю на чекбокс', () => {

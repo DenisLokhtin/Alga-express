@@ -137,7 +137,19 @@ const packageSlice = createSlice({
             state.changeStatusesLoading = false;
             state.notFoundTrackNumbers = error;
         },
+        changeStatusRequest(state) {
+            state.changeStatusesLoading = true;
+        },
 
+        changeStatusSuccess(state) {
+            state.changeStatusesLoading = false;
+        },
+
+        changeStatusError(state, {payload: error}) {
+            state.changeStatusesError = error;
+            state.changeStatusesLoading = false;
+            state.notFoundTrackNumbers = error;
+        },
         clearAdminErrors(state) {
             state.editAdminError = false;
         },

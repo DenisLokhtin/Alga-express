@@ -85,7 +85,7 @@ router.get('/payment', auth, async (req, res) => {
 
         res.send({totalElements: size.length, data: response});
     } catch (e) {
-        res.send(403).send({error: e.response.data.error});
+        res.status(400).send({error:e});
     }
 });
 
@@ -154,7 +154,8 @@ router.put('/:id', auth, upload.fields([
             res.status(403).send({error: 'Доступ запрещен'});
         } catch (e) {
             console.log(e);
-            res.status(400).send(e);
+            res.status(400).send({error:e});
+
         }
     });
 
@@ -179,7 +180,7 @@ router.post('/payment', auth, upload.single('payment'), async (req, res) => {
 
         res.send('payment');
     } catch (e) {
-
+        res.status(400).send({error:e});
     }
 });
 

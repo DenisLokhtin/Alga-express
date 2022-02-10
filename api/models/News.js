@@ -7,7 +7,6 @@ const NewsSchema = new mongoose.Schema({
   },
   description:{
     type: String,
-    required: 'Текст новости является обязательным полем',
   },
   image: String,
   datetime: {

@@ -31,6 +31,7 @@ import {
     addUserPayment,
     contactsCompany,
     editBuyout,
+    editingSingleTrackNumber,
     editPackageAdmin,
     editPackageUser,
     editUserProfile,
@@ -57,6 +58,7 @@ import {
     userPaymentsList
 } from "./paths";
 import OrderBuyout from "./containers/OrderBuyout/OrderBuyout";
+import SingleStatusEdit from "./containers/SingleStatusEdit/SingleStatusEdit";
 import EditBuyout from "./components/EditBuyout/EditBuyout";
 import BuyoutList from "./containers/BuyoutList/BuyoutList";
 
@@ -92,6 +94,7 @@ const App = () => {
                 <Route path={listFlightAdmin} element={<FlightsList/>}/>
                 <Route path={listPaymentsAdmin} element={<AdminPaymentsProcessing/>}/>
                 <Route path={orderBuyouts} element={<OrderBuyout/>}/>
+                <Route path={editingSingleTrackNumber} element={<SingleStatusEdit/>}/>
                 <Route path={editBuyout} element={<EditBuyout/>}/>
                 <Route path={listBuyouts} element={<BuyoutList/>}/>
                 <Route
