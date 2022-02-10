@@ -16,11 +16,11 @@ const WareHouseSchema = new mongoose.Schema({
     },
     postcode: {
         type: String,
-        default: false
+        required: true,
     },
     phone: {
         type: String,
-        default: false
+        required: true,
     }
 });
 
