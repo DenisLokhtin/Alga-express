@@ -5,7 +5,7 @@ import {Checkbox, Container, FormControl, FormHelperText, Grid, InputLabel, Menu
 import {makeStyles} from "@mui/styles";
 import Dimension from "../../components/Dimension/Dimension";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import theme from "../../theme";
 import FormElement from "../../components/UI/Form/FormElement";
 
@@ -49,6 +49,11 @@ const PackageRegister = () => {
     const loading = useSelector(state => state.package.createPackageRequest);
     const dispatch = useDispatch();
     const error = useSelector(state => state.package.createPackageError);
+    const data = useLocation();
+
+    console.log('register', data.state)
+    // приходят данные пользователя который заказал выкуп
+
 
     const [packageRegister, setPackageRegister] = useState({
         trackNumber: '',

@@ -70,7 +70,7 @@ router.post('/', auth ,upload.single('image'), async (req, res) => {
         };
 
         if(req.file){
-            buyoutData.image =  'uploads/' + req.file.filename;
+            buyoutData.image =  'uploads/buyouts/' + req.file.filename;
         }
 
         const buyout = new Buyout(buyoutData);
@@ -101,6 +101,7 @@ router.delete('/:id', auth, permit('admin'),async (req, res) => {
 router.put('/:id', auth, upload.single('image'),permit('admin', 'user'),async (req, res) => {
     try {
         console.log(req.body);
+
         if(req.user.role === 'admin') {
             const updatedPrice = await Buyout.findByIdAndUpdate(req.params.id, {
                 description: req.body.description,
@@ -112,18 +113,19 @@ router.put('/:id', auth, upload.single('image'),permit('admin', 'user'),async (r
             res.send(updatedPrice);
         }
          else if (req.user.role === 'user'){
-             const newObj = {
-                 description: req.body.description,
-                 url: req.body.url,
-                 datetime:dayjs().format('DD/MM/YYYY'),
-                 country: req.body.country,
-             }
-             if(req.file){
-                 newObj.image = req.file.filename;
-             }
-            const updatedBuyout = await Buyout.findByIdAndUpdate(req.params.id, {newObj}, {new: true, runValidators: true});
+                 const newObj = {
+                     description: req.body.description,
+                     url: req.body.url,
+                     datetime:dayjs().format('DD/MM/YYYY'),
+                     country: req.body.country,
+                 }
+                 if(req.file){
+                     newObj.image ='uploads/buyouts/' + req.file.filename;
+                 }
+                 const updatedBuyout = await Buyout.findByIdAndUpdate(req.params.id, {newObj}, {new: true, runValidators: true});
 
-            res.send(updatedBuyout);
+                 res.send(updatedBuyout);
+
         }
 
     } catch(error) {

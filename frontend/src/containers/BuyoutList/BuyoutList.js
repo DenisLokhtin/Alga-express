@@ -1,9 +1,12 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {fetchBuyoutsRequest} from "../../store/actions/buyoutActions";
-import {Card, CardMedia, Container, Grid, Link} from "@mui/material";
+import {Card, CardMedia, Container, Grid} from "@mui/material";
+import MaterialLink from '@mui/material/Link'
 import {makeStyles} from "@mui/styles";
 import {apiURL} from "../../config";
+import {newPackageRegister} from "../../paths";
+import {Link} from "react-router-dom";
 
 
 
@@ -31,8 +34,6 @@ const BuyoutList = () => {
     const user = useSelector(state => state.users.user);
     const buyouts = useSelector(state => state.buyouts.buyouts.data);
 
-    console.log(buyouts)
-
 
     useEffect(() => {
         dispatch(fetchBuyoutsRequest())
@@ -52,13 +53,12 @@ const BuyoutList = () => {
                             {user && user.role === 'admin' && (
                                 <p>Заказчик: {b.user.name}</p>
                             )}
-                            <Link href={b.url} target={'_blank'} rel={'noopener'} className={classes.btn}>
-                           Ссылка на товар</Link>
+                            <MaterialLink href={b.url} target={'_blank'} rel={'noopener'} className={classes.btn}>
+                           Ссылка на товар</MaterialLink>
+                            {user && user.role === 'admin' && (
+                                <Link to={newPackageRegister} state={{userProps: {id: b.user._id, name: b.user.name}}}>Оформить выкуп</Link>
+                            )}
 
-
-                            {/*{showBtn && (*/}
-                            {/*    <button onClick={()=>dispatch(deletePicture(id))}>X</button>*/}
-                            {/*)}*/}
                         </Card>
                         {/*//     <h4>{b.url}</h4>*/}
                         {/*//     <h4>{b.description}</h4>*/}
