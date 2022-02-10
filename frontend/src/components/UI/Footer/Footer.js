@@ -5,8 +5,8 @@ import Grid from "@mui/material/Grid";
 const useStyles = makeStyles({
     footer: {
         padding: "15px",
-        background: "rgba(0,0,0,0.82)",
-        color: "#F5F5F7"
+        background: "darkgray",
+        color: "#F5F5F7",
     }
 })
 

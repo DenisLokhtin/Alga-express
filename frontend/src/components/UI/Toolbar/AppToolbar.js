@@ -1,10 +1,10 @@
 import React from 'react';
 import {useSelector} from "react-redux";
-import {AppBar, Box, Button, CssBaseline, Slide, Toolbar, useScrollTrigger} from "@mui/material";
+import {AppBar, Box, Slide, Toolbar, useScrollTrigger} from "@mui/material";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import BurgerMenu from "../BurgerMenu/BurgerMenu";
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import logo from '../../../assets/logo.svg';
 import {makeStyles} from "@mui/styles";
 import UserMenu from "./Menu/UserMenu";
@@ -56,33 +56,14 @@ const useStyles = makeStyles({
 
 const AppToolbar = (props) => {
     const classes = useStyles();
-    const navigate = useNavigate();
-
     const user = useSelector(state => state.users.user);
-
-    const navigateTo = (url) => {
-        navigate(url);
-    }
 
     return (
         <>
-            <CssBaseline/>
             <HideOnScroll {...props}>
-                <AppBar sx={{background: 'rgba(0,0,0,0.82)'}}>
+                <AppBar sx={{background: 'grey'}}>
                     <Container maxWidth="xl">
                         <Toolbar disableGutters>
-                            <Typography
-                                variant="h6"
-                                noWrap
-                                component="div"
-                                sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
-                            >
-                                <Link to="/" className={classes.logo}>
-                                    <img src={logo} alt="logo" style={{width: "40px"}}/>
-                                    <span>Alga-Express</span>
-                                </Link>
-                            </Typography>
-
                             <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                                 <BurgerMenu pages={pages}/>
                             </Box>
@@ -95,21 +76,9 @@ const AppToolbar = (props) => {
                             >
                                 <Link to={root} className={classes.logo} >
                                     <img src={logo} alt="logo" style={{width: "40px"}}/>
-                                    <span>Alga-Express</span>
+                                    <span>Alga Express</span>
                                 </Link>
                             </Typography>
-
-                            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                                {pages.map((page) => (
-                                    <Button
-                                        key={page.title}
-                                        onClick={() => navigateTo(page.url)}
-                                        sx={{ my: 2, color: 'white', display: 'block' }}
-                                    >
-                                        {page.title}
-                                    </Button>
-                                ))}
-                            </Box>
 
                             <Box sx={{ flexGrow: 0 }}>
                                 {user ?
@@ -117,8 +86,7 @@ const AppToolbar = (props) => {
                                         user={user}
                                     />
                                     :
-                                    <Anonymous/>
-                                }
+                                    <Anonymous/>}
                             </Box>
                         </Toolbar>
                     </Container>
