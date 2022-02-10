@@ -93,15 +93,6 @@ const StyledDataGrid = styled(DataGrid)(({theme}) => ({
 
 const columns = [
     {
-        field: 'id',
-        hide: true,
-        headerName: 'Id',
-        minWidth: 200,
-        maxWidth: 400,
-        headerAlign: 'center',
-        align: 'center'
-    },
-    {
         field: 'cargoNumber',
         headerName: 'Карго-номер',
         minWidth: 220,
