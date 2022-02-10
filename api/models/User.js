@@ -21,6 +21,10 @@ const phoneNumbers = new mongoose.Schema({
         trim: true,
         enum: ['TELEGRAM', 'PHONE'],
         default: 'PHONE',
+    },
+    idChat: {
+        type: String,
+        trim: true,
     }
 });
 
