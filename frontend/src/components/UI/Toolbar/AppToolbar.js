@@ -1,6 +1,6 @@
 import React from 'react';
 import {useSelector} from "react-redux";
-import {AppBar, Box, Button, CssBaseline, Slide, Toolbar, useScrollTrigger} from "@mui/material";
+import {AppBar, Box, Button, CssBaseline, Slide, Tab, Toolbar, useScrollTrigger} from "@mui/material";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import BurgerMenu from "../BurgerMenu/BurgerMenu";
@@ -19,6 +19,8 @@ import {
     rulesCompany,
     sitesCompany
 } from "../../../paths";
+import {TabContext, TabList, TabPanel} from "@mui/lab";
+
 
 const pages = [
     {url: rulesCompany, title: 'правила'},
@@ -31,7 +33,7 @@ const pages = [
 ];
 
 function HideOnScroll(props) {
-    const { children, window } = props;
+    const {children, window} = props;
     const trigger = useScrollTrigger({
         target: window ? window() : undefined,
     });
@@ -62,7 +64,14 @@ const AppToolbar = (props) => {
 
     const navigateTo = (url) => {
         navigate(url);
-    }
+    };
+
+    const [value, setValue] = React.useState("1");
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+
 
     return (
         <>
@@ -75,7 +84,7 @@ const AppToolbar = (props) => {
                                 variant="h6"
                                 noWrap
                                 component="div"
-                                sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+                                sx={{mr: 2, display: {xs: 'none', md: 'flex'}}}
                             >
                                 <Link to="/" className={classes.logo}>
                                     <img src={logo} alt="logo" style={{width: "40px"}}/>
@@ -83,7 +92,7 @@ const AppToolbar = (props) => {
                                 </Link>
                             </Typography>
 
-                            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+                            <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}>
                                 <BurgerMenu pages={pages}/>
                             </Box>
 
@@ -91,27 +100,30 @@ const AppToolbar = (props) => {
                                 variant="h6"
                                 noWrap
                                 component="div"
-                                sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
+                                sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}
                             >
-                                <Link to={root} className={classes.logo} >
+                                <Link to={root} className={classes.logo}>
                                     <img src={logo} alt="logo" style={{width: "40px"}}/>
                                     <span>Alga-Express</span>
                                 </Link>
                             </Typography>
 
-                            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+
+                            <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
+
                                 {pages.map((page) => (
                                     <Button
                                         key={page.title}
                                         onClick={() => navigateTo(page.url)}
-                                        sx={{ my: 2, color: 'white', display: 'block' }}
+                                        sx={{my: 2, color: 'white', display: 'block'}}
                                     >
                                         {page.title}
                                     </Button>
                                 ))}
                             </Box>
 
-                            <Box sx={{ flexGrow: 0 }}>
+
+                            <Box sx={{flexGrow: 0}}>
                                 {user ?
                                     <UserMenu
                                         user={user}
@@ -121,10 +133,30 @@ const AppToolbar = (props) => {
                                 }
                             </Box>
                         </Toolbar>
+
+                        <Box sx={{width: '100%', typography: 'body1'}}>
+                            <TabContext value={value}>
+                                <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
+                                    <TabList onChange={handleChange} aria-label="lab API tabs example">
+                                        {/*<Tab icon={<IconButton><IconFlagUS/></IconButton>} value="1" label="США"/>*/}
+                                        {/*<Tab icon={<IconButton><IconFlagCN/></IconButton>} value="2" label="Китай"/>*/}
+                                        {/*<Tab icon={<IconButton><IconFlagTR/></IconButton>} value="3" label="Турция"/>*/}
+                                        <Tab value="1" label="США"/>
+                                        <Tab value="2" label="Китай"/>
+                                        <Tab value="3" label="Турция"/>
+                                    </TabList>
+                                </Box>
+                                <TabPanel value="1">Item One</TabPanel>
+                                <TabPanel value="2">Item Two</TabPanel>
+                                <TabPanel value="3">Item Three</TabPanel>
+                            </TabContext>
+                        </Box>
                     </Container>
+
+
                 </AppBar>
             </HideOnScroll>
-            <Toolbar />
+            <Toolbar/>
         </>
     );
 };

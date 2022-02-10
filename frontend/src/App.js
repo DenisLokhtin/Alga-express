@@ -25,6 +25,7 @@ import UserPayment from "./components/UserPayment/UserPayment";
 import UserPayments from "./components/UserPayments/UserPayments";
 import WarehousemanStatusEdit from "./containers/WarehousemanStatusEdit/WarehousemanStatusEdit";
 import AdminPaymentsProcessing from "./components/AdminPaymentsProcessing/AdminPaymentsProcessing";
+
 import {
     aboutCompany, addFlightAdmin,
     addUserPayment, contactsCompany, editingSingleTrackNumber, editPackageAdmin,
@@ -38,10 +39,11 @@ import {
     user,
     userLogin,
     userPackageHistory,
-    userPaymentsList
+    userPaymentsList, wareHouse
 } from "./paths";
 import OrderBuyout from "./containers/OrderBuyout/OrderBuyout";
 import SingleStatusEdit from "./containers/SingleStatusEdit/SingleStatusEdit";
+import WarehousePage from "./components/WarehousePage/WarehousePage";
 
 const App = () => {
 
@@ -68,6 +70,7 @@ const App = () => {
                 <Route path={newsCompany} element={<News/>}/>
                 <Route path={newsIdCompany} element={<SingleNews/>}/>
                 <Route path={newsEditCompany} element={<EditNews/>}/>
+                <Route path={wareHouse} element={<WarehousePage/>}/>
                 <Route path={sitesCompany} element={<MarketSites/>}/>
                 <Route path={faqCompany} element={<FAQ/>}/>
                 <Route path={editPackageAdmin} element={<AdminEditPackage/>}/>

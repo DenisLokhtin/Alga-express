@@ -19,6 +19,7 @@ export const newsCompany = '/alga-express/news';
 export const newsOneCompany = '/alga-express/news/';
 export const newsIdCompany = '/alga-express/news/:id';
 export const newsEditCompany = '/alga-express/news/edit/:id';
+export const wareHouse= '/alga-express/wareHouse/';
 export const sitesCompany = '/alga-express/sites';
 export const faqCompany = '/alga-express/faq';
 export const editPackageAdmin = '/cargo/package/:id';
@@ -28,4 +29,6 @@ export const listPaymentsAdmin = '/cargo/payments';
 export const processingTrackNumbersAdmin = '/cargo/processingNumbers/edit';
 export const editingSingleTrackNumber = '/cargo/singleTrackNumber/edit';
 export const orderBuyouts = '/orderBuyouts';
+
+
 
