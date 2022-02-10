@@ -9,6 +9,7 @@ const Tariff = require("../models/Tariff");
 const NotFoundTrackNumber = require('../models/NotFoundTrackNumber');
 const PaymentMove = require("../models/PaymentMove");
 const User = require("../models/User");
+const packageValidate = require("../middleware/packageValidate");
 
 const router = express.Router();
 
@@ -55,7 +56,7 @@ router.get('/', auth, permit('admin', 'warehouseman', 'user'), async (req, res) 
             .limit(limit)
             .skip(page * limit);
 
-        res.send([{totalPage: Math.ceil(size.length / limit), packages: packages}]);
+        res.send({totalPage: Math.ceil(size.length), packages: packages});
     } catch (e) {
         res.status(400).send(e);
     }
@@ -88,7 +89,7 @@ router.get('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req, re
 
 });
 
-router.post('/', auth, permit('admin', 'warehouseman', 'user'), async (req, res) => {
+router.post('/', auth, packageValidate, permit('admin', 'warehouseman', 'user'), async (req, res) => {
     try {
         const packageData = {
             country: req.body.country,
