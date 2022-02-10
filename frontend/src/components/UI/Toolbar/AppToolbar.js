@@ -68,17 +68,19 @@ const AppToolbar = (props) => {
                                 <BurgerMenu pages={pages}/>
                             </Box>
 
-                            <Typography
-                                variant="h6"
-                                noWrap
-                                component="div"
-                                sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
-                            >
+                            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                                 <Link to={root} className={classes.logo} >
                                     <img src={logo} alt="logo" style={{width: "40px"}}/>
-                                    <span>Alga Express</span>
+                                    <Typography
+                                        variant="h6"
+                                        noWrap
+                                        component="div"
+                                        sx={{display: {xs: "none", sm: "block"}}}
+                                    >
+                                        Alga Express
+                                    </Typography>
                                 </Link>
-                            </Typography>
+                            </Box>
 
                             <Box sx={{ flexGrow: 0 }}>
                                 {user ?

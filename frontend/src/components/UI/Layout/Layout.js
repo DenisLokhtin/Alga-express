@@ -2,7 +2,6 @@ import React from 'react';
 import {CssBaseline, Grid} from "@mui/material";
 import AppToolbar from "../Toolbar/AppToolbar";
 import Footer from "../Footer/Footer";
-import "./Layout.css";
 import AppSidebar from "../AppSidebar/AppSidebar";
 
 const styles = {

@@ -59,7 +59,7 @@ const UserMenu = ({user}) => {
     };
 
     return (
-        <Grid container spacing={2} alignItems="center">
+        <Grid container alignItems="center" justifyContent="space-evenly">
             <Grid item>
                 <IconButton
                     sx={{color: '#F5F5F7'}}
