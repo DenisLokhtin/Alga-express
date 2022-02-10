@@ -31,7 +31,7 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
         const warehouseData = {
-            //тут будут поля для добавления
+            country: req.body.country
         };
 
         const warehouse = new Warehouse(warehouseData);
@@ -50,9 +50,10 @@ router.delete('/:id', async (req, res) => {
         if (Object.keys(warehouse).length === 0) {
             return res.status(404).send({error: `Склад не найден.`});
         } else {
-            warehouse.deleted = true;
+            // warehouse.deleted = true;
+            warehouse.deleteOne({_id: req.params.id});
             await warehouse.save();
-            return  res.send({message: `Склад в городе ${warehouse.city} успешно удален.`})
+            return  res.send({message: `Склад в стране ${req.params.id} успешно удален.`})
         }
     } catch (error) {
         res.status(404).send(error);
