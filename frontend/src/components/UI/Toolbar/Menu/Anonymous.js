@@ -10,7 +10,7 @@ const Anonymous = () => {
             sx={{borderColor: "#F5F5F7", color: "#F5F5F7",
                 '&:hover': {borderColor: "#F5F5F7"}}}
             startIcon={<LoginIcon sx={{fontSize: 30, color: "#F5F5F7"}}/>}
-            variant="text"
+            variant="outlined"
             component={Link}
             to={userLogin}
         >
