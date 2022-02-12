@@ -7,5 +7,8 @@ export const {
     paymentAcceptedRequest,
     paymentAcceptedSuccess,
     paymentAcceptedFailure,
+    addPaymentAdminRequest,
+    addPaymentAdminSuccess,
+    addPaymentAdminFailure,
 
 } = paymentSlice.actions;

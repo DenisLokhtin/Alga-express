@@ -34,6 +34,10 @@ const PaymentMoveSchema = new mongoose.Schema({
     lastBalance: {
         type: Number,
     },
+    user: {
+        type: mongoose.Types.ObjectId,
+        ref: 'User'
+    },
     //вид финансовой операции.
     status: {
         type: String,
