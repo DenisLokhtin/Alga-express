@@ -1,15 +1,25 @@
 const express = require('express');
 const User = require('../models/User');
+const TariffGroup = require("../models/tariffGroup");
 
 const router = express.Router();
 
 router.post('/', async (req, res) => {
+  console.log('in post');
   try {
+    const tariff = await TariffGroup.findOne({new: {$exists: true}});
+    console.log(tariff);
     const user = new User({
       email: req.body.email,
       password: req.body.password,
       phone: {number: req.body.phone},
       name: req.body.name,
+      tariff: {
+        usa: tariff.new.usa,
+        turkey: tariff.new.turkey,
+        china: tariff.new.china,
+        chinaGround: tariff.new.chinaGround,
+      },
     });
 
     user.generateToken();
