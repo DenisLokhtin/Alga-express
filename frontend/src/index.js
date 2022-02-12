@@ -14,7 +14,7 @@ const app = (
         <BrowserRouter>
             <ThemeProvider theme={theme}>
                 <ToastContainer
-                    position="bottom-left"
+                    position="bottom-right"
                     autoClose={3000}
                     hideProgressBar={false}
                     newestOnTop

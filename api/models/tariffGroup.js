@@ -2,84 +2,76 @@ const mongoose = require('mongoose');
 const idValidator = require('mongoose-id-validator');
 
 const TariffGroupSchema = new mongoose.Schema({
-
     new:
         {
             usa: {
                 type: Number,
-                min: [0],
-                required: true,
+                min: 0,
+                default: 12,
             },
             turkey: {
                 type: Number,
-                min: [0],
-                required: true,
+                min: 0,
+                default: 4.3,
             },
             china: {
                 type: Number,
-                min: [0],
-                required: true,
+                min: 0,
+                default: 15,
+            },
+            chinaGround: {
+                type: Number,
+                min: 0,
+                default: 5,
             },
         },
+
     advanced:
         {
             usa: {
                 type: Number,
-                min: [0],
+                min: 0,
+                default: 11.5,
             },
             turkey: {
                 type: Number,
-                min: [0],
+                min: 0,
+                default: 4.2,
             },
             china: {
                 type: Number,
-                min: [0],
-                required: true,
+                min: 0,
+                default: 14.5,
             },
             chinaGround: {
                 type: Number,
-                min: [0],
-                required: true,
+                min: 0,
+                default: 4.5,
             },
 
         },
+
     buyers:
         {
             usa: {
                 type: Number,
-                min: [0],
+                min: 0,
+                default: 11,
             },
             turkey: {
                 type: Number,
-                min: [0],
-                required: true,
+                min: 0,
+                default: 4,
             },
             china: {
                 type: Number,
-                min: [0],
-                required: true,
-            },chinaGround: {
-                type: Number,
-                min: [0],
-                required: true,
+                min: 0,
+                default: 14,
             },
-        },
-    special:
-        {
-            usa: {
+            chinaGround: {
                 type: Number,
-                min: [0],
-            },
-            turkey: {
-                type: Number,
-                min: [0],
-            },
-            china: {
-                type: Number,
-                min: [0],
-            },chinaGround: {
-                type: Number,
-                min: [0],
+                min: 0,
+                default: 4,
             },
         },
 });
