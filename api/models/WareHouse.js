@@ -5,23 +5,28 @@ const WareHouseSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    // region: String,
-    // city: {
-    //     type: String,
-    //     required: true,
-    // },
-    // address: {
-    //     type: String,
-    //     required: true,
-    // },
-    // postcode: {
-    //     type: String,
-    //     required: true,
-    // },
-    // phone: {
-    //     type: String,
-    //     required: true,
-    // }
+    recipient: {
+        type: String,
+        required: true,
+    },
+
+    region: String,
+    city: {
+        type: String,
+        required: true,
+    },
+    address: {
+        type: String,
+        required: true,
+    },
+    postcode: {
+        type: String,
+        required: true,
+    },
+    phone: {
+        type: String,
+        required: true,
+    }
 });
 
 
