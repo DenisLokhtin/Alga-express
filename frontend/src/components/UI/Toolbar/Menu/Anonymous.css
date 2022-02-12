@@ -1,9 +1,0 @@
-.btn {
-    border-color: #F5F5F7;
-}
-
-.btns {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-}

@@ -82,7 +82,7 @@ function* packageEditAdminSagas({payload}) {
 
 function* getOrdersHistorySagas({payload: pageData}) {
     try {
-        const response = yield axiosApi.get(`/packages?page=${pageData.page - 1}&limit=${pageData.limit}`);
+        const response = yield axiosApi.get(`/packages?page=${pageData.page}&limit=${pageData.limit}`);
         yield put(getOrdersHistorySuccess(response.data));
     } catch (error) {
         yield put(getOrdersHistoryError(error.response.statusText || error.message));

@@ -5,10 +5,10 @@ const auth = require("../middleware/auth");
 const permit = require("../middleware/permit");
 const userEdit = require("../middleware/userEdit");
 const adminEdit = require("../middleware/adminEdit");
-const Tariff = require("../models/Tariff");
 const NotFoundTrackNumber = require('../models/NotFoundTrackNumber');
 const PaymentMove = require("../models/PaymentMove");
 const User = require("../models/User");
+const packageValidate = require("../middleware/packageValidate");
 
 const router = express.Router();
 
@@ -55,7 +55,7 @@ router.get('/', auth, permit('admin', 'warehouseman', 'user'), async (req, res) 
             .limit(limit)
             .skip(page * limit);
 
-        res.send([{totalPage: Math.ceil(size.length / limit), packages: packages}]);
+        res.send({totalPage: Math.ceil(size.length), packages: packages});
     } catch (e) {
         res.status(400).send(e);
     }
@@ -88,7 +88,7 @@ router.get('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req, re
 
 });
 
-router.post('/', auth, permit('admin', 'warehouseman', 'user'), async (req, res) => {
+router.post('/', auth, packageValidate, permit('admin', 'warehouseman', 'user'), async (req, res) => {
     try {
         const packageData = {
             country: req.body.country,
@@ -220,7 +220,7 @@ router.put('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req, re
     try {
         const packageFind = await Package.findById(req.params.id)
         const userDebit = await User.findById(packageFind.user._id);
-        const prices = await Tariff.findOne({user: packageFind.user});
+        const prices = userDebit.tariff;
 
         if (req.user.role === 'user')
             result = userEdit(req.user, packageFind, req.body);
