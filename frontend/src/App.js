@@ -27,7 +27,7 @@ import WarehousemanStatusEdit from "./containers/WarehousemanStatusEdit/Warehous
 import AdminPaymentsProcessing from "./components/AdminPaymentsProcessing/AdminPaymentsProcessing";
 import {
     aboutCompany,
-    addFlightAdmin,
+    addFlightAdmin, addPaymentHandler,
     addUserPayment,
     contactsCompany,
     editBuyout,
@@ -61,6 +61,7 @@ import OrderBuyout from "./containers/OrderBuyout/OrderBuyout";
 import SingleStatusEdit from "./containers/SingleStatusEdit/SingleStatusEdit";
 import EditBuyout from "./components/EditBuyout/EditBuyout";
 import BuyoutList from "./containers/BuyoutList/BuyoutList";
+import AddPaymentAdmin from "./components/AddPaymentAdmin/AddPaymentAdmin";
 
 const App = () => {
 
@@ -97,6 +98,7 @@ const App = () => {
                 <Route path={editingSingleTrackNumber} element={<SingleStatusEdit/>}/>
                 <Route path={editBuyout} element={<EditBuyout/>}/>
                 <Route path={listBuyouts} element={<BuyoutList/>}/>
+                <Route path={addPaymentHandler} element={<AddPaymentAdmin/>}/>
                 <Route
                     path="*"
                     element={
