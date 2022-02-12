@@ -43,6 +43,10 @@ function HideOnScroll(props) {
     );
 }
 
+const toolbar  = {
+    display: {xs: "block", md: "none"},
+}
+
 const useStyles = makeStyles({
     logo: {
         color: '#F5F5F7',
@@ -59,7 +63,7 @@ const AppToolbar = (props) => {
     const user = useSelector(state => state.users.user);
 
     return (
-        <>
+        <Box sx={toolbar}>
             <HideOnScroll {...props}>
                 <AppBar sx={{background: 'grey'}}>
                     <Container maxWidth="xl">
@@ -95,7 +99,7 @@ const AppToolbar = (props) => {
                 </AppBar>
             </HideOnScroll>
             <Toolbar />
-        </>
+        </Box>
     );
 };
 
