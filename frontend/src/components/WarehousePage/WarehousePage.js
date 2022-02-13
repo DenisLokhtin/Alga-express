@@ -1,20 +1,15 @@
 import React, {useEffect} from 'react';
-import {Box, Grid, IconButton, Tab} from "@mui/material";
+import {Box, Grid, Tab} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import {TabContext, TabList, TabPanel} from "@mui/lab";
-import {IconFlagCN, IconFlagTR, IconFlagUS} from "material-ui-flags";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {useDispatch, useSelector} from "react-redux";
 import {Link} from "react-router-dom";
-import {addWareHouseAddress, editingSingleWareHouse, editWareHouseAddress} from "../../paths";
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import FormElement from "../UI/Form/FormElement";
-import {fetchOneNewsRequest} from "../../store/actions/newsActions";
+import {editingSingleWareHouse} from "../../paths";
 import {fetchWareHouseRequest} from "../../store/actions/wareHouseActions";
-import editWareHouseAdmin from "../EditWareHouseAdmin/EditWareHouseAdmin";
 
 
-const useStyles = makeStyles(theme => ( {
+const useStyles = makeStyles(theme => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
@@ -24,7 +19,6 @@ const useStyles = makeStyles(theme => ( {
     }
 }));
 
-
 const WarehousePage = () => {
     const dispatch = useDispatch();
     const wareHouses = useSelector(state => state.wareHouses.wareHouse);
@@ -33,12 +27,12 @@ const WarehousePage = () => {
     }, [dispatch]);
 
 
-    const loading = useSelector(state => state.buyouts.createLoading);
+    const loading = useSelector(state => state.wareHouses.createLoading);
 
 
     const classes = useStyles();
 
-    const [value, setValue] = React.useState("1");
+    const [value, setValue] = React.useState("0");
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -87,15 +81,10 @@ const WarehousePage = () => {
                     </TabPanel>
                 ))}
 
-
-
-
                 {/*<TabPanel value="1">Склад в США</TabPanel>*/}
                 {/*<TabPanel value="2">Склад в Китае</TabPanel>*/}
                 {/*<TabPanel value="3">Склад в Турции</TabPanel>*/}
-
             </TabContext>
-
         </Box>
     );
 };

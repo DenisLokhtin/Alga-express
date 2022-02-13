@@ -47,7 +47,7 @@ export function* addWareHouseSaga({payload: newWareHouse}) {
 
 function* wareHouseEditSaga({payload}) {
     try {
-        yield axiosApi.put(`/wareHouse/${payload.id}`, payload.wareHouse);
+        yield axiosApi.put(`/warehouses/${payload}`, payload.wareHouse);
         yield put(changeWareHouseSuccess());
         toast.success('Склад отредактирован!');
         payload.navigate('/wareHouse');

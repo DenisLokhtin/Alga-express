@@ -40,7 +40,7 @@ const wareHouseSlice = createSlice({
             state.singleLoading = true;
         },
         fetchOneWareHouseSuccess(state, action) {
-            state.oneNews = action.payload;
+            state.oneWareHouse = action.payload;
             state.singleLoading = false;
         },
         fetchOneWareHouseFailure(state) {
@@ -72,6 +72,18 @@ const wareHouseSlice = createSlice({
         deleteWareHouseFailure(state,action ){
             state.deleteLoading = false;
             state.deleteError = action.payload;
+        },
+        editWareHouseRequest(state) {
+            state.singleLoading = true;
+        },
+
+        editWareHouseSuccess(state) {
+            state.singleLoading = false;
+        },
+
+        editWareHouseFailure(state, {payload: error}) {
+            state.singleLoading = false;
+            state.addError = error;
         },
     }
 });
