@@ -6,7 +6,7 @@ import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {useDispatch, useSelector} from "react-redux";
 import {Link} from "react-router-dom";
 import {editingSingleWareHouse} from "../../paths";
-import {fetchWareHouseRequest} from "../../store/actions/wareHouseActions";
+import {deleteWareHouseRequest, fetchWareHouseRequest} from "../../store/actions/wareHouseActions";
 
 
 const useStyles = makeStyles(theme => ({
@@ -38,6 +38,10 @@ const WarehousePage = () => {
         setValue(newValue);
     };
 
+    const deleteWareHouse = (id) => {
+        dispatch(deleteWareHouseRequest(id))
+    }
+
     return (
         <Box sx={{width: '100%', typography: 'body1'}} className={classes.tableContainer}>
             <TabContext value={value}>
@@ -63,6 +67,7 @@ const WarehousePage = () => {
 
                 {wareHouses.map((warehouse, i) => (
                     <TabPanel key={warehouse._id} value={i.toString()}>{warehouse.info}
+                        <Grid container>
                         <Grid item xs={3}>
                             <ButtonWithProgress
                                 type="submit"
@@ -77,6 +82,23 @@ const WarehousePage = () => {
                             >
                                 Редактировать
                             </ButtonWithProgress>
+                        </Grid>
+                        <Grid item xs={3}>
+                            <ButtonWithProgress
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="inherit"
+                                className={classes.submit}
+                                loading={loading}
+                                disabled={loading}
+                                onClick={() => deleteWareHouse(warehouse._id)}
+                                // component={Link}
+                                // to={editingSingleWareHouse + warehouse._id}
+                            >
+                                Удалить
+                            </ButtonWithProgress>
+                        </Grid>
                         </Grid>
                     </TabPanel>
                 ))}

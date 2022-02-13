@@ -58,7 +58,7 @@ function* wareHouseEditSaga({payload}) {
 
 function* deleteWareHouseSaga({payload: id}) {
     try {
-        yield axiosApi.delete(`/wareHouse/${id}`);
+        yield axiosApi.delete(`/warehouses/${id}`);
         yield put(deleteWareHouseSuccess(id));
         toast.success('Склад удален!');
     } catch (e) {

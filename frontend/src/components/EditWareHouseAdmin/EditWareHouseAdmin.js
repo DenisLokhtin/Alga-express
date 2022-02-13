@@ -1,16 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {
-    changeWareHouseRequest,
-    editWareHouseRequest,
-    fetchOneWareHouseRequest
-} from "../../store/actions/wareHouseActions";
-import {Link, useParams} from "react-router-dom";
-import {TextareaAutosize, TextField} from "@mui/material";
+import {changeWareHouseRequest, fetchOneWareHouseRequest} from "../../store/actions/wareHouseActions";
+import {useParams} from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
-import {editingSingleWareHouse} from "../../paths";
 import {makeStyles} from "@mui/styles";
+import {TextareaAutosize} from "@mui/material";
 
 const useStyles = makeStyles(theme => ({
     submit: {
@@ -28,15 +23,17 @@ const EditWareHouseAdmin = () => {
     const classes = useStyles();
 
     const [singleWareHouse, setSingleWareHouse] = useState({
-        country: oneWareHouse.country,
-        info: oneWareHouse.info,
+        country: '',
+        info: '',
     });
     const dispatch = useDispatch();
     const params = useParams();
     const inputChangeHandler = e => {
         const {name, value} = e.target;
-        setSingleWareHouse(prevState => ({...prevState, [name]: value}));
-        setSingleWareHouse(prevState => ({...prevState, country: oneWareHouse.country}))
+        setSingleWareHouse(prev => ({
+            ...prev,
+            [name]: value
+        }));
     };
     const getFieldError = fieldName => {
         try {
@@ -47,7 +44,6 @@ const EditWareHouseAdmin = () => {
     };
 
     const editSingleWareHouse = (id) => {
-        console.log(id);
         console.log(singleWareHouse);
         dispatch(changeWareHouseRequest(id, singleWareHouse));
     }
@@ -57,7 +53,14 @@ const EditWareHouseAdmin = () => {
     const loading = useSelector(state => state.users.registerLoading);
     useEffect(() => {
         dispatch(fetchOneWareHouseRequest(params.id));
-    }, [dispatch]);
+    }, [dispatch, params.id, oneWareHouse.info]);
+
+    const applyEdit = () => {
+        console.log('test');
+    }
+
+    console.log('Local state' + singleWareHouse.info);
+    console.log('Global state: ' + oneWareHouse.info);
 
 
     return (
@@ -65,14 +68,34 @@ const EditWareHouseAdmin = () => {
             <h3>{oneWareHouse.country}</h3>
             <Grid item xs={12} sm={8} md={7} lg={7}>
                 <TextareaAutosize
-                    aria-label="minimum height"
+                    // aria-label="minimum height"
                     minRows={3}
                     placeholder="Minimum 3 rows"
                     style={{ width: 800 }}
                     onChange={inputChangeHandler}
                     value={oneWareHouse.info || ''}
-                    name="info"
+                    name='info'
+                    // defaultValue={oneWareHouse.info || ''}
                 />
+
+                {/*<textarea name='info' className='textarea' onChange={e => setSingleWareHouse(e.target.value)}>{oneWareHouse.info}</textarea>*/}
+
+
+
+
+                {/*<input className="form"*/}
+                {/*       name="info"*/}
+                {/*       type="text"*/}
+                {/*    // value={oneWareHouse.info || ''}*/}
+                {/*       value={oneWareHouse.info || ''}*/}
+                {/*       onChange={inputChangeHandler}/>*/}
+
+
+                {/*<input type="text"*/}
+                {/*       name="info"*/}
+                {/*       value={oneWareHouse.info || ''}*/}
+                {/*       onChange={inputChangeHandler}/>*/}
+
             </Grid>
             <Grid item xs={3}>
                 <ButtonWithProgress

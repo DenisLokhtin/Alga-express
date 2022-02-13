@@ -44,16 +44,26 @@ router.post('/', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
     try {
-        const warehouse = await Warehouse.findById(req.params.id);
+        const warehouse = await Warehouse.findByIdAndRemove(req.params.id);
 
-        if (Object.keys(warehouse).length === 0) {
-            return res.status(404).send({error: `Склад не найден.`});
+        if (warehouse) {
+            res.send(`Склад в '${warehouse.country} removed'`);
         } else {
-            // warehouse.deleted = true;
-            warehouse.deleteOne({_id: req.params.id});
-            await warehouse.save();
-            return  res.send({message: `Склад в стране ${req.params.id} успешно удален.`})
+            res.status(404).send({error: 'WareHouse not found'});
         }
+
+        // const warehouse = await Warehouse.findById(req.params.id);
+        //
+        // if (Object.keys(warehouse).length === 0) {
+        //     return res.status(404).send({error: `Склад не найден.`});
+        // } else {
+        //     warehouse.deleted = true;
+        //     await warehouse.save();
+        //     // warehouse.deleteOne({_id: req.params.id});
+        //     // await warehouse.save();
+        //     console.log('delete success')
+        //     return  res.send({message: `Склад в стране ${req.params.id} успешно удален.`})
+        // }
     } catch (error) {
         res.status(404).send(error);
     }
