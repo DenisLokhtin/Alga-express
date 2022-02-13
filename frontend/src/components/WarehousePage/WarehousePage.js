@@ -5,8 +5,9 @@ import {TabContext, TabList, TabPanel} from "@mui/lab";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {useDispatch, useSelector} from "react-redux";
 import {Link} from "react-router-dom";
-import {editingSingleWareHouse} from "../../paths";
+import {addWareHouseAddress, editingSingleWareHouse} from "../../paths";
 import {deleteWareHouseRequest, fetchWareHouseRequest} from "../../store/actions/wareHouseActions";
+import AddBoxIcon from '@mui/icons-material/AddCircleOutline';
 
 
 const useStyles = makeStyles(theme => ({
@@ -53,15 +54,15 @@ const WarehousePage = () => {
                         {/*<Tab icon={<IconFlagUS/>} value="1" label="США"/>*/}
                         {/*<Tab icon={<IconFlagCN/>} value="2" label="Китай"/>*/}
                         {/*<Tab icon={<IconFlagTR/>} value="3" label="Турция"/>*/}
-                        {/*<Tab icon={<AddBoxIcon/>} value="3" label="Добавить склад"*/}
-                        {/*     type="submit"*/}
-                        {/*     fullWidth*/}
-                        {/*     variant="contained"*/}
-                        {/*     color="success"*/}
-                        {/*     className={classes.submit}*/}
-                        {/*     component={Link}*/}
-                        {/*     to={addWareHouseAddress}*/}
-                        {/*     />*/}
+                        <Tab icon={<AddBoxIcon/>} value="3" label="Добавить склад"
+                             type="submit"
+                             fullWidth
+                             variant="contained"
+                             color="success"
+                             className={classes.submit}
+                             component={Link}
+                             to={addWareHouseAddress}
+                             />
                     </TabList>
                 </Box>
 

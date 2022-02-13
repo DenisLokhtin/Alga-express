@@ -60,6 +60,11 @@ const AddWareHouseAdmin = () => {
     });
 
 
+    const [quoteBody, setQuoteBody] = useState({
+        country: '',
+        info: '',
+    });
+
     const submitFormHandler = e => {
         e.preventDefault();
         const formData = new FormData();
@@ -91,6 +96,14 @@ const AddWareHouseAdmin = () => {
         });
     };
 
+    const onInputTextareaChange = e => {
+        const {name, value} = e.target;
+        setQuoteBody(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
     const getFieldError = fieldName => {
         try {
             return error.errors[fieldName].message;
@@ -105,6 +118,13 @@ const AddWareHouseAdmin = () => {
             return {...prevState, description: content}
         });
     };
+
+    const addWareHouse = () => {
+        addNewsRequest({
+            country: quoteBody.country,
+            info: quoteBody.info,
+        });
+    }
 
     return (
         <Container
@@ -123,76 +143,100 @@ const AddWareHouseAdmin = () => {
                 <h3 className={classes.title}>Добавить склад</h3>
             </Grid>
 
-            {inputList.map((x, i) => {
-                return (
+            <form>
+                <div className="country">
+                    <p><label htmlFor="Country" className="country">Страна</label></p>
+                    <input
+                        className="form"
+                        name="country"
+                        type="text"
+                        value={quoteBody.country}
+                        onChange={onInputTextareaChange}
+                    />
+                </div>
+                <div>
+                    <p><label htmlFor="Description" className="description">Данные по складу</label></p>
+                    <textarea
+                        name="info"
+                        value={quoteBody.info}
+                        onChange={onInputTextareaChange} cols="55" rows="5"
+                        className="form"/>
+                </div>
+                <button onClick={addWareHouse} className="Button" type="button">Сохранить</button>
+            </form>
 
-                    <div className="box" key={i}>
-                        <Grid container>
-                            <Grid item xs={6}>
-                                <TextField
-                                    name="newField"
-                                    id="new-field"
-                                    label="Введите название"
-                                    placeholder="Название"
-                                    margin="normal"
-                                    fullWidth
-                                    value={x.newField}
-                                    onChange={e => handleInputChange(e, i)}
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <TextField
-                                    name="newValue"
-                                    id="full-width-text-field"
-                                    label="Введите значение"
-                                    placeholder="Значение"
-                                    margin="normal"
-                                    fullWidth
-                                    value={x.newValue}
-                                    onChange={e => handleInputChange(e, i)}
-                                />
-                            </Grid>
-                            <Grid container>
+            {/*{inputList.map((x, i) => {*/}
+            {/*    return (*/}
 
-                                <Grid item xs={5}>
-                                {inputList.length - 1 === i &&
-                                    <Button onClick={handleAddClick}
-                                       color="primary"
-                                       className={classes.submit}
-                                    > Добавить поле
-                                    </Button>}
-                                </Grid>
+            {/*        <div className="box" key={i}>*/}
+            {/*            <Grid container>*/}
+            {/*                <Grid item xs={6}>*/}
+            {/*                    <TextField*/}
+            {/*                        name="newField"*/}
+            {/*                        id="new-field"*/}
+            {/*                        label="Введите название"*/}
+            {/*                        placeholder="Название"*/}
+            {/*                        margin="normal"*/}
+            {/*                        fullWidth*/}
+            {/*                        value={x.newField}*/}
+            {/*                        onChange={e => handleInputChange(e, i)}*/}
+            {/*                    />*/}
+            {/*                </Grid>*/}
+            {/*                <Grid item xs={6}>*/}
+            {/*                    <TextField*/}
+            {/*                        name="newValue"*/}
+            {/*                        id="full-width-text-field"*/}
+            {/*                        label="Введите значение"*/}
+            {/*                        placeholder="Значение"*/}
+            {/*                        margin="normal"*/}
+            {/*                        fullWidth*/}
+            {/*                        value={x.newValue}*/}
+            {/*                        onChange={e => handleInputChange(e, i)}*/}
+            {/*                    />*/}
+            {/*                </Grid>*/}
+            {/*                <Grid container>*/}
 
-                                <Grid item xs={5}>
-                                {inputList.length !== 1 && <Button
-                                    color="primary"
-                                    className={classes.submit}
-                                    onClick={() => handleRemoveClick(i)}>Удалить поле</Button>}
-                                </Grid>
+            {/*                    <Grid item xs={5}>*/}
+            {/*                    {inputList.length - 1 === i &&*/}
+            {/*                        <Button onClick={handleAddClick}*/}
+            {/*                           color="primary"*/}
+            {/*                           className={classes.submit}*/}
+            {/*                        > Добавить поле*/}
+            {/*                        </Button>}*/}
+            {/*                    </Grid>*/}
 
-                            </Grid>
-                        </Grid>
-                    </div>
+            {/*                    <Grid item xs={5}>*/}
+            {/*                    {inputList.length !== 1 && <Button*/}
+            {/*                        color="primary"*/}
+            {/*                        className={classes.submit}*/}
+            {/*                        onClick={() => handleRemoveClick(i)}>Удалить поле</Button>}*/}
+            {/*                    </Grid>*/}
+
+            {/*                </Grid>*/}
+            {/*            </Grid>*/}
+            {/*        </div>*/}
 
 
-                );
-            })}
+            {/*    );*/}
+            {/*})}*/}
 
 
-            <Grid item xs={12}>
-                <ButtonWithProgress
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    className={classes.submit}
-                    loading={loading}
-                    disabled={loading}
-                >
-                    Добавить
-                </ButtonWithProgress>
-            </Grid>
-            <div style={{marginTop: 20}}>{JSON.stringify(inputList)}</div>
+
+
+            {/*<Grid item xs={12}>*/}
+            {/*    <ButtonWithProgress*/}
+            {/*        type="submit"*/}
+            {/*        fullWidth*/}
+            {/*        variant="contained"*/}
+            {/*        color="primary"*/}
+            {/*        className={classes.submit}*/}
+            {/*        loading={loading}*/}
+            {/*        disabled={loading}*/}
+            {/*    >*/}
+            {/*        Добавить*/}
+            {/*    </ButtonWithProgress>*/}
+            {/*</Grid>*/}
+            {/*<div style={{marginTop: 20}}>{JSON.stringify(inputList)}</div>*/}
         </Container>
     );
 
