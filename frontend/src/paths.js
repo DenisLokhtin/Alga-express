@@ -19,7 +19,7 @@ export const newsCompany = '/alga-express/news';
 export const newsOneCompany = '/alga-express/news/';
 export const newsIdCompany = '/alga-express/news/:id';
 export const newsEditCompany = '/alga-express/news/edit/:id';
-export const wareHouseCompany= '/alga-express/wareHouse/';
+export const wareHouseCompany= '/alga-express/wareHouses/';
 export const sitesCompany = '/alga-express/sites';
 export const faqCompany = '/alga-express/faq';
 export const editPackageAdmin = '/cargo/package/:id';
@@ -33,6 +33,8 @@ export const listBuyouts = 'user/listBuyouts';
 export const editingSingleTrackNumber = '/cargo/singleTrackNumber/edit'
 export const addPaymentHandler = '/cargo/payments/add';
 export const addWareHouseAddress = '/alga-express/wareHouse/add';
+export const editWareHouseAddress = '/alga-express/wareHouse/edit/:id';
+export const editingSingleWareHouse = '/alga-express/wareHouse/edit/';
 
 
 

@@ -34,7 +34,7 @@ import {
     editingSingleTrackNumber,
     editPackageAdmin,
     editPackageUser,
-    editUserProfile,
+    editUserProfile, editWareHouseAddress,
     faqCompany,
     howCompany,
     listBuyouts,
@@ -64,6 +64,7 @@ import BuyoutList from "./containers/BuyoutList/BuyoutList";
 import AddPaymentAdmin from "./components/AddPaymentAdmin/AddPaymentAdmin";
 import WarehousePage from "./components/WarehousePage/WarehousePage";
 import AddWareHouseAdmin from "./components/AddWareHouseAdmin/AddWareHouseAdmin";
+import EditWareHouseAdmin from "./components/EditWareHouseAdmin/EditWareHouseAdmin";
 
 const App = () => {
 
@@ -103,6 +104,7 @@ const App = () => {
                 <Route path={addPaymentHandler} element={<AddPaymentAdmin/>}/>
                 <Route path={wareHouseCompany} element={<WarehousePage/>}/>
                 <Route path={addWareHouseAddress} element={<AddWareHouseAdmin/>}/>
+                <Route path={editWareHouseAddress} element={<EditWareHouseAdmin/>}/>
                 <Route
                     path="*"
                     element={

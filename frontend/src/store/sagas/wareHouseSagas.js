@@ -26,7 +26,7 @@ export function* wareHouseSagas() {
 
 export function* oneWareHouseSagas({payload: id}) {
     try {
-        const response = yield axiosApi.get('/wareHouse/' + id);
+        const response = yield axiosApi.get('/warehouses/' + id);
         yield put(fetchOneWareHouseSuccess(response.data));
     } catch (e) {
         toast.error('Не удалось загрузить склад');

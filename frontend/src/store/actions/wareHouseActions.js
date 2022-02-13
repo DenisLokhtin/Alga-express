@@ -16,5 +16,6 @@ export const {
     deleteWareHouseRequest,
     deleteWareHouseSuccess,
     deleteWareHouseFailure,
-    clearWareHouseErrors,
+    editWareHouseRequest,
+    editWareHouseFailure,
 } = wareHouseSlice.actions;

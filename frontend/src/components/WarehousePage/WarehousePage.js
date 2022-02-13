@@ -1,16 +1,17 @@
 import React, {useEffect} from 'react';
-import {Box, Grid, Tab} from "@mui/material";
+import {Box, Grid, IconButton, Tab} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import {TabContext, TabList, TabPanel} from "@mui/lab";
 import {IconFlagCN, IconFlagTR, IconFlagUS} from "material-ui-flags";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {useDispatch, useSelector} from "react-redux";
 import {Link} from "react-router-dom";
-import {addWareHouseAddress} from "../../paths";
+import {addWareHouseAddress, editingSingleWareHouse, editWareHouseAddress} from "../../paths";
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import FormElement from "../UI/Form/FormElement";
 import {fetchOneNewsRequest} from "../../store/actions/newsActions";
 import {fetchWareHouseRequest} from "../../store/actions/wareHouseActions";
+import editWareHouseAdmin from "../EditWareHouseAdmin/EditWareHouseAdmin";
 
 
 const useStyles = makeStyles(theme => ( {
@@ -65,15 +66,36 @@ const WarehousePage = () => {
                         {/*     />*/}
                     </TabList>
                 </Box>
+
                 {wareHouses.map((warehouse, i) => (
-                    <TabPanel key={warehouse._id} value={i.toString()}>{warehouse.info}</TabPanel>
+                    <TabPanel key={warehouse._id} value={i.toString()}>{warehouse.info}
+                        <Grid item xs={3}>
+                            <ButtonWithProgress
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="success"
+                                className={classes.submit}
+                                loading={loading}
+                                disabled={loading}
+                                component={Link}
+                                to={editingSingleWareHouse + warehouse._id}
+                            >
+                                Редактировать
+                            </ButtonWithProgress>
+                        </Grid>
+                    </TabPanel>
                 ))}
+
+
+
 
                 {/*<TabPanel value="1">Склад в США</TabPanel>*/}
                 {/*<TabPanel value="2">Склад в Китае</TabPanel>*/}
                 {/*<TabPanel value="3">Склад в Турции</TabPanel>*/}
 
             </TabContext>
+
         </Box>
     );
 };
