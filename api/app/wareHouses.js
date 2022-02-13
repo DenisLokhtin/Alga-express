@@ -31,11 +31,10 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
         const warehouseData = {
-            country: req.body.country
+            country: req.body.country,
+            info: req.body.info,
         };
-
         const warehouse = new Warehouse(warehouseData);
-
         await warehouse.save();
         res.send(warehouse);
     } catch (error) {
@@ -60,15 +59,13 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-
 router.put('/:id', async (req, res) => {
     try {
         const updatedWarehouse = await Warehouse.findByIdAndUpdate(req.params.id, {
-            //обновляемые поля
+            country: req.body.country,
+            info: req.body.info,
         }, {new: true, runValidators: true});
-
         res.send(updatedWarehouse);
-
     } catch(error) {
         res.status(400).send(error);
     }

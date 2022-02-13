@@ -7,6 +7,8 @@ import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {useDispatch, useSelector} from "react-redux";
 import {Link} from "react-router-dom";
 import {addWareHouseAddress} from "../../paths";
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import FormElement from "../UI/Form/FormElement";
 
 
 const useStyles = makeStyles(theme => ( {
@@ -42,26 +44,44 @@ const WarehousePage = () => {
                         <Tab icon={<IconFlagUS/>} value="1" label="США"/>
                         <Tab icon={<IconFlagCN/>} value="2" label="Китай"/>
                         <Tab icon={<IconFlagTR/>} value="3" label="Турция"/>
+                        <Tab icon={<AddBoxIcon/>} value="3" label="Добавить склад"
+                             type="submit"
+                             fullWidth
+                             variant="contained"
+                             color="success"
+                             className={classes.submit}
+                             component={Link}
+                             to={addWareHouseAddress}
+                             />
+
+                            {/*<ButtonWithProgress*/}
+                            {/*    type="submit"*/}
+                            {/*    fullWidth*/}
+                            {/*    variant="contained"*/}
+                            {/*    color="success"*/}
+                            {/*    className={classes.submit}*/}
+                            {/*    loading={loading}*/}
+                            {/*    disabled={loading}*/}
+                            {/*    component={Link}*/}
+                            {/*    to={addWareHouseAddress}*/}
+                            {/*>*/}
+                            {/*   + Добавить склад*/}
+                            {/*</ButtonWithProgress>*/}
                     </TabList>
                 </Box>
-                <Grid item xs={3}>
-                    <ButtonWithProgress
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="success"
-                        className={classes.submit}
-                        loading={loading}
-                        disabled={loading}
-                        component={Link}
-                        to={addWareHouseAddress}
-                    >
-                        Добавить склад в США
-                    </ButtonWithProgress>
-                </Grid>
-                <TabPanel value="1">Склад в США</TabPanel>
+
+                <TabPanel value="1"><h3 className={classes.title}>Добавить новость</h3>
+                    <FormElement
+                        required
+                        label="Название"
+                        name="title"
+                        // value={news.title}
+                        // onChange={inputChangeHandler}
+                        // error={getFieldError('title')}
+                    /></TabPanel>
                 <TabPanel value="2">Склад в Китае</TabPanel>
                 <TabPanel value="3">Склад в Турции</TabPanel>
+
             </TabContext>
         </Box>
     );
