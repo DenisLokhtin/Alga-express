@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ( {
 
 const WarehousePage = () => {
     const dispatch = useDispatch();
-    const wareHouses = useSelector(state => state.wareHouses.wareHouses);
+    const wareHouses = useSelector(state => state.wareHouses.wareHouse);
     useEffect(() => {
         dispatch(fetchWareHouseRequest());
     }, [dispatch]);
@@ -48,47 +48,30 @@ const WarehousePage = () => {
             <TabContext value={value}>
                 <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
                     <TabList onChange={handleChange} aria-label="lab API tabs example">
-                        <Tab icon={<IconFlagUS/>} value="1" label="США"/>
-                        <Tab icon={<IconFlagCN/>} value="2" label="Китай"/>
-                        <Tab icon={<IconFlagTR/>} value="3" label="Турция"/>
-                        <Tab icon={<AddBoxIcon/>} value="3" label="Добавить склад"
-                             type="submit"
-                             fullWidth
-                             variant="contained"
-                             color="success"
-                             className={classes.submit}
-                             component={Link}
-                             to={addWareHouseAddress}
-                             />
-
-                            {/*<ButtonWithProgress*/}
-                            {/*    type="submit"*/}
-                            {/*    fullWidth*/}
-                            {/*    variant="contained"*/}
-                            {/*    color="success"*/}
-                            {/*    className={classes.submit}*/}
-                            {/*    loading={loading}*/}
-                            {/*    disabled={loading}*/}
-                            {/*    component={Link}*/}
-                            {/*    to={addWareHouseAddress}*/}
-                            {/*>*/}
-                            {/*   + Добавить склад*/}
-                            {/*</ButtonWithProgress>*/}
+                        {wareHouses.map((warehouse, i) => (
+                            <Tab key={warehouse._id} value={i.toString()} label={warehouse.country}/>
+                        ))}
+                        {/*<Tab icon={<IconFlagUS/>} value="1" label="США"/>*/}
+                        {/*<Tab icon={<IconFlagCN/>} value="2" label="Китай"/>*/}
+                        {/*<Tab icon={<IconFlagTR/>} value="3" label="Турция"/>*/}
+                        {/*<Tab icon={<AddBoxIcon/>} value="3" label="Добавить склад"*/}
+                        {/*     type="submit"*/}
+                        {/*     fullWidth*/}
+                        {/*     variant="contained"*/}
+                        {/*     color="success"*/}
+                        {/*     className={classes.submit}*/}
+                        {/*     component={Link}*/}
+                        {/*     to={addWareHouseAddress}*/}
+                        {/*     />*/}
                     </TabList>
                 </Box>
+                {wareHouses.map((warehouse, i) => (
+                    <TabPanel key={warehouse._id} value={i.toString()}>{warehouse.info}</TabPanel>
+                ))}
 
-                <TabPanel value="1"><h3 className={classes.title}>Добавить новость</h3>
-                    {/*<FormElement*/}
-                    {/*    required*/}
-                    {/*    label="Название"*/}
-                    {/*    name="title"*/}
-                    {/*    // value={news.title}*/}
-                    {/*    // onChange={inputChangeHandler}*/}
-                    {/*    // error={getFieldError('title')}*/}
-                    {/*/>*/}
-                </TabPanel>
-                <TabPanel value="2">Склад в Китае</TabPanel>
-                <TabPanel value="3">Склад в Турции</TabPanel>
+                {/*<TabPanel value="1">Склад в США</TabPanel>*/}
+                {/*<TabPanel value="2">Склад в Китае</TabPanel>*/}
+                {/*<TabPanel value="3">Склад в Турции</TabPanel>*/}
 
             </TabContext>
         </Box>
