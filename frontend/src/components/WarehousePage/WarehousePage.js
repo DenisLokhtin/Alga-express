@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Box, Grid, Tab} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import {TabContext, TabList, TabPanel} from "@mui/lab";
@@ -9,6 +9,8 @@ import {Link} from "react-router-dom";
 import {addWareHouseAddress} from "../../paths";
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import FormElement from "../UI/Form/FormElement";
+import {fetchOneNewsRequest} from "../../store/actions/newsActions";
+import {fetchWareHouseRequest} from "../../store/actions/wareHouseActions";
 
 
 const useStyles = makeStyles(theme => ( {
@@ -23,6 +25,11 @@ const useStyles = makeStyles(theme => ( {
 
 
 const WarehousePage = () => {
+    const dispatch = useDispatch();
+    const wareHouses = useSelector(state => state.wareHouses.wareHouses);
+    useEffect(() => {
+        dispatch(fetchWareHouseRequest());
+    }, [dispatch]);
 
 
     const loading = useSelector(state => state.buyouts.createLoading);
@@ -71,14 +78,15 @@ const WarehousePage = () => {
                 </Box>
 
                 <TabPanel value="1"><h3 className={classes.title}>Добавить новость</h3>
-                    <FormElement
-                        required
-                        label="Название"
-                        name="title"
-                        // value={news.title}
-                        // onChange={inputChangeHandler}
-                        // error={getFieldError('title')}
-                    /></TabPanel>
+                    {/*<FormElement*/}
+                    {/*    required*/}
+                    {/*    label="Название"*/}
+                    {/*    name="title"*/}
+                    {/*    // value={news.title}*/}
+                    {/*    // onChange={inputChangeHandler}*/}
+                    {/*    // error={getFieldError('title')}*/}
+                    {/*/>*/}
+                </TabPanel>
                 <TabPanel value="2">Склад в Китае</TabPanel>
                 <TabPanel value="3">Склад в Турции</TabPanel>
 
