@@ -28,7 +28,7 @@ import AdminPaymentsProcessing from "./components/AdminPaymentsProcessing/AdminP
 import {
     aboutCompany,
     addFlightAdmin, addPaymentHandler,
-    addUserPayment,
+    addUserPayment, addWareHouseAddress,
     contactsCompany,
     editBuyout,
     editingSingleTrackNumber,
@@ -63,6 +63,7 @@ import EditBuyout from "./components/EditBuyout/EditBuyout";
 import BuyoutList from "./containers/BuyoutList/BuyoutList";
 import AddPaymentAdmin from "./components/AddPaymentAdmin/AddPaymentAdmin";
 import WarehousePage from "./components/WarehousePage/WarehousePage";
+import AddWareHouseAdmin from "./components/AddWareHouseAdmin/AddWareHouseAdmin";
 
 const App = () => {
 
@@ -101,6 +102,7 @@ const App = () => {
                 <Route path={listBuyouts} element={<BuyoutList/>}/>
                 <Route path={addPaymentHandler} element={<AddPaymentAdmin/>}/>
                 <Route path={wareHouseCompany} element={<WarehousePage/>}/>
+                <Route path={addWareHouseAddress} element={<AddWareHouseAdmin/>}/>
                 <Route
                     path="*"
                     element={

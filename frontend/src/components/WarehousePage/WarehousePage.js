@@ -5,6 +5,9 @@ import {TabContext, TabList, TabPanel} from "@mui/lab";
 import {IconFlagCN, IconFlagTR, IconFlagUS} from "material-ui-flags";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {useDispatch, useSelector} from "react-redux";
+import {Link} from "react-router-dom";
+import {addWareHouseAddress} from "../../paths";
+
 
 const useStyles = makeStyles(theme => ( {
     submit: {
@@ -50,6 +53,8 @@ const WarehousePage = () => {
                         className={classes.submit}
                         loading={loading}
                         disabled={loading}
+                        component={Link}
+                        to={addWareHouseAddress}
                     >
                         Добавить склад в США
                     </ButtonWithProgress>
