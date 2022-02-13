@@ -33,7 +33,7 @@ import {
     editBuyout,
     editingSingleTrackNumber,
     editPackageAdmin,
-    editPackageUser,
+    editPackageUser, editTariffGroup,
     editUserProfile,
     faqCompany,
     howCompany,
@@ -62,6 +62,7 @@ import SingleStatusEdit from "./containers/SingleStatusEdit/SingleStatusEdit";
 import EditBuyout from "./components/EditBuyout/EditBuyout";
 import BuyoutList from "./containers/BuyoutList/BuyoutList";
 import AddPaymentAdmin from "./components/AddPaymentAdmin/AddPaymentAdmin";
+import EditTariffGroup from "./components/EditTariffGroup/EditTariffGroup";
 
 const App = () => {
 
@@ -99,6 +100,7 @@ const App = () => {
                 <Route path={editBuyout} element={<EditBuyout/>}/>
                 <Route path={listBuyouts} element={<BuyoutList/>}/>
                 <Route path={addPaymentHandler} element={<AddPaymentAdmin/>}/>
+                <Route path={editTariffGroup} element={<EditTariffGroup/>}/>
                 <Route
                     path="*"
                     element={
