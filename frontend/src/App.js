@@ -26,6 +26,26 @@ import UserPayments from "./components/UserPayments/UserPayments";
 import WarehousemanStatusEdit from "./containers/WarehousemanStatusEdit/WarehousemanStatusEdit";
 import AdminPaymentsProcessing from "./components/AdminPaymentsProcessing/AdminPaymentsProcessing";
 import {
+    aboutCompany,
+    addFlightAdmin, addPaymentHandler,
+    addUserPayment,
+    contactsCompany,
+    editBuyout,
+    editingSingleTrackNumber,
+    editPackageAdmin,
+    editPackageUser,
+    editUserProfile,
+    faqCompany,
+    howCompany,
+    listBuyouts,
+    listFlightAdmin,
+    listPaymentsAdmin,
+    newPackageRegister,
+    newsCompany,
+    newsEditCompany,
+    newsIdCompany,
+    newUserRegister,
+    orderBuyouts,
     aboutCompany, addFlightAdmin,
     addUserPayment, contactsCompany, editingSingleTrackNumber, editPackageAdmin,
     editPackageUser, editPages,
@@ -33,8 +53,11 @@ import {
     newPackageRegister, newsCompany, newsEditCompany, newsIdCompany,
     newUserRegister, orderBuyouts,
     packageHistory,
-    packageInfoId, processingTrackNumbersAdmin,
-    root, rulesCompany, sitesCompany,
+    packageInfoId,
+    processingTrackNumbersAdmin,
+    root,
+    rulesCompany,
+    sitesCompany,
     user,
     userLogin,
     userPackageHistory,
@@ -43,6 +66,9 @@ import {
 import OrderBuyout from "./containers/OrderBuyout/OrderBuyout";
 import SingleStatusEdit from "./containers/SingleStatusEdit/SingleStatusEdit";
 import EditPages from "./containers/EditPages/EditPages";
+import EditBuyout from "./components/EditBuyout/EditBuyout";
+import BuyoutList from "./containers/BuyoutList/BuyoutList";
+import AddPaymentAdmin from "./components/AddPaymentAdmin/AddPaymentAdmin";
 
 const App = () => {
 
@@ -77,6 +103,9 @@ const App = () => {
                 <Route path={listPaymentsAdmin} element={<AdminPaymentsProcessing/>}/>
                 <Route path={orderBuyouts} element={<OrderBuyout/>}/>
                 <Route path={editingSingleTrackNumber} element={<SingleStatusEdit/>}/>
+                <Route path={editBuyout} element={<EditBuyout/>}/>
+                <Route path={listBuyouts} element={<BuyoutList/>}/>
+                <Route path={addPaymentHandler} element={<AddPaymentAdmin/>}/>
                 <Route path={editPages} element={<EditPages/>}/>
                 <Route
                     path="*"

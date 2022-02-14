@@ -7,6 +7,7 @@ const Package = require("./models/Package");
 const Flight = require("./models/Flight");
 const News = require("./models/News");
 const Market = require("./models/Market");
+const TariffGroup = require("./models/tariffGroup");
 const Pages = require("./models/Pages");
 
 const run = async () => {
@@ -19,14 +20,24 @@ const run = async () => {
         await mongoose.connection.db.dropCollection(coll.name);
     }
 
+    const tariff = await TariffGroup.create({
+        new: {
+            usa: 12,
+            turkey: 4.3,
+            china: 15,
+            chinaGround: 5,
+        }
+    });
+
     const [user, admin] = await User.create(
         {
             email: "user@gmail.com",
             password: "123",
             token: nanoid(),
             role: "user",
-            balance: 7093,
+            balance: 200,
             name: "User",
+            tariff: tariff.new,
             avatar: 'avatar1.jpeg',
             phone: {number: '786 67 78 99', type: 'PHONE'},
             passport: {image: 'passport.jpg'}
@@ -36,7 +47,7 @@ const run = async () => {
             password: "123",
             token: nanoid(),
             role: "admin",
-            balance: 5908,
+            balance: 0,
             name: "Admin",
             avatar: 'avatar2.jpeg',
             phone: {number: '754 76 45 54', type: 'PHONE'},
@@ -48,24 +59,12 @@ const run = async () => {
         {
             description: 'Payment Description 1',
             user: user,
-            status: true,
+            status: false,
             image: 'payment.png',
         },
         {
             description: 'Payment Description 2',
             user: user,
-            status: false,
-            image: 'payment.png',
-        },
-        {
-            description: 'Payment Description 3',
-            user: admin,
-            status: true,
-            image: 'payment.png',
-        },
-        {
-            description: 'Payment Description 4 ',
-            user: admin,
             status: false,
             image: 'payment.png',
         },
@@ -96,10 +95,6 @@ const run = async () => {
             price: 2345,
             flight: flight1,
             country: 'USA',
-            width: 42,
-            length: 42,
-            height: 42,
-            deleted: false,
             status: 'PROCESSED',
             user: admin,
             cargoWeight: 3,
@@ -115,10 +110,6 @@ const run = async () => {
             price: 443,
             flight: flight1,
             country: 'Turkey',
-            width: 42,
-            length: 42,
-            height: 42,
-            deleted: false,
             user: admin,
             status: 'REGISTERED',
             cargoWeight: 3,
@@ -134,11 +125,7 @@ const run = async () => {
             price: 7564,
             flight: flight1,
             country: 'China',
-            width: 42,
-            length: 42,
-            height: 42,
             status: 'DELIVERED',
-            deleted: false,
             user: user,
             cargoWeight: 3,
             cargoPrice: 123,
@@ -153,11 +140,7 @@ const run = async () => {
             price: 678,
             flight: flight2,
             country: 'China_ground',
-            width: 42,
-            length: 42,
-            height: 42,
             status: 'ON_WAREHOUSE',
-            deleted: false,
             user: user,
             cargoWeight: 3,
             cargoPrice: 123,
@@ -172,11 +155,7 @@ const run = async () => {
             price: 345,
             flight: flight2,
             country: 'USA',
-            width: 42,
-            length: 42,
-            height: 42,
-            status: 'DONE',
-            deleted: true,
+            status: 'REGISTERED',
             user: user,
             cargoWeight: 3,
             cargoPrice: 123,

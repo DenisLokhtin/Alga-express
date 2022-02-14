@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {clearTextFieldsErrors, createPackageRequest} from "../../store/actions/packageRegisterActions";
-import {Checkbox, Container, FormControl, FormHelperText, Grid, InputLabel, MenuItem, Select, Typography} from "@mui/material";
+import {Container, FormControl, FormHelperText, Grid, InputLabel, MenuItem, Select, Typography} from "@mui/material";
 import {makeStyles} from "@mui/styles";
-import Dimension from "../../components/Dimension/Dimension";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import theme from "../../theme";
 import FormElement from "../../components/UI/Form/FormElement";
 
@@ -49,6 +48,11 @@ const PackageRegister = () => {
     const loading = useSelector(state => state.package.createPackageRequest);
     const dispatch = useDispatch();
     const error = useSelector(state => state.package.createPackageError);
+    const data = useLocation();
+
+    console.log('register', data.state)
+    // приходят данные пользователя который заказал выкуп
+
 
     const [packageRegister, setPackageRegister] = useState({
         trackNumber: '',
@@ -56,12 +60,7 @@ const PackageRegister = () => {
         amount: '',
         price: '',
         country: '',
-        width: '',
-        height: '',
-        length: '',
     });
-
-    const [checked, setChecked] = useState(false);
 
     const inputChangeHandler = e => {
         let {name, value} = e.target;
@@ -74,10 +73,6 @@ const PackageRegister = () => {
         }
 
         setPackageRegister(prevState => ({...prevState, [name]: value}));
-    };
-
-    const onCheckedChange = e => {
-        setChecked(e.target.checked);
     };
 
     const getFieldError = fieldName => {
@@ -189,22 +184,6 @@ const PackageRegister = () => {
                         error={getFieldError('price')}
                     />
                 </Grid>
-                <Grid
-                    container
-                    justifyContent="center"
-                    className={classes.checkboxContainer}
-                    alignItems="center">
-                    <Typography variant="h4">Габариты</Typography>
-                    <Checkbox checked={checked} onChange={onCheckedChange}/>
-                </Grid>
-                {checked ? (
-                    <Dimension
-                        width={packageRegister.width}
-                        height={packageRegister.height}
-                        length={packageRegister.length}
-                        getFieldError={getFieldError}
-                        packageHandler={inputChangeHandler}
-                    />) : null}
                 <Grid container
                       justifyContent="center"
                       alignItems="center"

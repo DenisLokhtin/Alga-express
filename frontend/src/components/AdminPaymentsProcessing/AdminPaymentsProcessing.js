@@ -106,9 +106,6 @@ const AdminPaymentsProcessing = () => {
         dispatch(paymentAcceptedRequest(permitPayment[i]));
     };
 
-    console.log(permitPayment);
-    console.log(paymentData);
-
     return (input &&
         <Container
             component="section"

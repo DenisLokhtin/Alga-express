@@ -2,6 +2,7 @@ import {createSlice} from "@reduxjs/toolkit";
 
 const initialState = {
     orders: [],
+    totalPage: 0,
     order: null,
     onePackage: {},
     createPackageLoading: false,
@@ -42,9 +43,10 @@ const packageSlice = createSlice({
             state.getOrdersLoading = true;
         },
 
-        getOrdersHistorySuccess(state, {payload: orders}) {
+        getOrdersHistorySuccess(state, {payload}) {
             state.getOrdersLoading = false;
-            state.orders = orders;
+            state.totalPage = payload.totalPage;
+            state.orders = payload.packages;
         },
 
         getOrdersHistoryError(state, {payload: orderHistoryError}) {
