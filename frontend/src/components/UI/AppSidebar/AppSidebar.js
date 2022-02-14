@@ -39,7 +39,7 @@ const styles = {
         position: "fixed",
         top: "0",
         left: "0",
-        display: "flex",
+        display: {md: "flex", xs: "none"},
         flexDirection: "column",
         overflow: "hidden",
         height: "100%",
