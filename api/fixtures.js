@@ -8,7 +8,6 @@ const Flight = require("./models/Flight");
 const News = require("./models/News");
 const Market = require("./models/Market");
 const TariffGroup = require("./models/tariffGroup");
-const Pages = require("./models/Pages");
 
 const run = async () => {
     await mongoose.connect(config.db.url, config.db.options);
@@ -97,9 +96,6 @@ const run = async () => {
             country: 'USA',
             status: 'PROCESSED',
             user: admin,
-            cargoWeight: 3,
-            cargoPrice: 123,
-            cargoNumber: '951845',
             description: 'description 1',
             urlPackage: 'https://www.amazon.com/Kindle-Now-with-Built-in-Front-Light/dp/B07DPMXZZ7/ref=sr_1_1_sspa?keywords=Kindle+E-readers&pd_rd_r=04e07f5b-9cf9-4620-81fc-3b2dc7acb927&pd_rd_w=zKeef&pd_rd_wg=arLd4&pf_rd_p=b9deb6fa-f7f0-4f9b-bfa0-824f28f79589&pf_rd_r=QEHM1VE018FEWSWN0VE0&qid=1643634774&sr=8-1-spons&psc=1&spLa=ZW5jcnlwdGVkUXVhbGlmaWVyPUFMVTU2VFhQRTM5NjcmZW5jcnlwdGVkSWQ9QTAzOTMzMjk0RFBURVpKV0tPOTgmZW5jcnlwdGVkQWRJZD1BMDIxNjkzOFVBVE9CWDQ5RTUzSiZ3aWRnZXROYW1lPXNwX2F0ZiZhY3Rpb249Y2xpY2tSZWRpcmVjdCZkb05vdExvZ0NsaWNrPXRydWU=',
         },
@@ -112,9 +108,6 @@ const run = async () => {
             country: 'Turkey',
             user: admin,
             status: 'REGISTERED',
-            cargoWeight: 3,
-            cargoPrice: 123,
-            cargoNumber: '741123',
             description: 'description 2',
             urlPackage: 'https://www.amazon.com/Stuffed-Cushion-Collectible-Christmas-Birthday/dp/B09NW4L1BW/ref=sr_1_2?keywords=toys&pd_rd_r=8d8fe069-f701-4575-99e0-fa9735c23583&pd_rd_w=U5ydA&pd_rd_wg=doX2q&pf_rd_p=779cadfb-bc4d-465d-931f-0b68c1ba5cd5&pf_rd_r=0WN5KS5HN5P88EG8PCAR&qid=1643635527&sr=8-2',
         },
@@ -127,9 +120,6 @@ const run = async () => {
             country: 'China',
             status: 'DELIVERED',
             user: user,
-            cargoWeight: 3,
-            cargoPrice: 123,
-            cargoNumber: '849152',
             description: 'description 3',
             urlPackage: 'https://www.amazon.com/Wowok-Money-Spary-Movies-Party/dp/B094D6SCL3/ref=sr_1_10?keywords=toys&pd_rd_r=8d8fe069-f701-4575-99e0-fa9735c23583&pd_rd_w=U5ydA&pd_rd_wg=doX2q&pf_rd_p=779cadfb-bc4d-465d-931f-0b68c1ba5cd5&pf_rd_r=0WN5KS5HN5P88EG8PCAR&qid=1643635567&sr=8-10'
         },
@@ -142,9 +132,6 @@ const run = async () => {
             country: 'China_ground',
             status: 'ON_WAREHOUSE',
             user: user,
-            cargoWeight: 3,
-            cargoPrice: 123,
-            cargoNumber: '234567',
             description: 'description 4',
             urlPackage: 'https://www.amazon.com/JLE-Display-Apples-iPhone-Graphite/dp/B09QK7YJCZ/ref=sr_1_12?keywords=toys&pd_rd_r=8d8fe069-f701-4575-99e0-fa9735c23583&pd_rd_w=U5ydA&pd_rd_wg=doX2q&pf_rd_p=779cadfb-bc4d-465d-931f-0b68c1ba5cd5&pf_rd_r=0WN5KS5HN5P88EG8PCAR&qid=1643635567&sr=8-12',
         },
@@ -157,9 +144,6 @@ const run = async () => {
             country: 'USA',
             status: 'REGISTERED',
             user: user,
-            cargoWeight: 3,
-            cargoPrice: 123,
-            cargoNumber: '984523',
             description: 'description 5',
             urlPackage: 'https://www.amazon.com/Kindle-Now-with-Built-in-Front-Light/dp/B07DPMXZZ7/ref=sr_1_1_sspa?keywords=Kindle+E-readers&pd_rd_r=04e07f5b-9cf9-4620-81fc-3b2dc7acb927&pd_rd_w=zKeef&pd_rd_wg=arLd4&pf_rd_p=b9deb6fa-f7f0-4f9b-bfa0-824f28f79589&pf_rd_r=QEHM1VE018FEWSWN0VE0&qid=1643634774&sr=8-1-spons&psc=1&spLa=ZW5jcnlwdGVkUXVhbGlmaWVyPUFMVTU2VFhQRTM5NjcmZW5jcnlwdGVkSWQ9QTAzOTMzMjk0RFBURVpKV0tPOTgmZW5jcnlwdGVkQWRJZD1BMDIxNjkzOFVBVE9CWDQ5RTUzSiZ3aWRnZXROYW1lPXNwX2F0ZiZhY3Rpb249Y2xpY2tSZWRpcmVjdCZkb05vdExvZ0NsaWNrPXRydWU=',
         },
@@ -237,3 +221,4 @@ const run = async () => {
 };
 
 run().catch(console.error);
+
