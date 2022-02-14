@@ -28,4 +28,5 @@ export const listPaymentsAdmin = '/cargo/payments';
 export const processingTrackNumbersAdmin = '/cargo/processingNumbers/edit';
 export const editingSingleTrackNumber = '/cargo/singleTrackNumber/edit';
 export const orderBuyouts = '/orderBuyouts';
+export const editPages = '/alga-express/editPages';
 

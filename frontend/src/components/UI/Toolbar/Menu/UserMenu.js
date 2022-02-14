@@ -12,10 +12,11 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import FlightIcon from "@mui/icons-material/Flight";
 import PersonIcon from "@mui/icons-material/Person";
+import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import {logout} from "../../../../store/actions/usersActions";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    addFlightAdmin,
+    addFlightAdmin, editPages,
     listFlightAdmin,
     listPaymentsAdmin,
     newPackageRegister,
@@ -68,15 +69,27 @@ const UserMenu = ({user}) => {
                     <AddShoppingCartIcon/>
                 </Badge>
             </IconButton>
-            {users?.role === 'admin' && (<IconButton
-                color="inherit"
-                component={Link}
-                to={listPaymentsAdmin}
-            >
-                <Badge badgeContent={payments && payments.totalElements} color="error">
-                    <NotificationsIcon/>
-                </Badge>
-            </IconButton>)}
+            {users?.role === 'admin' && (
+                <>
+                    <IconButton
+                        color="inherit"
+                        component={Link}
+                        to={editPages}
+                    >
+                        <ModeEditOutlineIcon/>
+                    </IconButton>
+
+                    <IconButton
+                        color="inherit"
+                        component={Link}
+                        to={listPaymentsAdmin}
+                    >
+                        <Badge badgeContent={payments && payments.totalElements} color="error">
+                            <NotificationsIcon/>
+                        </Badge>
+                    </IconButton>
+                </>
+            )}
             <Button
                 sx={{color: '#F5F5F7',}}
                 color='inherit'

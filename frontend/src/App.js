@@ -28,7 +28,7 @@ import AdminPaymentsProcessing from "./components/AdminPaymentsProcessing/AdminP
 import {
     aboutCompany, addFlightAdmin,
     addUserPayment, contactsCompany, editingSingleTrackNumber, editPackageAdmin,
-    editPackageUser,
+    editPackageUser, editPages,
     editUserProfile, faqCompany, howCompany, listFlightAdmin, listPaymentsAdmin,
     newPackageRegister, newsCompany, newsEditCompany, newsIdCompany,
     newUserRegister, orderBuyouts,
@@ -42,13 +42,14 @@ import {
 } from "./paths";
 import OrderBuyout from "./containers/OrderBuyout/OrderBuyout";
 import SingleStatusEdit from "./containers/SingleStatusEdit/SingleStatusEdit";
+import EditPages from "./containers/EditPages/EditPages";
 
 const App = () => {
 
     return (
         <Layout>
             <Routes>
-                <Route path={root} element={<HomePage/>} />
+                <Route path={root} element={<HomePage/>}/>
                 <Route path={user} element={<Register/>}/>
                 <Route path={packageInfoId} element={<SpecificPackage/>}/>
                 <Route path={newPackageRegister} element={<PackageRegister/>}/>
@@ -76,10 +77,11 @@ const App = () => {
                 <Route path={listPaymentsAdmin} element={<AdminPaymentsProcessing/>}/>
                 <Route path={orderBuyouts} element={<OrderBuyout/>}/>
                 <Route path={editingSingleTrackNumber} element={<SingleStatusEdit/>}/>
+                <Route path={editPages} element={<EditPages/>}/>
                 <Route
                     path="*"
                     element={
-                        <main style={{ padding: "1rem" }}>
+                        <main style={{padding: "1rem"}}>
                             <h1>Page Not Found</h1>
                         </main>
                     }
