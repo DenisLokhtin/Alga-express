@@ -30,10 +30,9 @@ const WarehousePage = () => {
 
     const loading = useSelector(state => state.wareHouses.createLoading);
 
-
     const classes = useStyles();
 
-    const [value, setValue] = React.useState("0");
+    const [value, setValue] = React.useState("1");
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -41,7 +40,7 @@ const WarehousePage = () => {
 
     const deleteWareHouse = (id) => {
         dispatch(deleteWareHouseRequest(id))
-    }
+    };
 
     return (
         <Box sx={{width: '100%', typography: 'body1'}} className={classes.tableContainer}>
@@ -49,57 +48,58 @@ const WarehousePage = () => {
                 <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
                     <TabList onChange={handleChange} aria-label="lab API tabs example">
                         {wareHouses.map((warehouse, i) => (
-                            <Tab key={warehouse._id} value={i.toString()} label={warehouse.country}/>
+                            <Tab key={warehouse._id} value={String(i)} label={warehouse.country}/>
                         ))}
+
                         {/*<Tab icon={<IconFlagUS/>} value="1" label="США"/>*/}
                         {/*<Tab icon={<IconFlagCN/>} value="2" label="Китай"/>*/}
                         {/*<Tab icon={<IconFlagTR/>} value="3" label="Турция"/>*/}
-                        <Tab icon={<AddBoxIcon/>} value="3" label="Добавить склад"
-                             type="submit"
-                             fullWidth
-                             variant="contained"
-                             color="success"
-                             className={classes.submit}
-                             component={Link}
-                             to={addWareHouseAddress}
-                             />
+                        {/*<button className={classes.submit}>some text</button>*/}
                     </TabList>
                 </Box>
+                {/*<Box sx={{borderBottom: 1, borderColor: 'divider'}}>*/}
+                {/*    <TabList onChange={handleChange} aria-label="lab API tabs example">*/}
+                {/*        {wareHouses.map((warehouse, i) => (*/}
+                {/*            <Tab key={warehouse._id} value={String(i)} label={warehouse.country}/>*/}
+                {/*        ))}*/}
+                {/*    </TabList>*/}
+                {/*</Box>*/}
+
 
                 {wareHouses.map((warehouse, i) => (
                     <TabPanel key={warehouse._id} value={i.toString()}>{warehouse.info}
                         <Grid container>
-                        <Grid item xs={3}>
-                            <ButtonWithProgress
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                color="success"
-                                className={classes.submit}
-                                loading={loading}
-                                disabled={loading}
-                                component={Link}
-                                to={editingSingleWareHouse + warehouse._id}
-                            >
-                                Редактировать
-                            </ButtonWithProgress>
-                        </Grid>
-                        <Grid item xs={3}>
-                            <ButtonWithProgress
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                color="inherit"
-                                className={classes.submit}
-                                loading={loading}
-                                disabled={loading}
-                                onClick={() => deleteWareHouse(warehouse._id)}
-                                // component={Link}
-                                // to={editingSingleWareHouse + warehouse._id}
-                            >
-                                Удалить
-                            </ButtonWithProgress>
-                        </Grid>
+                            <Grid item xs={3}>
+                                <ButtonWithProgress
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    color="success"
+                                    className={classes.submit}
+                                    loading={loading}
+                                    disabled={loading}
+                                    component={Link}
+                                    to={editingSingleWareHouse + warehouse._id}
+                                >
+                                    Редактировать
+                                </ButtonWithProgress>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <ButtonWithProgress
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    color="inherit"
+                                    className={classes.submit}
+                                    loading={loading}
+                                    disabled={loading}
+                                    onClick={() => deleteWareHouse(warehouse._id)}
+                                    // component={Link}
+                                    // to={editingSingleWareHouse + warehouse._id}
+                                >
+                                    Удалить
+                                </ButtonWithProgress>
+                            </Grid>
                         </Grid>
                     </TabPanel>
                 ))}

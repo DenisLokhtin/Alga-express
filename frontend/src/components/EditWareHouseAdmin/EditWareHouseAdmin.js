@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {changeWareHouseRequest, fetchOneWareHouseRequest} from "../../store/actions/wareHouseActions";
 import {useParams} from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {makeStyles} from "@mui/styles";
-import {TextareaAutosize} from "@mui/material";
+import {TextareaAutosize, TextField} from "@mui/material";
 
 const useStyles = makeStyles(theme => ({
     submit: {
@@ -20,6 +20,8 @@ const useStyles = makeStyles(theme => ({
 const EditWareHouseAdmin = () => {
 
     const oneWareHouse = useSelector(state => state.wareHouses.oneWareHouse);
+
+    console.log(oneWareHouse);
     const classes = useStyles();
 
     const [singleWareHouse, setSingleWareHouse] = useState({
@@ -28,12 +30,10 @@ const EditWareHouseAdmin = () => {
     });
     const dispatch = useDispatch();
     const params = useParams();
+
     const inputChangeHandler = e => {
         const {name, value} = e.target;
-        setSingleWareHouse(prev => ({
-            ...prev,
-            [name]: value
-        }));
+        setSingleWareHouse(prev => ({...prev, [name]: value}));
     };
     const getFieldError = fieldName => {
         try {
@@ -51,16 +51,25 @@ const EditWareHouseAdmin = () => {
 
     const error = useSelector(state => state.users.registerError);
     const loading = useSelector(state => state.users.registerLoading);
+
     useEffect(() => {
         dispatch(fetchOneWareHouseRequest(params.id));
+
     }, [dispatch, params.id, oneWareHouse.info]);
+
+    useMemo(() => {
+        setSingleWareHouse({
+            country: oneWareHouse.country,
+            info: oneWareHouse.info,
+        });
+    }, [oneWareHouse]);
 
     const applyEdit = () => {
         console.log('test');
     }
 
-    console.log('Local state' + singleWareHouse.info);
-    console.log('Global state: ' + oneWareHouse.info);
+    // console.log('Local state' + singleWareHouse.info);
+    // console.log('Global state: ' + oneWareHouse.info);
 
 
     return (
@@ -71,16 +80,14 @@ const EditWareHouseAdmin = () => {
                     // aria-label="minimum height"
                     minRows={3}
                     placeholder="Minimum 3 rows"
-                    style={{ width: 800 }}
+                    style={{width: 800}}
                     onChange={inputChangeHandler}
-                    value={oneWareHouse.info || ''}
+                    value={singleWareHouse.info || ' '}
                     name='info'
                     // defaultValue={oneWareHouse.info || ''}
                 />
 
                 {/*<textarea name='info' className='textarea' onChange={e => setSingleWareHouse(e.target.value)}>{oneWareHouse.info}</textarea>*/}
-
-
 
 
                 {/*<input className="form"*/}
