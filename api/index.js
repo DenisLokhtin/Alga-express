@@ -13,6 +13,7 @@ const flight = require('./app/flights');
 const buyouts = require('./app/buyouts');
 const administration = require('./app/administration');
 const userPayments = require('./app/userPayments');
+const pages = require('./app/Pages');
 
 const app = express();
 app.use(express.json());
@@ -29,6 +30,7 @@ app.use('/flights', flight);
 app.use('/buyouts', buyouts);
 app.use('/cargo', administration);
 app.use('/payments', userPayments);
+app.use('/pages', pages);
 
 const run = async () => {
     await mongoose.connect(config.db.url);
