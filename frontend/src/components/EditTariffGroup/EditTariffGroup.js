@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Grid, Paper, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchTariffGroupRequest} from "../../store/actions/paymentActions";
+import FormElement from "../UI/Form/FormElement";
 
 const EditTariffGroup = () => {
     const dispatch = useDispatch();
@@ -66,20 +67,35 @@ return (
                         <Paper sx={{width: '300px', height: '300px'}}>
                             <Typography variant='subtitle1'>USA</Typography>
                             <Typography variant='body1'>{tariffGroup && tariffGroup.new.usa}</Typography>
+                            <FormElement
+                                label='USA'
+                                // onChange={}
+                                name='usa'
+                            />
                         </Paper>
                     </Grid>
                     <Grid item>
                         <Paper sx={{width: '300px', height: '300px'}}>
                             <Typography variant='subtitle1'>Turkey</Typography>
                             <Typography variant='body1'>{tariffGroup && tariffGroup.new.turkey}</Typography>
+                            <FormElement
+                                label='Turkey'
+                                // onChange={}
+                                name='turkey'
+                            />
                         </Paper>
                     </Grid>
-                </Grid>
-                <Grid item>
-                    <Paper sx={{width: '300px', height: '300px'}}>
-                        <Typography variant='subtitle1'>China</Typography>
-                        <Typography variant='body1'>{tariffGroup && tariffGroup.new.china}</Typography>
-                    </Paper>
+                    <Grid item>
+                        <Paper sx={{width: '300px', height: '300px'}}>
+                            <Typography variant='subtitle1'>China</Typography>
+                            <Typography variant='body1'>{tariffGroup && tariffGroup.new.china}</Typography>
+                            <FormElement
+                                label='China'
+                                // onChange={}
+                                name='China'
+                            />
+                        </Paper>
+                    </Grid>
                 </Grid>
             </Grid>
             <Grid
