@@ -36,10 +36,16 @@ const pages = [
 
 const styles = {
     boxContainer: {
+        position: "fixed",
+        top: "0",
+        left: "0",
         display: "flex",
         flexDirection: "column",
-        height: "100vh",
-        width: "100%"
+        overflow: "hidden",
+        height: "100%",
+        width: "300px",
+        background: "grey",
+        padding: "6px 14px"
     },
     pages: {
         flexGrow: "999",
@@ -71,47 +77,44 @@ const AppSidebar = () => {
     const user = useSelector(state => state.users.user);
 
     return (
-        <Container>
-            <Box sx={styles.boxContainer}>
-                <Box>
-                    <Link to="/" className={classes.logo}>
-                        <img src={logo} alt="logo" style={{width: "40px"}}/>
-                        <span>Alga Express</span>
-                    </Link>
-                </Box>
-
-                <Box sx={styles.pages}>
-                    <MenuList>
-                        {pages.map(page => (
-                            <MenuItem
-                                key={page.title}
-                                component={Link}
-                                to={page.url}
-                                sx={{color: "#F5F5F7"}}
-                            >
-                                <ListItemIcon
-                                    sx={{color: "#F5F5F7"}}
-                                >
-                                    {page.icon}
-                                </ListItemIcon>
-                                <ListItemText>
-                                    {page.title}
-                                </ListItemText>
-                            </MenuItem>
-                        ))}
-                    </MenuList>
-                </Box>
-
-                <Box sx={styles.user}>
-                    {user ?
-                        <UserMenu user={user}/>
-                        :
-                        <Anonymous/>
-                    }
-                </Box>
+        <Box sx={styles.boxContainer}>
+            <Box>
+                <Link to="/" className={classes.logo}>
+                    <img src={logo} alt="logo" style={{width: "40px"}}/>
+                    <span>Alga Express</span>
+                </Link>
             </Box>
 
-        </Container>
+            <Box sx={styles.pages}>
+                <MenuList>
+                    {pages.map(page => (
+                        <MenuItem
+                            key={page.title}
+                            component={Link}
+                            to={page.url}
+                            sx={{color: "#F5F5F7"}}
+                        >
+                            <ListItemIcon
+                                sx={{color: "#F5F5F7"}}
+                            >
+                                {page.icon}
+                            </ListItemIcon>
+                            <ListItemText>
+                                {page.title}
+                            </ListItemText>
+                        </MenuItem>
+                    ))}
+                </MenuList>
+            </Box>
+
+            <Box sx={styles.user}>
+                {user ?
+                    <UserMenu user={user}/>
+                    :
+                    <Anonymous/>
+                }
+            </Box>
+        </Box>
     );
 };
 
