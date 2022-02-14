@@ -78,7 +78,7 @@ const UserMenu = ({user}) => {
             {users?.role === 'admin' && (
                 <>
                     <IconButton
-                        color="inherit"
+                        sx={{color: '#F5F5F7',}}
                         component={Link}
                         to={editPages}
                     >

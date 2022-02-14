@@ -46,12 +46,6 @@ import {
     newsIdCompany,
     newUserRegister,
     orderBuyouts,
-    aboutCompany, addFlightAdmin,
-    addUserPayment, contactsCompany, editingSingleTrackNumber, editPackageAdmin,
-    editPackageUser, editPages,
-    editUserProfile, faqCompany, howCompany, listFlightAdmin, listPaymentsAdmin,
-    newPackageRegister, newsCompany, newsEditCompany, newsIdCompany,
-    newUserRegister, orderBuyouts,
     packageHistory,
     packageInfoId,
     processingTrackNumbersAdmin,
@@ -61,7 +55,8 @@ import {
     user,
     userLogin,
     userPackageHistory,
-    userPaymentsList
+    userPaymentsList,
+    editPages,
 } from "./paths";
 import OrderBuyout from "./containers/OrderBuyout/OrderBuyout";
 import SingleStatusEdit from "./containers/SingleStatusEdit/SingleStatusEdit";

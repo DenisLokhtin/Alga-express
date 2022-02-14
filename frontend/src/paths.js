@@ -29,10 +29,7 @@ export const processingTrackNumbersAdmin = '/cargo/processingNumbers/edit';
 export const editingSingleTrackNumber = '/cargo/singleTrackNumber/edit';
 export const orderBuyouts = '/orderBuyouts';
 export const editPages = '/alga-express/editPages';
-export const orderBuyouts = 'user/orderBuyouts';
 export const editBuyout = 'user/editBuyout/:id';
 export const listBuyouts = 'user/listBuyouts';
-export const editingSingleTrackNumber = '/cargo/singleTrackNumber/edit'
 export const addPaymentHandler = '/cargo/payments/add';
-
 
