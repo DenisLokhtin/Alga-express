@@ -47,10 +47,10 @@ export function* addWareHouseSaga({payload: newWareHouse}) {
 
 function* wareHouseEditSaga({payload}) {
     try {
-        yield axiosApi.put(`/warehouses/${payload}`, payload.wareHouse);
+        yield axiosApi.put(`/warehouses/${payload.wareHouseId}`, payload.singleWareHouse);
         yield put(changeWareHouseSuccess());
         toast.success('Склад отредактирован!');
-        payload.navigate('/wareHouse');
+        payload.navigate('/alga-express/wareHouses');
     } catch (e) {
         yield put(changeWareHouseFailure(e.response.data));
     }

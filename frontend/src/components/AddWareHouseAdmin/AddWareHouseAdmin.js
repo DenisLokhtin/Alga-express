@@ -3,6 +3,9 @@ import {useDispatch, useSelector} from "react-redux";
 import {Container, Grid} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import {addNewsRequest} from "../../store/actions/newsActions";
+import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
+import {addWareHouseRequest, changeWareHouseRequest} from "../../store/actions/wareHouseActions";
+import {addWareHouseSaga} from "../../store/sagas/wareHouseSagas";
 
 const useStyles = makeStyles(theme => ({
     submit: {
@@ -66,14 +69,13 @@ const AddWareHouseAdmin = () => {
     const submitFormHandler = e => {
         e.preventDefault();
         const formData = new FormData();
-        Object.keys(news).forEach(key => {
-            formData.append(key, news[key]);
+        Object.keys(quoteBody).forEach(key => {
+            formData.append(key, quoteBody[key]);
         });
-        dispatch(addNewsRequest(formData));
+        dispatch(addWareHouseSaga(formData));
         setNews({
-            title: "",
-            image: null,
-            description: "",
+            country: '',
+            info: '',
         })
     };
 
@@ -160,7 +162,17 @@ const AddWareHouseAdmin = () => {
                         onChange={onInputTextareaChange} cols="55" rows="5"
                         className="form"/>
                 </div>
-                <button onClick={addWareHouse} className="Button" type="button">Сохранить</button>
+                <ButtonWithProgress
+                    type="submit"
+                    variant="contained"
+                    color="success"
+                    className={classes.submit}
+                    loading={loading}
+                    disabled={loading}
+                >
+                    Сохранить
+                </ButtonWithProgress>
+                {/*<button onClick={addWareHouse} className="Button" type="button">Сохранить</button>*/}
             </form>
         </Container>
     );

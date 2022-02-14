@@ -7,7 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {Link} from "react-router-dom";
 import {addWareHouseAddress, editingSingleWareHouse} from "../../paths";
 import {deleteWareHouseRequest, fetchWareHouseRequest} from "../../store/actions/wareHouseActions";
-import AddBoxIcon from '@mui/icons-material/AddCircleOutline';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 
 
 const useStyles = makeStyles(theme => ({
@@ -32,7 +32,7 @@ const WarehousePage = () => {
 
     const classes = useStyles();
 
-    const [value, setValue] = React.useState("1");
+    const [value, setValue] = React.useState("0");
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -46,17 +46,40 @@ const WarehousePage = () => {
         <Box sx={{width: '100%', typography: 'body1'}} className={classes.tableContainer}>
             <TabContext value={value}>
                 <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
-                    <TabList onChange={handleChange} aria-label="lab API tabs example">
-                        {wareHouses.map((warehouse, i) => (
-                            <Tab key={warehouse._id} value={String(i)} label={warehouse.country}/>
-                        ))}
+                    <Grid container>
+                        <Grid item xs={8}>
+                            <TabList onChange={handleChange} aria-label="lab API tabs example">
+                                {wareHouses.map((warehouse, i) => (
+                                    <Tab key={warehouse._id} value={String(i)} label={warehouse.country}/>
+                                ))}
 
-                        {/*<Tab icon={<IconFlagUS/>} value="1" label="США"/>*/}
-                        {/*<Tab icon={<IconFlagCN/>} value="2" label="Китай"/>*/}
-                        {/*<Tab icon={<IconFlagTR/>} value="3" label="Турция"/>*/}
-                        {/*<button className={classes.submit}>some text</button>*/}
-                    </TabList>
+                                {/*<Tab icon={<IconFlagUS/>} value="1" label="США"/>*/}
+                                {/*<Tab icon={<IconFlagCN/>} value="2" label="Китай"/>*/}
+                                {/*<Tab icon={<IconFlagTR/>} value="3" label="Турция"/>*/}
+                                {/*<button className={classes.submit}>some text</button>*/}
+
+                            </TabList>
+                            <Grid item xs={3}>
+                            <ButtonWithProgress
+                                type="submit"
+
+                                variant="contained"
+                                color="error"
+                                className={classes.submit}
+                                loading={loading}
+                                disabled={loading}
+                                component={Link}
+                                to={addWareHouseAddress}
+                            >
+                                <AddBoxIcon/>
+                            </ButtonWithProgress>
+                            </Grid>
+                        </Grid>
+
+                    </Grid>
                 </Box>
+
+
                 {/*<Box sx={{borderBottom: 1, borderColor: 'divider'}}>*/}
                 {/*    <TabList onChange={handleChange} aria-label="lab API tabs example">*/}
                 {/*        {wareHouses.map((warehouse, i) => (*/}
