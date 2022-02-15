@@ -11,11 +11,13 @@ import AddIcon from "@mui/icons-material/Add";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import FlightIcon from "@mui/icons-material/Flight";
+import PersonIcon from "@mui/icons-material/Person";
+import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import {logout} from "../../../../store/actions/usersActions";
 import {useDispatch, useSelector} from "react-redux";
 import Fade from '@mui/material/Fade';
 import {
-    addFlightAdmin,
+    addFlightAdmin, editPages,
     listFlightAdmin,
     listPaymentsAdmin,
     newPackageRegister,
@@ -73,7 +75,16 @@ const UserMenu = ({user}) => {
                 </IconButton>
             </Grid>
             <Grid item>
-                {users?.role === 'admin' && (
+            {users?.role === 'admin' && (
+                <>
+                    <IconButton
+                        sx={{color: '#F5F5F7',}}
+                        component={Link}
+                        to={editPages}
+                    >
+                        <ModeEditOutlineIcon/>
+                    </IconButton>
+
                     <IconButton
                         sx={{color: '#F5F5F7',}}
                         size="small"
@@ -83,7 +94,9 @@ const UserMenu = ({user}) => {
                         <Badge badgeContent={payments && payments.totalElements} color="error">
                             <NotificationsIcon/>
                         </Badge>
-                    </IconButton>)}
+                    </IconButton>
+                </>
+            )}
             </Grid>
             <Grid item>
                 <IconButton
