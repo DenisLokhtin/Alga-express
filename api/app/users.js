@@ -1,6 +1,6 @@
 const express = require('express');
 const User = require('../models/User');
-const TariffGroup = require("../models/tariffGroup");
+const TariffGroup = require("../models/TariffGroup");
 const permit = require("../middleware/permit");
 const auth = require("../middleware/auth");
 

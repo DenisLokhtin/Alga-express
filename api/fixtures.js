@@ -7,7 +7,7 @@ const Package = require("./models/Package");
 const Flight = require("./models/Flight");
 const News = require("./models/News");
 const Market = require("./models/Market");
-const TariffGroup = require("./models/tariffGroup");
+const TariffGroup = require("./models/TariffGroup");
 
 const run = async () => {
     await mongoose.connect(config.db.url, config.db.options);
