@@ -4,6 +4,9 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import {useDispatch, useSelector} from "react-redux";
+import {useEffect} from "react";
+import {fetchRequisitesRequest} from "../../store/actions/requisitesActions";
 
 function TabPanel(props) {
     const {children, value, index, ...other} = props;
@@ -40,9 +43,16 @@ function a11yProps(index) {
 
 export default function BasicTabs() {
     const [value, setValue] = React.useState(0);
+    const dispatch = useDispatch();
+    const requisites = useSelector(state => state.requisites.requisites);
+
+    useEffect(() => {
+        dispatch(fetchRequisitesRequest('faq'));
+    }, [dispatch]);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
+        console.log(requisites)
     };
 
     return (
@@ -52,7 +62,6 @@ export default function BasicTabs() {
                     <Tab label="Optima" {...a11yProps(0)} />
                     <Tab label="KICB" {...a11yProps(1)} />
                     <Tab label="Demir" {...a11yProps(2)} />
-                    <Tab label="Bank" {...a11yProps(3)} />
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
@@ -63,9 +72,6 @@ export default function BasicTabs() {
             </TabPanel>
             <TabPanel value={value} index={2}>
                 Item Three
-            </TabPanel>
-            <TabPanel value={value} index={3}>
-                Item four
             </TabPanel>
         </Box>
     );

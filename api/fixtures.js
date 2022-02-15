@@ -9,6 +9,7 @@ const News = require("./models/News");
 const Market = require("./models/Market");
 const TariffGroup = require("./models/tariffGroup");
 const Pages = require("./models/Pages");
+const Requisites = require("./models/Requisites");
 
 const run = async () => {
     await mongoose.connect(config.db.url, config.db.options);
@@ -215,6 +216,21 @@ const run = async () => {
         {
             nameURL: 'faq',
             text: '<body id="tinymce" class="mce-content-body " data-id="tiny-react_46710480121644590368342" aria-label="Rich Text Area. Press ALT-0 for help." contenteditable="true" spellcheck="false"><div class="makeStyles-paper-31"><h1 class="MuiTypography-root MuiTypography-h3 css-gepadz-MuiTypography-root" style="text-align: center;" data-mce-style="text-align: center;">Вопрос-ответ</h1></div><div class="MuiGrid-root css-vj1n65-MuiGrid-root"><div class="page-content"><p><strong>Q: Зачем покупать в США? В чем смысл?</strong>&nbsp;</p><p><strong>A:</strong>&nbsp;Многим известно отличное соотношение цены и качества товаров, продающихся в США. Покупая в американских магазинах, Вы можете быть уверенны, что приобретете товар отличного качества по наиболее низкой цене. Нельзя также забывать про ОГРОМНЫЕ распродажи, когда скидки на товары могут достигать 90%. Для сравнения можете открыть любой интернет-магазин, выбрать интересующий Вас товар и сравнить цены с местными.</p><p><br></p><p><strong>Q: Зачем вам копия моего паспорта?</strong>&nbsp;</p><p><strong>A:</strong>&nbsp;Копии паспортов клиентов необходимы для предъявления сотрудникам таможенной службы при получении груза.</p><p><br></p><p><strong>Q: Почему ваши услуги относительно дешевые?</strong></p><p><strong>A:</strong>&nbsp;Наша компания сотрудничает с одним из крупных и проверенных перевозчиков из США в СНГ, что позволяет нам получать низкие цены на перевозку из США в Кыргызстан.</p><p><br></p><p><strong>Q: Я бы хотел самостоятельно оформлять заказы в американских интернет магазинах. Что для этого нужно?</strong>&nbsp;</p><p><strong>A:</strong>&nbsp;Прежде всего, Вам необходимо иметь банковскую карту (чаще всего VISA) с наличием достаточной для покупки суммы на счете и далее следовать.</p><p><br></p><p><strong>Q: А можно ли доверять интернет магазинам? Не пропадут ли мои деньги?</strong>&nbsp;</p><p><strong>A:</strong>&nbsp;Интернет-шоппинг во всем мире, и особенно в США, набирает большие обороты. Большое количество онлайн-магазинов концентрируются только на торговле по интернету. Таким магазинам очень важно мнение клиентов об их работе, так как в интернете очень легко найти любую негативную информацию. Кроме того, законодательство США строго конролирует их деятельность. Наш список онлайн-магазинов содержит наиболее популярные площадки, где Вы сможете найти любую интересующую Вас продукцию. Если Вы хотите сделать заказ в интернет-магазине, не входящем в этот список, мы Вам в этом поможем.</p></div></div></body>',
+        },
+    );
+
+    await Requisites.create(
+        {
+            bank: 'KICB',
+            requisites: 'sdfghjk',
+        },
+        {
+            bank: 'Optima',
+            requisites: 'asdf',
+        },
+        {
+            bank: 'Demir',
+            requisites: 'asdf',
         },
     );
 

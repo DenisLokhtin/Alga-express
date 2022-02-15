@@ -12,6 +12,7 @@ import flightSlice from "./slices/flightSlice";
 import buyoutSlice from "./slices/buyoutSlice";
 import paymentSlice from "./slices/paymentSlices";
 import pagesSlice from "./slices/pagesSlice";
+import requisitesSlice from "./slices/requisitesSlice";
 
 const rootReducer = combineReducers({
     'users': usersSlice.reducer,
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
     'buyouts':buyoutSlice.reducer,
     'payments': paymentSlice.reducer,
     'pages': pagesSlice.reducer,
+    'requisites': requisitesSlice.reducer,
 });
 
 const persistedState = loadFromLocalStorage();
