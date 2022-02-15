@@ -16,7 +16,6 @@ export const aboutCompany = '/alga-express/about';
 export const contactsCompany = '/alga-express/contacts';
 export const howCompany = '/alga-express/how';
 export const newsCompany = '/alga-express/news';
-export const newsOneCompany = '/alga-express/news/';
 export const newsIdCompany = '/alga-express/news/:id';
 export const newsEditCompany = '/alga-express/news/edit/:id';
 export const sitesCompany = '/alga-express/sites';

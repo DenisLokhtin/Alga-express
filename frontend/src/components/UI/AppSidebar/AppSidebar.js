@@ -1,9 +1,19 @@
 import * as React from 'react';
-import {Box, ListItemIcon, ListItemText, MenuItem, MenuList} from "@mui/material";
+import {useState} from 'react';
+import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
+    Box,
+    ListItemIcon,
+    ListItemText,
+    MenuItem,
+    MenuList,
+    Typography
+} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import {Link} from "react-router-dom";
 import logo from "../../../assets/logo.svg";
-import Container from "@mui/material/Container";
 import {useSelector} from "react-redux";
 import Anonymous from "../Toolbar/Menu/Anonymous";
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
@@ -23,6 +33,7 @@ import {
     rulesCompany,
     sitesCompany
 } from "../../../paths";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const pages = [
     {title: "Новости", icon: <NewspaperIcon/>, url: newsCompany},
@@ -39,10 +50,10 @@ const styles = {
         position: "fixed",
         top: "0",
         left: "0",
-        display: "flex",
+        display: {md: "flex", xs: "none"},
         flexDirection: "column",
-        overflow: "hidden",
-        height: "100%",
+        overflowY: "auto",
+        height: "100vh",
         width: "300px",
         background: "grey",
         padding: "6px 14px"
@@ -50,7 +61,7 @@ const styles = {
     pages: {
         flexGrow: "999",
         alignSelf: "start",
-        width: "100%"
+        width: "100%",
     },
     user: {
         display: "flex",
@@ -75,15 +86,18 @@ const useStyles = makeStyles({
 const AppSidebar = () => {
     const classes = useStyles();
     const user = useSelector(state => state.users.user);
+    const [expanded, setExpanded] = useState(false);
+
+    const handleChange = (panel) => (event, isExpanded) => {
+        setExpanded(isExpanded ? panel : false);
+    };
 
     return (
         <Box sx={styles.boxContainer}>
-            <Box>
-                <Link to="/" className={classes.logo}>
-                    <img src={logo} alt="logo" style={{width: "40px"}}/>
-                    <span>Alga Express</span>
-                </Link>
-            </Box>
+            <Link to="/" className={classes.logo}>
+                <img src={logo} alt="logo" style={{width: "40px"}}/>
+                <span>Alga Express</span>
+            </Link>
 
             <Box sx={styles.pages}>
                 <MenuList>
@@ -105,14 +119,28 @@ const AppSidebar = () => {
                         </MenuItem>
                     ))}
                 </MenuList>
+
+                <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1bh-content"
+                        id="panel1bh-header"
+                    >
+                        <Typography sx={{ width: '100%', flexShrink: 0 }}>
+
+                        </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+
+                    </AccordionDetails>
+                </Accordion>
             </Box>
 
             <Box sx={styles.user}>
                 {user ?
                     <UserMenu user={user}/>
                     :
-                    <Anonymous/>
-                }
+                    <Anonymous/>}
             </Box>
         </Box>
     );
