@@ -4,7 +4,7 @@ const name = 'wareHouse';
 
 const initialState = {
     wareHouse: [],
-    oneWareHouse:{},
+    oneWareHouse: {},
     singleLoading: false,
     fetchLoading: false,
     addLoading: false,
@@ -25,14 +25,14 @@ const wareHouseSlice = createSlice({
         fetchWareHouseFailure(state) {
             state.fetchLoading = false;
         },
-        addWareHouseRequest(state){
+        addWareHouseRequest(state) {
             state.addLoading = true;
         },
         addWareHouseSuccess(state) {
             state.addLoading = false;
             state.addError = null;
         },
-        addWareHouseFailure(state,action ){
+        addWareHouseFailure(state, action) {
             state.addLoading = false;
             state.addError = action.payload;
         },
@@ -61,7 +61,7 @@ const wareHouseSlice = createSlice({
             state.singleLoading = false;
             state.addError = error;
         },
-        deleteWareHouseRequest(state){
+        deleteWareHouseRequest(state) {
             state.deleteLoading = true;
         },
         deleteWareHouseSuccess(state, {payload: wareHouseId}) {
@@ -69,7 +69,7 @@ const wareHouseSlice = createSlice({
             state.deleteError = null;
             state.wareHouse = state.wareHouse.filter(wareHouse => wareHouse._id !== wareHouseId);
         },
-        deleteWareHouseFailure(state,action ){
+        deleteWareHouseFailure(state, action) {
             state.deleteLoading = false;
             state.deleteError = action.payload;
         },

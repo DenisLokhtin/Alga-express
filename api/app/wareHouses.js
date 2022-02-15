@@ -6,9 +6,8 @@ const permit = require("../middleware/permit");
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-
     try {
-        const warehouses = await Warehouse.find({deleted: {$ne : true}});
+        const warehouses = await Warehouse.find({deleted: {$ne: true}});
         res.send(warehouses);
     } catch (e) {
         res.sendStatus(500);
@@ -44,7 +43,7 @@ router.post('/', auth, permit('admin'), async (req, res) => {
     }
 });
 
-router.delete('/:id', auth, permit('admin'),  async (req, res) => {
+router.delete('/:id', auth, permit('admin'), async (req, res) => {
     try {
         const warehouse = await Warehouse.findByIdAndRemove(req.params.id);
 
@@ -53,19 +52,6 @@ router.delete('/:id', auth, permit('admin'),  async (req, res) => {
         } else {
             res.status(404).send({error: 'WareHouse not found'});
         }
-
-        // const warehouse = await Warehouse.findById(req.params.id);
-        //
-        // if (Object.keys(warehouse).length === 0) {
-        //     return res.status(404).send({error: `Склад не найден.`});
-        // } else {
-        //     warehouse.deleted = true;
-        //     await warehouse.save();
-        //     // warehouse.deleteOne({_id: req.params.id});
-        //     // await warehouse.save();
-        //     console.log('delete success')
-        //     return  res.send({message: `Склад в стране ${req.params.id} успешно удален.`})
-        // }
     } catch (error) {
         res.status(404).send(error);
     }
@@ -78,7 +64,7 @@ router.put('/:id', auth, permit('admin'), async (req, res) => {
             info: req.body.info,
         }, {new: true, runValidators: true});
         res.send(updatedWarehouse);
-    } catch(error) {
+    } catch (error) {
         res.status(400).send(error);
     }
 });
