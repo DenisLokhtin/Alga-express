@@ -34,12 +34,13 @@ export function* oneWareHouseSagas({payload: id}) {
     }
 }
 
-export function* addWareHouseSaga({payload: newWareHouse}) {
+export function* addWareHouseSaga({payload}) {
     try {
-        yield axiosApi.post('/wareHouse', newWareHouse);
+        yield axiosApi.post('/warehouses', payload.wareHouseData);
         yield put(addWareHouseSuccess());
         yield put(fetchWareHouseRequest());
         toast.success('Склад добавлен!');
+        payload.navigate('/alga-express/wareHouses');
     } catch (error) {
         yield put(addWareHouseFailure(error.response.data));
     }

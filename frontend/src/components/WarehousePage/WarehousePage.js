@@ -17,7 +17,11 @@ const useStyles = makeStyles(theme => ({
     tableContainer: {
         boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
         marginBottom: '80px'
-    }
+    },
+
+    test: {
+
+    },
 }));
 
 const WarehousePage = () => {
@@ -39,8 +43,16 @@ const WarehousePage = () => {
     };
 
     const deleteWareHouse = (id) => {
-        dispatch(deleteWareHouseRequest(id))
+        dispatch(deleteWareHouseRequest(id));
+        setValue("0");
     };
+
+    // const test = wareHouses.map(info => info.info).join(' ').split('\n');
+    // const filtered = test.filter(info => info !== '');
+    // console.log(filtered);
+    // console.log(wareHouses);
+
+    const content = wareHouses[value]?.info.split('\n').filter(info => info !== '').map(info => ({info}));
 
     return (
         <Box sx={{width: '100%', typography: 'body1'}} className={classes.tableContainer}>
@@ -89,8 +101,11 @@ const WarehousePage = () => {
                 {/*</Box>*/}
 
 
-                {wareHouses.map((warehouse, i) => (
-                    <TabPanel key={warehouse._id} value={i.toString()}>{warehouse.info}
+                {wareHouses.length !== 0 && wareHouses?.map((warehouse, i) => (
+                    <TabPanel key={warehouse._id} value={i.toString()}>
+                        {content?.map((info, index) => (
+                            <p key={index}>{info.info}</p>
+                        ))}
                         <Grid container>
                             <Grid item xs={3}>
                                 <ButtonWithProgress

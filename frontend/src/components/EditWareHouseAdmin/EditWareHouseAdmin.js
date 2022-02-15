@@ -100,7 +100,7 @@ const EditWareHouseAdmin = () => {
 
                 </Grid>
 
-                <Grid item xs={12} sm={8} md={7} lg={7}
+                <Grid item xs={3} sm={8} md={3} lg={7}
                       className={classes.submit}>
 
                     <ButtonWithProgress

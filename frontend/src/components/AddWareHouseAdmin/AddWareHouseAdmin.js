@@ -1,11 +1,11 @@
 import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {Container, Grid} from "@mui/material";
+import {Container, Grid, TextareaAutosize, TextField} from "@mui/material";
 import {makeStyles} from "@mui/styles";
-import {addNewsRequest} from "../../store/actions/newsActions";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
-import {addWareHouseRequest, changeWareHouseRequest} from "../../store/actions/wareHouseActions";
-import {addWareHouseSaga} from "../../store/sagas/wareHouseSagas";
+import {addWareHouseRequest} from "../../store/actions/wareHouseActions";
+import FormElement from "../UI/Form/FormElement";
+import {useNavigate} from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
     submit: {
@@ -30,6 +30,7 @@ const useStyles = makeStyles(theme => ({
 const AddWareHouseAdmin = () => {
     const [inputList, setInputList] = useState([{newField: "", newValue: ""}]);
 
+    const navigate = useNavigate();
 
     const handleInputChange = (e, index) => {
         const {name, value} = e.target;
@@ -38,16 +39,6 @@ const AddWareHouseAdmin = () => {
         setInputList(list);
     };
 
-
-    // const handleRemoveClick = index => {
-    //     const list = [...inputList];
-    //     list.splice(index, 1);
-    //     setInputList(list);
-    // };
-    //
-    // const handleAddClick = () => {
-    //     setInputList([...inputList, {newField: "", newValue: ""}]);
-    // };
 
     const classes = useStyles();
     const dispatch = useDispatch();
@@ -61,7 +52,7 @@ const AddWareHouseAdmin = () => {
     });
 
 
-    const [quoteBody, setQuoteBody] = useState({
+    const [wareHouse, setWareHouse] = useState({
         country: '',
         info: '',
     });
@@ -69,62 +60,38 @@ const AddWareHouseAdmin = () => {
     const submitFormHandler = e => {
         e.preventDefault();
         const formData = new FormData();
-        Object.keys(quoteBody).forEach(key => {
-            formData.append(key, quoteBody[key]);
+        const wareHouseData = {};
+        Object.keys(wareHouse).forEach(key => {
+            formData.append(key, wareHouse[key]);
+            wareHouseData[key] = wareHouse[key];
+            console.log('Ключ: ' + key)
+            console.log('Значение: ' + wareHouse[key])
         });
-        dispatch(addWareHouseSaga(formData));
-        setNews({
+        console.log('Перед отправкой запроса: ' + wareHouseData);
+        dispatch(addWareHouseRequest({wareHouseData, navigate}));
+        setWareHouse({
             country: '',
             info: '',
         })
     };
 
-
-    // const inputChangeHandler = e => {
-    //     const name = e.target.name;
-    //     const value = e.target.value;
-    //     setNews(prevState => {
-    //         return {...prevState, [name]: value};
-    //     });
-    // };
-
-    // const fileChangeHandler = e => {
-    //     const name = e.target.name;
-    //     const file = e.target.files[0];
-    //     setNews(prevState => {
-    //         return {...prevState, [name]: file};
-    //     });
-    // };
+    const getFieldError = fieldName => {
+        try {
+            return error.errors[fieldName].message;
+        } catch (e) {
+            return undefined;
+        }
+    };
 
     const onInputTextareaChange = e => {
         const {name, value} = e.target;
-        setQuoteBody(prev => ({
+        setWareHouse(prev => ({
             ...prev,
             [name]: value
         }));
     };
 
-    // const getFieldError = fieldName => {
-    //     try {
-    //         return error.errors[fieldName].message;
-    //     } catch (e) {
-    //         return undefined;
-    //     }
-    // };
-
-    // const handleEditorChange = (content) => {
-    //     console.log(content);
-    //     setNews(prevState => {
-    //         return {...prevState, description: content}
-    //     });
-    // };
-
-    const addWareHouse = () => {
-        addNewsRequest({
-            country: quoteBody.country,
-            info: quoteBody.info,
-        });
-    }
+    console.log(wareHouse);
 
     return (
         <Container
@@ -141,39 +108,68 @@ const AddWareHouseAdmin = () => {
                 noValidate
             >
                 <h3 className={classes.title}>Добавить склад</h3>
-            </Grid>
 
-            <form>
-                <div className="country">
-                    <p><label htmlFor="Country" className="country">Страна</label></p>
-                    <input
-                        className="form"
-                        name="country"
-                        type="text"
-                        value={quoteBody.country}
-                        onChange={onInputTextareaChange}
-                    />
-                </div>
-                <div>
-                    <p><label htmlFor="Description" className="description">Данные по складу</label></p>
-                    <textarea
-                        name="info"
-                        value={quoteBody.info}
-                        onChange={onInputTextareaChange} cols="55" rows="5"
-                        className="form"/>
-                </div>
-                <ButtonWithProgress
-                    type="submit"
-                    variant="contained"
-                    color="success"
-                    className={classes.submit}
-                    loading={loading}
-                    disabled={loading}
-                >
-                    Сохранить
-                </ButtonWithProgress>
-                {/*<button onClick={addWareHouse} className="Button" type="button">Сохранить</button>*/}
-            </form>
+                {/*<div className="country">*/}
+                {/*    <p><label htmlFor="Country" className="country">Страна</label></p>*/}
+                {/*    <input*/}
+                {/*        className="form"*/}
+                {/*        name="country"*/}
+                {/*        type="text"*/}
+                {/*        value={wareHouse.country}*/}
+                {/*        onChange={onInputTextareaChange}*/}
+                {/*    />*/}
+                {/*</div>*/}
+
+                <FormElement
+                    required
+                    label="Страна"
+                    name="country"
+                    value={wareHouse.country}
+                    onChange={onInputTextareaChange}
+                    error={getFieldError('country')}
+                />
+                <br/>
+                {/*<TextareaAutosize*/}
+                {/*    required*/}
+                {/*    aria-label="Сведения"*/}
+                {/*    placeholder="Добавьте сведения о складе"*/}
+                {/*    minRows={10}*/}
+                {/*    name="info"*/}
+                {/*    value={wareHouse.info}*/}
+                {/*    onChange={onInputTextareaChange}*/}
+                {/*    error={getFieldError('info')}*/}
+                {/*/>*/}
+                <FormElement
+                    label="Сведения о складе"
+                    required
+                    name="info"
+                    value={wareHouse.info}
+                    onChange={onInputTextareaChange}
+                    error={getFieldError('info')}
+                />
+                {/*<div>*/}
+                {/*    <p><label htmlFor="Description" className="description">Данные по складу</label></p>*/}
+                {/*    <textarea*/}
+                {/*        name="info"*/}
+                {/*        value={wareHouse.info}*/}
+                {/*        onChange={onInputTextareaChange} cols="55" rows="5"*/}
+                {/*        className="form"/>*/}
+                {/*</div>*/}
+
+                <Grid item xs={12}>
+                    <ButtonWithProgress
+                        type="submit"
+                        variant="contained"
+                        color="success"
+                        className={classes.submit}
+                        loading={loading}
+                        disabled={loading}
+                    >
+                        Сохранить
+                    </ButtonWithProgress>
+                </Grid>
+
+            </Grid>
         </Container>
     );
 };
