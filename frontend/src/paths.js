@@ -32,4 +32,6 @@ export const editPages = '/alga-express/editPages';
 export const editBuyout = 'user/editBuyout/:id';
 export const listBuyouts = 'user/listBuyouts';
 export const addPaymentHandler = '/cargo/payments/add';
+export const tariffs = '/alga-express/tariffs';
+
 
