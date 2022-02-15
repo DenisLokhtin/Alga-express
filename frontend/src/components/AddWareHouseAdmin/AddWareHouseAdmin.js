@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {Container, Grid, TextareaAutosize, TextField} from "@mui/material";
+import {Container, Grid} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {addWareHouseRequest} from "../../store/actions/wareHouseActions";
@@ -28,29 +28,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const AddWareHouseAdmin = () => {
-    const [inputList, setInputList] = useState([{newField: "", newValue: ""}]);
-
     const navigate = useNavigate();
-
-    const handleInputChange = (e, index) => {
-        const {name, value} = e.target;
-        const list = [...inputList];
-        list[index][name] = value;
-        setInputList(list);
-    };
-
-
     const classes = useStyles();
     const dispatch = useDispatch();
-    const loading = useSelector(state => state.news.createLoading);
-    const error = useSelector(state => state.news.addError);
-
-    const [news, setNews] = useState({
-        title: "",
-        image: null,
-        description: "",
-    });
-
+    const loading = useSelector(state => state.wareHouses.addLoading);
+    const error = useSelector(state => state.wareHouses.addError);
 
     const [wareHouse, setWareHouse] = useState({
         country: '',
@@ -64,10 +46,7 @@ const AddWareHouseAdmin = () => {
         Object.keys(wareHouse).forEach(key => {
             formData.append(key, wareHouse[key]);
             wareHouseData[key] = wareHouse[key];
-            console.log('Ключ: ' + key)
-            console.log('Значение: ' + wareHouse[key])
         });
-        console.log('Перед отправкой запроса: ' + wareHouseData);
         dispatch(addWareHouseRequest({wareHouseData, navigate}));
         setWareHouse({
             country: '',
@@ -91,8 +70,6 @@ const AddWareHouseAdmin = () => {
         }));
     };
 
-    console.log(wareHouse);
-
     return (
         <Container
             component="section"
@@ -108,18 +85,6 @@ const AddWareHouseAdmin = () => {
                 noValidate
             >
                 <h3 className={classes.title}>Добавить склад</h3>
-
-                {/*<div className="country">*/}
-                {/*    <p><label htmlFor="Country" className="country">Страна</label></p>*/}
-                {/*    <input*/}
-                {/*        className="form"*/}
-                {/*        name="country"*/}
-                {/*        type="text"*/}
-                {/*        value={wareHouse.country}*/}
-                {/*        onChange={onInputTextareaChange}*/}
-                {/*    />*/}
-                {/*</div>*/}
-
                 <FormElement
                     required
                     label="Страна"
@@ -129,16 +94,6 @@ const AddWareHouseAdmin = () => {
                     error={getFieldError('country')}
                 />
                 <br/>
-                {/*<TextareaAutosize*/}
-                {/*    required*/}
-                {/*    aria-label="Сведения"*/}
-                {/*    placeholder="Добавьте сведения о складе"*/}
-                {/*    minRows={10}*/}
-                {/*    name="info"*/}
-                {/*    value={wareHouse.info}*/}
-                {/*    onChange={onInputTextareaChange}*/}
-                {/*    error={getFieldError('info')}*/}
-                {/*/>*/}
                 <FormElement
                     label="Сведения о складе"
                     required
@@ -147,15 +102,6 @@ const AddWareHouseAdmin = () => {
                     onChange={onInputTextareaChange}
                     error={getFieldError('info')}
                 />
-                {/*<div>*/}
-                {/*    <p><label htmlFor="Description" className="description">Данные по складу</label></p>*/}
-                {/*    <textarea*/}
-                {/*        name="info"*/}
-                {/*        value={wareHouse.info}*/}
-                {/*        onChange={onInputTextareaChange} cols="55" rows="5"*/}
-                {/*        className="form"/>*/}
-                {/*</div>*/}
-
                 <Grid item xs={12}>
                     <ButtonWithProgress
                         type="submit"
@@ -168,7 +114,6 @@ const AddWareHouseAdmin = () => {
                         Сохранить
                     </ButtonWithProgress>
                 </Grid>
-
             </Grid>
         </Container>
     );
