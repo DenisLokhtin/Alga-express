@@ -1,5 +1,7 @@
 const express = require('express');
 const Warehouse = require('../models/WareHouse');
+const auth = require("../middleware/auth");
+const permit = require("../middleware/permit");
 
 const router = express.Router();
 
@@ -28,7 +30,7 @@ router.get('/:id', async (req, res) => {
 });
 
 
-router.post('/', async (req, res) => {
+router.post('/', auth, permit('admin'), async (req, res) => {
     try {
         const warehouseData = {
             country: req.body.country,
@@ -42,7 +44,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, permit('admin'),  async (req, res) => {
     try {
         const warehouse = await Warehouse.findByIdAndRemove(req.params.id);
 
@@ -69,7 +71,7 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth, permit('admin'), async (req, res) => {
     try {
         const updatedWarehouse = await Warehouse.findByIdAndUpdate(req.params.id, {
             country: req.body.country,

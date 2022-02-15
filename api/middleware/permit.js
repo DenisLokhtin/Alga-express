@@ -5,7 +5,7 @@ const permit = (...roles) => {
     }
 
     if (!roles.includes(req.user.role)) {
-      return res.status(403).send({error: 'Досуп запрещен'});
+      return res.status(403).send({error: 'Доступ запрещен'});
     }
 
     next();
