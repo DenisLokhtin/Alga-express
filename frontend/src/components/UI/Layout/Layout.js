@@ -3,7 +3,6 @@ import {Box, CssBaseline} from "@mui/material";
 import AppToolbar from "../Toolbar/AppToolbar";
 import Footer from "../Footer/Footer";
 import AppSidebar from "../AppSidebar/AppSidebar";
-import Container from "@mui/material/Container";
 
 const styles = {
     main: {
@@ -27,9 +26,7 @@ const Layout = ({children}) => {
             <AppSidebar/>
             <Box sx={styles.main}>
                 <Box sx={styles.content}>
-                    <Container>
-                        {children}
-                    </Container>
+                    {children}
                 </Box>
                 <Footer/>
             </Box>
