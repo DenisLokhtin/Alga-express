@@ -36,7 +36,7 @@ const TariffsPage = () => {
         <Grid container>
             <h3>Тарифы для вас</h3>
             {shownTariff.length !== 0 && shownTariff.map((t,i) => (
-                <Grid item key={i}>
+                <Grid item key={i} style={{marginTop:'50px'}}>
                     <Paper>
                         <p>США <b>{t.usa}</b></p>
                         <p>Китай(авиа) <b>{t.china}</b></p>
