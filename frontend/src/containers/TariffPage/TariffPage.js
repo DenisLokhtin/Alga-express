@@ -9,7 +9,6 @@ const TariffsPage = () => {
     const tariff = useSelector(state => state.tariffs.tariffs);
     const user = useSelector(state => state.users.user);
 
-    console.log('tariff', tariff);
 
     useEffect(() => {
         dispatch(fetchTariffsRequest());
