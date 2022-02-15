@@ -33,6 +33,7 @@ router.post('/', async (req, res) => {
                 china: tariff.new.china,
                 chinaGround: tariff.new.chinaGround,
             },
+            group: 'NEW'
         });
 
         user.generateToken();
@@ -60,7 +61,7 @@ router.post('/sessions', async (req, res) => {
     await user.save({validateBeforeSave: false});
 
     user = await User.findOne({email: req.body.email})
-        .select('token role name balance phone avatar');
+        .select('token role name balance phone avatar group');
 
     res.send(user);
 });
