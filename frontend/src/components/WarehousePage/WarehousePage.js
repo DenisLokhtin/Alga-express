@@ -44,6 +44,21 @@ const WarehousePage = () => {
 
     return (
         <Box sx={{width: '100%', typography: 'body1'}} className={classes.tableContainer}>
+            {user && user.role === 'admin' ?
+                <Grid item xs={3}>
+                    <ButtonWithProgress
+                        type="submit"
+                        variant="contained"
+                        color="error"
+                        className={classes.submit}
+                        loading={loading}
+                        disabled={loading}
+                        component={Link}
+                        to={addWareHouseAddress}
+                    >
+                        <AddBoxIcon/> Добавить новую страну
+                    </ButtonWithProgress>
+                </Grid> : ''}
             <TabContext value={value}>
                 <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
                     <Grid container>
@@ -53,21 +68,6 @@ const WarehousePage = () => {
                                     <Tab key={warehouse._id} value={String(i)} label={warehouse.country}/>
                                 ))}
                             </TabList>
-                            {user && user.role === 'admin' ?
-                                <Grid item xs={3}>
-                                    <ButtonWithProgress
-                                        type="submit"
-                                        variant="contained"
-                                        color="error"
-                                        className={classes.submit}
-                                        loading={loading}
-                                        disabled={loading}
-                                        component={Link}
-                                        to={addWareHouseAddress}
-                                    >
-                                        <AddBoxIcon/>
-                                    </ButtonWithProgress>
-                                </Grid> : ''}
                         </Grid>
                     </Grid>
                 </Box>
