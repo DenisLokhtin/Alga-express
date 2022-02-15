@@ -31,6 +31,9 @@ const WarehousePage = () => {
         dispatch(fetchWareHouseRequest());
     }, [dispatch]);
 
+    const user = useSelector(state => state.users.user);
+    console.log(user);
+
 
     const loading = useSelector(state => state.wareHouses.createLoading);
 
@@ -71,21 +74,22 @@ const WarehousePage = () => {
                                 {/*<button className={classes.submit}>some text</button>*/}
 
                             </TabList>
-                            <Grid item xs={3}>
-                            <ButtonWithProgress
-                                type="submit"
+                            {user && user.role === 'admin' ?
+                                <Grid item xs={3}>
+                                    <ButtonWithProgress
+                                        type="submit"
 
-                                variant="contained"
-                                color="error"
-                                className={classes.submit}
-                                loading={loading}
-                                disabled={loading}
-                                component={Link}
-                                to={addWareHouseAddress}
-                            >
-                                <AddBoxIcon/>
-                            </ButtonWithProgress>
-                            </Grid>
+                                        variant="contained"
+                                        color="error"
+                                        className={classes.submit}
+                                        loading={loading}
+                                        disabled={loading}
+                                        component={Link}
+                                        to={addWareHouseAddress}
+                                    >
+                                        <AddBoxIcon/>
+                                    </ButtonWithProgress>
+                                </Grid> : ''}
                         </Grid>
 
                     </Grid>
@@ -106,6 +110,7 @@ const WarehousePage = () => {
                         {content?.map((info, index) => (
                             <p key={index}>{info.info}</p>
                         ))}
+                        {user && user.role === 'admin' ?
                         <Grid container>
                             <Grid item xs={3}>
                                 <ButtonWithProgress
@@ -138,7 +143,7 @@ const WarehousePage = () => {
                                     Удалить
                                 </ButtonWithProgress>
                             </Grid>
-                        </Grid>
+                        </Grid> : ''}
                     </TabPanel>
                 ))}
 
