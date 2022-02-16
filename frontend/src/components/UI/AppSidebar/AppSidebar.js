@@ -65,7 +65,8 @@ const styles = {
     },
     user: {
         display: "flex",
-        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
         marginBottom: "20px",
         width: "100%"
     },
@@ -137,10 +138,12 @@ const AppSidebar = () => {
             </Box>
 
             <Box sx={styles.user}>
-                {user ?
-                    <UserMenu user={user}/>
-                    :
-                    <Anonymous/>}
+                <Box>
+                    {user ?
+                        <UserMenu user={user}/>
+                        :
+                        <Anonymous/>}
+                </Box>
             </Box>
         </Box>
     );
