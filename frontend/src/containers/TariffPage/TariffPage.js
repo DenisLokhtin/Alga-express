@@ -16,12 +16,11 @@ const TariffsPage = () => {
 
     const shownTariff = []
 
-
     if (tariff.length !==0) {
         const obj = tariff[0];
         const keys = Object.keys(obj);
         keys.forEach(key => {
-            if (key === 'new' && user.group === 'NEW') {
+            if (key === 'new') {
                 return shownTariff.push(obj[key]);
             } else if (key === 'buyers' && user.group === 'BUYERS') {
                 return shownTariff.push(obj[key]);
