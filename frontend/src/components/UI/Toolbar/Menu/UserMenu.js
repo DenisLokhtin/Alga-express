@@ -11,13 +11,12 @@ import AddIcon from "@mui/icons-material/Add";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import FlightIcon from "@mui/icons-material/Flight";
-import PersonIcon from "@mui/icons-material/Person";
-import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import {logout} from "../../../../store/actions/usersActions";
 import {useDispatch, useSelector} from "react-redux";
 import Fade from '@mui/material/Fade';
 import {
-    addFlightAdmin, editPages,
+    addFlightAdmin,
+    editPages,
     listFlightAdmin,
     listPaymentsAdmin,
     newPackageRegister,
@@ -25,16 +24,20 @@ import {
     packageHistory
 } from "../../../../paths";
 import Avatar from "@mui/material/Avatar";
+import FactCheckIcon from '@mui/icons-material/FactCheck';
+import EditIcon from '@mui/icons-material/Edit';
 
 const userSettings = [
-    {url: '', title: 'Личный кабинет', icon: <ManageAccountsIcon sx={{fontSize: 30}}/>},
-    {url: packageHistory, title: 'История заказов', icon: <HistoryIcon sx={{fontSize: 30}}/>},
-    {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon sx={{fontSize: 30}}/>},
+    {url: '', title: 'Личный кабинет', icon: <ManageAccountsIcon/>},
+    {url: packageHistory, title: 'История заказов', icon: <HistoryIcon/>},
+    {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon/>},
 ];
 
 const adminSettings = [
-    {url: listFlightAdmin, title: 'Рейсы', icon: <FlightIcon sx={{fontSize: 30}}/>},
-    {url: addFlightAdmin, title: 'Добавить рейс', icon: <AddIcon sx={{fontSize: 30}}/>}
+    {url: listFlightAdmin, title: 'Рейсы', icon: <FlightIcon/>},
+    {url: addFlightAdmin, title: 'Добавить рейс', icon: <AddIcon/>},
+    {url: listPaymentsAdmin, title: 'Список пополнений', icon: <FactCheckIcon/>},
+    {url: editPages, title: 'Редактировать страницы', icon: <EditIcon/>},
 ];
 
 const UserMenu = ({user}) => {
@@ -74,30 +77,21 @@ const UserMenu = ({user}) => {
                     </Badge>
                 </IconButton>
             </Grid>
-            <Grid item>
-            {users?.role === 'admin' && (
-                <>
-                    <IconButton
-                        sx={{color: '#F5F5F7',}}
-                        component={Link}
-                        to={editPages}
-                    >
-                        <ModeEditOutlineIcon/>
-                    </IconButton>
 
-                    <IconButton
-                        sx={{color: '#F5F5F7',}}
-                        size="small"
-                        component={Link}
-                        to={listPaymentsAdmin}
-                    >
-                        <Badge badgeContent={payments && payments.totalElements} color="error">
-                            <NotificationsIcon/>
-                        </Badge>
-                    </IconButton>
-                </>
-            )}
+            <Grid item>
+            {users?.role === 'admin' &&
+                <IconButton
+                    sx={{color: '#F5F5F7',}}
+                    size="small"
+                    component={Link}
+                    to={listPaymentsAdmin}
+                >
+                    <Badge badgeContent={payments && payments.totalElements} color="error">
+                        <NotificationsIcon/>
+                    </Badge>
+                </IconButton>}
             </Grid>
+
             <Grid item>
                 <IconButton
                     onClick={handleClick}
@@ -129,19 +123,6 @@ const UserMenu = ({user}) => {
                         horizontal: 'right',
                     }}
                 >
-                    {userSettings.map((setting) => (
-                        <MenuItem
-                            key={setting.title}
-                            component={Link}
-                            to={setting.url}
-                        >
-                            <ListItemIcon>
-                                {setting.icon}
-                            </ListItemIcon>
-                            <Typography textAlign="center">{setting.title}</Typography>
-                        </MenuItem>
-                    ))}
-                    <Divider/>
                     {user.role === 'admin' && adminSettings.map(setting => (
                         <MenuItem
                             key={setting.title}
@@ -154,14 +135,32 @@ const UserMenu = ({user}) => {
                             <Typography textAlign="center">{setting.title}</Typography>
                         </MenuItem>
                     ))}
-                    <Divider/>
+
                     {user.role === 'user' &&
-                        <MenuItem>
-                            <ListItemIcon>
-                                <AccountBalanceWalletIcon/>
-                            </ListItemIcon>
-                            Ваш баланс {user?.balance + ' сом'}
-                        </MenuItem>}
+                        <>
+                            {userSettings.map((setting) => (
+                                <MenuItem
+                                    key={setting.title}
+                                    component={Link}
+                                    to={setting.url}
+                                >
+                                    <ListItemIcon>
+                                        {setting.icon}
+                                    </ListItemIcon>
+                                    <Typography textAlign="center">{setting.title}</Typography>
+                                </MenuItem>
+                            ))}
+
+                            <Divider/>
+                            <MenuItem>
+                                <ListItemIcon>
+                                    <AccountBalanceWalletIcon/>
+                                </ListItemIcon>
+                                Ваш баланс {user?.balance + ' сом'}
+                            </MenuItem>
+                            <Divider/>
+                        </>}
+
                     <MenuItem onClick={toLogOut}>
                         <ListItemIcon>
                             <Logout fontSize="small"/>
