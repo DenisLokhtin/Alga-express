@@ -45,12 +45,8 @@ const useStyles = makeStyles({
     address: {
         display: "flex",
         flexDirection: "column",
-        padding: "10px 0"
-    },
-    contacts: {
-        display: "flex",
-        flexDirection: "column",
-        padding: "10px 0"
+        padding: "10px 0",
+        alignItems: "flex-end"
     },
     netLinks: {
         display: "flex"
@@ -66,7 +62,7 @@ const Footer = () => {
                 <Grid item xs={12} md={6} lg={4}>
                     <Box className={classes.pages}>
                         {pages.map(item => (
-                            <Link to={item.url} className={classes.link}>
+                            <Link key={item.title} to={item.url} className={classes.link}>
                                 {item.title}
                             </Link>
                         ))}
@@ -81,13 +77,12 @@ const Footer = () => {
                         <Typography>
                             Юнусалиева, 142
                         </Typography>
-                    </Box>
-                </Grid>
 
-                <Grid item xs={12} md={6} lg={4}>
-                    <Box className={classes.contacts}>
                         <Typography>
-                            Тел.: 0 774 769 434 (Выкуп), ️0 702 465 333 (Склад)
+                            Тел.: 0 774 769 434 (Выкуп)
+                        </Typography>
+                        <Typography>
+                            ️0 702 465 333 (Склад)
                         </Typography>
                         <Box className={classes.netLinks}>
                             <IconButton component={Link} to="https://www.instagram.com/alga_express/">
