@@ -56,7 +56,7 @@ import {
     userLogin,
     userPackageHistory,
     userPaymentsList,
-    editPages,
+    editPages, tariffs,
 } from "./paths";
 import OrderBuyout from "./containers/OrderBuyout/OrderBuyout";
 import SingleStatusEdit from "./containers/SingleStatusEdit/SingleStatusEdit";
@@ -64,6 +64,7 @@ import EditPages from "./containers/EditPages/EditPages";
 import EditBuyout from "./components/EditBuyout/EditBuyout";
 import BuyoutList from "./containers/BuyoutList/BuyoutList";
 import AddPaymentAdmin from "./components/AddPaymentAdmin/AddPaymentAdmin";
+import TariffsPage from "./containers/TariffPage/TariffPage";
 
 const App = () => {
 
@@ -102,6 +103,7 @@ const App = () => {
                 <Route path={listBuyouts} element={<BuyoutList/>}/>
                 <Route path={addPaymentHandler} element={<AddPaymentAdmin/>}/>
                 <Route path={editPages} element={<EditPages/>}/>
+                <Route path={tariffs} element={<TariffsPage/>}/>
                 <Route
                     path="*"
                     element={
