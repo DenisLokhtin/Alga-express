@@ -98,7 +98,6 @@ const AppToolbar = (props) => {
                     </Container>
                 </AppBar>
             </HideOnScroll>
-            <Toolbar />
         </Box>
     );
 };

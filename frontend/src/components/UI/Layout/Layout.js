@@ -10,11 +10,12 @@ const styles = {
         height: "100%",
         position: "absolute",
         left: {md: "300px", xs: "0"},
-        top: {md: "0", xs: "56px"},
-        width: {md : "calc(100% - 300px)", xs: "100%"}
+        top: 0,
+        width: {md : "calc(100% - 300px)", xs: "100%"},
     },
     content: {
-        minHeight: "calc(100% - 30px)"
+        minHeight: "calc(100% - 30px)",
+        marginTop: {md: "0", xs: "56px"}
     }
 }
 
