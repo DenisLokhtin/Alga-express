@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Divider, Grid, IconButton, ListItemIcon, Menu, MenuItem} from "@mui/material";
+import {Box, Divider, Grid, IconButton, ListItemIcon, Menu, MenuItem} from "@mui/material";
 import {Link} from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
@@ -9,28 +9,41 @@ import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import HistoryIcon from "@mui/icons-material/History";
 import AddIcon from "@mui/icons-material/Add";
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import FlightIcon from "@mui/icons-material/Flight";
 import {logout} from "../../../../store/actions/usersActions";
 import {useDispatch, useSelector} from "react-redux";
 import Fade from '@mui/material/Fade';
 import {
     addFlightAdmin,
+    addPaymentHandler,
+    addUserPayment,
+    editingSingleTrackNumber,
     editPages,
+    listBuyouts,
     listFlightAdmin,
     listPaymentsAdmin,
     newPackageRegister,
     orderBuyouts,
-    packageHistory
+    packageHistory, packageInfo,
+    processingTrackNumbersAdmin,
+    userPaymentsList
 } from "../../../../paths";
 import Avatar from "@mui/material/Avatar";
 import FactCheckIcon from '@mui/icons-material/FactCheck';
 import EditIcon from '@mui/icons-material/Edit';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import PaidIcon from '@mui/icons-material/Paid';
+import InfoIcon from '@mui/icons-material/Info';
 
 const userSettings = [
     {url: '', title: 'Личный кабинет', icon: <ManageAccountsIcon/>},
     {url: packageHistory, title: 'История заказов', icon: <HistoryIcon/>},
     {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon/>},
+    {url: orderBuyouts, title: 'Заказать выкуп', icon: <ShoppingCartIcon/>},
+    {url: listBuyouts, title: 'Список заказов', icon: <FactCheckIcon/>},
+    {url: addUserPayment, title: 'Пополнить баланс', icon: <PaidIcon/>},
+    {url: userPaymentsList, title: 'История пополнения', icon: <HistoryIcon/>},
+    {url: packageInfo, title: 'Информация доставки', icon: <InfoIcon/>},
 ];
 
 const adminSettings = [
@@ -38,6 +51,10 @@ const adminSettings = [
     {url: addFlightAdmin, title: 'Добавить рейс', icon: <AddIcon/>},
     {url: listPaymentsAdmin, title: 'Список пополнений', icon: <FactCheckIcon/>},
     {url: editPages, title: 'Редактировать страницы', icon: <EditIcon/>},
+    {url: addPaymentHandler, title: 'Пополнение баланса пользователя', icon: <PaidIcon/>},
+    {url: listBuyouts, title: 'Список заказов', icon: <FactCheckIcon/>},
+    {url: editingSingleTrackNumber, title: 'Смена статуса одной посылки', icon: <EditIcon/>},
+    {url: processingTrackNumbersAdmin, title: 'Смена статуса посылок', icon: <EditIcon/>},
 ];
 
 const UserMenu = ({user}) => {
@@ -47,8 +64,6 @@ const UserMenu = ({user}) => {
 
     const payments = useSelector(state => state.payments.payment);
     const users = useSelector(state => state.users.user);
-    const buyouts = useSelector(state => state.buyouts.buyouts);
-
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -65,19 +80,6 @@ const UserMenu = ({user}) => {
 
     return (
         <Grid container alignItems="center" justifyContent="space-evenly">
-            <Grid item>
-                <IconButton
-                    sx={{color: '#F5F5F7'}}
-                    component={Link}
-                    size="small"
-                    to={orderBuyouts}
-                >
-                    <Badge badgeContent={buyouts && buyouts.total} color="error">
-                        <AddShoppingCartIcon/>
-                    </Badge>
-                </IconButton>
-            </Grid>
-
             <Grid item>
             {users?.role === 'admin' &&
                 <IconButton
@@ -123,6 +125,20 @@ const UserMenu = ({user}) => {
                         horizontal: 'right',
                     }}
                 >
+                    <Box sx={{padding: "6px 16px", display: "flex", alignItems: "center", alignContent: "start"}}>
+                        <Avatar src={user?.avatar}/>
+                        <Box marginLeft={2}>
+                            <Typography>
+                                {user.name}
+                            </Typography>
+                            <Typography>
+                                {user.email}
+                            </Typography>
+                        </Box>
+                    </Box>
+
+                    <Divider/>
+
                     {user.role === 'admin' && adminSettings.map(setting => (
                         <MenuItem
                             key={setting.title}
@@ -137,7 +153,7 @@ const UserMenu = ({user}) => {
                     ))}
 
                     {user.role === 'user' &&
-                        <>
+                        <div>
                             {userSettings.map((setting) => (
                                 <MenuItem
                                     key={setting.title}
@@ -159,7 +175,7 @@ const UserMenu = ({user}) => {
                                 Ваш баланс {user?.balance + ' сом'}
                             </MenuItem>
                             <Divider/>
-                        </>}
+                        </div>}
 
                     <MenuItem onClick={toLogOut}>
                         <ListItemIcon>

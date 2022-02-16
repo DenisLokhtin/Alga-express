@@ -6,6 +6,9 @@ import {Container, FormControl, FormHelperText, Grid, InputLabel, MenuItem, Sele
 import FormElement from "../UI/Form/FormElement";
 import FileInput from "../UI/FileInput/FileInput";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
+import CurrencyLiraIcon from '@mui/icons-material/CurrencyLira';
+import CurrencyYuanIcon from '@mui/icons-material/CurrencyYuan';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import {makeStyles} from "@mui/styles";
 
 
@@ -26,6 +29,9 @@ const useStyles = makeStyles(theme => ({
     },
     title: {
         textAlign: "center",
+    },
+    item:{
+        width: '30%',
     }
 }));
 
@@ -41,30 +47,31 @@ const EditBuyout = () => {
     const [buyout, setBuyout] = useState({
         description: '',
         image: null,
-        url:  '',
+        url: '',
         country: '',
         price: '',
+        commission: '',
+        value: '',
     });
-    console.log(oneBuyout)
+    console.log(buyout)
 
     // const [show, setShow] = useState(false);
 
-    useEffect(()=> {
-            dispatch(fetchSingleBuyoutRequest(id));
-            if (oneBuyout)
-                setBuyout(prevState => ({
-                    ...prevState,
-                    description: oneBuyout?.description,
-                    image: oneBuyout?.image,
-                    url: oneBuyout?.url,
-                    country:oneBuyout?.country,
-                    price:oneBuyout?.price,
-                }))
-        // if(user && user.role === 'admin'){
-        //     setShow(true);
-        // }
+    useEffect(() => {
+        dispatch(fetchSingleBuyoutRequest(id));
+        if (oneBuyout)
+            setBuyout(prevState => ({
+                ...prevState,
+                description: oneBuyout?.description,
+                image: oneBuyout?.image,
+                url: oneBuyout?.url,
+                country: oneBuyout?.country,
+                price: oneBuyout?.price,
+                commission: oneBuyout?.commission,
+                value: oneBuyout?.value,
+            }))
 
-    },[dispatch,id, oneBuyout && oneBuyout.description
+    }, [dispatch, id, oneBuyout && oneBuyout.description
     ]);
 
 
@@ -84,13 +91,13 @@ const EditBuyout = () => {
 
     const submitFormHandler = e => {
         e.preventDefault();
-        if(user.role === 'user'){
+        if (user.role === 'user') {
             const formData = new FormData();
             Object.keys(buyout).forEach(key => {
                 formData.append(key, buyout[key]);
             });
             dispatch(editBuyoutRequest({id, obj: formData}));
-        } else{
+        } else {
             dispatch(editBuyoutRequest({id, obj: buyout}));
         }
 
@@ -100,7 +107,9 @@ const EditBuyout = () => {
             image: null,
             url: "",
             country: "",
-            price:'',
+            price: '',
+            commission: '',
+            value: '',
         })
     };
 
@@ -121,11 +130,11 @@ const EditBuyout = () => {
         }
     };
 
-    useEffect(()=>{
+    useEffect(() => {
         return () => {
             dispatch(clearBuyoutsError());
         };
-    },[dispatch])
+    }, [dispatch])
 
     return (
         <Container
@@ -147,7 +156,7 @@ const EditBuyout = () => {
                     <Select
                         labelId="demo-controlled-open-select-label"
                         id="demo-controlled-open-select"
-                        value={buyout?.country }
+                        value={buyout?.country}
                         label="Из какой страны выкупить"
                         name="country"
                         required
@@ -192,15 +201,49 @@ const EditBuyout = () => {
                     />
                 </Grid>
                 {user?.role === 'admin' && (
-                    <FormElement
-                        type="number"
-                        required
-                        label="Цена за выкуп"
-                        name="price"
-                        value={buyout?.price}
-                        onChange={inputChangeHandler}
-                        error={getFieldError('price')}
-                    />
+                    <Grid container direction={"row"} spacing={2} justifyContent={"space-between"}>
+                        <Grid item className={classes.item}>
+                            <FormElement
+                                type="number"
+                                required
+                                label="Цена за выкуп"
+                                name="price"
+                                value={buyout?.price}
+                                onChange={inputChangeHandler}
+                                error={getFieldError('price')}
+                            />
+                        </Grid>
+                        <Grid item className={classes.item}>
+                            <FormElement
+                                type="number"
+                                required
+                                label="Комиссия"
+                                name="commission"
+                                value={buyout?.commission}
+                                onChange={inputChangeHandler}
+                                error={getFieldError('commission')}
+                            />
+                        </Grid>
+                        <Grid item className={classes.item}>
+                        <FormControl variant="standard" fullWidth error={Boolean(getFieldError('value'))}>
+                            <InputLabel id="demo-controlled-open-select-label">Валюта</InputLabel>
+                            <Select
+                                labelId="demo-controlled-open-select-label"
+                                id="demo-controlled-open-select"
+                                value={buyout?.value}
+                                label="Валюта"
+                                name="value"
+                                required
+                                onChange={inputChangeHandler}
+                            >
+                                <MenuItem value={'USD'}><AttachMoneyIcon/>Доллар</MenuItem>
+                                <MenuItem value={'TRY'}><CurrencyLiraIcon/>Лира</MenuItem>
+                                <MenuItem value={'CNY'}><CurrencyYuanIcon/>Юань</MenuItem>
+                            </Select>
+                            <FormHelperText error={true}>{error?.errors?.['value']?.message}</FormHelperText>
+                        </FormControl>
+                        </Grid>
+                    </Grid>
                 )}
 
                 <Grid item xs={12}>
