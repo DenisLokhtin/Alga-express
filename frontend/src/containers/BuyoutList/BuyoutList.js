@@ -34,7 +34,6 @@ const BuyoutList = () => {
     const user = useSelector(state => state.users.user);
     const buyouts = useSelector(state => state.buyouts.buyouts.data);
 
-
     useEffect(() => {
         dispatch(fetchBuyoutsRequest())
     }, [dispatch])
@@ -58,12 +57,7 @@ const BuyoutList = () => {
                             {user && user.role === 'admin' && (
                                 <Link to={newPackageRegister} state={{userProps: {id: b.user._id, name: b.user.name}}}>Оформить выкуп</Link>
                             )}
-
                         </Card>
-                        {/*//     <h4>{b.url}</h4>*/}
-                        {/*//     <h4>{b.description}</h4>*/}
-                        {/*//     <img src={apiURL+'/'+b.image} alt={'product pic'} style={{width: '100px'}}/>*/}
-                        {/*// </>*/}
                     </Grid>
                 ))}
             </Grid>
