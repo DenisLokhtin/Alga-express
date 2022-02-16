@@ -27,14 +27,17 @@ import WarehousemanStatusEdit from "./containers/WarehousemanStatusEdit/Warehous
 import AdminPaymentsProcessing from "./components/AdminPaymentsProcessing/AdminPaymentsProcessing";
 import {
     aboutCompany,
-    addFlightAdmin, addPaymentHandler,
+    addFlightAdmin,
+    addPaymentHandler,
     addUserPayment,
+    addWareHouseAddress,
     contactsCompany,
     editBuyout,
     editingSingleTrackNumber,
     editPackageAdmin,
     editPackageUser,
     editUserProfile,
+    editWareHouseAddress,
     faqCompany,
     howCompany,
     listBuyouts,
@@ -56,7 +59,9 @@ import {
     userLogin,
     userPackageHistory,
     userPaymentsList,
-    editPages, tariffs,
+    wareHouseCompany,
+    editPages,
+    tariffs,
 } from "./paths";
 import OrderBuyout from "./containers/OrderBuyout/OrderBuyout";
 import SingleStatusEdit from "./containers/SingleStatusEdit/SingleStatusEdit";
@@ -64,6 +69,9 @@ import EditPages from "./containers/EditPages/EditPages";
 import EditBuyout from "./components/EditBuyout/EditBuyout";
 import BuyoutList from "./containers/BuyoutList/BuyoutList";
 import AddPaymentAdmin from "./components/AddPaymentAdmin/AddPaymentAdmin";
+import WarehousePage from "./components/WarehousePage/WarehousePage";
+import AddWareHouseAdmin from "./components/AddWareHouseAdmin/AddWareHouseAdmin";
+import EditWareHouseAdmin from "./components/EditWareHouseAdmin/EditWareHouseAdmin";
 import TariffsPage from "./containers/TariffPage/TariffPage";
 
 const App = () => {
@@ -102,6 +110,9 @@ const App = () => {
                 <Route path={editBuyout} element={<EditBuyout/>}/>
                 <Route path={listBuyouts} element={<BuyoutList/>}/>
                 <Route path={addPaymentHandler} element={<AddPaymentAdmin/>}/>
+                <Route path={wareHouseCompany} element={<WarehousePage/>}/>
+                <Route path={addWareHouseAddress} element={<AddWareHouseAdmin/>}/>
+                <Route path={editWareHouseAddress} element={<EditWareHouseAdmin/>}/>
                 <Route path={editPages} element={<EditPages/>}/>
                 <Route path={tariffs} element={<TariffsPage/>}/>
                 <Route
