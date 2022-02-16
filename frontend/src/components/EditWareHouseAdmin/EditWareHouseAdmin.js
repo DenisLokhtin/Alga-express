@@ -5,7 +5,6 @@ import {useNavigate, useParams} from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {makeStyles} from "@mui/styles";
-import {TextareaAutosize} from "@mui/material";
 import {Editor} from "@tinymce/tinymce-react";
 
 const useStyles = makeStyles(theme => ({
@@ -32,13 +31,7 @@ const EditWareHouseAdmin = () => {
     const dispatch = useDispatch();
     const params = useParams();
 
-    const inputChangeHandler = e => {
-        const {name, value} = e.target;
-        setSingleWareHouse(prev => ({...prev, [name]: value}));
-    };
-
     const loading = useSelector(state => state.wareHouses.singleLoading);
-    const error = useSelector(state => state.wareHouses.addError);
 
     useEffect(() => {
         dispatch(fetchOneWareHouseRequest(params.id));
@@ -55,14 +48,6 @@ const EditWareHouseAdmin = () => {
     const changeWareHouse = (e) => {
         e.preventDefault();
         dispatch(changeWareHouseRequest({singleWareHouse, wareHouseId: params.id, navigate}));
-    };
-
-    const getFieldError = fieldName => {
-        try {
-            return error.errors[fieldName].message;
-        } catch (e) {
-            return undefined;
-        }
     };
 
     const handleEditorChange = (content) => {
@@ -106,19 +91,6 @@ const EditWareHouseAdmin = () => {
                         onEditorChange={handleEditorChange}
                     />
                 </Grid>
-
-                {/*<Grid item xs={3} sm={8} md={7} lg={7}>*/}
-                {/*    <TextareaAutosize*/}
-                {/*        name="info"*/}
-                {/*        value={singleWareHouse.info || ''}*/}
-                {/*        onChange={inputChangeHandler}*/}
-                {/*        variant="standard"*/}
-                {/*        label="Информация по складу"*/}
-                {/*        style={{width: 800}}*/}
-                {/*        minRows={10}*/}
-                {/*        error={getFieldError('info')}*/}
-                {/*    />*/}
-                {/*</Grid>*/}
 
                 <Grid item xs={3} sm={8} md={3} lg={7}
                       className={classes.submit}>
