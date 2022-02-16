@@ -6,6 +6,7 @@ import marketSaga from "./sagas/marketSagas";
 import flightSagas from "./sagas/flightSagas";
 import buyoutSagas from "./sagas/buyoutSagas";
 import paymentSagas from "./sagas/paymentSagas";
+import wareHouseSagas from "./sagas/wareHouseSagas";
 import pagesSagas from "./sagas/pagesSagas";
 import tariffSagas from "./sagas/tariffSagas";
 
@@ -18,6 +19,7 @@ export function* rootSagas() {
         ...flightSagas,
         ...paymentSagas,
         ...buyoutSagas,
+        ...wareHouseSagas,
         ...pagesSagas,
         ...tariffSagas,
     ]);

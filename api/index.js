@@ -13,6 +13,7 @@ const flight = require('./app/flights');
 const buyouts = require('./app/buyouts');
 const administration = require('./app/administration');
 const userPayments = require('./app/userPayments');
+const wareHouses = require('./app/wareHouses');
 const pages = require('./app/Pages');
 const tariffs = require('./app/tariffs');
 
@@ -31,6 +32,7 @@ app.use('/flights', flight);
 app.use('/buyouts', buyouts);
 app.use('/cargo', administration);
 app.use('/payments', userPayments);
+app.use('/warehouses', wareHouses);
 app.use('/pages', pages);
 app.use('/tariffs', tariffs);
 
