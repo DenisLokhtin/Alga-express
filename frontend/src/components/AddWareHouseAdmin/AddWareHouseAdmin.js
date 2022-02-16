@@ -6,6 +6,7 @@ import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {addWareHouseRequest} from "../../store/actions/wareHouseActions";
 import FormElement from "../UI/Form/FormElement";
 import {useNavigate} from "react-router-dom";
+import {Editor} from "@tinymce/tinymce-react";
 
 const useStyles = makeStyles(theme => ({
     submit: {
@@ -70,6 +71,12 @@ const AddWareHouseAdmin = () => {
         }));
     };
 
+    const handleEditorChange = (content) => {
+        setWareHouse(prevState => {
+            return {...prevState, info: content}
+        });
+    };
+
     return (
         <Container
             component="section"
@@ -93,15 +100,34 @@ const AddWareHouseAdmin = () => {
                     onChange={onInputTextareaChange}
                     error={getFieldError('country')}
                 />
-                <br/>
-                <FormElement
-                    label="Сведения о складе"
-                    required
-                    name="info"
-                    value={wareHouse.info}
-                    onChange={onInputTextareaChange}
-                    error={getFieldError('info')}
-                />
+                <Grid item>
+                    <Editor
+                        apiKey='rd2sys4x7q7uu8l0tvehv3sl6wisqzs1pp15gvq3jwssgvft'
+                        value={wareHouse.info || ''}
+                        init={{
+                            height: 600,
+                            menubar: false,
+                            plugins: [
+                                'advlist autolink lists link image',
+                                'charmap print preview anchor help',
+                                'searchreplace visualblocks code',
+                                'insertdatetime media table paste wordcount'
+                            ],
+                            toolbar:
+                                'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolory | outdent indent'
+                        }}
+                        onEditorChange={handleEditorChange}
+                    />
+                </Grid>
+                {/*<br/>*/}
+                {/*<FormElement*/}
+                {/*    label="Сведения о складе"*/}
+                {/*    required*/}
+                {/*    name="info"*/}
+                {/*    value={wareHouse.info}*/}
+                {/*    onChange={onInputTextareaChange}*/}
+                {/*    error={getFieldError('info')}*/}
+                {/*/>*/}
                 <Grid item xs={12}>
                     <ButtonWithProgress
                         type="submit"

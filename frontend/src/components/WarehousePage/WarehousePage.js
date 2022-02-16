@@ -45,7 +45,7 @@ const WarehousePage = () => {
     return (
         <Box sx={{width: '100%', typography: 'body1'}} className={classes.tableContainer}>
             {user && user.role === 'admin' ?
-                <Grid item xs={3}>
+                <Grid item xs={5}>
                     <ButtonWithProgress
                         type="submit"
                         variant="contained"
@@ -75,7 +75,7 @@ const WarehousePage = () => {
                 {wareHouses.length !== 0 && wareHouses?.map((warehouse, i) => (
                     <TabPanel key={warehouse._id} value={i.toString()}>
                         {content?.map((info, index) => (
-                            <p key={index}>{info.info}</p>
+                            <div key={index} className="post__content" dangerouslySetInnerHTML={{__html: info.info}}/>
                         ))}
                         {user && user.role === 'admin' ?
                             <Grid container>
@@ -105,7 +105,7 @@ const WarehousePage = () => {
                                         disabled={loading}
                                         onClick={() => deleteWareHouse(warehouse._id)}
                                     >
-                                        Удалить
+                                        Удалить страну
                                     </ButtonWithProgress>
                                 </Grid>
                             </Grid> : ''}

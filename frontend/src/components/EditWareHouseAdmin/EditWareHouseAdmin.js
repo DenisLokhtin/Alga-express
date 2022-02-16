@@ -6,6 +6,7 @@ import Grid from "@mui/material/Grid";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {makeStyles} from "@mui/styles";
 import {TextareaAutosize} from "@mui/material";
+import {Editor} from "@tinymce/tinymce-react";
 
 const useStyles = makeStyles(theme => ({
     submit: {
@@ -64,6 +65,13 @@ const EditWareHouseAdmin = () => {
         }
     };
 
+    const handleEditorChange = (content) => {
+        setSingleWareHouse(prevState => {
+            return {...prevState, info: content}
+        });
+    };
+
+
     return (
         <div>
             <h3>{oneWareHouse.country}</h3>
@@ -78,18 +86,40 @@ const EditWareHouseAdmin = () => {
                 noValidate
                 spacing={5}
             >
-                <Grid item xs={3} sm={8} md={7} lg={7}>
-                    <TextareaAutosize
-                        name="info"
+
+                <Grid item>
+                    <Editor
+                        apiKey='rd2sys4x7q7uu8l0tvehv3sl6wisqzs1pp15gvq3jwssgvft'
                         value={singleWareHouse.info || ''}
-                        onChange={inputChangeHandler}
-                        variant="standard"
-                        label="Информация по складу"
-                        style={{width: 800}}
-                        minRows={10}
-                        error={getFieldError('info')}
+                        init={{
+                            height: 600,
+                            menubar: false,
+                            plugins: [
+                                'advlist autolink lists link image',
+                                'charmap print preview anchor help',
+                                'searchreplace visualblocks code',
+                                'insertdatetime media table paste wordcount'
+                            ],
+                            toolbar:
+                                'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolory | outdent indent'
+                        }}
+                        onEditorChange={handleEditorChange}
                     />
                 </Grid>
+
+                {/*<Grid item xs={3} sm={8} md={7} lg={7}>*/}
+                {/*    <TextareaAutosize*/}
+                {/*        name="info"*/}
+                {/*        value={singleWareHouse.info || ''}*/}
+                {/*        onChange={inputChangeHandler}*/}
+                {/*        variant="standard"*/}
+                {/*        label="Информация по складу"*/}
+                {/*        style={{width: 800}}*/}
+                {/*        minRows={10}*/}
+                {/*        error={getFieldError('info')}*/}
+                {/*    />*/}
+                {/*</Grid>*/}
+
                 <Grid item xs={3} sm={8} md={3} lg={7}
                       className={classes.submit}>
                     <ButtonWithProgress
