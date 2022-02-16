@@ -5,7 +5,7 @@ import {makeStyles} from "@mui/styles";
 import {Grid} from "@mui/material";
 import {Link} from "react-router-dom";
 import AddNewsAdmin from "../../components/AddNewsAdmin/AddNewsAdmin";
-import {newsOneCompany} from "../../paths";
+import {newsCompany} from "../../paths";
 import AppWindow from "../../components/UI/AppWindow/AppWindow";
 
 const useStyles = makeStyles({
@@ -59,7 +59,7 @@ const News = () => {
                         }}>
                             <p className={classes.date}>{item.datetime}</p>
                             <p className={classes.news} style={{flexGrow: 1, paddingLeft: "30px"}}>{item.title}</p>
-                            <Link to={newsOneCompany + item._id} style={{paddingRight: "40px"}} >
+                            <Link to={newsCompany + item._id} style={{paddingRight: "40px"}} >
                                 Подробнее...
                             </Link>
                             <button onClick={() => setOpen(true)}

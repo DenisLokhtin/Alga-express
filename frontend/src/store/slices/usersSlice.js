@@ -1,7 +1,9 @@
 import {createSlice} from "@reduxjs/toolkit";
+import {fetchUsersSuccess} from "../actions/usersActions";
 
 export const initialState = {
     user: null,
+    users: [],
     registerLoading: false,
     registerError: null,
     loginError: null,
@@ -84,26 +86,36 @@ const usersSlice = createSlice({
         },
         fetchUserPaymentRequest(state) {
             state.loadUserDate = true;
-
         },
         fetchUserPaymentSuccess(state, action) {
             state.loadUserDate = false;
             state.payment = action.payload;
         },
-        fetchUserPaymentFailure(state) {
+        fetchUserPaymentFailure(state, action) {
             state.loadUserDate = false;
-
+            state.payment = action.payload;
         },
         addUserPaymentRequest(state) {
             state.loadUserDate = true;
         },
-        addUserPaymentSuccess(state, action){
+        addUserPaymentSuccess(state, action) {
             state.loadUserDate = false;
             state.payment = action.payload;
         },
-        addUserPaymentFailure(state){
+        addUserPaymentFailure(state) {
             state.loadUserDate = false;
-
+        },
+        fetchUsersRequest(state) {
+            state.loadUserDate = true;
+        },
+        fetchUsersSuccess(state, action) {
+            state.loadUserDate = false;
+            console.log(action.payload);
+            state.users = action.payload;
+        },
+        fetchUsersFailure(state, action) {
+            state.loadUserDate = false;
+            state.userError = action.payload;
         },
         logout(state) {
             state.user = null;

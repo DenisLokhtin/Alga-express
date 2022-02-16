@@ -28,13 +28,16 @@ import AdminPaymentsProcessing from "./components/AdminPaymentsProcessing/AdminP
 import {
     aboutCompany,
     addFlightAdmin,
+    addPaymentHandler,
     addUserPayment,
+    addWareHouseAddress,
     contactsCompany,
     editBuyout,
     editingSingleTrackNumber,
     editPackageAdmin,
     editPackageUser,
     editUserProfile,
+    editWareHouseAddress,
     faqCompany,
     howCompany,
     listBuyouts,
@@ -55,19 +58,28 @@ import {
     user,
     userLogin,
     userPackageHistory,
-    userPaymentsList
+    userPaymentsList,
+    wareHouseCompany,
+    editPages,
+    tariffs,
 } from "./paths";
 import OrderBuyout from "./containers/OrderBuyout/OrderBuyout";
 import SingleStatusEdit from "./containers/SingleStatusEdit/SingleStatusEdit";
+import EditPages from "./containers/EditPages/EditPages";
 import EditBuyout from "./components/EditBuyout/EditBuyout";
 import BuyoutList from "./containers/BuyoutList/BuyoutList";
+import AddPaymentAdmin from "./components/AddPaymentAdmin/AddPaymentAdmin";
+import WarehousePage from "./components/WarehousePage/WarehousePage";
+import AddWareHouseAdmin from "./components/AddWareHouseAdmin/AddWareHouseAdmin";
+import EditWareHouseAdmin from "./components/EditWareHouseAdmin/EditWareHouseAdmin";
+import TariffsPage from "./containers/TariffPage/TariffPage";
 
 const App = () => {
 
     return (
         <Layout>
             <Routes>
-                <Route path={root} element={<HomePage/>} />
+                <Route path={root} element={<HomePage/>}/>
                 <Route path={user} element={<Register/>}/>
                 <Route path={packageInfoId} element={<SpecificPackage/>}/>
                 <Route path={newPackageRegister} element={<PackageRegister/>}/>
@@ -97,10 +109,16 @@ const App = () => {
                 <Route path={editingSingleTrackNumber} element={<SingleStatusEdit/>}/>
                 <Route path={editBuyout} element={<EditBuyout/>}/>
                 <Route path={listBuyouts} element={<BuyoutList/>}/>
+                <Route path={addPaymentHandler} element={<AddPaymentAdmin/>}/>
+                <Route path={wareHouseCompany} element={<WarehousePage/>}/>
+                <Route path={addWareHouseAddress} element={<AddWareHouseAdmin/>}/>
+                <Route path={editWareHouseAddress} element={<EditWareHouseAdmin/>}/>
+                <Route path={editPages} element={<EditPages/>}/>
+                <Route path={tariffs} element={<TariffsPage/>}/>
                 <Route
                     path="*"
                     element={
-                        <main style={{ padding: "1rem" }}>
+                        <main style={{padding: "1rem"}}>
                             <h1>Page Not Found</h1>
                         </main>
                     }

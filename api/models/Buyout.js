@@ -25,8 +25,8 @@ const BuyoutSchema = new mongoose.Schema({
         default: false
     },
     datetime:{
-        type: String,
-        required: true,
+        type: Date,
+        default: Date.now,
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
@@ -42,6 +42,19 @@ const BuyoutSchema = new mongoose.Schema({
     price: {
         type: Number,
         min: [0, 'Цена не может быть меньше нуля'],
+    },
+    commission: {
+        type: Number,
+        min: 0,
+        max: 10,
+        default: 0,
+    },
+    value: {
+        type: String,
+        enum: ['USD', 'TRY', 'CNY'],
+    },
+    totalPrice: {
+        type: Number,
     },
 
 
