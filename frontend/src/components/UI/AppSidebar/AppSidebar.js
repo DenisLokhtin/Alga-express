@@ -24,6 +24,7 @@ import NewspaperIcon from '@mui/icons-material/Newspaper';
 import StoreIcon from '@mui/icons-material/Store';
 import LiveHelpIcon from '@mui/icons-material/LiveHelp';
 import UserMenu from "../Toolbar/Menu/UserMenu";
+import BusinessIcon from '@mui/icons-material/Business';
 import {
     aboutCompany,
     contactsCompany,
@@ -31,7 +32,7 @@ import {
     howCompany,
     newsCompany,
     rulesCompany,
-    sitesCompany
+    sitesCompany, wareHouseCompany
 } from "../../../paths";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
@@ -43,6 +44,7 @@ const pages = [
     {title: "О нас", icon: <InfoIcon/>, url: aboutCompany},
     {title: "Где покупать?", icon: <StoreIcon/>, url: sitesCompany},
     {title: "FAQ", icon: <LiveHelpIcon/>, url: faqCompany},
+    {title: "Адреса складов", icon: <BusinessIcon/>, url: wareHouseCompany},
 ];
 
 const styles = {
@@ -65,7 +67,8 @@ const styles = {
     },
     user: {
         display: "flex",
-        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
         marginBottom: "20px",
         width: "100%"
     },
@@ -137,10 +140,12 @@ const AppSidebar = () => {
             </Box>
 
             <Box sx={styles.user}>
-                {user ?
-                    <UserMenu user={user}/>
-                    :
-                    <Anonymous/>}
+                <Box>
+                    {user ?
+                        <UserMenu user={user}/>
+                        :
+                        <Anonymous/>}
+                </Box>
             </Box>
         </Box>
     );

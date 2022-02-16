@@ -36,7 +36,6 @@ router.get('/', auth, permit('admin'), async (req, res) => {
 router.post('/', auth, permit('admin'), async (req, res) => {
     let pay = Number(req.body.pay).toFixed(2);
     pay = Number(pay);
-    console.log('price:', pay, typeof (pay));
 
     try {
         const checkPayment = await Payment.findById(req.body.id)
