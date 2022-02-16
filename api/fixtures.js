@@ -9,6 +9,7 @@ const News = require("./models/News");
 const Market = require("./models/Market");
 const Pages = require("./models/Pages");
 const TariffGroup = require("./models/TariffGroup");
+const WareHouse = require("./models/WareHouse");
 
 const run = async () => {
     await mongoose.connect(config.db.url, config.db.options);
@@ -67,6 +68,40 @@ const run = async () => {
             user: user,
             status: false,
             image: 'payment.png',
+        },
+    );
+
+    await WareHouse.create(
+        {
+            country: 'Склад в Китае',
+            info: 'Адрес склада на Авиа доставку в городе Гуанчжоу:\n' +
+                '收件人：大龙，电话：19927599273\n' +
+                '广东省 广州市 南沙区 南沙街道 广兴路二十五号五楼502室F16395-(ALGA ID клиента)\n' +
+                'Склад принимает посылки с 9:00 до 18:00 вечера.Воскресенье не рабочий день.',
+        },
+        {
+            country: 'Склад в Турции',
+            info: 'Sehir: Istanbul\n' +
+                'Adress: Langa hisari cad 46 (Alga Express Kargo)\n' +
+                'Ilce: Fatih\n' +
+                'Mahallesi: Katipkasim\n' +
+                'Post kod: 34130\n' +
+                'Tel: 05550206083\n' +
+                'Yenikapi: laleli\n' +
+                'Ad: Ваше имя\n' +
+                'Soyad: Фамилия',
+        },
+        {
+            country: 'Склад в США',
+            info: 'Безналоговый штат (по поводу заказа электроники: мобильных телефонов, смарт часов, ноутбуков обращайтесь к менеджеру)\n' +
+                '\n' +
+                'Получатель: *Имя Фамилия* латиницей\n' +
+                'Адресная строка 1: *41B Germay Drive*\n' +
+                'Адресная строка 2: *ALGA-KG1* указывать обязательно!\n' +
+                'Город: *Wilmington*\n' +
+                'Штат: *DE (Delaware)*\n' +
+                'Почтовый код: *19804*\n' +
+                'Телефон: *+1 (302) 669-1014*',
         },
     );
 
