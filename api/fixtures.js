@@ -74,35 +74,17 @@ const run = async () => {
     await WareHouse.create(
         {
             country: 'Склад в Китае',
-            info: 'Адрес склада на Авиа доставку в городе Гуанчжоу:\n' +
-                '收件人：大龙，电话：19927599273\n' +
-                '广东省 广州市 南沙区 南沙街道 广兴路二十五号五楼502室F16395-(ALGA ID клиента)\n' +
-                'Склад принимает посылки с 9:00 до 18:00 вечера.Воскресенье не рабочий день.',
+            info: '<p><strong>Адрес склада на Авиа доставку в городе Гуанчжоу</strong><br /><strong>收件人</strong>：大龙</p>\n<p><strong>电话</strong>：19927599273<br /><strong>广东省 广州市 南沙区 南沙街道 广兴路二十五号五楼</strong>502室F16395-(ALGA ID клиента)<br />Склад принимает посылки с 9:00 до 18:00 вечера.</p>\n<p>Воскресенье не рабочий день.</p>'
+
         },
         {
             country: 'Склад в Турции',
-            info: 'Sehir: Istanbul\n' +
-                'Adress: Langa hisari cad 46 (Alga Express Kargo)\n' +
-                'Ilce: Fatih\n' +
-                'Mahallesi: Katipkasim\n' +
-                'Post kod: 34130\n' +
-                'Tel: 05550206083\n' +
-                'Yenikapi: laleli\n' +
-                'Ad: Ваше имя\n' +
-                'Soyad: Фамилия',
+            info: '<p class=\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\"><strong>Sehir</strong>: <em>Istanbul</em></p>\n<div class=\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\"><strong>Adress</strong>:<em> Langa hisari cad 46 (Alga Express Kargo)</em></div>\n<div class=\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\"><strong>Ilce</strong>: <em>Fatih</em></div>\n<div class=\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\"><strong>Mahalles</strong>i: <em>Katipkasim</em></div>\n<div class=\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\"><strong>Post kod</strong>: <em>34130</em></div>\n<div class=\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\"><strong>Tel</strong>: <em>05550206083</em></div>\n<div class=\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\"><strong>Yenikapi</strong>: <em>laleli</em></div>\n<div class=\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\"><strong>Ad</strong>: <em>Ваше имя</em></div>\n<p class=\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\"><strong>Soyad</strong>: <em>Фамилия</em></p>'
+
         },
         {
             country: 'Склад в США',
-            info: 'Безналоговый штат (по поводу заказа электроники: мобильных телефонов, смарт часов, ноутбуков обращайтесь к менеджеру)\n' +
-                '\n' +
-                'Получатель: *Имя Фамилия* латиницей\n' +
-                'Адресная строка 1: *41B Germay Drive*\n' +
-                'Адресная строка 2: *ALGA-KG1* указывать обязательно!\n' +
-                'Город: *Wilmington*\n' +
-                'Штат: *DE (Delaware)*\n' +
-                'Почтовый код: *19804*\n' +
-                'Телефон: *+1 (302) 669-1014*',
-        },
+            info: '<p class=\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\"><strong>Безналоговый штат </strong><em>(по поводу заказа электроники: мобильных телефонов, смарт часов, ноутбуков обращайтесь к менеджеру)</em></p><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Получатель</strong>: <em>*Имя Фамилия* латиницей</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Адресная строка 1</strong>: <em>*41B Germay Drive*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Адресная строка 2</strong>: <em>*ALGA-KG1* указывать обязательно!</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Город</strong>: <em>*Wilmington*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Штат</strong>: <em>*DE (Delaware)*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Почтовый код</strong>: <em>*19804*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Телефон</strong>: <em>*+1 (302) 669-1014*</em></div>'},
     );
 
     const [flight1, flight2] = await Flight.create(

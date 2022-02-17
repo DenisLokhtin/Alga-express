@@ -40,6 +40,8 @@ const WarehousePage = () => {
         setValue("0");
     };
 
+    console.log(wareHouses)
+
     const content = wareHouses[value]?.info.split('\n').filter(info => info !== '').map(info => ({info}));
 
     return (
