@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const Buyout = (effect, deps) => {
+const Buyout = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const loading = useSelector(state => state.buyouts.createLoading);
@@ -42,6 +42,8 @@ const Buyout = (effect, deps) => {
         url: "",
         country:"",
         price: '',
+        commission:'',
+        value:'',
     });
 
     // useEffect(()=>{
@@ -70,6 +72,8 @@ const Buyout = (effect, deps) => {
             url: "",
             country: "",
             price:'',
+            commission: '',
+            value:'',
         })
     };
 

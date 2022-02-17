@@ -17,7 +17,9 @@ import {
     newsCompany,
     root,
     rulesCompany,
-    sitesCompany
+    sitesCompany,
+    wareHouseCompany
+
 } from "../../../paths";
 
 const pages = [
@@ -28,6 +30,7 @@ const pages = [
     {url: newsCompany, title: 'новости'},
     {url: sitesCompany, title: 'сайты'},
     {url: faqCompany, title: 'FAQ'},
+    {url: wareHouseCompany, title: 'адреса складов'},
 ];
 
 function HideOnScroll(props) {
@@ -98,7 +101,6 @@ const AppToolbar = (props) => {
                     </Container>
                 </AppBar>
             </HideOnScroll>
-            <Toolbar />
         </Box>
     );
 };

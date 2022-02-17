@@ -27,8 +27,10 @@ import WarehousemanStatusEdit from "./containers/WarehousemanStatusEdit/Warehous
 import AdminPaymentsProcessing from "./components/AdminPaymentsProcessing/AdminPaymentsProcessing";
 import {
     aboutCompany,
-    addFlightAdmin, addPaymentHandler,
+    addFlightAdmin,
+    addPaymentHandler,
     addUserPayment,
+    addWareHouseAddress,
     contactsCompany,
     editBuyout,
     editingSingleTrackNumber,
@@ -36,6 +38,7 @@ import {
     editPackageUser,
     editTariffGroup,
     editUserProfile,
+    editWareHouseAddress,
     faqCompany,
     howCompany,
     listBuyouts,
@@ -57,7 +60,9 @@ import {
     userLogin,
     userPackageHistory,
     userPaymentsList,
+    wareHouseCompany,
     editPages,
+    tariffs,
 } from "./paths";
 import OrderBuyout from "./containers/OrderBuyout/OrderBuyout";
 import SingleStatusEdit from "./containers/SingleStatusEdit/SingleStatusEdit";
@@ -66,6 +71,10 @@ import EditBuyout from "./components/EditBuyout/EditBuyout";
 import BuyoutList from "./containers/BuyoutList/BuyoutList";
 import AddPaymentAdmin from "./components/AddPaymentAdmin/AddPaymentAdmin";
 import EditTariffGroup from "./components/EditTariffGroup/EditTariffGroup";
+import WarehousePage from "./components/WarehousePage/WarehousePage";
+import AddWareHouseAdmin from "./components/AddWareHouseAdmin/AddWareHouseAdmin";
+import EditWareHouseAdmin from "./components/EditWareHouseAdmin/EditWareHouseAdmin";
+import TariffsPage from "./containers/TariffPage/TariffPage";
 
 const App = () => {
 
@@ -103,8 +112,12 @@ const App = () => {
                 <Route path={editBuyout} element={<EditBuyout/>}/>
                 <Route path={listBuyouts} element={<BuyoutList/>}/>
                 <Route path={addPaymentHandler} element={<AddPaymentAdmin/>}/>
+                <Route path={wareHouseCompany} element={<WarehousePage/>}/>
+                <Route path={addWareHouseAddress} element={<AddWareHouseAdmin/>}/>
+                <Route path={editWareHouseAddress} element={<EditWareHouseAdmin/>}/>
                 <Route path={editTariffGroup} element={<EditTariffGroup/>}/>
                 <Route path={editPages} element={<EditPages/>}/>
+                <Route path={tariffs} element={<TariffsPage/>}/>
                 <Route
                     path="*"
                     element={
