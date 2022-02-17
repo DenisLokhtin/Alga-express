@@ -23,7 +23,7 @@ const storage = multer.diskStorage({
         cb(null, config.uploadPath);
     },
     filename: (req, file, cb) => {
-        cb(null, 'buyouts/' + nanoid() + path.extname(file.originalname));
+        cb(null, nanoid() + path.extname(file.originalname));
     }
 });
 
