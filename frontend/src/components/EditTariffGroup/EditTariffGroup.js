@@ -3,23 +3,24 @@ import {Grid, Paper, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchTariffGroupRequest} from "../../store/actions/paymentActions";
 import FormElement from "../UI/Form/FormElement";
+import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 
 const EditTariffGroup = () => {
     const dispatch = useDispatch();
     const tariffGroup = useSelector(state => state.payments.tariff);
-    const [New, setNews] = useState({
+    const [newUser, setNewUser] = useState({
         usa: '',
         turkey: '',
         china: '',
         chinaGround: ''
     });
-    const [advanced, setAdvanced] = useState({
+    const [advancedUser, setAdvancedUser] = useState({
         usa: '',
         turkey: '',
         china: '',
         chinaGround: ''
     });
-    const [buyers, setBuyers] = useState({
+    const [buyersUser, setBuyersUser] = useState({
         usa: '',
         turkey:  '',
         china: '',
@@ -32,20 +33,62 @@ useEffect(() => {
 
 const inputChangeNewHandler = e => {
     const {name, value} = e.target;
-
+    setNewUser(prevState => ({
+        ...prevState,
+            [name]: value,
+    }))
 };
 
 const inputChangeAdvancedHandler = e => {
     const {name, value} = e.target;
-
+    setAdvancedUser(prevState => ({
+        ...prevState,
+        [name]: value,
+    }))
 };
 
 const inputChangeBuyersHandler = e => {
     const {name, value} = e.target;
-
+    setBuyersUser(prevState => ({
+        ...prevState,
+        [name]: value,
+    }))
 };
 
-return (
+        const element = (titleValue, value, name, onChange) => {
+            return (
+                <>
+                    <Paper sx={{width: '250px', height: '150px'}}>
+                        <Typography variant='subtitle1'>{name.toUpperCase()}</Typography>
+                        <Typography variant='body1'>{titleValue[name]} $</Typography>
+                        <FormElement
+                            label=''
+                            value={value[name]}
+                            type='number'
+                            onChange={onChange}
+                            name={name}
+                        />
+                        <Grid item>
+                            <ButtonWithProgress
+                                // onClick={sendData}
+                                type="button"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                // className={classes.btn}
+                                // loading={loading}
+                                disabled={!value[name]}
+                            >
+                                изменить
+                            </ButtonWithProgress>
+                        </Grid>
+                    </Paper>
+                </>
+            )
+        };
+
+
+return tariffGroup && (
     <>
         <Grid
         >
@@ -64,37 +107,16 @@ return (
                     display='flex'
                 >
                     <Grid item>
-                        <Paper sx={{width: '300px', height: '300px'}}>
-                            <Typography variant='subtitle1'>USA</Typography>
-                            <Typography variant='body1'>{tariffGroup && tariffGroup.new.usa}</Typography>
-                            <FormElement
-                                label='USA'
-                                // onChange={}
-                                name='usa'
-                            />
-                        </Paper>
+                        {element(tariffGroup.new, newUser,'usa', inputChangeNewHandler)};
                     </Grid>
                     <Grid item>
-                        <Paper sx={{width: '300px', height: '300px'}}>
-                            <Typography variant='subtitle1'>Turkey</Typography>
-                            <Typography variant='body1'>{tariffGroup && tariffGroup.new.turkey}</Typography>
-                            <FormElement
-                                label='Turkey'
-                                // onChange={}
-                                name='turkey'
-                            />
-                        </Paper>
+                        {element(tariffGroup.new, newUser,'turkey', inputChangeNewHandler)}
                     </Grid>
                     <Grid item>
-                        <Paper sx={{width: '300px', height: '300px'}}>
-                            <Typography variant='subtitle1'>China</Typography>
-                            <Typography variant='body1'>{tariffGroup && tariffGroup.new.china}</Typography>
-                            <FormElement
-                                label='China'
-                                // onChange={}
-                                name='China'
-                            />
-                        </Paper>
+                        {element(tariffGroup.new, newUser,'china', inputChangeNewHandler)}
+                    </Grid>
+                    <Grid item>
+                        {element(tariffGroup.new, newUser,'chinaGround', inputChangeNewHandler)}
                     </Grid>
                 </Grid>
             </Grid>
@@ -113,25 +135,16 @@ return (
                     display='flex'
                 >
                     <Grid item>
-                        <Paper sx={{width: '300px', height: '300px'}}>
-                            <Typography variant='subtitle1'>USA</Typography>
-                            <Typography variant='body1'>{tariffGroup && tariffGroup.advanced.usa}</Typography>
-
-                        </Paper>
+                        {element(tariffGroup.advanced, advancedUser,'usa', inputChangeAdvancedHandler)}
                     </Grid>
                     <Grid item>
-                        <Paper sx={{width: '300px', height: '300px'}}>
-                            <Typography variant='subtitle1'>Turkey</Typography>
-                            <Typography variant='body1'>{tariffGroup && tariffGroup.advanced.turkey}</Typography>
-
-                        </Paper>
+                        {element(tariffGroup.advanced, advancedUser,'turkey', inputChangeAdvancedHandler)}
                     </Grid>
                     <Grid item>
-                        <Paper sx={{width: '300px', height: '300px'}}>
-                            <Typography variant='subtitle1'>China</Typography>
-                            <Typography variant='body1'>{tariffGroup && tariffGroup.advanced.china}</Typography>
-
-                        </Paper>
+                        {element(tariffGroup.advanced, advancedUser,'china', inputChangeAdvancedHandler)}
+                    </Grid>
+                    <Grid item>
+                        {element(tariffGroup.advanced, advancedUser,'chinaGround', inputChangeAdvancedHandler)}
                     </Grid>
                 </Grid>
             </Grid>
@@ -150,25 +163,16 @@ return (
                     display='flex'
                 >
                     <Grid item>
-                        <Paper sx={{width: '300px', height: '300px'}}>
-                            <Typography variant='subtitle1'>USA</Typography>
-                            <Typography variant='body1'>{tariffGroup && tariffGroup.buyers.usa}</Typography>
-
-                        </Paper>
+                        {element(tariffGroup.buyers, buyersUser,'usa', inputChangeBuyersHandler)}
                     </Grid>
                     <Grid item>
-                        <Paper sx={{width: '300px', height: '300px'}}>
-                            <Typography variant='subtitle1'>Turkey</Typography>
-                            <Typography variant='body1'>{tariffGroup && tariffGroup.buyers.turkey}</Typography>
-
-                        </Paper>
+                        {element(tariffGroup.buyers, buyersUser,'turkey', inputChangeBuyersHandler)}
                     </Grid>
                     <Grid item>
-                        <Paper sx={{width: '300px', height: '300px'}}>
-                            <Typography variant='subtitle1'>China</Typography>
-                            <Typography variant='body1'>{tariffGroup && tariffGroup.buyers.china}</Typography>
-
-                        </Paper>
+                        {element(tariffGroup.buyers, buyersUser,'china', inputChangeBuyersHandler)}
+                    </Grid>
+                    <Grid item>
+                        {element(tariffGroup.buyers, buyersUser,'chinaGround', inputChangeBuyersHandler)}
                     </Grid>
                 </Grid>
             </Grid>
