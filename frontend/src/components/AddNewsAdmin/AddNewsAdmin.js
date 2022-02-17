@@ -98,9 +98,7 @@ const AddNewsAdmin = () => {
         const name = e.target.name;
         const file = e.target.files[0]
         const image = await resizeFile(file);
-        console.log('image:',image);
         const newFile = dataURIToBlob(image);
-        console.log('newFile:',image);
         setNews(prevState => {
             return {...prevState, [name]: newFile};
         });
