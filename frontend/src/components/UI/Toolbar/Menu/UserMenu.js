@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Box, Divider, Grid, IconButton, ListItemIcon, Menu, MenuItem} from "@mui/material";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import {Logout} from "@mui/icons-material";
@@ -61,6 +61,7 @@ const UserMenu = ({user}) => {
     const dispatch = useDispatch();
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
+    const navigate = useNavigate();
 
     const payments = useSelector(state => state.payments.payment);
     const users = useSelector(state => state.users.user);
@@ -76,6 +77,7 @@ const UserMenu = ({user}) => {
     const toLogOut = () => {
         setAnchorEl(false);
         dispatch(logout());
+        navigate('/');
     };
 
     return (

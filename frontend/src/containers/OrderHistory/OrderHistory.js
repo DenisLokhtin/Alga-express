@@ -4,6 +4,18 @@ import {useDispatch, useSelector} from "react-redux";
 import {getOrdersHistoryRequest} from "../../store/actions/packageRegisterActions";
 import {DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector} from "@mui/x-data-grid";
 import {styled} from "@mui/material/styles";
+import {makeStyles} from "@mui/styles";
+
+const useStyles = makeStyles(() => ({
+    circularProgress: {
+        marginTop: '3em',
+    },
+
+    packageTitle: {
+        marginTop: '3em',
+        fontSize: '3em',
+    },
+}));
 
 function CustomToolbar() {
     return (
@@ -136,6 +148,8 @@ const columns = [
 
 
 const OrderHistory = () => {
+    const classes = useStyles();
+    const loading = useSelector(state => state.package.getOrdersLoading);
     const dispatch = useDispatch();
     const orders = useSelector(state => state.package.orders);
     const totalRow = useSelector(state => state.package.totalPage);
@@ -179,43 +193,45 @@ const OrderHistory = () => {
 
     return (
         <Container style={{width: '100%', marginTop: '70px'}}>
-            {orders.length === 0 ? (
-                <Grid container justifyContent="center">
-                    <CircularProgress/>
-                </Grid>
-            ) : (
-                <StyledDataGrid
-                    rows={myRows}
-                    columns={columns}
-                    pagination
-                    checkboxSelection
-                    pageSize={pageLimit}
-                    autoHeight
-                    rowsPerPageOptions={[5, 10, 20]}
-                    rowCount={totalRow}
-                    paginationMode="server"
-                    onPageSizeChange={newRowsLimit => setPageLimit(newRowsLimit)}
-                    onPageChange={(newPage) => {
-                        prevSelectionModel.current = selectionModel;
-                        setPage(newPage);
-                    }}
-                    onSelectionModelChange={(newSelectionModel) => {
-                        setSelectionModel(newSelectionModel);
-                    }}
-                    selectionModel={selectionModel}
-                    localeText={{
-                        toolbarDensity: 'Размер',
-                        toolbarDensityLabel: 'Размер',
-                        toolbarDensityCompact: 'Маленький',
-                        toolbarDensityStandard: 'Средний',
-                        toolbarDensityComfortable: 'Огромный',
-                        toolbarColumns: 'Колонки',
-                        toolbarColumnsLabel: 'Колонки',
-                    }}
-                    components={{
-                        Toolbar: CustomToolbar,
-                    }}
-                />
+            {loading ? <Grid container justifyContent="center"><CircularProgress/></Grid> : (
+                orders.length === 0 ? (
+                    <Grid container justifyContent="center">
+                        <h3 className={classes.packageTitle}>У вас еще нет посылок</h3>
+                    </Grid>
+                ) : (
+                    <StyledDataGrid
+                        rows={myRows}
+                        columns={columns}
+                        pagination
+                        checkboxSelection
+                        pageSize={pageLimit}
+                        autoHeight
+                        rowsPerPageOptions={[5, 10, 20]}
+                        rowCount={totalRow}
+                        paginationMode="server"
+                        onPageSizeChange={newRowsLimit => setPageLimit(newRowsLimit)}
+                        onPageChange={(newPage) => {
+                            prevSelectionModel.current = selectionModel;
+                            setPage(newPage);
+                        }}
+                        onSelectionModelChange={(newSelectionModel) => {
+                            setSelectionModel(newSelectionModel);
+                        }}
+                        selectionModel={selectionModel}
+                        localeText={{
+                            toolbarDensity: 'Размер',
+                            toolbarDensityLabel: 'Размер',
+                            toolbarDensityCompact: 'Маленький',
+                            toolbarDensityStandard: 'Средний',
+                            toolbarDensityComfortable: 'Огромный',
+                            toolbarColumns: 'Колонки',
+                            toolbarColumnsLabel: 'Колонки',
+                        }}
+                        components={{
+                            Toolbar: CustomToolbar,
+                        }}
+                    />
+                )
             )}
         </Container>
     );
