@@ -53,7 +53,6 @@ export function* addBuyoutSaga({payload: data}) {
         if (!error.response) {
             toast.error(error.message);
         }
-        toast.error('Произошла ошибка');
         yield put(addBuyoutFailure(error.response.data));
     }
 }

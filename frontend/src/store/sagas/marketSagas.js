@@ -30,7 +30,6 @@ export function* addMarketSaga({payload: newMarket}) {
         if (!error.response) {
             toast.error(error.message);
         }
-        toast.error('Произошла ошибка');
         yield put(addMarketFailure(error.response.data));
     }
 }
