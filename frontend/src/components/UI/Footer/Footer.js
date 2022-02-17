@@ -62,7 +62,7 @@ const Footer = () => {
                 <Grid item xs={12} md={6} lg={4}>
                     <Box className={classes.pages}>
                         {pages.map(item => (
-                            <Link key={item.title} to={item.url} className={classes.link}>
+                            <Link to={item.url} className={classes.link}>
                                 {item.title}
                             </Link>
                         ))}
