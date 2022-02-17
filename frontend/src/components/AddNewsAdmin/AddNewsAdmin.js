@@ -7,6 +7,7 @@ import {Container, Grid} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import {addNewsRequest} from "../../store/actions/newsActions";
 import {Editor} from "@tinymce/tinymce-react";
+import Resizer from "react-image-file-resizer";
 
 const useStyles = makeStyles(theme => ({
     submit: {
@@ -40,9 +41,38 @@ const AddNewsAdmin = () => {
         description: "",
     });
 
+    const resizeFile = (file) =>
+        new Promise((resolve) => {
+            Resizer.imageFileResizer(
+                file,
+                300,
+                400,
+                "JPEG",
+                100,
+                0,
+                (uri) => {
+                    resolve(uri);
+                },
+                "base64"
+            );
+        });
 
-    const submitFormHandler = e => {
+    const dataURIToBlob = (dataURI) => {
+        const splitDataURI = dataURI.split(",");
+        const byteString =
+            splitDataURI[0].indexOf("base64") >= 0
+                ? atob(splitDataURI[1])
+                : decodeURI(splitDataURI[1]);
+        const mimeString = splitDataURI[0].split(":")[1].split(";")[0];
+        const ia = new Uint8Array(byteString.length);
+        for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
+        return new Blob([ia], { type: mimeString });
+    };
+
+
+    const submitFormHandler =  (e) => {
         e.preventDefault();
+
         const formData = new FormData();
         Object.keys(news).forEach(key => {
             formData.append(key, news[key]);
@@ -56,7 +86,7 @@ const AddNewsAdmin = () => {
     };
 
 
-    const inputChangeHandler = e => {
+    const inputChangeHandler = (e) => {
         const name = e.target.name;
         const value = e.target.value;
         setNews(prevState => {
@@ -64,11 +94,15 @@ const AddNewsAdmin = () => {
         });
     };
 
-    const fileChangeHandler = e => {
+    const fileChangeHandler = async (e) => {
         const name = e.target.name;
-        const file = e.target.files[0];
+        const file = e.target.files[0]
+        const image = await resizeFile(file);
+        console.log('image:',image);
+        const newFile = dataURIToBlob(image);
+        console.log('newFile:',image);
         setNews(prevState => {
-            return {...prevState, [name]: file};
+            return {...prevState, [name]: newFile};
         });
     };
 
@@ -139,6 +173,7 @@ const AddNewsAdmin = () => {
                         name="image"
                         onChange={fileChangeHandler}
                     />
+
                 </Grid>
 
                 <Grid item xs={12}>
@@ -153,6 +188,7 @@ const AddNewsAdmin = () => {
                     >
                         Добавить
                     </ButtonWithProgress>
+
                 </Grid>
             </Grid>
         </Container>
