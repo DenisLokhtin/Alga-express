@@ -58,7 +58,7 @@ const FlightsList = () => {
                                             key={item._id}
                                             flight={item}
                                             id={item._id}
-                                            update={()=> setUpdate(!update)}
+                                            update={()=> setUpdate(prevState => !prevState)}
                                         />
                                     ))
                                     :
@@ -99,7 +99,7 @@ const FlightsList = () => {
                                             key={item._id}
                                             flight={item}
                                             id={item._id}
-                                            update={()=> setUpdate(!update)}
+                                            update={()=> setUpdate(prevState => !prevState)}
                                         />
                                     ))
                                     :

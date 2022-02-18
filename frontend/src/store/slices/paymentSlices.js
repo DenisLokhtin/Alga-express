@@ -4,7 +4,8 @@ const initialState = {
     payment: null,
     fetchLoading: false,
     errorPayment: null,
-    status: false
+    status: false,
+    tariff: null,
 };
 
 const paymentSlice = createSlice({
@@ -41,6 +42,16 @@ const paymentSlice = createSlice({
         },
         addPaymentAdminFailure(state, action) {
             state.fetchLoading = false;
+        },
+        fetchTariffGroupRequest(state, action) {
+            state.fetchLoading = true
+        },
+        fetchTariffGroupSuccess(state, action) {
+            state.fetchLoading = false
+            state.tariff = action.payload;
+        },
+        fetchTariffGroupFailure(state, action) {
+            state.fetchLoading = false
         },
     }
 });

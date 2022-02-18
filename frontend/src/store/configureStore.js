@@ -11,8 +11,10 @@ import marketSlice from "./slices/marketSlice";
 import flightSlice from "./slices/flightSlice";
 import buyoutSlice from "./slices/buyoutSlice";
 import paymentSlice from "./slices/paymentSlices";
+import wareHouseSlice from "./slices/wareHouseSlice";
 import pagesSlice from "./slices/pagesSlice";
 import requisitesSlice from "./slices/requisitesSlice";
+import tariffSlice from "./slices/tariffSlice";
 
 const rootReducer = combineReducers({
     'users': usersSlice.reducer,
@@ -22,8 +24,10 @@ const rootReducer = combineReducers({
     'flights': flightSlice.reducer,
     'buyouts':buyoutSlice.reducer,
     'payments': paymentSlice.reducer,
+    'wareHouses': wareHouseSlice.reducer,
     'pages': pagesSlice.reducer,
     'requisites': requisitesSlice.reducer,
+    'tariffs':tariffSlice.reducer,
 });
 
 const persistedState = loadFromLocalStorage();

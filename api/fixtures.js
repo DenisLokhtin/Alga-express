@@ -7,9 +7,10 @@ const Package = require("./models/Package");
 const Flight = require("./models/Flight");
 const News = require("./models/News");
 const Market = require("./models/Market");
-const TariffGroup = require("./models/tariffGroup");
-const Pages = require("./models/Pages");
 const Requisites = require("./models/Requisites");
+const Pages = require("./models/Pages");
+const TariffGroup = require("./models/TariffGroup");
+const WareHouse = require("./models/WareHouse");
 
 const run = async () => {
     await mongoose.connect(config.db.url, config.db.options);
@@ -69,6 +70,22 @@ const run = async () => {
             status: false,
             image: 'payment.png',
         },
+    );
+
+    await WareHouse.create(
+        {
+            country: 'Склад в Китае',
+            info: '<p><strong>Адрес склада на Авиа доставку в городе Гуанчжоу</strong><br /><strong>收件人</strong>：大龙</p>\n<p><strong>电话</strong>：19927599273<br /><strong>广东省 广州市 南沙区 南沙街道 广兴路二十五号五楼</strong>502室F16395-(ALGA ID клиента)<br />Склад принимает посылки с 9:00 до 18:00 вечера.</p>\n<p>Воскресенье не рабочий день.</p>'
+
+        },
+        {
+            country: 'Склад в Турции',
+            info: '<p class=\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\"><strong>Sehir</strong>: <em>Istanbul</em></p>\n<div class=\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\"><strong>Adress</strong>:<em> Langa hisari cad 46 (Alga Express Kargo)</em></div>\n<div class=\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\"><strong>Ilce</strong>: <em>Fatih</em></div>\n<div class=\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\"><strong>Mahalles</strong>i: <em>Katipkasim</em></div>\n<div class=\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\"><strong>Post kod</strong>: <em>34130</em></div>\n<div class=\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\"><strong>Tel</strong>: <em>05550206083</em></div>\n<div class=\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\"><strong>Yenikapi</strong>: <em>laleli</em></div>\n<div class=\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\"><strong>Ad</strong>: <em>Ваше имя</em></div>\n<p class=\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\"><strong>Soyad</strong>: <em>Фамилия</em></p>'
+
+        },
+        {
+            country: 'Склад в США',
+            info: '<p class=\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\"><strong>Безналоговый штат </strong><em>(по поводу заказа электроники: мобильных телефонов, смарт часов, ноутбуков обращайтесь к менеджеру)</em></p><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Получатель</strong>: <em>*Имя Фамилия* латиницей</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Адресная строка 1</strong>: <em>*41B Germay Drive*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Адресная строка 2</strong>: <em>*ALGA-KG1* указывать обязательно!</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Город</strong>: <em>*Wilmington*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Штат</strong>: <em>*DE (Delaware)*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Почтовый код</strong>: <em>*19804*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Телефон</strong>: <em>*+1 (302) 669-1014*</em></div>'},
     );
 
     const [flight1, flight2] = await Flight.create(

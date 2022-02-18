@@ -55,7 +55,6 @@ router.post('/', upload.single('image'), async (req, res) => {
       newsData.image = 'uploads/' + req.file.filename;
     }
 
-
     const news = new News(newsData);
 
     await news.save();
