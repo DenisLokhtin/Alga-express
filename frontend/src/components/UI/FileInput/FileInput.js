@@ -24,6 +24,7 @@ const FileInput = ({onChange, name, label, required, error, helperText, multiple
     onChange(e);
   };
 
+
   const activateInput = () => {
     inputRef.current.click();
   };

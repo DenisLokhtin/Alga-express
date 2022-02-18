@@ -5,6 +5,7 @@ const Payment = require("../models/Payment");
 const PaymentMove = require("../models/PaymentMove");
 const User = require("../models/User");
 const sendMail = require("../middleware/sendMail");
+const TariffGroup = require("../models/TariffGroup");
 
 const router = express.Router();
 
@@ -32,6 +33,16 @@ router.get('/', auth, permit('admin'), async (req, res) => {
         res.status(400).send({error: e});
     }
 });
+
+router.get('/tariff', auth, permit('admin'), async (req, res) => {
+    try {
+        const tariff = await TariffGroup.findOne();
+        res.send(tariff);
+    } catch (e) {
+        res.status(500).send({error: e});
+    }
+});
+
 
 router.post('/', auth, permit('admin'), async (req, res) => {
     let pay = Number(req.body.pay).toFixed(2);

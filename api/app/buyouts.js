@@ -23,7 +23,7 @@ const storage = multer.diskStorage({
         cb(null, config.uploadPath);
     },
     filename: (req, file, cb) => {
-        cb(null, 'buyouts/' + nanoid() + path.extname(file.originalname));
+        cb(null, nanoid() + path.extname(file.originalname));
     }
 });
 
@@ -75,7 +75,7 @@ router.post('/', auth, upload.single('image'), async (req, res) => {
         };
 
         if (req.file) {
-            buyoutData.image = 'uploads/buyouts/' + req.file.filename;
+            buyoutData.image = 'uploads/buyouts' + req.file.filename;
         }
 
         const buyout = new Buyout(buyoutData);
@@ -105,6 +105,7 @@ router.delete('/:id', auth, permit('admin'), async (req, res) => {
 
 router.put('/:id', auth, upload.single('image'), permit('admin', 'user'), async (req, res) => {
     const price = Number(req.body.price);
+    const commission = Number(req.body.commission);
     try {
         if (req.user.role === 'admin') {
             const updatedPrice = await Buyout.findById(req.params.id);
@@ -116,7 +117,8 @@ router.put('/:id', auth, upload.single('image'), permit('admin', 'user'), async 
             //Еще нужно добавить курс вылюты.
             if (req.body.price !== updatedPrice.price) {
                 updatedPrice.price = price;
-                const totalPrice = (price + price * (updatedPrice.commission / 100)).toFixed(2);
+                updatedPrice.commission = commission;
+                const totalPrice = (price + price * (commission / 100)).toFixed(2);
                 updatedPrice.totalPrice = totalPrice;
                 updatedPrice.status = 'ORDERED';
                 await updatedPrice.save();

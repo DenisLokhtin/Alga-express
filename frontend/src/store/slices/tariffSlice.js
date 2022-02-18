@@ -5,7 +5,7 @@ const name = 'tariffs'
 const tariffSlice = createSlice({
     name,
     initialState: {
-        tariffs: [],
+        tariffs: null,
         fetchLoading: false,
     },
     reducers: {
@@ -18,6 +18,16 @@ const tariffSlice = createSlice({
         },
         fetchTariffsFailure(state) {
             state.fetchLoading = false;
+        },
+        changeTariffRequest(state) {
+
+        },
+        changeTariffSuccess(state, {payload: tariffs}) {
+            console.log(tariffs);
+            state.tariffs = tariffs;
+        },
+        changeTariffFailure(state) {
+
         },
     }
 });

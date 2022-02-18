@@ -4,7 +4,7 @@ import {
     addPaymentAdminRequest,
     fetchPaymentFailure,
     fetchPaymentRequest,
-    fetchPaymentSuccess,
+    fetchPaymentSuccess, fetchTariffGroupFailure, fetchTariffGroupRequest, fetchTariffGroupSuccess,
     paymentAcceptedRequest,
     paymentAcceptedSuccess,
 } from "../actions/paymentActions";
@@ -43,10 +43,22 @@ export function* addPaymentAdmin ({payload}){
     }
 }
 
+export function* fetchTariffGroup () {
+    try {
+        const response = yield axiosApi.get(`/cargo/tariff`);
+        yield put (fetchTariffGroupSuccess(response.data));
+        toast.success(response.data);
+    } catch (e) {
+        yield put (fetchTariffGroupFailure(e.response.data.error));
+    }
+}
+
+
 const paymentSagas = [
     takeEvery(fetchPaymentRequest, fetchPaymentAdmin),
     takeEvery(paymentAcceptedRequest, paymentAccepted),
     takeEvery(addPaymentAdminRequest, addPaymentAdmin),
+    takeEvery(fetchTariffGroupRequest, fetchTariffGroup),
 
 
 ];

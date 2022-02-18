@@ -32,10 +32,11 @@ export const editPages = '/cargo/editPages';
 export const editBuyout = '/user/buyout/edit/:id';
 export const listBuyouts = '/user/buyouts/list';
 export const addPaymentHandler = '/cargo/payments/add';
+export const editTariffGroup = '/cargo/tariff/edit';
 export const tariffs = '/alga-express/tariffs';
 export const addWareHouseAddress = '/alga-express/wareHouse/add';
 export const editWareHouseAddress = '/alga-express/wareHouse/edit/:id';
-export const editingSingleWareHouse = '/alga-express/wareHouse/edit/';
+    export const editingSingleWareHouse = '/alga-express/wareHouse/edit/';
 
 
 
