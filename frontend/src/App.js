@@ -35,6 +35,7 @@ import {
     editBuyout,
     editPackageAdmin,
     editPackageUser,
+    editTariffGroup,
     editUserProfile,
     editWareHouseAddress,
     faqCompany,
@@ -58,7 +59,8 @@ import {
     userPaymentsList,
     wareHouseCompany,
     editPages,
-    tariffs, editingSingleTrackNumber,
+    tariffs,
+    editingSingleTrackNumber,
 } from "./paths";
 import OrderBuyout from "./containers/OrderBuyout/OrderBuyout";
 import SingleStatusEdit from "./containers/SingleStatusEdit/SingleStatusEdit";
@@ -66,6 +68,7 @@ import EditPages from "./containers/EditPages/EditPages";
 import EditBuyout from "./components/EditBuyout/EditBuyout";
 import BuyoutList from "./containers/BuyoutList/BuyoutList";
 import AddPaymentAdmin from "./components/AddPaymentAdmin/AddPaymentAdmin";
+import EditTariffGroup from "./components/EditTariffGroup/EditTariffGroup";
 import WarehousePage from "./components/WarehousePage/WarehousePage";
 import AddWareHouseAdmin from "./components/AddWareHouseAdmin/AddWareHouseAdmin";
 import EditWareHouseAdmin from "./components/EditWareHouseAdmin/EditWareHouseAdmin";
@@ -108,6 +111,10 @@ const App = () => {
                 <Route path={editingSingleTrackNumber} element={<SingleStatusEdit/>}/>
                 <Route path={editBuyout} element={<EditBuyout/>}/>
                 <Route path={wareHouseCompany} element={<WarehousePage/>}/>
+                <Route path={addWareHouseAddress} element={<AddWareHouseAdmin/>}/>
+                <Route path={editWareHouseAddress} element={<EditWareHouseAdmin/>}/>
+                <Route path={editTariffGroup} element={<EditTariffGroup/>}/>
+                <Route path={editPages} element={<EditPages/>}/>
                 <Route path={tariffs} element={<TariffsPage/>}/>
                 {/* Routes for not registered user */}
                 <Route path={root} element={<HomePage/>}/>

@@ -10,5 +10,8 @@ export const {
     addPaymentAdminRequest,
     addPaymentAdminSuccess,
     addPaymentAdminFailure,
+    fetchTariffGroupRequest,
+    fetchTariffGroupSuccess,
+    fetchTariffGroupFailure,
 
 } = paymentSlice.actions;
