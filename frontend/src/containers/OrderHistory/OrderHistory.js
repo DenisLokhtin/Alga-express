@@ -11,6 +11,7 @@ import {
 } from "@mui/x-data-grid";
 import {styled} from "@mui/material/styles";
 import theme from "../../theme";
+import {countries, statuses} from "../../dataLocalization";
 
 function CustomToolbar() {
     return (
@@ -192,7 +193,6 @@ const columns = [
     },
 ];
 
-
 const OrderHistory = () => {
     const loading = useSelector(state => state.package.getOrdersLoading);
     const dispatch = useDispatch();
@@ -209,8 +209,8 @@ const OrderHistory = () => {
             cargoNumber: order.cargoNumber,
             trackNumber: order.trackNumber,
             title: order.title,
-            country: order.country,
-            status: order.status,
+            country: countries[order.country],
+            status: statuses[order.status],
         }
     });
 
@@ -235,6 +235,8 @@ const OrderHistory = () => {
             active = false;
         };
     }, [page, dispatch, pageLimit]);
+
+    console.log(orders);
 
     return (
         <Container style={{display: 'flex', width: '100%', marginTop: '5em'}}>
