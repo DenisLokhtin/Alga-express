@@ -59,16 +59,19 @@ const News = () => {
                         }}>
                             <p className={classes.date}>{item.datetime}</p>
                             <p className={classes.news} style={{flexGrow: 1, paddingLeft: "30px"}}>{item.title}</p>
-                            <Link to={newsIdCompany + item._id} style={{paddingRight: "40px"}} >
+                            <Link to={newsIdCompany.slice(0, newsIdCompany.length - 3) + item._id} style={{paddingRight: "40px"}} >
                                 Подробнее...
                             </Link>
+                            {user && user.role === 'admin' &&(
                             <button onClick={() => setOpen(true)}
-                            >Удалить новость</button>
+                            >Удалить новость</button>)}
                             <AppWindow open={open} onClose={() => setOpen(false)} confirm={() => deleteNews(item._id)}/>
                         </div>
                     </Grid>
                 ))}
+
             </Grid>
+
         </>
     );
 };
