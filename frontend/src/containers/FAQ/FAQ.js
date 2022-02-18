@@ -14,6 +14,7 @@ const FAQ = () => {
 
     return (
         <Container style={{'textAlign': 'center'}} component='div'>
+            <Requisites/>
             <Container style={{
                 'borderRadius': '3px',
                 'margin': '10px 0 20px 0',
@@ -22,7 +23,6 @@ const FAQ = () => {
                        component='div'>
                 <div className="post__content" dangerouslySetInnerHTML={{__html: page.text}}/>
             </Container>
-            <Requisites/>
         </Container>
     )
 };

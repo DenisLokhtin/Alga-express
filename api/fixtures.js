@@ -221,16 +221,16 @@ const run = async () => {
 
     await Requisites.create(
         {
-            bank: 'KICB',
-            requisites: 'sdfghjk',
+            bank: 'Оптима',
+            requisites: '4169585344083059',
         },
         {
-            bank: 'Optima',
-            requisites: 'asdf',
+            bank: 'Элсом',
+            requisites: '0774769434',
         },
         {
-            bank: 'Demir',
-            requisites: 'asdf',
+            bank: 'М Банк',
+            requisites: '0774769434',
         },
     );
 
