@@ -1,28 +1,32 @@
 import React, {useEffect, useState} from 'react';
-import {CircularProgress, Container, Grid} from "@mui/material";
+import {Box, Container, LinearProgress, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {getOrdersHistoryRequest} from "../../store/actions/packageRegisterActions";
-import {DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector} from "@mui/x-data-grid";
+import {
+    DataGrid,
+    GridOverlay,
+    GridToolbarContainer,
+    GridToolbarDensitySelector,
+    ruRU
+} from "@mui/x-data-grid";
 import {styled} from "@mui/material/styles";
-import {makeStyles} from "@mui/styles";
-
-const useStyles = makeStyles(() => ({
-    circularProgress: {
-        marginTop: '3em',
-    },
-
-    packageTitle: {
-        marginTop: '3em',
-        fontSize: '3em',
-    },
-}));
+import theme from "../../theme";
 
 function CustomToolbar() {
     return (
         <GridToolbarContainer>
             <GridToolbarDensitySelector/>
-            <GridToolbarColumnsButton/>
         </GridToolbarContainer>
+    );
+}
+
+function CustomLoadingOverlay() {
+    return (
+        <GridOverlay>
+            <div style={{position: 'absolute', top: 0, width: '100%'}}>
+                <LinearProgress/>
+            </div>
+        </GridOverlay>
     );
 }
 
@@ -68,6 +72,48 @@ function customCheckbox(theme) {
             border: 0,
         },
     };
+}
+
+const StyledGridOverlay = styled(GridOverlay)(({theme}) => ({
+    flexDirection: 'column',
+    '& .ant-empty-img-1': {
+        fill: theme.palette.mode === 'light' ? '#aeb8c2' : '#262626',
+    },
+    '& .ant-empty-img-2': {
+        fill: theme.palette.mode === 'light' ? '#f5f5f7' : '#595959',
+    },
+    '& .ant-empty-img-3': {
+        fill: theme.palette.mode === 'light' ? '#dce0e6' : '#434343',
+    },
+    '& .ant-empty-img-4': {
+        fill: theme.palette.mode === 'light' ? '#fff' : '#1c1c1c',
+    },
+    '& .ant-empty-img-5': {
+        fillOpacity: theme.palette.mode === 'light' ? '0.8' : '0.08',
+        fill: theme.palette.mode === 'light' ? '#f5f5f5' : '#fff',
+    },
+}));
+
+theme.typography.h3 = {
+    fontSize: '1.2rem',
+    '@media (min-width:600px)': {
+        fontSize: '1.5rem',
+    },
+    [theme.breakpoints.up('md')]: {
+        fontSize: '1.4rem',
+    },
+};
+
+function CustomNoRowsOverlay() {
+    return (
+        <StyledGridOverlay>
+            <Box sx={{mt: 3, mb: 3}}>
+                <Typography variant="h3">
+                    У вас ещё нет посылок
+                </Typography>
+            </Box>
+        </StyledGridOverlay>
+    );
 }
 
 const StyledDataGrid = styled(DataGrid)(({theme}) => ({
@@ -148,7 +194,6 @@ const columns = [
 
 
 const OrderHistory = () => {
-    const classes = useStyles();
     const loading = useSelector(state => state.package.getOrdersLoading);
     const dispatch = useDispatch();
     const orders = useSelector(state => state.package.orders);
@@ -192,47 +237,41 @@ const OrderHistory = () => {
     }, [page, dispatch, pageLimit]);
 
     return (
-        <Container style={{width: '100%', marginTop: '70px'}}>
-            {loading ? <Grid container justifyContent="center"><CircularProgress/></Grid> : (
-                orders.length === 0 ? (
-                    <Grid container justifyContent="center">
-                        <h3 className={classes.packageTitle}>У вас еще нет посылок</h3>
-                    </Grid>
-                ) : (
-                    <StyledDataGrid
-                        rows={myRows}
-                        columns={columns}
-                        pagination
-                        checkboxSelection
-                        pageSize={pageLimit}
-                        autoHeight
-                        rowsPerPageOptions={[5, 10, 20]}
-                        rowCount={totalRow}
-                        paginationMode="server"
-                        onPageSizeChange={newRowsLimit => setPageLimit(newRowsLimit)}
-                        onPageChange={(newPage) => {
-                            prevSelectionModel.current = selectionModel;
-                            setPage(newPage);
-                        }}
-                        onSelectionModelChange={(newSelectionModel) => {
-                            setSelectionModel(newSelectionModel);
-                        }}
-                        selectionModel={selectionModel}
-                        localeText={{
-                            toolbarDensity: 'Размер',
-                            toolbarDensityLabel: 'Размер',
-                            toolbarDensityCompact: 'Маленький',
-                            toolbarDensityStandard: 'Средний',
-                            toolbarDensityComfortable: 'Огромный',
-                            toolbarColumns: 'Колонки',
-                            toolbarColumnsLabel: 'Колонки',
-                        }}
-                        components={{
-                            Toolbar: CustomToolbar,
-                        }}
-                    />
-                )
-            )}
+        <Container style={{display: 'flex', width: '100%', marginTop: '5em'}}>
+                <StyledDataGrid
+                    rows={myRows}
+                    columns={
+                        [...columns,
+                            {field: 'trackNumber', sortable: false},
+                            {field: 'cargoNumber', sortable: false},
+                            {field: 'country', sortable: false},
+                            {field: 'status', sortable: false},
+                            {field: 'title', sortable: false},
+                        ]}
+                    pagination
+                    checkboxSelection
+                    pageSize={pageLimit}
+                    autoHeight
+                    rowsPerPageOptions={[5, 10, 20]}
+                    rowCount={totalRow}
+                    paginationMode="server"
+                    onPageSizeChange={newRowsLimit => setPageLimit(newRowsLimit)}
+                    onPageChange={(newPage) => {
+                        prevSelectionModel.current = selectionModel;
+                        setPage(newPage);
+                    }}
+                    onSelectionModelChange={(newSelectionModel) => {
+                        setSelectionModel(newSelectionModel);
+                    }}
+                    selectionModel={selectionModel}
+                    localeText={ruRU.components.MuiDataGrid.defaultProps.localeText}
+                    loading={loading}
+                    components={{
+                        Toolbar: CustomToolbar,
+                        LoadingOverlay: CustomLoadingOverlay,
+                        NoRowsOverlay: CustomNoRowsOverlay,
+                    }}
+                />
         </Container>
     );
 };
