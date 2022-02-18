@@ -35,8 +35,9 @@ export function* requisitesSagas({payload}) {
 
 export function* requisitesEditSaga({payload}) {
     try {
-        const response = yield axiosApi.put(`/requisites/edit/${payload.bank}`, {requisites: payload.requisites});
-        yield put(changeRequisitesSuccess(response.data));
+        yield axiosApi.put(`/requisites/edit/${payload.bank}`, {requisites: payload.requisites});
+        const newResponse = yield axiosApi.get(`/requisites`);
+        yield put(fetchRequisitesSuccess(newResponse.data));
         toast.success('Реквезиты отредактированы!');
     } catch (e) {
         yield put(changeRequisitesFailure(e.response.data));
@@ -45,8 +46,9 @@ export function* requisitesEditSaga({payload}) {
 
 export function* requisitesDeleteSaga({payload}) {
     try {
-        const response = yield axiosApi.delete(`/requisites/delete/${payload.bank}`);
-        yield put(deleteRequisitesSuccess(response.data));
+        yield axiosApi.delete(`/requisites/delete/${payload.bank}`);
+        const newResponse = yield axiosApi.get(`/requisites`);
+        yield put(fetchRequisitesSuccess(newResponse.data));
         toast.success('Реквезиты удалены!');
     } catch (e) {
         yield put(deleteRequisitesFailure(e.response.data));
@@ -55,8 +57,9 @@ export function* requisitesDeleteSaga({payload}) {
 
 export function* requisitesAddSaga({payload}) {
     try {
-        const response = yield axiosApi.post(`/requisites/add`, {requisites: payload.requisites, bank: payload.bank});
-        yield put(addRequisitesSuccess(response.data));
+        yield axiosApi.post(`/requisites/add`, {requisites: payload.requisites, bank: payload.bank});
+        const newResponse = yield axiosApi.get(`/requisites`);
+        yield put(fetchRequisitesSuccess(newResponse.data));
         toast.success('Реквезиты добавлены!');
     } catch (e) {
         yield put(addRequisitesFailure(e.response.data));
