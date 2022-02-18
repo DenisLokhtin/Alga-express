@@ -5,7 +5,7 @@ import {makeStyles} from "@mui/styles";
 import {Grid} from "@mui/material";
 import {Link} from "react-router-dom";
 import AddNewsAdmin from "../../components/AddNewsAdmin/AddNewsAdmin";
-import {newsCompany} from "../../paths";
+import {newsIdCompany} from "../../paths";
 import AppWindow from "../../components/UI/AppWindow/AppWindow";
 
 const useStyles = makeStyles({
@@ -52,14 +52,14 @@ const News = () => {
                 {user && user.role === 'admin' && (
                     <AddNewsAdmin/>
                 )}
-                {news.length !== 0 && news.map((item, i) => (
+                {news.length !== 0 && news.map(item => (
                     <Grid key={item._id} item>
                         <div className={classes.line} style={{display: "flex", justifyContent: 'space-between',
                             alignContent: 'center', alignItems: 'center'
                         }}>
                             <p className={classes.date}>{item.datetime}</p>
                             <p className={classes.news} style={{flexGrow: 1, paddingLeft: "30px"}}>{item.title}</p>
-                            <Link to={newsCompany + item._id} style={{paddingRight: "40px"}} >
+                            <Link to={newsIdCompany + item._id} style={{paddingRight: "40px"}} >
                                 Подробнее...
                             </Link>
                             <button onClick={() => setOpen(true)}
@@ -68,9 +68,7 @@ const News = () => {
                         </div>
                     </Grid>
                 ))}
-
             </Grid>
-
         </>
     );
 };

@@ -199,7 +199,7 @@ const AdminEditPackage = () => {
                                 <MenuItem value={'DELIVERED'}>Готово к выдаче</MenuItem>
                                 <MenuItem value={'DONE'}>Выдано</MenuItem>
                             </Select>
-                            <FormHelperText error={true}>{error.errors?.['status']?.message}</FormHelperText>
+                            <FormHelperText error={true}>{error?.errors?.['status']?.message}</FormHelperText>
                         </FormControl>
                     </Grid>
 
