@@ -15,6 +15,7 @@ const administration = require('./app/administration');
 const userPayments = require('./app/userPayments');
 const wareHouses = require('./app/wareHouses');
 const pages = require('./app/Pages');
+const requisites = require('./app/requisites');
 const tariffs = require('./app/tariffs');
 
 const app = express();
@@ -34,6 +35,7 @@ app.use('/cargo', administration);
 app.use('/payments', userPayments);
 app.use('/warehouses', wareHouses);
 app.use('/pages', pages);
+app.use('/requisites', requisites);
 app.use('/tariffs', tariffs);
 
 const run = async () => {

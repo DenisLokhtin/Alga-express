@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import Container from "@mui/material/Container";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchPagesRequest} from "../../store/actions/pagesAction";
+import Requisites from "../../components/Requisites/Requisites";
 
 const FAQ = () => {
     const dispatch = useDispatch();
@@ -13,6 +14,7 @@ const FAQ = () => {
 
     return (
         <Container style={{'textAlign': 'center'}} component='div'>
+            <Requisites/>
             <Container style={{
                 'borderRadius': '3px',
                 'margin': '10px 0 20px 0',

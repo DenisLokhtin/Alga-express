@@ -13,6 +13,7 @@ import buyoutSlice from "./slices/buyoutSlice";
 import paymentSlice from "./slices/paymentSlices";
 import wareHouseSlice from "./slices/wareHouseSlice";
 import pagesSlice from "./slices/pagesSlice";
+import requisitesSlice from "./slices/requisitesSlice";
 import tariffSlice from "./slices/tariffSlice";
 
 const rootReducer = combineReducers({
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
     'payments': paymentSlice.reducer,
     'wareHouses': wareHouseSlice.reducer,
     'pages': pagesSlice.reducer,
+    'requisites': requisitesSlice.reducer,
     'tariffs':tariffSlice.reducer,
 });
 
