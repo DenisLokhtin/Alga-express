@@ -3,7 +3,8 @@ exports.config = {
   helpers: {
     Puppeteer: {
       url: 'http://localhost:3010',
-      show: true,
+      show: !process.env.CI,
+      headless: Boolean(process.env.CI),
       windowSize: '1200x900'
     },
   },
@@ -16,8 +17,8 @@ exports.config = {
   teardown: null,
   hooks: [],
   gherkin: {
-    features: './features/*.feature',
-    steps: ['./step_definitions/authSteps.js', './step_definitions/packageRegisterSteps.js']
+    features: './features/createNews.feature',
+    steps: './step_definitions/createNewsSteps.js',
   },
   plugins: {
     screenshotOnFail: {

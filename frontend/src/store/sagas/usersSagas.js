@@ -8,8 +8,9 @@ import {
     editPassportSuccess,
     editUserDataFailure,
     editUserDataRequest,
-    editUserDataSuccess,
-    fetchUserPaymentRequest,
+    editUserDataSuccess, fetchUserPaymentFailure,
+    fetchUserPaymentRequest, fetchUserPaymentSuccess, fetchUsersFailure,
+    fetchUsersRequest, fetchUsersSuccess,
     loginUser,
     loginUserFailure,
     loginUserSuccess,
@@ -92,20 +93,30 @@ export function* userPaymentSaga({payload}) {
     }
 }
 
-export function* fetchUserPaymentSaga ({payload}) {
+export function* fetchUserPaymentSaga({payload}) {
     console.log('payload', payload);
     const page = payload.page;
     const limit = payload.limit;
 
-    try{
+    try {
         const response = yield axiosApi.get(`/userEdit/payment?page=${page}&limit=${limit}`);
-        yield put(addUserPaymentSuccess(response.data));
+        yield put(fetchUserPaymentSuccess(response.data));
     } catch (e) {
         toast.error(e.response.data.error);
-        yield put(addUserPaymentFailure(e.response.data.error));
+        yield put(fetchUserPaymentFailure(e.response.data.error));
     }
 }
 
+export function* fetchUserSaga() {
+    try {
+        const response = yield axiosApi.get(`/users`);
+        yield put(fetchUsersSuccess(response.data));
+    } catch (e) {
+        toast.error(e.response.data.error);
+        yield put(fetchUsersFailure(e.response.data.error));
+
+    }
+}
 
 export function* logoutUserSaga() {
     try {
@@ -128,6 +139,7 @@ const usersSaga = [
     takeEvery(editPassportRequest, editPassportSaga),
     takeEvery(addUserPaymentRequest, userPaymentSaga),
     takeEvery(fetchUserPaymentRequest, fetchUserPaymentSaga),
+    takeEvery(fetchUsersRequest, fetchUserSaga),
 ];
 
 export default usersSaga;

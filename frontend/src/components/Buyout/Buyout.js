@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {Container, FormControl, FormHelperText, Grid, InputLabel, MenuItem, Select} from "@mui/material";
 import FormElement from "../UI/Form/FormElement";
 import FileInput from "../UI/FileInput/FileInput";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {makeStyles} from "@mui/styles";
-import {addBuyoutRequest} from "../../store/actions/buyoutActions";
+import {addBuyoutRequest, clearBuyoutsError} from "../../store/actions/buyoutActions";
 
 
 const useStyles = makeStyles(theme => ({
@@ -35,12 +35,28 @@ const Buyout = () => {
     const loading = useSelector(state => state.buyouts.createLoading);
     const error = useSelector(state => state.buyouts.createError);
 
+
     const [buyout, setBuyout] = useState({
         description: "",
         image: null,
         url: "",
         country:"",
+        price: '',
+        commission:'',
+        value:'',
     });
+
+    // useEffect(()=>{
+    //         oneBuyout && setBuyout(prevState => ({
+    //             ...prevState,
+    //             description: oneBuyout.description,
+    //             image: oneBuyout.image,
+    //             url: oneBuyout.url,
+    //             country:oneBuyout.country,
+    //         }))
+    // },[oneBuyout.description,oneBuyout.url, oneBuyout.image, oneBuyout.country])
+
+
 
     const submitFormHandler = e => {
         e.preventDefault();
@@ -55,10 +71,12 @@ const Buyout = () => {
             image: null,
             url: "",
             country: "",
+            price:'',
+            commission: '',
+            value:'',
         })
     };
 
-    console.log('state', buyout)
 
     const inputChangeHandler = e => {
         const name = e.target.name;
@@ -84,6 +102,12 @@ const Buyout = () => {
         }
     };
 
+    useEffect(()=>{
+        return () => {
+            dispatch(clearBuyoutsError());
+        };
+    },[dispatch])
+
     return (
         <Container
             component="section"
@@ -104,7 +128,7 @@ const Buyout = () => {
                     <Select
                         labelId="demo-controlled-open-select-label"
                         id="demo-controlled-open-select"
-                        value={buyout.country}
+                        value={buyout.country }
                         label="Из какой страны выкупить"
                         name="country"
                         required

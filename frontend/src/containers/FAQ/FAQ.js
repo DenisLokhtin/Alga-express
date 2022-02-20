@@ -1,87 +1,29 @@
-import React from 'react';
-import {makeStyles} from "@mui/styles";
+import React, {useEffect} from 'react';
 import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
-
-const useStyles = makeStyles(theme => ({
-    paper: {
-        display: 'flex',
-        justifyContent: 'center',
-    },
-}));
+import {useDispatch, useSelector} from "react-redux";
+import {fetchPagesRequest} from "../../store/actions/pagesAction";
+import Requisites from "../../components/Requisites/Requisites";
 
 const FAQ = () => {
-    const classes = useStyles();
+    const dispatch = useDispatch();
+    const page = useSelector(state => state.pages.page);
+
+    useEffect(() => {
+        dispatch(fetchPagesRequest('faq'));
+    }, [dispatch]);
 
     return (
         <Container style={{'textAlign': 'center'}} component='div'>
+            <Requisites/>
             <Container style={{
-                'border': '2px solid #2E2E2E',
                 'borderRadius': '3px',
                 'margin': '10px 0 20px 0',
                 'textAlign': 'left'
-            }} component='div'>
-                <div className={classes.paper}>
-                    <Typography component="h1" variant="h3">
-                        Вопрос-ответ
-                    </Typography>
-                </div>
-                <Grid style={{'marginBottom': '15px'}} component='div'>
-                    <div className="page-content">
-                        <p><strong>Q: Зачем покупать в США? В чем смысл?</strong>&nbsp;</p>
-                        <p>
-                            <strong>A:</strong>&nbsp;Многим известно отличное
-                            соотношение цены и качества товаров, продающихся в США. Покупая в американских магазинах, Вы
-                            можете быть уверенны, что приобретете товар отличного качества по наиболее низкой цене.
-                            Нельзя
-                            также забывать про ОГРОМНЫЕ распродажи, когда скидки на товары могут достигать 90%. Для
-                            сравнения можете открыть любой интернет-магазин, выбрать интересующий Вас товар и сравнить
-                            цены
-                            с местными.
-                        </p>
-                        <p>&nbsp;</p>
-                        <p><strong>Q: Зачем вам копия моего паспорта?</strong>&nbsp;</p>
-                        <p>
-                            <strong>A:</strong>&nbsp;Копии паспортов клиентов
-                            необходимы для предъявления сотрудникам таможенной службы при получении груза.
-                        </p>
-                        <p>&nbsp;</p>
-                        <p><strong>Q: Почему ваши услуги относительно дешевые?</strong></p>
-                        <p>
-                            <strong>A:</strong>&nbsp;Наша
-                            компания сотрудничает с одним из крупных и проверенных перевозчиков из США в СНГ, что
-                            позволяет
-                            нам получать низкие цены на перевозку из США в Кыргызстан.
-                        </p>
-                        <p>&nbsp;</p>
-                        <p><strong>Q: Я бы хотел самостоятельно оформлять заказы в американских интернет магазинах. Что
-                            для
-                            этого нужно?</strong>&nbsp;</p>
-                        <p>
-                            <strong>A:</strong>&nbsp;Прежде всего, Вам необходимо иметь банковскую карту (чаще всего
-                            VISA) с наличием достаточной для покупки суммы на счете и далее следовать.
-                        </p>
-                        <p>&nbsp;</p>
-                        <p><strong>Q: А можно ли доверять интернет магазинам? Не пропадут ли мои
-                            деньги?</strong>&nbsp;</p>
-                        <p>
-                            <strong>A:</strong>&nbsp;Интернет-шоппинг во всем мире, и особенно в США, набирает большие
-                            обороты. Большое количество онлайн-магазинов концентрируются только на торговле по
-                            интернету.
-                            Таким магазинам очень важно мнение клиентов об их работе, так как в интернете очень легко
-                            найти
-                            любую негативную информацию. Кроме того, законодательство США строго конролирует их
-                            деятельность. Наш список онлайн-магазинов содержит наиболее популярные площадки, где Вы
-                            сможете
-                            найти любую интересующую Вас продукцию. Если Вы хотите сделать заказ в интернет-магазине, не
-                            входящем в этот список, мы Вам в этом поможем.
-                        </p>
-                    </div>
-                </Grid>
+            }}
+                       component='div'>
+                <div className="post__content" dangerouslySetInnerHTML={{__html: page.text}}/>
             </Container>
         </Container>
-
     )
 };
 

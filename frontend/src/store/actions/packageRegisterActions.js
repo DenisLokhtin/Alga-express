@@ -26,5 +26,8 @@ export const {
     changeStatusesRequest,
     changeStatusesSuccess,
     changeStatusesError,
+    changeStatusRequest,
+    changeStatusSuccess,
+    changeStatusError,
     clearAdminErrors,
 } = packageSlice.actions;

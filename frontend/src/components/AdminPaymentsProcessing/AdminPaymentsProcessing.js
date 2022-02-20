@@ -45,7 +45,6 @@ const AdminPaymentsProcessing = () => {
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [permitPayment, setPermitPayment] = useState([]);
     const [input, setInput] = useState(false);
-    const [buttonDis, setButtonDis] = useState(true);
 
     useEffect(() => {
         dispatch(fetchPaymentRequest({page: page, limit: rowsPerPage}));
@@ -74,7 +73,7 @@ const AdminPaymentsProcessing = () => {
             setInput(true);
         }
     }, [
-        paymentData && paymentData.data
+        paymentData && paymentData.data,
     ]);
 
     const handleChangePage = (event, newPage) => {
@@ -105,9 +104,6 @@ const AdminPaymentsProcessing = () => {
         e.preventDefault();
         dispatch(paymentAcceptedRequest(permitPayment[i]));
     };
-
-    console.log(permitPayment);
-    console.log(paymentData);
 
     return (input &&
         <Container

@@ -8,7 +8,16 @@ const theme = createTheme({
                 fullWidth: true,
             },
         },
+        MuiButton: {
+            defaultProps:{
+                variant: "outlined",
+                fullWidth: true
+            }
+        }
     },
+        // palette: {
+        //     mode: 'dark',
+        // },
 });
 
 export default theme;

@@ -17,12 +17,12 @@ import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWit
 import FormElement from "../../components/UI/Form/FormElement";
 
 const menuItems = [
-    {value: 'REGISTERED', text: 'Оформлен'},
-    {value: 'ON_WAREHOUSE', text: 'На складе'},
-    {value: 'ON_WAY', text: 'Вылетел'},
-    {value: 'PROCESSED', text: 'Обрабатывается'},
-    {value: 'DELIVERED', text: 'Готово к выдаче'},
-    {value: 'DONE', text: 'Выдано'},
+        {value: 'REGISTERED', text: 'Оформлен'},
+        {value: 'ON_WAREHOUSE', text: 'На складе'},
+        {value: 'ON_WAY', text: 'Вылетел'},
+        {value: 'PROCESSED', text: 'Обрабатывается'},
+        {value: 'DELIVERED', text: 'Готово к выдаче'},
+        {value: 'DONE', text: 'Выдано'},
 ];
 
 const useStyles = makeStyles(() => ({

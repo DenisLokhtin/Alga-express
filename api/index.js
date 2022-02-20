@@ -14,6 +14,10 @@ const flight = require('./app/flights');
 const buyouts = require('./app/buyouts');
 const administration = require('./app/administration');
 const userPayments = require('./app/userPayments');
+const wareHouses = require('./app/wareHouses');
+const pages = require('./app/Pages');
+const requisites = require('./app/requisites');
+const tariffs = require('./app/tariffs');
 const help = require('./help_commands');
 const User = require("./models/User");
 
@@ -41,6 +45,10 @@ app.use('/flights', flight);
 app.use('/buyouts', buyouts);
 app.use('/cargo', administration);
 app.use('/payments', userPayments);
+app.use('/warehouses', wareHouses);
+app.use('/pages', pages);
+app.use('/requisites', requisites);
+app.use('/tariffs', tariffs);
 
 bot.start((ctx) => {ctx.reply(`Здравствуйте ${ctx.message.from.first_name ? ctx.message.from.first_name : ''}! 
 Для дальнейшей работы необходимо ввести свой номер телефона указанный на сайте \n /help - полный список команд`)});

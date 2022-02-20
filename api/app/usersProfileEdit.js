@@ -6,15 +6,34 @@ const config = require("../config");
 const path = require("path");
 const dayjs = require('dayjs');
 const Payment = require("../models/Payment");
+const fs = require("fs");
 
 const router = express.Router();
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
+        let newDir = `${config.uploadPath}`;
+
+        if(file.fieldname === 'avatar') {
+            newDir = newDir + '/avatar';
+        }
+        if(file.fieldname === 'passport') {
+            newDir = newDir + '/passport';
+        }
+        if(file.fieldname === 'payment') {
+            newDir = newDir + '/payment';
+        }
+
+        const existFile = fs.existsSync(newDir);
+
+        if (!existFile) {
+            fs.mkdir(newDir, error => cb(error, newDir));
+        }
+
         cb(null, config.uploadPath);
     },
     filename: async (req, file, cb) => {
-        console.log(req.params.id);
+
         if (file.fieldname === 'avatar') {
             cb(null, file.fieldname + '/' + req.user._id + path.extname(file.originalname))
         }
@@ -35,9 +54,8 @@ const storage = multer.diskStorage({
                 index = parseInt(str.substr(firstIndex + 1, (secondIndex - firstIndex) - 1)) + 1;
             }
             for (const key in req.files['passport']) {
-                cb(null, 'passport/' + index + '_' + dayjs(new Date()).format('DDMMYYYY') + '_' + req.user._id + path.extname(file.originalname))
+                cb(null, file.fieldname + index + '_' + dayjs(new Date()).format('DDMMYYYY') + '_' + req.user._id + path.extname(file.originalname))
                 index++;
-                console.log(index);
             }
         }
 
@@ -55,7 +73,7 @@ const storage = multer.diskStorage({
                 const secondIndex = str[str.length - 1].image.indexOf('_', 0);
                 index = parseInt(str[str.length - 1].image.substr(firstIndex + 1, (secondIndex - firstIndex) - 1)) + 1;
             }
-            cb(null, 'payment/' + index + '_' + dayjs(new Date()).format('DDMMYYYY') + '_' + req.user._id + path.extname(file.originalname))
+            cb(null, file.fieldname + index + '_' + dayjs(new Date()).format('DDMMYYYY') + '_' + req.user._id + path.extname(file.originalname))
         }
     }
 });

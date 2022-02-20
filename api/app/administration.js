@@ -5,6 +5,7 @@ const Payment = require("../models/Payment");
 const PaymentMove = require("../models/PaymentMove");
 const User = require("../models/User");
 const sendMail = require("../middleware/sendMail");
+const TariffGroup = require("../models/TariffGroup");
 
 const router = express.Router();
 
@@ -29,12 +30,24 @@ router.get('/', auth, permit('admin'), async (req, res) => {
 
         res.send({totalElements: size.length, data: response});
     } catch (e) {
-        res.status(400).send({error:e});
+        res.status(400).send({error: e});
     }
 });
 
+router.get('/tariff', auth, permit('admin'), async (req, res) => {
+    try {
+        const tariff = await TariffGroup.findOne();
+        res.send(tariff);
+    } catch (e) {
+        res.status(500).send({error: e});
+    }
+});
+
+
 router.post('/', auth, permit('admin'), async (req, res) => {
-    const pay = Number(req.body.pay);
+    let pay = Number(req.body.pay).toFixed(2);
+    pay = Number(pay);
+
     try {
         const checkPayment = await Payment.findById(req.body.id)
             .populate('user', 'name');
@@ -48,6 +61,7 @@ router.post('/', auth, permit('admin'), async (req, res) => {
                     userPayment: req.body.id,
                     permitPayment: req.user._id,
                     lastBalance: userPayment.balance,
+                    user: userPayment._id,
                     status: 'REPLENISH',
                 };
 
@@ -68,10 +82,34 @@ router.post('/', auth, permit('admin'), async (req, res) => {
 
     } catch (e) {
         console.error(e);
-        res.status(400).send({error:e});
+        res.status(400).send({error: e});
 
 
     }
+});
+
+router.post('/cash', auth, permit('admin'), async (req, res) => {
+    let price = Number(req.body.price).toFixed(2);
+    price = Number(price);
+    try {
+        const user = await User.findById(req.body.id);
+        const payment = {
+            permitPayment: req.user._id,
+            replenish: price,
+            lastBalance: user.balance,
+            user: user._id,
+            status: 'REPLENISH_CASH',
+        }
+        const newBalance = user.balance + price;
+        await User.findByIdAndUpdate(req.body.id, {balance: newBalance.toFixed(2)});
+        const paySave = new PaymentMove(payment);
+        await paySave.save();
+
+       res.send('Оплата прошла успешно');
+   } catch (e) {
+       res.status(500).send(e);
+        console.log(e);
+   }
 });
 
 router.put('/:id', auth, permit('admin'), async (req, res) => {
@@ -93,6 +131,7 @@ router.put('/:id', auth, permit('admin'), async (req, res) => {
                 replenish: pay,
                 userPayment: userPayment._id,
                 permitPayment: req.user._id,
+                user: user._id,
                 lastBalance: user.balance,
                 status: 'REPLENISH_EDIT',
             };
@@ -108,12 +147,12 @@ router.put('/:id', auth, permit('admin'), async (req, res) => {
             const paySave = new PaymentMove(permitData);
             await paySave.save();
 
-            return  res.send(paySave);
+            return res.send(paySave);
         } else {
-            return  res.status(203).send({error: 'Оплата не найдена'})
+            return res.status(203).send({error: 'Оплата не найдена'})
         }
     } catch (e) {
-        res.status(400).send({error:e});
+        res.status(400).send({error: e});
 
     }
 });

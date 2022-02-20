@@ -7,5 +7,11 @@ export const {
     paymentAcceptedRequest,
     paymentAcceptedSuccess,
     paymentAcceptedFailure,
+    addPaymentAdminRequest,
+    addPaymentAdminSuccess,
+    addPaymentAdminFailure,
+    fetchTariffGroupRequest,
+    fetchTariffGroupSuccess,
+    fetchTariffGroupFailure,
 
 } = paymentSlice.actions;

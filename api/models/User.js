@@ -75,10 +75,37 @@ const UserSchema = new mongoose.Schema({
     balance: {
         type: Number,
         default: 0,
-        required: true,
     },
     passport: [imagePassport],
     phone: [phoneNumbers],
+    tariff: {
+        usa: {
+            type: Number,
+            min: 0,
+            default: 0,
+        },
+        turkey: {
+            type: Number,
+            min: 0,
+            default: 0,
+        },
+        china: {
+            type: Number,
+            min: 0,
+            default: 0,
+        },
+        chinaGround: {
+            type: Number,
+            min: 0,
+            default: 0,
+        },
+    },
+    group: {
+        type: String,
+        trim: true,
+        enum: ['NEW', 'BUYERS', "ADVANCED", 'SPECIAL'],
+        default: "NEW",
+    },
 });
 
 UserSchema.pre('save', async function (next) {

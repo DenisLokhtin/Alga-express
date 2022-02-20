@@ -1,3 +1,6 @@
 node_modules
 output
 .idea
+
+./step_definitions/createNewsSteps.js
+./features/createNews.feature
