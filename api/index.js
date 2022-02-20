@@ -15,6 +15,7 @@ const buyouts = require('./app/buyouts');
 const administration = require('./app/administration');
 const userPayments = require('./app/userPayments');
 const help = require('./help_commands');
+const User = require("./models/User");
 
 const token = process.env.BOT_TOKEN
 
@@ -62,7 +63,21 @@ bot.action('btn_1', async (ctx) => {
        console.error(e);
    }
 });
-bot.on('text', (ctx) => {ctx.reply('check'), console.log(ctx.message.from)});
+bot.on('text', async (ctx) => {
+    ctx.reply('check');
+    const text = ctx.message.text;
+    // const number = text.slice(1, text.length);
+    const userTelegramId = await User.find({'phone.number': '786677899'});
+    console.log(userTelegramId);
+
+    if (userTelegramId) {
+        if (!userTelegramId.phone.idChat)
+            await User.findByIdAndUpdate(userTelegramId._id, {phone:{idChat: ctx.message.from.id}});
+    console.log(text);
+    }
+    console.log(ctx.message.from.id);
+
+});
 bot.launch();
 
 process.once('SIGINT', () => bot.stop('SIGINT'));
