@@ -17,8 +17,8 @@ exports.config = {
   teardown: null,
   hooks: [],
   gherkin: {
-    features: './features/createNews.feature',
-    steps: './step_definitions/createNewsSteps.js',
+    features: './features/*.feature',
+    steps: './step_definitions/*.js',
   },
   plugins: {
     screenshotOnFail: {
