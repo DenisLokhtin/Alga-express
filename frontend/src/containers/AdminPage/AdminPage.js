@@ -1,9 +1,10 @@
 import React, {useEffect} from 'react';
-import {Container, Grid, Paper} from "@mui/material";
+import {Container, Grid} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchCurrencies} from "../../store/actions/currenciesActions";
 import CurrenciesCard from "../../components/CurrenciesCard/CurrenciesCard";
 import {fetchNewPackages} from "../../store/actions/packageRegisterActions";
+import NewPackageFilter from "../../components/NewPackageFilter/NewPackageFilter";
 
 const AdminPage = () => {
     const dispatch = useDispatch();
@@ -15,23 +16,17 @@ const AdminPage = () => {
         dispatch(fetchNewPackages());
     }, [dispatch]);
 
-    console.log(newPackages);
-
     return (
         <Container>
-            <Grid container sx={{paddingTop: "50px"}} spacing={2}>
-                <Grid item xs={12} md={6} lg={6}>
-                    <Paper>
-
-                    </Paper>
+            <Grid container sx={{paddingY: "20px"}} spacing={2}>
+                <Grid item xs={12} md={12} lg={12}>
+                    <NewPackageFilter newPackages={newPackages}/>
                 </Grid>
 
                 {currencies.length !== 0 &&
-                    <Grid item xs={12} md={3} lg={3}>
+                    <Grid item xs={12} md={12} lg={12}>
                         <CurrenciesCard currency={currencies[0]}/>
                     </Grid>}
-
-                <Grid item></Grid>
             </Grid>
         </Container>
     );

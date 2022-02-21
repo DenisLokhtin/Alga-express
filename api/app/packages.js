@@ -14,7 +14,7 @@ const router = express.Router();
 
 router.get('/newPackages', auth, permit('admin', 'warehouseman', 'user'), async (req, res) => {
    try {
-       const packages = await Package.find({status: 'REGISTERED'});
+       const packages = await Package.find({status: 'REGISTERED'}).select('title cargoNumber amount price country');
        res.send(packages);
    } catch (e) {
        res.status(500).send(e);

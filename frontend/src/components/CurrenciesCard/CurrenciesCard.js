@@ -36,44 +36,48 @@ const CurrenciesCard = ({currency}) => {
         <Card>
             <CardHeader title={"Валюты"}/>
             <CardContent>
-                <Grid container flexDirection="column" spacing={1}>
-                    <Grid item>
-                        <TextField
-                            inputMode="numeric"
-                            label="USD"
-                            value={currencyData.usd}
-                            name="usd"
-                            type="number"
-                            onChange={changeHandler}
-                            disabled={status}
-                            variant="outlined"
-                        />
+                <Grid container spacing={1}>
+                    <Grid item xs={12} md={12} lg={12}>
+                        <Grid container spacing={2} justifyContent="space-evenly">
+                            <Grid item>
+                                <TextField
+                                    inputMode="numeric"
+                                    label="USD"
+                                    value={currencyData.usd}
+                                    name="usd"
+                                    type="number"
+                                    onChange={changeHandler}
+                                    disabled={status}
+                                    variant="outlined"
+                                />
+                            </Grid>
+                            <Grid item>
+                                <TextField
+                                    inputMode="numeric"
+                                    label="TRY"
+                                    value={currencyData.try}
+                                    name="try"
+                                    type="number"
+                                    onChange={changeHandler}
+                                    disabled={status}
+                                    variant="outlined"
+                                />
+                            </Grid>
+                            <Grid item>
+                                <TextField
+                                    inputMode="numeric"
+                                    label="CNY"
+                                    value={currencyData.cny}
+                                    name="cny"
+                                    type="number"
+                                    onChange={changeHandler}
+                                    disabled={status}
+                                    variant="outlined"
+                                />
+                            </Grid>
+                        </Grid>
                     </Grid>
-                    <Grid item>
-                        <TextField
-                            inputMode="numeric"
-                            label="TRY"
-                            value={currencyData.try}
-                            name="try"
-                            type="number"
-                            onChange={changeHandler}
-                            disabled={status}
-                            variant="outlined"
-                        />
-                    </Grid>
-                    <Grid item>
-                        <TextField
-                            inputMode="numeric"
-                            label="CNY"
-                            value={currencyData.cny}
-                            name="cny"
-                            type="number"
-                            onChange={changeHandler}
-                            disabled={status}
-                            variant="outlined"
-                        />
-                    </Grid>
-                    <Grid item>
+                    <Grid item xs={12} md={12} lg={12}>
                         <Grid container justifyContent="space-evenly">
                             <Grid item>
                                 <IconButton
