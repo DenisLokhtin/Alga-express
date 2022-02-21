@@ -36,7 +36,6 @@ const UserPage = () => {
             <Grid>
                 <TariffPage/>
             </Grid>
-
         </Container>
     );
 };
