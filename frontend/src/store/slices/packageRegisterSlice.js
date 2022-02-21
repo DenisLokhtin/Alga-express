@@ -26,6 +26,18 @@ const packageSlice = createSlice({
     initialState,
 
     reducers: {
+        fetchNewPackages(state, action) {
+            state.getOrdersLoading = true;
+        },
+        fetchNewPackagesSuccess(state, action) {
+            state.getOrdersLoading = false;
+            state.getOrderError = null;
+            state.orders = action.payload;
+        },
+        fetchNewPackagesFailure(state, action) {
+            state.getOrdersLoading = false;
+            state.getOrderError = action.payload;
+        },
         createPackageRequest(state) {
             state.createPackageRequest = true;
         },
