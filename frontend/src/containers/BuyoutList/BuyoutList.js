@@ -71,7 +71,7 @@ const BuyoutList = () => {
                                 </Grid>
                                 <Grid item>
                                     {user && user.role === 'admin' && (
-                                        <Link to={editBuyout} className={classes.btn}>Редактировать выкуп</Link>
+                                        <Link to={editBuyout.slice(0, editBuyout.length - 3) + item._id} className={classes.btn}>Редактировать выкуп</Link>
                                     )}
                                 </Grid>
                             </Grid>
