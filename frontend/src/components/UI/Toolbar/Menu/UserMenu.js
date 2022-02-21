@@ -17,6 +17,7 @@ import {
     addFlightAdmin,
     addPaymentHandler,
     addUserPayment,
+    adminPagePath,
     editingSingleTrackNumber,
     editPages,
     listBuyouts,
@@ -24,7 +25,8 @@ import {
     listPaymentsAdmin,
     newPackageRegister,
     orderBuyouts,
-    packageHistory, packageInfo,
+    packageHistory,
+    packageInfo,
     processingTrackNumbersAdmin,
     userPaymentsList
 } from "../../../../paths";
@@ -47,6 +49,7 @@ const userSettings = [
 ];
 
 const adminSettings = [
+    {url: adminPagePath, title: 'Администратор', icon: <ManageAccountsIcon/>},
     {url: listFlightAdmin, title: 'Рейсы', icon: <FlightIcon/>},
     {url: addFlightAdmin, title: 'Добавить рейс', icon: <AddIcon/>},
     {url: listPaymentsAdmin, title: 'Список пополнений', icon: <FactCheckIcon/>},

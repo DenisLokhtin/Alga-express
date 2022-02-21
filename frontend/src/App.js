@@ -60,7 +60,7 @@ import {
     wareHouseCompany,
     editPages,
     tariffs,
-    editingSingleTrackNumber,
+    editingSingleTrackNumber, adminPagePath,
 } from "./paths";
 import OrderBuyout from "./containers/OrderBuyout/OrderBuyout";
 import SingleStatusEdit from "./containers/SingleStatusEdit/SingleStatusEdit";
@@ -75,6 +75,7 @@ import EditWareHouseAdmin from "./components/EditWareHouseAdmin/EditWareHouseAdm
 import TariffsPage from "./containers/TariffPage/TariffPage";
 import ProtectedRoutesForUser from "./components/ProtectedRoutesForUser/ProtectedRoutesForUser";
 import ProtectedRoutesForAdmin from "./components/ProtectedRoutesForAdmin/ProtectedRoutesForAdmin";
+import AdminPage from "./containers/AdminPage/AdminPage";
 
 const App = () => {
 
@@ -95,6 +96,7 @@ const App = () => {
                 </Route>
                 <Route element={<ProtectedRoutesForAdmin/>}>
                     {/* Routes for only admin */}
+                    <Route path={adminPagePath} element={<AdminPage/>}/>
                     <Route path={newsEditCompany} element={<EditNews/>}/>
                     <Route path={editPages} element={<EditPages/>}/>
                     <Route path={editPackageAdmin} element={<AdminEditPackage/>}/>

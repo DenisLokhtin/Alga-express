@@ -12,6 +12,15 @@ const packageValidate = require("../middleware/packageValidate");
 
 const router = express.Router();
 
+router.get('/newPackages', auth, permit('admin', 'warehouseman', 'user'), async (req, res) => {
+   try {
+       const packages = await Package.find({status: 'REGISTERED'});
+       res.send(packages);
+   } catch (e) {
+       res.status(500).send(e);
+   }
+});
+
 router.get('/', auth, permit('admin', 'warehouseman', 'user'), async (req, res) => {
     const query = {};
 
