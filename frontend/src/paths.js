@@ -38,6 +38,7 @@ export const addWareHouseAddress = '/alga-express/wareHouse/add';
 export const editWareHouseAddress = '/alga-express/wareHouse/edit/:id';
 export const editingSingleWareHouse = '/alga-express/wareHouse/edit/';
 export const userPage = '/user/profile';
+export const adminPagePath = '/adminPage';
 
 
 
