@@ -71,7 +71,7 @@ const EditBuyout = () => {
                 value: oneBuyout?.value,
             }))
 
-    }, [dispatch, id, oneBuyout && oneBuyout.description
+    }, [dispatch, id, oneBuyout, oneBuyout && oneBuyout.description
     ]);
 
 
