@@ -143,7 +143,7 @@ const UserProfileEdit = () => {
         return () => {
             dispatch(clearError());
         };
-    }, [dispatch, id]);
+    }, [dispatch, id, userData]);
 
     useMemo(() => {
         userData && setDataUser(prevState => ({
@@ -157,9 +157,7 @@ const UserProfileEdit = () => {
         ]));
 
         userData && setPassport([...userData.passport]);
-    }, [userData && userData.passport,
-        refresh,
-    ]);
+    }, [userData && userData.passport, userData]);
 
     useEffect(() => {
         if (!(phone.length <= 3)) {

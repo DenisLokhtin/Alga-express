@@ -123,7 +123,7 @@ const EditPackage = () => {
         return () => {
             dispatch(clearTextFieldsErrors());
         };
-    }, [dispatch, onePackage.trackNumber, onePackage.title, onePackage.amount, onePackage.price,
+    }, [dispatch, onePackage, params.id, onePackage.trackNumber, onePackage.title, onePackage.amount, onePackage.price,
         onePackage.country, onePackage.width, onePackage.height, onePackage.length, onePackage.urlPackage
     ]);
 

@@ -2,20 +2,17 @@ import {put, takeEvery} from 'redux-saga/effects';
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
 import {
-    fetchRequisitesRequest,
-    fetchRequisitesSuccess,
-    fetchRequisitesFailure,
+    addRequisitesFailure,
+    addRequisitesRequest,
+    changeRequisitesFailure,
+    changeRequisitesRequest,
+    deleteRequisitesFailure,
+    deleteRequisitesRequest,
     fetchOneRequisitesRequest,
     fetchOneRequisitesSuccess,
-    deleteRequisitesRequest,
-    deleteRequisitesSuccess,
-    deleteRequisitesFailure,
-    addRequisitesRequest,
-    addRequisitesSuccess,
-    addRequisitesFailure,
-    changeRequisitesRequest,
-    changeRequisitesSuccess,
-    changeRequisitesFailure
+    fetchRequisitesFailure,
+    fetchRequisitesRequest,
+    fetchRequisitesSuccess
 } from "../actions/requisitesActions";
 
 export function* requisitesSagas({payload}) {
