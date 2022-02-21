@@ -60,7 +60,9 @@ import {
     wareHouseCompany,
     editPages,
     tariffs,
-    editingSingleTrackNumber, adminPagePath,
+    editingSingleTrackNumber,
+    userPage,
+    adminPagePath,
 } from "./paths";
 import OrderBuyout from "./containers/OrderBuyout/OrderBuyout";
 import SingleStatusEdit from "./containers/SingleStatusEdit/SingleStatusEdit";
@@ -76,6 +78,7 @@ import TariffsPage from "./containers/TariffPage/TariffPage";
 import ProtectedRoutesForUser from "./components/ProtectedRoutesForUser/ProtectedRoutesForUser";
 import ProtectedRoutesForAdmin from "./components/ProtectedRoutesForAdmin/ProtectedRoutesForAdmin";
 import AdminPage from "./containers/AdminPage/AdminPage";
+import UserPage from "./containers/UserPage/UserPage";
 
 const App = () => {
 
@@ -129,6 +132,7 @@ const App = () => {
                 <Route path={howCompany} element={<HowItWorks/>}/>
                 <Route path={newsCompany} element={<News/>}/>
                 <Route path={newsIdCompany} element={<SingleNews/>}/>
+                <Route path={userPage} element={<UserPage/>}/>
                 <Route
                     path="*"
                     element={
