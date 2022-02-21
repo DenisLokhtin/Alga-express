@@ -24,7 +24,7 @@ import {
     changeStatusesSuccess,
     changeStatusesRequest,
     changeStatusSuccess,
-    changeStatusError, changeStatusRequest,
+    changeStatusError, changeStatusRequest, fetchNewPackagesSuccess, fetchNewPackagesFailure, fetchNewPackages,
 } from "../actions/packageRegisterActions";
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
@@ -143,6 +143,14 @@ function* changeSingleStatus({payload: packageData}) {
     }
 }
 
+export function* fetchNewPackagesSaga() {
+    try {
+        const {data} = yield axiosApi.get('/packages/newPackages');
+        yield put(fetchNewPackagesSuccess(data));
+    } catch (e) {
+        yield put(fetchNewPackagesFailure(e));
+    }
+}
 
 
 
@@ -156,6 +164,7 @@ const packageSagas = [
     takeEvery(getOrderByIdRequest, getOrderById),
     takeEvery(changeStatusesRequest, changeStatuses),
     takeEvery(changeStatusRequest, changeSingleStatus),
+    takeEvery(fetchNewPackages, fetchNewPackagesSaga)
 ];
 
 export default packageSagas;

@@ -11,6 +11,7 @@ const Requisites = require("./models/Requisites");
 const Pages = require("./models/Pages");
 const TariffGroup = require("./models/TariffGroup");
 const WareHouse = require("./models/WareHouse");
+const Currency = require("./models/Currency");
 
 const run = async () => {
     await mongoose.connect(config.db.url, config.db.options);
@@ -30,6 +31,10 @@ const run = async () => {
             chinaGround: 5,
         }
     });
+
+    await Currency.create({
+        usd: 86
+    })
 
     const [user, admin] = await User.create(
         {
