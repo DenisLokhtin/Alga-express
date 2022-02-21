@@ -35,7 +35,7 @@ const TableListPaginations = ({data, page, rowsPerPage, changePage, changeRowsPe
                                     {key.description}
                                 </TableCell>
                                 <TableCell align="right">
-                                    <img src={apiURL + '/uploads/' + key.image} width={200}/>
+                                    <img src={apiURL + '/uploads/' + key.image} width={200} alt='test'/>
                                 </TableCell>
                                 <TableCell align="right">
                                     {key && key.status ? (<p>Принят</p>) : (<p>В обработке</p>)}

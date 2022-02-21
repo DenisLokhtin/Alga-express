@@ -102,7 +102,7 @@ const AdminEditPackage = () => {
         return () => {
             dispatch(clearAdminErrors());
         };
-    }, [dispatch,id, packageAdmin.trackNumber, packageAdmin.title, packageAdmin.price,
+    }, [dispatch,id, packageAdmin, packageAdmin.trackNumber, packageAdmin.title, packageAdmin.price,
         packageAdmin.amount, packageAdmin.country, packageAdmin.width, packageAdmin.height,
         packageAdmin.length, packageAdmin.urlPackage, packageAdmin.cargoPrice, packageAdmin.cargoWeight,
         packageAdmin.status]);
