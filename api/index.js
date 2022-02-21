@@ -4,10 +4,10 @@ const cors = require('cors');
 const news = require('./app/news');
 const mongoose = require('mongoose');
 const exitHook = require('async-exit-hook');
-const { Telegraf, Markup} = require('telegraf')
+const {Telegraf, Markup} = require('telegraf')
 const users = require('./app/users');
 const userEdit = require('./app/usersProfileEdit');
-const market=require('./app/market');
+const market = require('./app/market');
 const config = require('./config');
 const packages = require('./app/packages');
 const flight = require('./app/flights');
@@ -38,7 +38,7 @@ app.use(express.static('public'));
 
 app.use('/news', news);
 app.use('/users', users);
-app.use('/market',market);
+app.use('/market', market);
 app.use('/packages', packages);
 app.use('/userEdit', userEdit);
 app.use('/flights', flight);
@@ -50,8 +50,10 @@ app.use('/pages', pages);
 app.use('/requisites', requisites);
 app.use('/tariffs', tariffs);
 
-bot.start((ctx) => {ctx.reply(`Здравствуйте ${ctx.message.from.first_name ? ctx.message.from.first_name : ''}! 
-Для дальнейшей работы необходимо ввести свой номер телефона указанный на сайте \n /help - полный список команд`)});
+bot.start((ctx) => {
+    ctx.reply(`Здравствуйте ${ctx.message.from.first_name ? ctx.message.from.first_name : ''}! 
+Для дальнейшей работы необходимо ввести свой номер телефона указанный на сайте \n /help - полный список команд`)
+});
 bot.help((ctx) => ctx.reply(help.commands));
 bot.command('enter_number', async (msg) => {
     try {
@@ -64,26 +66,29 @@ bot.command('enter_number', async (msg) => {
     }
 });
 bot.action('btn_1', async (ctx) => {
-   try {
-       await ctx.answerCbQuery();
-       await ctx.replyWithHTML('Прием кнопки', {disable_web_page_preview: true});
-   } catch (e) {
-       console.error(e);
-   }
+    try {
+        await ctx.answerCbQuery();
+        await ctx.replyWithHTML('Прием кнопки', {disable_web_page_preview: true});
+    } catch (e) {
+        console.error(e);
+    }
 });
 bot.on('text', async (ctx) => {
-    ctx.reply('check');
-    const text = ctx.message.text;
+    ctx.reply('Проверка');
+    const idChat = ctx.message.from.id;
+    console.log(idChat);
+    // const text = ctx.message.text;
+    const text = '66 55 11';
     // const number = text.slice(1, text.length);
-    const userTelegramId = await User.find({'phone.number': '786677899'});
-    console.log(userTelegramId);
-
+    const userTelegramId = await User.findOne({'phone.number': {$regex: text}});
     if (userTelegramId) {
-        if (!userTelegramId.phone.idChat)
-            await User.findByIdAndUpdate(userTelegramId._id, {phone:{idChat: ctx.message.from.id}});
-    console.log(text);
+        if (!userTelegramId.idChat) {
+            userTelegramId.idChat = idChat;
+            await userTelegramId.save({validateBeforeSave: false});
+        }
+    } else {
+        await bot.telegram.sendMessage(ctx.message.from.id, 'Номер телефона в базе не найден');
     }
-    console.log(ctx.message.from.id);
 
 });
 bot.launch();

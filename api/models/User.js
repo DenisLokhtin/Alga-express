@@ -22,10 +22,6 @@ const phoneNumbers = new mongoose.Schema({
         enum: ['TELEGRAM', 'PHONE'],
         default: 'PHONE',
     },
-    idChat: {
-        type: String,
-        trim: true,
-    }
 });
 
 const imagePassport = new mongoose.Schema({
@@ -105,6 +101,10 @@ const UserSchema = new mongoose.Schema({
         trim: true,
         enum: ['NEW', 'BUYERS', "ADVANCED", 'SPECIAL'],
         default: "NEW",
+    },
+    idChat: {
+        type: String,
+        trim: true,
     },
 });
 
