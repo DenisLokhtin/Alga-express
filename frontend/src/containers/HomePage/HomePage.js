@@ -9,6 +9,7 @@ import SpeedIcon from '@mui/icons-material/Speed';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import PriceCheckIcon from '@mui/icons-material/PriceCheck';
 import Container from "@mui/material/Container";
+import theme from "../../theme";
 
 const useStyles = makeStyles({
     block: {
@@ -29,9 +30,6 @@ const useStyles = makeStyles({
             flexDirection: "column",
         }
     },
-    title: {
-        textAlign: "center"
-    }
 });
 
 const HomePage = () => {
@@ -45,8 +43,8 @@ const HomePage = () => {
                 </h1>
             </Grid>
             <Grid item>
-                <Container>
-                    <h2 className={classes.title}>Почему мы ?</h2>
+                <Container style={{textAlign: 'center'}}>
+                    <h2 style={theme.title}>Почему мы ?</h2>
                     <List className={classes.list}>
                         <ListItem>
                             <ListItemAvatar>
@@ -84,7 +82,7 @@ const HomePage = () => {
                 </Container>
             </Grid>
             <Grid item>
-                <Container>
+                <Container style={{textAlign: 'center'}}>
                     <h2 className={classes.title}>Выкуп для вас !</h2>
                     <div style={{display: "flex", justifyContent: "space-evenly", flexWrap: "wrap"}}>
                         <Card sx={{width: "200px", marginBottom: "20px"}}>

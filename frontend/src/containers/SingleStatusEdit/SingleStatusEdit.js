@@ -87,7 +87,7 @@ const WarehousemanStatusEdit = () => {
     }, [dispatch]);
 
     return (
-        <Container className={classes.container} maxWidth="md">
+        <Container className={classes.container} maxWidth="md" style={{textAlign: 'center'}}>
             <Grid container component="form" onSubmit={submit} justifyContent="center" spacing={4}>
                 <Grid item xs={12} sm={8} md={7} lg={7}>
                     <FormControl variant="standard" fullWidth>

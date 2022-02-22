@@ -18,18 +18,9 @@ import ru from 'react-phone-input-2/lang/ru.json'
 import './Register.css'
 import 'react-phone-input-2/lib/bootstrap.css'
 import {rulesCompany, userLogin} from "../../paths";
+import theme from "../../theme";
 
 const useStyles = makeStyles(theme => ({
-    paper: {
-        marginTop: theme.spacing(8),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
-    },
     form: {
         marginTop: theme.spacing(1),
     },
@@ -109,8 +100,8 @@ const Register = () => {
     };
 
     return (
-        <Container component="section" maxWidth="xs">
-            <div className={classes.paper}>
+        <Container component="section" maxWidth="xs" style={{textAlign: 'center'}}>
+            <div style={theme.paper}>
                 <Avatar className={classes.avatar}>
                     <LockOutlinedIcon/>
                 </Avatar>

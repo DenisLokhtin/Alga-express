@@ -5,6 +5,7 @@ import {Container, FormControl, Grid, InputLabel, MenuItem, Select} from "@mui/m
 import {makeStyles} from "@mui/styles";
 import {Editor} from "@tinymce/tinymce-react";
 import {changePagesRequest, fetchPagesRequest} from "../../store/actions/pagesAction";
+import theme from "../../theme";
 
 const useStyles = makeStyles(theme => ({
     submit: {
@@ -21,9 +22,6 @@ const useStyles = makeStyles(theme => ({
             width: '50%',
         },
     },
-    title: {
-        textAlign: "center",
-    }
 }));
 
 const EditPages = () => {
@@ -65,7 +63,9 @@ const EditPages = () => {
         <Container
             component="section"
             maxWidth="md"
-            className={classes.container}>
+            className={classes.container}
+            style={{textAlign: 'center'}}
+        >
             <Grid
                 container
                 direction="column"
@@ -75,7 +75,7 @@ const EditPages = () => {
                 onSubmit={submitFormHandler}
                 noValidate
             >
-                <h2 className={classes.title}>Отредактировать страницу</h2>
+                <h2 style={theme.title}>Отредактировать страницу</h2>
 
                 <Grid item xs={12} sm={8} md={7} lg={7}>
                     <FormControl variant="standard" fullWidth>

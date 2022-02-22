@@ -12,8 +12,6 @@ import {Link} from "react-router-dom";
 
 const useStyles = makeStyles({
     card: {
-        height: '100%',
-        textAlign: "center",
         padding: '10px',
     },
     media: {
@@ -25,7 +23,7 @@ const useStyles = makeStyles({
         padding: "5px 15px",
         backgroundColor: "white"
     }
-})
+});
 
 
 const BuyoutList = () => {
@@ -36,7 +34,7 @@ const BuyoutList = () => {
 
     useEffect(() => {
         dispatch(fetchBuyoutsRequest())
-    }, [dispatch])
+    }, [dispatch]);
 
     return (
         <Container>

@@ -9,11 +9,10 @@ import {apiURL} from "../../config";
 const SingleNews = () => {
     const dispatch = useDispatch();
     const news = useSelector(state => state.news.oneNews);
- const {id}=useParams();
+    const {id} = useParams();
     useEffect(() => {
         dispatch(fetchOneNewsRequest(id));
-    }, [dispatch,id]);
-    console.log(news)
+    }, [dispatch, id]);
 
     return (
         <>
@@ -21,12 +20,12 @@ const SingleNews = () => {
                 <Paper>
                     <div>
                         <p>{news.title}</p>
-                        <div id='description'  dangerouslySetInnerHTML={{ __html: news.description }}></div>
+                        <div id='description' dangerouslySetInnerHTML={{__html: news.description}}></div>
                     </div>
-                   <div style={{display: "flex" ,justifyContent:"center"}}>
-                       {/*<img style={{maxWidth: "500px", height: "100%"}} src={apiURL+'/'+news.image} alt={'news'}/>*/}
-                       <img src={apiURL+'/'+news.image} alt={'news'}/>
-                   </div>
+                    <div style={{display: "flex", justifyContent: "center"}}>
+                        {/*<img style={{maxWidth: "500px", height: "100%"}} src={apiURL+'/'+news.image} alt={'news'}/>*/}
+                        <img src={apiURL + '/' + news.image} alt={'news'}/>
+                    </div>
                 </Paper>
             )}
         </>

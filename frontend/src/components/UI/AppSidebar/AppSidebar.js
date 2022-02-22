@@ -35,6 +35,8 @@ import {
     sitesCompany, wareHouseCompany
 } from "../../../paths";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import theme from "../../../theme";
+
 
 const pages = [
     {title: "Новости", icon: <NewspaperIcon/>, url: newsCompany},
@@ -47,47 +49,7 @@ const pages = [
     {title: "Адреса складов", icon: <BusinessIcon/>, url: wareHouseCompany},
 ];
 
-const styles = {
-    boxContainer: {
-        position: "fixed",
-        top: "0",
-        left: "0",
-        display: {md: "flex", xs: "none"},
-        flexDirection: "column",
-        overflowY: "auto",
-        height: "100vh",
-        width: "300px",
-        background: "grey",
-        padding: "6px 14px"
-    },
-    pages: {
-        flexGrow: "999",
-        alignSelf: "start",
-        width: "100%",
-    },
-    user: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        marginBottom: "20px",
-        width: "100%"
-    },
-}
-
-const useStyles = makeStyles({
-    logo: {
-        color: '#F5F5F7',
-        textDecoration: 'none',
-        fontWeight: 'bold',
-        fontSize: '22px',
-        display: 'flex',
-        alignItems: 'center',
-        margin: "10px 0"
-    },
-})
-
 const AppSidebar = () => {
-    const classes = useStyles();
     const user = useSelector(state => state.users.user);
     const [expanded, setExpanded] = useState(false);
 
@@ -96,13 +58,13 @@ const AppSidebar = () => {
     };
 
     return (
-        <Box sx={styles.boxContainer}>
-            <Link to="/" className={classes.logo}>
+        <Box sx={theme.boxContainer}>
+            <Link to="/" style={theme.logo}>
                 <img src={logo} alt="logo" style={{width: "40px"}}/>
                 <span>Alga Express</span>
             </Link>
 
-            <Box sx={styles.pages}>
+            <Box style={theme.pages}>
                 <MenuList>
                     {pages.map(page => (
                         <MenuItem
@@ -139,7 +101,7 @@ const AppSidebar = () => {
                 </Accordion>
             </Box>
 
-            <Box sx={styles.user}>
+            <Box style={theme.user}>
                 <Box>
                     {user ?
                         <UserMenu user={user}/>

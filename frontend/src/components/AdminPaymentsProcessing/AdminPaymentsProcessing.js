@@ -110,6 +110,7 @@ const AdminPaymentsProcessing = () => {
             component="section"
             maxWidth="md"
             className={classes.container}
+            style={{textAlign: 'center'}}
         >
             <Grid
                 container

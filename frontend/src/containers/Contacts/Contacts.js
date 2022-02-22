@@ -12,15 +12,8 @@ const Contacts = () => {
     }, [dispatch]);
 
     return (
-        <Container style={{'textAlign': 'center'}} component='div'>
-            <Container style={{
-                'borderRadius': '3px',
-                'margin': '10px 0 20px 0',
-                'textAlign': 'left'
-            }}
-                       component='div'>
-                <div className="post__content" dangerouslySetInnerHTML={{__html: page.text}}/>
-            </Container>
+        <Container component='div'>
+            <div className="post__content" dangerouslySetInnerHTML={{__html: page.text}}/>
         </Container>
     )
 };
