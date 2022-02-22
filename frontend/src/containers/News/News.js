@@ -65,9 +65,7 @@ const News = () => {
                         </div>
                     </Grid>
                 ))}
-
             </Grid>
-
         </>
     );
 };
