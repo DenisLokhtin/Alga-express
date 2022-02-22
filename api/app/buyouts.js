@@ -75,7 +75,7 @@ router.post('/', auth, upload.single('image'), async (req, res) => {
         };
 
         if (req.file) {
-            buyoutData.image = 'uploads/buyouts' + req.file.filename;
+            buyoutData.image = 'buyouts/' + req.file.filename;
         }
 
         const buyout = new Buyout(buyoutData);
