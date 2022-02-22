@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Button, Container, Grid, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
-import {addUserPaymentRequest, editUserDataRequest, fetchUserPaymentRequest} from "../../store/actions/usersActions";
+import {addUserPaymentRequest} from "../../store/actions/usersActions";
 import FormElement from "../UI/Form/FormElement";
 import FileInput from "../UI/FileInput/FileInput";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";

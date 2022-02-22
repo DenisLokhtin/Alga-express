@@ -80,18 +80,18 @@ const AdminEditPackage = () => {
             amount: packageAdmin.amount,
             price: packageAdmin.price,
             country: packageAdmin.country,
-            width: packageAdmin.width,
-            height: packageAdmin.height,
-            length: packageAdmin.length,
-            urlPackage: packageAdmin.urlPackage,
-            cargoPrice: packageAdmin.cargoPrice,
+            width: packageAdmin.width ,
+            height: packageAdmin.height ,
+            length: packageAdmin.length ,
+            urlPackage: packageAdmin.urlPackage ,
+            cargoPrice: packageAdmin.cargoPrice ,
             cargoWeight: packageAdmin.cargoWeight,
             status: packageAdmin.status,
         }));
         return () => {
             dispatch(clearAdminErrors());
         };
-    }, [dispatch, id, packageAdmin.trackNumber, packageAdmin.title, packageAdmin.price,
+    }, [dispatch,id, packageAdmin, packageAdmin.trackNumber, packageAdmin.title, packageAdmin.price,
         packageAdmin.amount, packageAdmin.country, packageAdmin.width, packageAdmin.height,
         packageAdmin.length, packageAdmin.urlPackage, packageAdmin.cargoPrice, packageAdmin.cargoWeight,
         packageAdmin.status]);

@@ -1,6 +1,9 @@
 import packageSlice from "../slices/packageRegisterSlice";
 
 export const {
+    fetchNewPackages,
+    fetchNewPackagesSuccess,
+    fetchNewPackagesFailure,
     createPackageRequest,
     createPackageSuccess,
     createPackageFailure,

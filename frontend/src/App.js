@@ -61,6 +61,8 @@ import {
     editPages,
     tariffs,
     editingSingleTrackNumber,
+    userPage,
+    adminPagePath,
 } from "./paths";
 import OrderBuyout from "./containers/OrderBuyout/OrderBuyout";
 import SingleStatusEdit from "./containers/SingleStatusEdit/SingleStatusEdit";
@@ -75,6 +77,8 @@ import EditWareHouseAdmin from "./components/EditWareHouseAdmin/EditWareHouseAdm
 import TariffsPage from "./containers/TariffPage/TariffPage";
 import ProtectedRoutesForUser from "./components/ProtectedRoutesForUser/ProtectedRoutesForUser";
 import ProtectedRoutesForAdmin from "./components/ProtectedRoutesForAdmin/ProtectedRoutesForAdmin";
+import AdminPage from "./containers/AdminPage/AdminPage";
+import UserPage from "./containers/UserPage/UserPage";
 
 const App = () => {
 
@@ -95,6 +99,7 @@ const App = () => {
                 </Route>
                 <Route element={<ProtectedRoutesForAdmin/>}>
                     {/* Routes for only admin */}
+                    <Route path={adminPagePath} element={<AdminPage/>}/>
                     <Route path={newsEditCompany} element={<EditNews/>}/>
                     <Route path={editPages} element={<EditPages/>}/>
                     <Route path={editPackageAdmin} element={<AdminEditPackage/>}/>
@@ -127,6 +132,7 @@ const App = () => {
                 <Route path={howCompany} element={<HowItWorks/>}/>
                 <Route path={newsCompany} element={<News/>}/>
                 <Route path={newsIdCompany} element={<SingleNews/>}/>
+                <Route path={userPage} element={<UserPage/>}/>
                 <Route
                     path="*"
                     element={

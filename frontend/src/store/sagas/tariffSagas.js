@@ -4,11 +4,11 @@ import {toast} from "react-toastify";
 import {
     changeTariffFailure,
     changeTariffRequest,
-    changeTariffSuccess, fetchTariffsFailure,
+    changeTariffSuccess,
+    fetchTariffsFailure,
     fetchTariffsRequest,
     fetchTariffsSuccess
 } from "../actions/tariffActions";
-import {fetchMarketFailure} from "../actions/marketActions";
 
 export function* getTariffsSagas() {
     try {
