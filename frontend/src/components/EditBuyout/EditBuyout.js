@@ -10,6 +10,7 @@ import CurrencyLiraIcon from '@mui/icons-material/CurrencyLira';
 import CurrencyYuanIcon from '@mui/icons-material/CurrencyYuan';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import {makeStyles} from "@mui/styles";
+import theme from "../../theme";
 
 
 const useStyles = makeStyles(theme => ({
@@ -26,9 +27,6 @@ const useStyles = makeStyles(theme => ({
         [theme.breakpoints.up('md')]: {
             width: '50%',
         },
-    },
-    title: {
-        textAlign: "center",
     },
     item:{
         width: '30%',
@@ -150,7 +148,7 @@ const EditBuyout = () => {
                 onSubmit={submitFormHandler}
                 noValidate
             >
-                <h3 className={classes.title}>Заказать выкуп</h3>
+                <h3 style={theme.title}>Заказать выкуп</h3>
                 <FormControl variant="standard" fullWidth error={Boolean(getFieldError('country'))}>
                     <InputLabel id="demo-controlled-open-select-label">Страна</InputLabel>
                     <Select

@@ -81,9 +81,6 @@ const useStyles = makeStyles(theme => ({
             width: '50%',
         },
     },
-    title: {
-        textAlign: "center",
-    }
 }));
 
 export default function BasicTabs() {
@@ -335,7 +332,7 @@ export default function BasicTabs() {
                             onSubmit={submitFormHandler}
                             noValidate
                         >
-                            <h2 className={classes.title}>Отредактировать реквизиты</h2>
+                            <h2 style={theme.title}>Отредактировать реквизиты</h2>
 
                             <Grid item xs={12} sm={8} md={7} lg={7}>
                                 <FormControl variant="standard" fullWidth>

@@ -16,13 +16,13 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import MenuIcon from "@mui/icons-material/Menu";
 
 const useStyles = makeStyles({
-    paper: {
+    setData: {
         width: '100%',
         height: '100%',
         zIndex: 99,
         color: '#F5F5F7',
     },
-})
+});
 
 const BurgerMenu = ({pages}) => {
     const classes = useStyles();

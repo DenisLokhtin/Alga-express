@@ -7,6 +7,7 @@ import {Link} from "react-router-dom";
 import AddNewsAdmin from "../../components/AddNewsAdmin/AddNewsAdmin";
 import {newsIdCompany} from "../../paths";
 import AppWindow from "../../components/UI/AppWindow/AppWindow";
+import theme from "../../theme";
 
 const useStyles = makeStyles({
     newsBlock: {
@@ -21,11 +22,6 @@ const useStyles = makeStyles({
         maxWidth: '80%',
         margin: "0 auto",
     },
-    title: {
-        textAlign: "center",
-        fontSize: "30px",
-    },
-
 });
 
 const News = () => {
@@ -47,7 +43,7 @@ const News = () => {
         <>
             <Grid container direction={"column"} justifyContent={"center"}>
                 <Grid item>
-                    <h2 className={classes.title}>Новости</h2>
+                    <h2 style={theme.title}>Новости</h2>
                 </Grid>
                 {user && user.role === 'admin' && (
                     <AddNewsAdmin/>
