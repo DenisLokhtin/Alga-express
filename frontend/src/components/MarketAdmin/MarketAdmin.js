@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {Grid} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import {addMarketRequest} from "../../store/actions/marketActions";
+import theme from "../../theme";
 
 const useStyles = makeStyles(theme => ({
     submit: {
@@ -22,9 +23,6 @@ const useStyles = makeStyles(theme => ({
             width: '50%',
         },
     },
-    title: {
-        textAlign: "center",
-    }
 }));
 
 const MarketAdmin = () => {
@@ -86,10 +84,10 @@ const MarketAdmin = () => {
             component="form"
             autoComplete="off"
             onSubmit={submitFormHandler}
-            className={classes.container}
+            style={theme.container}
             noValidate
         >
-            <h3 className={classes.title}>Добавить в список сайтов</h3>
+            <h3 style={theme.title}>Добавить в список сайтов</h3>
             <FormElement
                 required
                 label="Название"

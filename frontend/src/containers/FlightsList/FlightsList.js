@@ -37,7 +37,7 @@ const FlightsList = () => {
 
 
     return (
-        <Container>
+        <Container style={{textAlign: 'center'}}>
             <h1>Рейсы</h1>
             <Grid container flexDirection='column' spacing={4}>
                 <Grid item>
