@@ -53,27 +53,27 @@ const EditBuyout = () => {
         commission: '',
         value: '',
     });
-    console.log(buyout)
-
     // const [show, setShow] = useState(false);
 
     useEffect(() => {
         dispatch(fetchSingleBuyoutRequest(id));
-        if (oneBuyout)
+        if (oneBuyout) {
+            console.log('In oneBuyout');
             setBuyout(prevState => ({
                 ...prevState,
-                description: oneBuyout?.description,
-                image: oneBuyout?.image,
-                url: oneBuyout?.url,
-                country: oneBuyout?.country,
-                price: oneBuyout?.price,
-                commission: oneBuyout?.commission,
-                value: oneBuyout?.value,
-            }))
+                description: oneBuyout.description,
+                image: oneBuyout.image,
+                url: oneBuyout.url,
+                country: oneBuyout.country,
+                price: oneBuyout.price || '',
+                commission: oneBuyout.commission,
+                value: oneBuyout.value || '',
+            }))}
 
-    }, [dispatch, id, oneBuyout, oneBuyout && oneBuyout.description
-    ]);
+    }, [dispatch, id, oneBuyout && oneBuyout.description]);
 
+    console.log(oneBuyout);
+    console.log(buyout);
 
     const inputChangeHandler = e => {
         const name = e.target.name;
@@ -174,7 +174,7 @@ const EditBuyout = () => {
                     required
                     label="Описание товара (размер, цвет и тд.)"
                     name="description"
-                    value={buyout?.description}
+                    value={buyout.description}
                     onChange={inputChangeHandler}
                     error={getFieldError('description')}
                 />
@@ -183,7 +183,7 @@ const EditBuyout = () => {
                     required
                     label="Ссылка"
                     name="url"
-                    value={buyout?.url}
+                    value={buyout.url}
                     onChange={inputChangeHandler}
                     error={getFieldError('url')}
 
@@ -208,7 +208,7 @@ const EditBuyout = () => {
                                 required
                                 label="Цена за выкуп"
                                 name="price"
-                                value={buyout?.price}
+                                value={buyout.price}
                                 onChange={inputChangeHandler}
                                 error={getFieldError('price')}
                             />
@@ -219,7 +219,7 @@ const EditBuyout = () => {
                                 required
                                 label="Комиссия"
                                 name="commission"
-                                value={buyout?.commission}
+                                value={buyout.commission}
                                 onChange={inputChangeHandler}
                                 error={getFieldError('commission')}
                             />
@@ -227,15 +227,19 @@ const EditBuyout = () => {
                         <Grid item className={classes.item}>
                         <FormControl variant="standard" fullWidth error={Boolean(getFieldError('value'))}>
                             <InputLabel id="demo-controlled-open-select-label">Валюта</InputLabel>
+                            {console.log(buyout.value)}
                             <Select
                                 labelId="demo-controlled-open-select-label"
                                 id="demo-controlled-open-select"
-                                value={buyout?.value}
+                                value={buyout.value}
                                 label="Валюта"
                                 name="value"
                                 required
                                 onChange={inputChangeHandler}
                             >
+                                <MenuItem defaultValue="">
+                                    <em>None</em>
+                                </MenuItem>
                                 <MenuItem value={'USD'}><AttachMoneyIcon/>Доллар</MenuItem>
                                 <MenuItem value={'TRY'}><CurrencyLiraIcon/>Лира</MenuItem>
                                 <MenuItem value={'CNY'}><CurrencyYuanIcon/>Юань</MenuItem>

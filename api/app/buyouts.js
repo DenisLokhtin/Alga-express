@@ -10,10 +10,10 @@ const User = require("../models/User");
 const PaymentMove = require("../models/PaymentMove");
 const fs = require("fs");
 
+const newDir = `${config.uploadPath}/buyouts`;
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const newDir = `${config.uploadPath}/buyouts`;
         const existFile = fs.existsSync(newDir);
 
         if (!existFile) {
@@ -23,7 +23,7 @@ const storage = multer.diskStorage({
         cb(null, config.uploadPath);
     },
     filename: (req, file, cb) => {
-        cb(null, nanoid() + path.extname(file.originalname));
+        cb(null, 'buyouts/' + nanoid() + path.extname(file.originalname));
     }
 });
 
@@ -75,7 +75,7 @@ router.post('/', auth, upload.single('image'), async (req, res) => {
         };
 
         if (req.file) {
-            buyoutData.image = 'buyouts/' + req.file.filename;
+            buyoutData.image = 'uploads/' + req.file.filename;
         }
 
         const buyout = new Buyout(buyoutData);

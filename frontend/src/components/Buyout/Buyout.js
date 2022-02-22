@@ -41,9 +41,6 @@ const Buyout = () => {
         image: null,
         url: "",
         country:"",
-        price: '',
-        commission:'',
-        value:'',
     });
 
     // useEffect(()=>{
@@ -56,7 +53,7 @@ const Buyout = () => {
     //         }))
     // },[oneBuyout.description,oneBuyout.url, oneBuyout.image, oneBuyout.country])
 
-
+    console.log(buyout);
 
     const submitFormHandler = e => {
         e.preventDefault();
@@ -65,15 +62,15 @@ const Buyout = () => {
             formData.append(key, buyout[key]);
         });
 
+        console.log(formData);
+        console.log(buyout);
+
         dispatch(addBuyoutRequest(formData));
         setBuyout({
             description: "",
             image: null,
             url: "",
             country: "",
-            price:'',
-            commission: '',
-            value:'',
         })
     };
 
@@ -128,7 +125,7 @@ const Buyout = () => {
                     <Select
                         labelId="demo-controlled-open-select-label"
                         id="demo-controlled-open-select"
-                        value={buyout.country }
+                        value={buyout.country}
                         label="Из какой страны выкупить"
                         name="country"
                         required

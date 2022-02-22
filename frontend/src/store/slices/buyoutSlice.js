@@ -3,7 +3,7 @@ import {createSlice} from "@reduxjs/toolkit";
 const name = 'buyout'
 const initialState = {
     buyouts: [],
-    singleBuyout:{},
+    singleBuyout: null,
     fetchLoading: false,
     createLoading: false,
     createError: null,
