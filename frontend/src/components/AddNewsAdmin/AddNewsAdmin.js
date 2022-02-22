@@ -8,6 +8,7 @@ import {makeStyles} from "@mui/styles";
 import {addNewsRequest} from "../../store/actions/newsActions";
 import {Editor} from "@tinymce/tinymce-react";
 import Resizer from "react-image-file-resizer";
+import theme from "../../theme";
 
 const useStyles = makeStyles(theme => ({
     submit: {
@@ -24,9 +25,6 @@ const useStyles = makeStyles(theme => ({
             width: '50%',
         },
     },
-    title: {
-        textAlign: "center",
-    }
 }));
 
 const AddNewsAdmin = () => {
@@ -120,9 +118,9 @@ const AddNewsAdmin = () => {
     };
 
     return (
-        <Container
-            component="section"
-            maxWidth="md"
+        <div
+            // component="section"
+            // maxWidth="md"
             className={classes.container}>
             <Grid
                 container
@@ -133,7 +131,7 @@ const AddNewsAdmin = () => {
                 onSubmit={submitFormHandler}
                 noValidate
             >
-                <h3 className={classes.title}>Добавить новость</h3>
+                <h3 style={theme.title}>Добавить новость</h3>
                 <FormElement
                     required
                     label="Название"
@@ -189,7 +187,7 @@ const AddNewsAdmin = () => {
 
                 </Grid>
             </Grid>
-        </Container>
+        </div>
     );
 };
 

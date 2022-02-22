@@ -23,20 +23,9 @@ import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWit
 import {useParams} from "react-router-dom";
 
 const useStyles = makeStyles(() => ({
-    container: {
-        marginTop: '50px',
-    },
 
     packageBtnContainer: {
         textAlign: 'center',
-    },
-
-    packageMainTitle: {
-        textAlign: 'center',
-        paddingBottom: '50px',
-        '@media (max-width:600px)': {
-            padding: '10px',
-        },
     },
 
     textField: {
@@ -69,27 +58,27 @@ const AdminEditPackage = () => {
 
     const [packageEdit, setPackageEdit] = useState({
         trackNumber: '',
-        title: '' ,
-        amount: '' ,
-        price: '' ,
+        title: '',
+        amount: '',
+        price: '',
         country: '',
         width: '',
-        height: '' ,
-        length: '' ,
-        urlPackage: '' ,
+        height: '',
+        length: '',
+        urlPackage: '',
         cargoPrice: '',
         cargoWeight: '',
-        status:'' ,
+        status: '',
     });
 
     useEffect(() => {
         dispatch(fetchPackageAdminRequest(id));
-        packageAdmin && setPackageEdit(prev=>({
+        packageAdmin && setPackageEdit(prev => ({
             ...prev,
             trackNumber: packageAdmin.trackNumber,
-            title: packageAdmin.title ,
-            amount: packageAdmin.amount ,
-            price: packageAdmin.price ,
+            title: packageAdmin.title,
+            amount: packageAdmin.amount,
+            price: packageAdmin.price,
             country: packageAdmin.country,
             width: packageAdmin.width ,
             height: packageAdmin.height ,
@@ -97,7 +86,7 @@ const AdminEditPackage = () => {
             urlPackage: packageAdmin.urlPackage ,
             cargoPrice: packageAdmin.cargoPrice ,
             cargoWeight: packageAdmin.cargoWeight,
-            status:packageAdmin.status ,
+            status: packageAdmin.status,
         }));
         return () => {
             dispatch(clearAdminErrors());
@@ -144,12 +133,11 @@ const AdminEditPackage = () => {
         <ThemeProvider theme={theme}>
             <Container
                 component="section"
-                maxWidth="md"
-                className={classes.container}>
+                maxWidth="md">
                 <Grid item>
                     <Typography
                         variant="h4"
-                        className={classes.packageMainTitle}>
+                        style={{textAlign: 'center', margin: 30}}>
                         Регистрация посылки
                     </Typography>
                 </Grid>

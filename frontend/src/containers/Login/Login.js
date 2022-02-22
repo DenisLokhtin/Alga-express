@@ -14,18 +14,9 @@ import Link from "@mui/material/Link";
 import Alert from '@mui/material/Alert';
 import {AlertTitle} from "@mui/material";
 import {newUserRegister} from "../../paths";
+import theme from "../../theme";
 
 const useStyles = makeStyles(theme => ({
-    paper: {
-        marginTop: theme.spacing(8),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
-    },
     form: {
         marginTop: theme.spacing(1),
     },
@@ -74,8 +65,8 @@ const Login = () => {
     };
 
     return (
-        <Container component="section" maxWidth="xs">
-            <div className={classes.paper}>
+        <Container component="section" maxWidth="xs" style={{textAlign: 'center'}}>
+            <div style={theme.paper}>
                 <Avatar className={classes.avatar}>
                     <LockOpenIcon/>
                 </Avatar>

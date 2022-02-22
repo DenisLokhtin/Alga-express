@@ -6,6 +6,7 @@ import FileInput from "../UI/FileInput/FileInput";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {makeStyles} from "@mui/styles";
 import {addBuyoutRequest, clearBuyoutsError} from "../../store/actions/buyoutActions";
+import theme from "../../theme";
 
 
 const useStyles = makeStyles(theme => ({
@@ -23,9 +24,6 @@ const useStyles = makeStyles(theme => ({
             width: '50%',
         },
     },
-    title: {
-        textAlign: "center",
-    }
 }));
 
 
@@ -119,7 +117,7 @@ const Buyout = () => {
                 onSubmit={submitFormHandler}
                 noValidate
             >
-                <h3 className={classes.title}>Заказать выкуп</h3>
+                <h3 style={theme.title}>Заказать выкуп</h3>
                 <FormControl variant="standard" fullWidth error={Boolean(getFieldError('country'))}>
                     <InputLabel id="demo-controlled-open-select-label">Страна</InputLabel>
                     <Select
