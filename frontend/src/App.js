@@ -62,7 +62,7 @@ import {
     tariffs,
     editingSingleTrackNumber,
     userPage,
-    adminPagePath,
+    adminPagePath, forgotPassword,
 } from "./paths";
 import OrderBuyout from "./containers/OrderBuyout/OrderBuyout";
 import SingleStatusEdit from "./containers/SingleStatusEdit/SingleStatusEdit";
@@ -79,6 +79,7 @@ import ProtectedRoutesForUser from "./components/ProtectedRoutesForUser/Protecte
 import ProtectedRoutesForAdmin from "./components/ProtectedRoutesForAdmin/ProtectedRoutesForAdmin";
 import AdminPage from "./containers/AdminPage/AdminPage";
 import UserPage from "./containers/UserPage/UserPage";
+import ForgotPassword from "./containers/ForgotPassword/ForgotPassword";
 
 const App = () => {
 
@@ -133,6 +134,7 @@ const App = () => {
                 <Route path={newsCompany} element={<News/>}/>
                 <Route path={newsIdCompany} element={<SingleNews/>}/>
                 <Route path={userPage} element={<UserPage/>}/>
+                <Route path={forgotPassword} element={<ForgotPassword/>}/>
                 <Route
                     path="*"
                     element={
