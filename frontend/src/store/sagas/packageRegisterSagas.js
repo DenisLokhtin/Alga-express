@@ -28,12 +28,13 @@ import {
 } from "../actions/packageRegisterActions";
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
+import History from '../../History';
 
 function* packageRegisterSagas({payload: packageData}) {
     try {
         yield axiosApi.post('/packages', packageData);
         yield put(createPackageSuccess());
-        packageData.navigate('/');
+        History.push('/');
         toast.success('Ваш заказ был успешно создан');
     } catch (e) {
         yield put(createPackageFailure(e.response.data));
@@ -70,8 +71,6 @@ function* adminPackageEditSaga({payload: id}) {
 
 function* packageEditAdminSagas({payload}) {
     try {
-        console.log('in saga id', payload.id);
-        console.log('in saga data', payload.obj);
         yield axiosApi.put(`/packages/` + payload.id, payload.obj);
         yield put(editAdminPackageSuccess());
         toast.success('Заказ был успешно отредактирован');
@@ -122,7 +121,6 @@ function* changeStatuses({payload: packageData}) {
         yield put(changeStatusesError(error.response.data));
     }
 }
-
 
 function* changeSingleStatus({payload: packageData}) {
     try {

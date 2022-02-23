@@ -9,6 +9,7 @@ const NotFoundTrackNumber = require('../models/NotFoundTrackNumber');
 const PaymentMove = require("../models/PaymentMove");
 const User = require("../models/User");
 const packageValidate = require("../middleware/packageValidate");
+const e = require("express");
 
 const router = express.Router();
 
@@ -98,13 +99,22 @@ router.get('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req, re
 });
 
 router.post('/', auth, packageValidate, permit('admin', 'warehouseman', 'user'), async (req, res) => {
+
+    let price = req.body.price;
+
+    if (req.body.price.indexOf(',') === 0) {
+        price = req.body.price;
+    } else if (req.body.price.indexOf(',') > 0) {
+        price = req.body.price.replace(/,/g, '.');
+    }
+
     try {
         const packageData = {
             country: req.body.country,
             title: req.body.title,
             trackNumber: req.body.trackNumber,
             amount: req.body.amount,
-            price: req.body.price,
+            price: price,
             user: req.user._id
         };
 
@@ -120,11 +130,14 @@ router.post('/', auth, packageValidate, permit('admin', 'warehouseman', 'user'),
         res.send(newPackage);
 
     } catch (error) {
+        if (error.errors.price?.name === 'CastError') {
+            error.errors.price.message = 'Введите корректные данные!';
+        }
         res.status(400).send(error);
     }
 });
 
-router.put('/', auth, permit('admin', 'warehouseman'),async (req, res) => {
+router.put('/', auth, permit('admin', 'warehouseman'), async (req, res) => {
     const notFoundTrackNumbers = [];
 
     const separatedBySpaces = req.body.trackNumbers.split(' ');
@@ -182,7 +195,7 @@ router.put('/', auth, permit('admin', 'warehouseman'),async (req, res) => {
 });
 
 
-router.put('/single', auth, permit('admin', 'warehouseman'),async (req, res) => {
+router.put('/single', auth, permit('admin', 'warehouseman'), async (req, res) => {
     const notFoundTrackNumbers = [];
     try {
         if (req.body.trackNumber.length === 0) {
@@ -193,10 +206,10 @@ router.put('/single', auth, permit('admin', 'warehouseman'),async (req, res) => 
             });
         }
 
-            const updatedStatus = await Package.findOneAndUpdate(
-                {trackNumber: req.body.trackNumber},
-                {status: req.body.status},
-                {new: true, runValidators: true});
+        const updatedStatus = await Package.findOneAndUpdate(
+            {trackNumber: req.body.trackNumber},
+            {status: req.body.status},
+            {new: true, runValidators: true});
 
         if (!updatedStatus) {
             const notFoundTrackNumberData = {
