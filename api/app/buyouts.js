@@ -9,6 +9,7 @@ const permit = require("../middleware/permit");
 const User = require("../models/User");
 const PaymentMove = require("../models/PaymentMove");
 const fs = require("fs");
+const {log} = require("nodemon/lib/utils");
 
 const newDir = `${config.uploadPath}/buyouts`;
 
@@ -22,8 +23,17 @@ const storage = multer.diskStorage({
 
         cb(null, config.uploadPath);
     },
-    filename: (req, file, cb) => {
-        cb(null, 'buyouts/' + nanoid() + path.extname(file.originalname));
+    filename: async(req, file, cb) => {
+        let pathFile = 'buyouts/' + nanoid() + path.extname(file.originalname);
+        //Проверяю на наличие файла в базе
+        const image = await Buyout.findById(req.params.id);
+        //Если найдена запись, то мы передаем такое же имя файла
+        if (image && image.image){
+
+            pathFile = image.image.slice(8, image.image.length);
+        }
+        // Записываем фоный файл, под старым названием
+        cb(null, pathFile);
     }
 });
 

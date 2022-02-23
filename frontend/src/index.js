@@ -9,6 +9,7 @@ import theme from "./theme";
 import {ThemeProvider} from '@mui/material/styles';
 import 'react-toastify/dist/ReactToastify.css';
 import "./index.css"
+import CustomNavigate from "./components/CustomNavigate/CustomNavigate";
 
 const app = (
     <Provider store={store}>
@@ -24,6 +25,7 @@ const app = (
                     pauseOnFocusLoss={false}
                     draggable
                     pauseOnHover={false}/>
+                <CustomNavigate/>
                 <App/>
             </ThemeProvider>
         </BrowserRouter>

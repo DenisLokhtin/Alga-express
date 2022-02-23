@@ -18,6 +18,7 @@ const paymentSlice = createSlice({
         fetchPaymentSuccess(state, action) {
             state.fetchLoading = false;
             state.payment = action.payload;
+            state.errorPayment = null;
         },
         fetchPaymentFailure(state, action) {
             state.fetchLoading = false;

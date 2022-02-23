@@ -8,6 +8,7 @@ const PackageSchema = new mongoose.Schema({
     trackNumber: {
         type: String,
         trim: true,
+        unique: true,
         required: 'Поле Трек-Номер обязательное',
     },
     title: {
@@ -18,6 +19,10 @@ const PackageSchema = new mongoose.Schema({
     amount: {
         type: Number,
         required: 'Поле Количество обязательное',
+        validate: {
+            validator: Number.isInteger,
+            message: 'Введите только целые числа',
+        },
         min: [0, 'Количество не может быть отрицательным числом'],
     },
     price: {

@@ -83,14 +83,51 @@ router.post('/', auth, permit('admin'), async (req, res) => {
     } catch (e) {
         console.error(e);
         res.status(400).send({error: e});
-
-
     }
 });
 
 router.post('/cash', auth, permit('admin'), async (req, res) => {
-    let price = Number(req.body.price).toFixed(2);
+    let serializedPrice = req.body.price;
+
+    if (serializedPrice.includes(',') && serializedPrice.includes('.')) {
+        return res.status(400).send({
+            errors: {price: {message: 'Введите корректную сумму оплаты'}},
+        });
+    }
+
+    const dotMatching = req.body.price.match(/[.]/g) || [];
+
+    if (dotMatching.length > 1) {
+        return res.status(400).send({
+            errors: {price: {message: 'Введите корректную сумму оплаты'}},
+        });
+    }
+
+    if (/[a-zA-Z]/.test(serializedPrice)) {
+        return res.status(400).send({
+            errors: {price: {message: 'Введите корректную сумму оплаты'}},
+        });
+    }
+
+    if (serializedPrice.includes(' ')) {
+        return res.status(400).send({
+            errors: {price: {message: 'Введите сумму без пробелов'}},
+        });
+    }
+
+    const commaMatching = req.body.price.match(/,/g) || [];
+
+    if (serializedPrice.indexOf(',') === 0 || serializedPrice.indexOf('.') === 0 || commaMatching.length > 1) {
+        return res.status(400).send({
+            errors: {price: {message: 'Введите корректную сумму оплаты'}},
+        });
+    } else if (req.body.price.indexOf(',') > 0) {
+        serializedPrice = req.body.price.replace(/,/g, '.');
+    }
+
+    let price = Number(serializedPrice).toFixed(2);
     price = Number(price);
+
     try {
         const user = await User.findById(req.body.id);
         const payment = {
@@ -105,11 +142,11 @@ router.post('/cash', auth, permit('admin'), async (req, res) => {
         const paySave = new PaymentMove(payment);
         await paySave.save();
 
-       res.send('Оплата прошла успешно');
-   } catch (e) {
-       res.status(500).send(e);
+        res.send('Оплата прошла успешно');
+    } catch (e) {
+        res.status(500).send(e);
         console.log(e);
-   }
+    }
 });
 
 router.put('/:id', auth, permit('admin'), async (req, res) => {

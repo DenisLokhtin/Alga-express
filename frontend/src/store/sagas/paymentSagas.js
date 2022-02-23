@@ -28,7 +28,7 @@ export function* paymentAccepted ({payload}){
         yield put (paymentAcceptedSuccess());
     } catch (e) {
         toast.error(e.response.data.error);
-        yield put (fetchPaymentFailure(e.response.data.error));
+        yield put (fetchPaymentFailure(e.response.data));
     }
 }
 
@@ -36,10 +36,11 @@ export function* addPaymentAdmin ({payload}){
     try {
         const payment = yield axiosApi.post(`/cargo/cash`, payload);
         yield put (paymentAcceptedSuccess());
+        yield put(fetchPaymentFailure());
         toast.success(payment.data);
     } catch (e) {
-        toast.error(e.response.data.error);
-        yield put (fetchPaymentFailure(e.response.data.error));
+        // toast.error(e.response.data.error);
+        yield put (fetchPaymentFailure(e.response.data));
     }
 }
 
