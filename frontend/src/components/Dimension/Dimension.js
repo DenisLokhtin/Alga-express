@@ -6,8 +6,8 @@ const Dimension = (props) => {
     const {width, height, length, getFieldError, packageHandler} = props;
 
     return (
-        <>
-            <Grid item xs={12} sm={4} md={4} lg={4}>
+        <Grid container justifyContent="space-between">
+            <Grid item xs={12} sm={4} md={4} lg={3}>
                 <FormElement
                     name="width"
                     value={width}
@@ -20,7 +20,7 @@ const Dimension = (props) => {
                     label="Ширина"
                 />
             </Grid>
-            <Grid item xs={12} sm={4} md={4} lg={4}>
+            <Grid item xs={12} sm={4} md={4} lg={3}>
                 <FormElement
                     name="height"
                     value={height}
@@ -33,7 +33,7 @@ const Dimension = (props) => {
                     label="Высота"
                 />
             </Grid>
-            <Grid item xs={12} sm={4} md={4} lg={4}>
+            <Grid item xs={12} sm={4} md={4} lg={3}>
                 <FormElement
                     name="length"
                     value={length}
@@ -46,7 +46,7 @@ const Dimension = (props) => {
                     label="Длина"
                 />
             </Grid>
-        </>
+        </Grid>
     );
 };
 

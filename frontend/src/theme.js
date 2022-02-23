@@ -17,7 +17,7 @@ const theme = createTheme({
         MuiContainer: {
             defaultProps: {
                 style: {
-                    margin: 10,
+                    // margin: 10,
                     marginTop: 10,
                     marginBottom: 50,
                 }

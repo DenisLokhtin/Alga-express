@@ -1,6 +1,7 @@
 import {DataGrid} from "@mui/x-data-grid";
 import {Card, CardContent, CardHeader} from "@mui/material";
 import Box from "@mui/material/Box";
+import {countries} from "../../dataLocalization";
 
 const column = [
     {field: 'cargoNumber', headerName: 'Number'},
@@ -16,7 +17,7 @@ const NewPackageFilter = ({newPackages}) => {
             id: row._id,
             title: row.title,
             amount: row.amount,
-            country: row.country,
+            country: countries[row.country],
             price: row.price,
             cargoNumber: row.cargoNumber
         }

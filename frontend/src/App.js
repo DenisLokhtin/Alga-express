@@ -15,7 +15,7 @@ import HomePage from "./containers/HomePage/HomePage";
 import EditPackage from "./containers/EditPackage/EditPackage";
 import FAQ from "./containers/FAQ/FAQ";
 import EditNews from "./containers/EditNews/EditNews";
-import AdminEditPackage from "./containers/AdminEditPackage/AdminEditPackage";
+import AdminEditPackagePage from "./containers/AdminEditPackagePage/AdminEditPackagePage";
 import OrderHistory from "./containers/OrderHistory/OrderHistory";
 import SpecificPackage from "./containers/SpecificPackage/SpecificPackage";
 import AddFlight from "./containers/AddFlight/AddFlight";
@@ -102,7 +102,7 @@ const App = () => {
                     <Route path={adminPagePath} element={<AdminPage/>}/>
                     <Route path={newsEditCompany} element={<EditNews/>}/>
                     <Route path={editPages} element={<EditPages/>}/>
-                    <Route path={editPackageAdmin} element={<AdminEditPackage/>}/>
+                    <Route path={editPackageAdmin} element={<AdminEditPackagePage/>}/>
                     <Route path={addPaymentHandler} element={<AddPaymentAdmin/>}/>
                     <Route path={addFlightAdmin} element={<AddFlight/>}/>
                     <Route path={listFlightAdmin} element={<FlightsList/>}/>
