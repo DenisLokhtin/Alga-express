@@ -31,10 +31,13 @@ import {
     addPaymentHandler,
     addUserPayment,
     addWareHouseAddress,
+    adminPagePath,
     contactsCompany,
     editBuyout,
+    editingSingleTrackNumber,
     editPackageAdmin,
     editPackageUser,
+    editPages,
     editTariffGroup,
     editUserProfile,
     editWareHouseAddress,
@@ -54,15 +57,12 @@ import {
     root,
     rulesCompany,
     sitesCompany,
+    tariffs,
     userLogin,
     userPackageHistory,
+    userPage,
     userPaymentsList,
     wareHouseCompany,
-    editPages,
-    tariffs,
-    editingSingleTrackNumber,
-    userPage,
-    adminPagePath,
 } from "./paths";
 import OrderBuyout from "./containers/OrderBuyout/OrderBuyout";
 import SingleStatusEdit from "./containers/SingleStatusEdit/SingleStatusEdit";
@@ -81,7 +81,6 @@ import AdminPage from "./containers/AdminPage/AdminPage";
 import UserPage from "./containers/UserPage/UserPage";
 
 const App = () => {
-
     return (
         <Layout>
             <Routes>
@@ -96,6 +95,7 @@ const App = () => {
                     <Route path={packageInfoId} element={<SpecificPackage/>}/>
                     <Route path={orderBuyouts} element={<OrderBuyout/>}/>
                     <Route path={listBuyouts} element={<BuyoutList/>}/>
+                    <Route path={addUserPayment} element={<UserPayment/>}/>
                 </Route>
                 <Route element={<ProtectedRoutesForAdmin/>}>
                     {/* Routes for only admin */}

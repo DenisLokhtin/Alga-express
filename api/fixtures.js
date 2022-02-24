@@ -45,7 +45,7 @@ const run = async () => {
             balance: 200,
             name: "User",
             tariff: tariff.new,
-            avatar: 'avatar1.jpeg',
+            avatar: 'fixtures/avatar1.jpeg',
             phone: {number: '786 67 78 99', type: 'PHONE'},
             passport: {image: 'passport.jpg'}
         },
@@ -56,7 +56,7 @@ const run = async () => {
             role: "admin",
             balance: 0,
             name: "Admin",
-            avatar: 'avatar2.jpeg',
+            avatar: 'fixtures/avatar2.jpeg',
             phone: {number: '754 76 45 54', type: 'PHONE'},
             passport: {image: 'passport.jpg'}
         }
@@ -67,13 +67,13 @@ const run = async () => {
             description: 'Payment Description 1',
             user: user,
             status: false,
-            image: 'payment.png',
+            image: 'fixtures/payment.png',
         },
         {
             description: 'Payment Description 2',
             user: user,
             status: false,
-            image: 'payment.png',
+            image: 'fixtures/payment.png',
         },
     );
 
