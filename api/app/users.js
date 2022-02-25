@@ -3,6 +3,8 @@ const User = require('../models/User');
 const TariffGroup = require("../models/TariffGroup");
 const permit = require("../middleware/permit");
 const auth = require("../middleware/auth");
+const {nanoid} = require("nanoid");
+const nodemailer = require('nodemailer');
 
 
 const router = express.Router();
@@ -65,6 +67,50 @@ router.post('/sessions', async (req, res) => {
 
     res.send(user);
 });
+
+router.post('/forgot', async (req,res)=>{
+    try {
+        const user = await User.findOne({email: req.body.email});
+        if(!user){
+            return res.status(404).send({message: 'Такая почта не найдена'})
+        }
+        const resetCode = nanoid(8);
+      await User.findOneAndUpdate({email:user.email},{resetCode});
+
+
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'lbrtakun@gmail.com',
+                pass: 'attractor19'
+            }
+        });
+
+        const mailOptions = {
+            from: 'lbrtakun@gmail.com',
+            to: user.email,
+            subject: 'Сброс пароля',
+            html: `<p>Вы запросили сброс пароля на сайте alga-express</p>
+                    <p>Код для сброса пароля: <b>${resetCode}</b></p>
+                    <p>Перейдите по ссылке</p>
+                      <a href="#">test</a>`
+
+        };
+
+       await transporter.sendMail(mailOptions, function(error){
+            if (error) {
+                return res.send({message: "Ошибка отправки"})
+            } else {
+                res.send({message: 'Код для сброса пароля был отправлен на ' + user.email});
+            }
+        });
+
+    }catch (e) {
+       res.status(500).send(e);
+    }
+});
+
+
 
 router.delete('/sessions', async (req, res) => {
     const token = req.get('Authorization');
