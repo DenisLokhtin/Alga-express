@@ -9,7 +9,6 @@ const permit = require("../middleware/permit");
 const User = require("../models/User");
 const PaymentMove = require("../models/PaymentMove");
 const fs = require("fs");
-const {log} = require("nodemon/lib/utils");
 
 const newDir = `${config.uploadPath}/buyouts`;
 

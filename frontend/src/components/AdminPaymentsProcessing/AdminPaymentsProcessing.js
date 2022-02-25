@@ -59,7 +59,7 @@ const AdminPaymentsProcessing = () => {
 
     useEffect(() => {
         setPermitPayment([]);
-        paymentData && paymentData.data.forEach(payment => {
+        paymentData.data.forEach(payment => {
             setPermitPayment(prevState => [
                 ...prevState,
                 {
@@ -72,10 +72,7 @@ const AdminPaymentsProcessing = () => {
         return () => {
             setInput(true);
         }
-    }, [
-        paymentData,
-        paymentData && paymentData.data,
-    ]);
+    }, [paymentData.data]);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);

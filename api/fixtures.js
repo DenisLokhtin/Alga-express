@@ -45,7 +45,7 @@ const run = async () => {
             balance: 200,
             name: "User",
             tariff: tariff.new,
-            avatar: 'avatar1.jpeg',
+            avatar: 'fixtures/avatar1.jpeg',
             phone: {number: '786 67 78 99', type: 'PHONE'},
             passport: {image: 'passport.jpg'}
         },
@@ -56,7 +56,7 @@ const run = async () => {
             role: "admin",
             balance: 0,
             name: "Admin",
-            avatar: 'avatar2.jpeg',
+            avatar: 'fixtures/avatar2.jpeg',
             phone: {number: '754 76 45 54', type: 'PHONE'},
             passport: {image: 'passport.jpg'}
         }
@@ -67,13 +67,13 @@ const run = async () => {
             description: 'Payment Description 1',
             user: user,
             status: false,
-            image: 'payment.png',
+            image: 'fixtures/payment.png',
         },
         {
             description: 'Payment Description 2',
             user: user,
             status: false,
-            image: 'payment.png',
+            image: 'fixtures/payment.png',
         },
     );
 
@@ -177,21 +177,21 @@ const run = async () => {
         {
             title: 'title 1',
             description: 'description 1',
-            image: 'container1.jpeg',
+            image: 'fixtures/container1.jpeg',
             deleted: false,
             datetime: '2222-12-22',
         },
         {
             title: 'title 2',
             description: 'description 2',
-            image: 'container2.jpeg',
+            image: 'fixtures/container2.jpeg',
             deleted: false,
             datetime: '2322-12-22',
         },
         {
             title: 'title 2',
             description: 'description 2',
-            image: 'container2.jpeg',
+            image: 'fixtures/container2.jpeg',
             deleted: true,
             datetime: '2322-12-22',
         }
@@ -200,19 +200,19 @@ const run = async () => {
     await Market.create(
         {
             title: 'title 1',
-            image: 'amazon.png',
+            image: 'fixtures/amazon.png',
             url: 'https://www.amazon.com/',
             deleted: false,
         },
         {
             title: 'title 2',
-            image: 'ebay.png',
+            image: 'fixtures/ebay.png',
             url: 'https://www.ebay.com/?mkevt=1&siteid=1&mkcid=2&mkrid=711-153320-877174-6&source_name=google&mktype=brand&campaignid=9116265290&groupid=95976135767&crlp=414435097829&keyword=ebay&targeted=kwd-11021220&MT_ID=e&adpos=&device=c&googleloc=1009827&geo_id=212&gclid=Cj0KCQiArt6PBhCoARIsAMF5wajF7BGAA0hX1vUcvT3Vg0s2K130oqDDI0S1sR_Efg0S_99_pGC9w1IaApF6EALw_wcB',
             deleted: false,
         },
         {
             title: 'title 2',
-            image: 'ebay.png',
+            image: 'fixtures/ebay.png',
             url: 'https://www.ebay.com/?mkevt=1&siteid=1&mkcid=2&mkrid=711-153320-877174-6&source_name=google&mktype=brand&campaignid=9116265290&groupid=95976135767&crlp=414435097829&keyword=ebay&targeted=kwd-11021220&MT_ID=e&adpos=&device=c&googleloc=1009827&geo_id=212&gclid=Cj0KCQiArt6PBhCoARIsAMF5wajF7BGAA0hX1vUcvT3Vg0s2K130oqDDI0S1sR_Efg0S_99_pGC9w1IaApF6EALw_wcB',
             deleted: true,
         },
