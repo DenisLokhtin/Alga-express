@@ -33,7 +33,7 @@ const paymentSlice = createSlice({
         },
         paymentAcceptedSuccess(state) {
             state.fetchLoading = true;
-            state.status = !state.status
+            state.status = !state.status;
         },
         paymentAcceptedFailure(state, action) {
             state.fetchLoading = true;

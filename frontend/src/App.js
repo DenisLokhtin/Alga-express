@@ -79,70 +79,73 @@ import ProtectedRoutesForUser from "./components/ProtectedRoutesForUser/Protecte
 import ProtectedRoutesForAdmin from "./components/ProtectedRoutesForAdmin/ProtectedRoutesForAdmin";
 import AdminPage from "./containers/AdminPage/AdminPage";
 import UserPage from "./containers/UserPage/UserPage";
+import UpdateDates from "./components/UI/UpdateDates/UpdateDates";
 
 const App = () => {
     return (
-        <Layout>
-            <Routes>
-                <Route element={<ProtectedRoutesForUser/>}>
-                    {/* Routes for registered user and admin*/}
-                    <Route path={userPackageHistory} element={<OrderHistory/>}/>
-                    <Route path={userPaymentsList} element={<UserPayments/>}/>
-                    <Route path={newPackageRegister} element={<PackageRegister/>}/>
-                    <Route path={editUserProfile} element={<UserProfileEdit/>}/>
-                    <Route path={sitesCompany} element={<MarketSites/>}/>
-                    <Route path={editPackageUser} element={<EditPackage/>}/>
-                    <Route path={packageInfoId} element={<SpecificPackage/>}/>
-                    <Route path={orderBuyouts} element={<OrderBuyout/>}/>
-                    <Route path={listBuyouts} element={<BuyoutList/>}/>
-                    <Route path={addUserPayment} element={<UserPayment/>}/>
-                </Route>
-                <Route element={<ProtectedRoutesForAdmin/>}>
-                    {/* Routes for only admin */}
-                    <Route path={adminPagePath} element={<AdminPage/>}/>
-                    <Route path={newsEditCompany} element={<EditNews/>}/>
-                    <Route path={editPages} element={<EditPages/>}/>
-                    <Route path={editPackageAdmin} element={<AdminEditPackagePage/>}/>
-                    <Route path={addPaymentHandler} element={<AddPaymentAdmin/>}/>
-                    <Route path={addFlightAdmin} element={<AddFlight/>}/>
-                    <Route path={listFlightAdmin} element={<FlightsList/>}/>
+        <UpdateDates>
+            <Layout>
+                <Routes>
+                    <Route element={<ProtectedRoutesForUser/>}>
+                        {/* Routes for registered user and admin*/}
+                        <Route path={userPackageHistory} element={<OrderHistory/>}/>
+                        <Route path={userPaymentsList} element={<UserPayments/>}/>
+                        <Route path={newPackageRegister} element={<PackageRegister/>}/>
+                        <Route path={editUserProfile} element={<UserProfileEdit/>}/>
+                        <Route path={sitesCompany} element={<MarketSites/>}/>
+                        <Route path={editPackageUser} element={<EditPackage/>}/>
+                        <Route path={packageInfoId} element={<SpecificPackage/>}/>
+                        <Route path={orderBuyouts} element={<OrderBuyout/>}/>
+                        <Route path={listBuyouts} element={<BuyoutList/>}/>
+                        <Route path={addUserPayment} element={<UserPayment/>}/>
+                    </Route>
+                    <Route element={<ProtectedRoutesForAdmin/>}>
+                        {/* Routes for only admin */}
+                        <Route path={adminPagePath} element={<AdminPage/>}/>
+                        <Route path={newsEditCompany} element={<EditNews/>}/>
+                        <Route path={editPages} element={<EditPages/>}/>
+                        <Route path={editPackageAdmin} element={<AdminEditPackagePage/>}/>
+                        <Route path={addPaymentHandler} element={<AddPaymentAdmin/>}/>
+                        <Route path={addFlightAdmin} element={<AddFlight/>}/>
+                        <Route path={listFlightAdmin} element={<FlightsList/>}/>
+                        <Route path={addWareHouseAddress} element={<AddWareHouseAdmin/>}/>
+                        <Route path={editWareHouseAddress} element={<EditWareHouseAdmin/>}/>
+                        <Route path={listPaymentsAdmin} element={<AdminPaymentsProcessing/>}/>
+                        <Route path={addUserPayment} element={<UserPayment/>}/>
+                    </Route>
+                    {/* Routes for warehouseman пока что может заходить любой*/}
+                    <Route path={processingTrackNumbersAdmin} element={<WarehousemanStatusEdit/>}/>
+                    <Route path={editingSingleTrackNumber} element={<SingleStatusEdit/>}/>
+                    <Route path={editBuyout} element={<EditBuyout/>}/>
+                    <Route path={wareHouseCompany} element={<WarehousePage/>}/>
                     <Route path={addWareHouseAddress} element={<AddWareHouseAdmin/>}/>
                     <Route path={editWareHouseAddress} element={<EditWareHouseAdmin/>}/>
-                    <Route path={listPaymentsAdmin} element={<AdminPaymentsProcessing/>}/>
-                    <Route path={addUserPayment} element={<UserPayment/>}/>
-                </Route>
-                {/* Routes for warehouseman пока что может заходить любой*/}
-                <Route path={processingTrackNumbersAdmin} element={<WarehousemanStatusEdit/>}/>
-                <Route path={editingSingleTrackNumber} element={<SingleStatusEdit/>}/>
-                <Route path={editBuyout} element={<EditBuyout/>}/>
-                <Route path={wareHouseCompany} element={<WarehousePage/>}/>
-                <Route path={addWareHouseAddress} element={<AddWareHouseAdmin/>}/>
-                <Route path={editWareHouseAddress} element={<EditWareHouseAdmin/>}/>
-                <Route path={editTariffGroup} element={<EditTariffGroup/>}/>
-                <Route path={editPages} element={<EditPages/>}/>
-                <Route path={tariffs} element={<TariffsPage/>}/>
-                {/* Routes for not registered user */}
-                <Route path={root} element={<HomePage/>}/>
-                <Route path={faqCompany} element={<FAQ/>}/>
-                <Route path={newUserRegister} element={<Register/>}/>
-                <Route path={userLogin} element={<Login/>}/>
-                <Route path={rulesCompany} element={<Rules/>}/>
-                <Route path={aboutCompany} element={<AboutUs/>}/>
-                <Route path={contactsCompany} element={<Contacts/>}/>
-                <Route path={howCompany} element={<HowItWorks/>}/>
-                <Route path={newsCompany} element={<News/>}/>
-                <Route path={newsIdCompany} element={<SingleNews/>}/>
-                <Route path={userPage} element={<UserPage/>}/>
-                <Route
-                    path="*"
-                    element={
-                        <main style={{padding: "1rem"}}>
-                            <h1>Page Not Found</h1>
-                        </main>
-                    }
-                />
-            </Routes>
-        </Layout>
+                    <Route path={editTariffGroup} element={<EditTariffGroup/>}/>
+                    <Route path={editPages} element={<EditPages/>}/>
+                    <Route path={tariffs} element={<TariffsPage/>}/>
+                    {/* Routes for not registered user */}
+                    <Route path={root} element={<HomePage/>}/>
+                    <Route path={faqCompany} element={<FAQ/>}/>
+                    <Route path={newUserRegister} element={<Register/>}/>
+                    <Route path={userLogin} element={<Login/>}/>
+                    <Route path={rulesCompany} element={<Rules/>}/>
+                    <Route path={aboutCompany} element={<AboutUs/>}/>
+                    <Route path={contactsCompany} element={<Contacts/>}/>
+                    <Route path={howCompany} element={<HowItWorks/>}/>
+                    <Route path={newsCompany} element={<News/>}/>
+                    <Route path={newsIdCompany} element={<SingleNews/>}/>
+                    <Route path={userPage} element={<UserPage/>}/>
+                    <Route
+                        path="*"
+                        element={
+                            <main style={{padding: "1rem"}}>
+                                <h1>Page Not Found</h1>
+                            </main>
+                        }
+                    />
+                </Routes>
+            </Layout>
+        </UpdateDates>
     );
 };
 

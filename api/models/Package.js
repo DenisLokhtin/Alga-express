@@ -2,8 +2,6 @@ const mongoose = require('mongoose');
 const idValidator = require('mongoose-id-validator');
 const {customAlphabet} = require("nanoid");
 
-const nanoid = customAlphabet('1234567890', 8);
-
 const PackageSchema = new mongoose.Schema({
     trackNumber: {
         type: String,
