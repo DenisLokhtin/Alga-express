@@ -50,6 +50,12 @@ const UserSchema = new mongoose.Schema({
     },
     resetCode:{
         type: String,
+        trim: true,
+        expireAt: {
+            type: Date,
+            default: Date.now,
+            index: { expires: '1m' },
+        },
     },
     token: {
         type: String,
@@ -106,6 +112,8 @@ const UserSchema = new mongoose.Schema({
         default: "NEW",
     },
 });
+
+// UserSchema.index( { "resetCode": 1 }, { expireAfterSeconds: 30 } );
 
 UserSchema.pre('save', async function (next) {
     if (!this.isModified('password')) return next();

@@ -24,6 +24,7 @@ import {
 } from "../actions/usersActions";
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
+import {userLogin} from "../../paths";
 
 export function* registerUserSaga({payload: userData}) {
     try {
@@ -122,7 +123,7 @@ export function* fetchUserSaga() {
 export function* resetPasswordSaga({payload: user}) {
     try {
         const response = yield axiosApi.post('/users/reset', user);
-        user.navigate('/', true);
+        user.navigate(userLogin, true);
         yield put(resetPasswordSuccess());
         toast.success(response.data?.message);
     } catch (e) {

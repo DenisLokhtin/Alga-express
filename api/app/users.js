@@ -5,8 +5,9 @@ const permit = require("../middleware/permit");
 const auth = require("../middleware/auth");
 const {nanoid} = require("nanoid");
 const nodemailer = require('nodemailer');
+const bcrypt = require("bcrypt");
 
-
+const SALT_WORK_FACTOR = 10;
 const router = express.Router();
 
 router.get('/', auth, permit('admin'), async (req, res) => {
@@ -68,14 +69,14 @@ router.post('/sessions', async (req, res) => {
     res.send(user);
 });
 
-router.post('/forgot', async (req,res)=>{
+router.post('/forgot', async (req, res) => {
     try {
         const user = await User.findOne({email: req.body.email});
-        if(!user){
+        if (!user) {
             return res.status(404).send({message: 'Такая почта не найдена'})
         }
         const resetCode = nanoid(8);
-      await User.findOneAndUpdate({email:user.email},{resetCode});
+        await User.findOneAndUpdate({email: user.email}, {resetCode});
 
 
         const transporter = nodemailer.createTransport({
@@ -98,7 +99,7 @@ router.post('/forgot', async (req,res)=>{
 
         };
 
-       await transporter.sendMail(mailOptions, function(error){
+        await transporter.sendMail(mailOptions, function (error) {
             if (error) {
                 return res.send({message: "Ошибка отправки"})
             } else {
@@ -106,25 +107,31 @@ router.post('/forgot', async (req,res)=>{
             }
         });
 
-    }catch (e) {
-       res.status(500).send(e);
+    } catch (e) {
+        res.status(500).send(e);
     }
 });
 
 
-router.post('/reset', async(req,res)=>{
+router.post('/reset', async (req, res) => {
     try {
-        const user = await User.findOne({resetCode: req.body.resetCode});
-        if(!user){
+        const user = await User.find({resetCode: req.body.secretCode});
+        if (!user) {
+            console.log('error')
             return res.status(404).send({message: 'Неправильный код'})
         }
-        await User.findOneAndUpdate({password:user.password},{resetCode});
-    }catch (e) {
+        const newPassword = req.body.password;
 
+        const salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
+        const password2 = await bcrypt.hash(newPassword, salt);
+
+        const updated = await User.findOneAndUpdate({resetCode: req.body.secretCode}, {password: password2});
+        res.send(updated);
+    } catch (e) {
+        res.status(500).send(e);
     }
 
 })
-
 
 
 router.delete('/sessions', async (req, res) => {
