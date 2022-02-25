@@ -92,8 +92,10 @@ router.post('/forgot', async (req,res)=>{
             subject: 'Сброс пароля',
             html: `<p>Вы запросили сброс пароля на сайте alga-express</p>
                     <p>Код для сброса пароля: <b>${resetCode}</b></p>
-                    <p>Перейдите по ссылке</p>
-                      <a href="#">test</a>`
+                    <p>
+                      <a href="http://localhost:3000/secret/reset-password">Перейдите по ссылке</a>
+                      </p>`
+
 
         };
 
