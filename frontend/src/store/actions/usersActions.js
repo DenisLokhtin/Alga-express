@@ -26,5 +26,11 @@ export const {
   addUserPaymentRequest,
   addUserPaymentSuccess,
   addUserPaymentFailure,
+    resetPasswordRequest,
+    resetPasswordSuccess,
+    resetPasswordFailure,
+    forgotPasswordRequest,
+    forgotPasswordSuccess,
+    forgotPasswordFailure,
   logout,
 } = usersSlice.actions;

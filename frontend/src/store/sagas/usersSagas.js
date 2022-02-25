@@ -10,14 +10,14 @@ import {
     editUserDataRequest,
     editUserDataSuccess, fetchUserPaymentFailure,
     fetchUserPaymentRequest, fetchUserPaymentSuccess, fetchUsersFailure,
-    fetchUsersRequest, fetchUsersSuccess,
+    fetchUsersRequest, fetchUsersSuccess, forgotPasswordFailure, forgotPasswordRequest, forgotPasswordSuccess,
     loginUser,
     loginUserFailure,
     loginUserSuccess,
     logout,
     registerUser,
     registerUserFailure,
-    registerUserSuccess,
+    registerUserSuccess, resetPasswordFailure, resetPasswordRequest, resetPasswordSuccess,
     userDateFailure,
     userDateRequest,
     userDateSuccess,
@@ -118,6 +118,31 @@ export function* fetchUserSaga() {
     }
 }
 
+
+export function* resetPasswordSaga({payload: user}) {
+    try {
+        const response = yield axiosApi.post('/users/reset', user);
+        user.navigate('/', true);
+        yield put(resetPasswordSuccess());
+        toast.success(response.data?.message);
+    } catch (e) {
+        yield put(resetPasswordFailure(e.response.data));
+    }
+}
+
+export function* forgotPasswordSaga({payload: user}) {
+    try {
+        const response = yield axiosApi.post('/users/forgot', user);
+        user.navigate('/', true);
+        yield put(forgotPasswordSuccess());
+        toast.success(response.data?.message);
+    } catch (e) {
+        yield put(forgotPasswordFailure(e.response.data));
+    }
+}
+
+
+
 export function* logoutUserSaga() {
     try {
         yield axiosApi.delete('/users/sessions');
@@ -140,6 +165,8 @@ const usersSaga = [
     takeEvery(addUserPaymentRequest, userPaymentSaga),
     takeEvery(fetchUserPaymentRequest, fetchUserPaymentSaga),
     takeEvery(fetchUsersRequest, fetchUserSaga),
+    takeEvery(resetPasswordRequest, resetPasswordSaga),
+    takeEvery(forgotPasswordRequest, forgotPasswordSaga),
 ];
 
 export default usersSaga;

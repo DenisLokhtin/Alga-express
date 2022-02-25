@@ -96,7 +96,6 @@ router.post('/forgot', async (req,res)=>{
                       <a href="http://localhost:3000/secret/reset-password">Перейдите по ссылке</a>
                       </p>`
 
-
         };
 
        await transporter.sendMail(mailOptions, function(error){
@@ -111,6 +110,20 @@ router.post('/forgot', async (req,res)=>{
        res.status(500).send(e);
     }
 });
+
+
+router.post('/reset', async(req,res)=>{
+    try {
+        const user = await User.findOne({resetCode: req.body.resetCode});
+        if(!user){
+            return res.status(404).send({message: 'Неправильный код'})
+        }
+        await User.findOneAndUpdate({password:user.password},{resetCode});
+    }catch (e) {
+
+    }
+
+})
 
 
 
