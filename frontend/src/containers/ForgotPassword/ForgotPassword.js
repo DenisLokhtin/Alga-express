@@ -6,7 +6,7 @@ import theme from "../../theme";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
 import {useDispatch, useSelector} from "react-redux";
 import Alert from "@mui/material/Alert";
-import {forgotPasswordRequest, loginUser} from "../../store/actions/usersActions";
+import {forgotPasswordRequest} from "../../store/actions/usersActions";
 import {useNavigate} from "react-router-dom";
 
 
