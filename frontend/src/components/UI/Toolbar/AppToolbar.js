@@ -6,7 +6,6 @@ import Typography from "@mui/material/Typography";
 import BurgerMenu from "../BurgerMenu/BurgerMenu";
 import {Link} from "react-router-dom";
 import logo from '../../../assets/logo.svg';
-import {makeStyles} from "@mui/styles";
 import UserMenu from "./Menu/UserMenu";
 import Anonymous from "./Menu/Anonymous";
 import {
@@ -19,7 +18,6 @@ import {
     rulesCompany,
     sitesCompany,
     wareHouseCompany
-
 } from "../../../paths";
 import theme from "../../../theme";
 

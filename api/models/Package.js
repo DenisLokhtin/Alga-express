@@ -93,6 +93,7 @@ const PackageSchema = new mongoose.Schema({
 PackageSchema.pre('save',  function (next) {
     const packages = this;
     Package.find({}, function (error, pack) {
+        console.log(pack);
         if (error) throw error;
         packages.cargoNumber = pack.length + 1;
         next();

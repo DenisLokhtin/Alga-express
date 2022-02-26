@@ -26,5 +26,6 @@ export const {
   addUserPaymentRequest,
   addUserPaymentSuccess,
   addUserPaymentFailure,
+  totalSend,
   logout,
 } = usersSlice.actions;
