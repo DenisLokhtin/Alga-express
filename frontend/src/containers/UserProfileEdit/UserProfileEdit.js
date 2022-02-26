@@ -129,21 +129,10 @@ const UserProfileEdit = () => {
 
     useEffect(() => {
         dispatch(userDateRequest(id));
-        userData && setDataUser(prevState => ({
-            name: userData.name,
-            email: userData.email,
-            avatar: userData.avatar,
-        }));
-
-        userData && setPhone(prevState => ([
-            ...userData.phone,
-        ]));
-
-        userData && setPassport([...userData.passport]);
         return () => {
             dispatch(clearError());
         };
-    }, [dispatch, id, userData]);
+    }, [dispatch, id]);
 
     useMemo(() => {
         userData && setDataUser(prevState => ({
@@ -157,7 +146,7 @@ const UserProfileEdit = () => {
         ]));
 
         userData && setPassport([...userData.passport]);
-    }, [userData && userData.passport, userData]);
+    }, [userData]);
 
     useEffect(() => {
         if (!(phone.length <= 3)) {
@@ -167,7 +156,6 @@ const UserProfileEdit = () => {
             setDisabled(false);
         }
 
-        console.log(phone.length);
     }, [disabled, phone.length]);
 
     const inputChangeHandler = e => {
@@ -258,7 +246,7 @@ const UserProfileEdit = () => {
     };
 
     if (dataUser.avatar) {
-        imageURL = apiURL + '/uploads/' + userData.avatar;
+        imageURL = apiURL + userData.avatar;
     }
 
     if (userData && userData.passport) {
