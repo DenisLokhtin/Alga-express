@@ -11,6 +11,10 @@ export const initialState = {
     userDate: null,
     userError: null,
     payment: null,
+    resetError:null,
+    resetLoading: false,
+    forgotError:null,
+    forgotLoading: false,
 };
 
 const name = 'users';
@@ -116,6 +120,29 @@ const usersSlice = createSlice({
             state.loadUserDate = false;
             state.userError = action.payload;
         },
+        resetPasswordRequest(state){
+            state.resetLoading = true;
+        },
+        resetPasswordSuccess(state){
+            state.resetLoading = false;
+            state.resetError = null;
+        },
+        resetPasswordFailure(state,action){
+            state.resetLoading = false;
+            state.resetError = action.payload;
+        },
+        forgotPasswordRequest(state){
+            state.forgotLoading = true;
+        },
+        forgotPasswordSuccess(state){
+            state.forgotLoading = false;
+            state.forgotError = null;
+        },
+        forgotPasswordFailure(state,action){
+            state.forgotLoading = false;
+            state.forgotError = action.payload;
+        },
+
         logout(state) {
             state.user = null;
         },
