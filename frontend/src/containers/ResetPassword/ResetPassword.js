@@ -1,19 +1,16 @@
 import React, {useEffect, useState} from 'react';
-import {Link as RouterLink, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import FormElement from "../../components/UI/Form/FormElement";
-import {clearError, loginUser} from "../../store/actions/usersActions";
+import {clearError, resetPasswordRequest} from "../../store/actions/usersActions";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
-import LockOpenIcon from '@mui/icons-material/LockOpen';
+import LockClockIcon from '@mui/icons-material/LockClock';
 import {makeStyles} from "@mui/styles";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
-import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import Link from "@mui/material/Link";
 import Alert from '@mui/material/Alert';
 import {AlertTitle} from "@mui/material";
-import {forgotPassword, newUserRegister} from "../../paths";
 import theme from "../../theme";
 
 const useStyles = makeStyles(theme => ({
@@ -29,17 +26,22 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const Login = () => {
+const ResetPassword = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const loading = useSelector(state => state.users.loginLoading);
-    const error = useSelector(state => state.users.loginError);
+    const loading = useSelector(state => state.users.resetLoading);
+    const error = useSelector(state => state.users.resetError);
+
 
     const [user, setUser] = useState({
-        email: '',
-        password: ''
+        secretCode: '',
+        password: '',
     });
+
+    const [password, setPassword] = useState({
+        passwordConfirm: ""
+    })
 
     useEffect(() => {
         return () => {
@@ -49,13 +51,24 @@ const Login = () => {
 
     const inputChangeHandler = e => {
         const {name, value} = e.target;
-
         setUser(prevState => ({...prevState, [name]: value}));
+    };
+
+    const passwordOnChange = e => {
+        const {name, value} = e.target;
+        setPassword(prevState => ({...prevState, [name]: value}));
+    };
+
+
+    const passwordInputError = () => {
+        if (user.password !== password.passwordConfirm) {
+            return 'Пароли не совпадают'
+        }
     };
 
     const submitFormHandler = e => {
         e.preventDefault();
-        dispatch(loginUser({...user, navigate}));
+        dispatch(resetPasswordRequest({...user, navigate}));
     };
 
     const buttonDisable = () => {
@@ -68,12 +81,9 @@ const Login = () => {
         <Container component="section" maxWidth="xs" style={{textAlign: 'center'}}>
             <div style={theme.paper}>
                 <Avatar className={classes.avatar}>
-                    <LockOpenIcon/>
+                    <LockClockIcon/>
                 </Avatar>
 
-                <Typography component="h1" variant="h6">
-                    Вход
-                </Typography>
                 {
                     error &&
                     <Alert align="center" severity="error" className={classes.alert}>
@@ -89,11 +99,11 @@ const Login = () => {
                     spacing={2}
                 >
                     <FormElement
-                        type="email"
-                        autoComplete="current-email"
-                        label="Эл.почта"
-                        name="email"
-                        value={user.email}
+                        type="text"
+                        label="Код"
+                        autoComplete="off"
+                        name="secretCode"
+                        value={user.secretCode}
                         required={true}
                         onChange={inputChangeHandler}
                     />
@@ -101,11 +111,22 @@ const Login = () => {
                     <FormElement
                         type="password"
                         autoComplete="current-password"
-                        label="Пароль"
+                        label="Новый пароль"
                         name="password"
                         value={user.password}
                         required={true}
                         onChange={inputChangeHandler}
+                    />
+
+                    <FormElement
+                        type="password"
+                        autoComplete="current-password"
+                        label="Потвердите пароль"
+                        name="passwordConfirm"
+                        value={password.passwordConfirm}
+                        required={true}
+                        onChange={passwordOnChange}
+                        error={passwordInputError()}
                     />
 
                     <Grid item xs={12}>
@@ -118,19 +139,8 @@ const Login = () => {
                             loading={loading}
                             disabled={buttonDisable()}
                         >
-                            войти
+                            Отправить
                         </ButtonWithProgress>
-                    </Grid>
-
-                    <Grid item container justifyContent="flex-end">
-                        <Link component={RouterLink} variant="body2" to={newUserRegister}>
-                            Нет аккаунта? Зарегистрироваться
-                        </Link>
-                    </Grid>
-                    <Grid item container justifyContent="flex-end">
-                        <Link component={RouterLink} variant="body2" to={forgotPassword}>
-                            Забыли пароль?
-                        </Link>
                     </Grid>
                 </Grid>
             </div>
@@ -138,4 +148,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default ResetPassword;

@@ -31,13 +31,10 @@ import {
     addPaymentHandler,
     addUserPayment,
     addWareHouseAddress,
-    adminPagePath,
     contactsCompany,
     editBuyout,
-    editingSingleTrackNumber,
     editPackageAdmin,
     editPackageUser,
-    editPages,
     editTariffGroup,
     editUserProfile,
     editWareHouseAddress,
@@ -57,12 +54,17 @@ import {
     root,
     rulesCompany,
     sitesCompany,
-    tariffs,
     userLogin,
     userPackageHistory,
-    userPage,
     userPaymentsList,
     wareHouseCompany,
+    editPages,
+    tariffs,
+    editingSingleTrackNumber,
+    userPage,
+    adminPagePath,
+    forgotPassword,
+    resetPassword,
 } from "./paths";
 import OrderBuyout from "./containers/OrderBuyout/OrderBuyout";
 import SingleStatusEdit from "./containers/SingleStatusEdit/SingleStatusEdit";
@@ -80,6 +82,8 @@ import ProtectedRoutesForAdmin from "./components/ProtectedRoutesForAdmin/Protec
 import AdminPage from "./containers/AdminPage/AdminPage";
 import UserPage from "./containers/UserPage/UserPage";
 import UpdateDates from "./components/UI/UpdateDates/UpdateDates";
+import ForgotPassword from "./containers/ForgotPassword/ForgotPassword";
+import ResetPassword from "./containers/ResetPassword/ResetPassword";
 
 const App = () => {
     return (
@@ -135,6 +139,8 @@ const App = () => {
                     <Route path={newsCompany} element={<News/>}/>
                     <Route path={newsIdCompany} element={<SingleNews/>}/>
                     <Route path={userPage} element={<UserPage/>}/>
+                    <Route path={forgotPassword} element={<ForgotPassword/>}/>
+                    <Route path={resetPassword} element={<ResetPassword/>}/>
                     <Route
                         path="*"
                         element={

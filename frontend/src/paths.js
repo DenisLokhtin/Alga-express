@@ -39,6 +39,8 @@ export const editWareHouseAddress = '/alga-express/wareHouse/edit/:id';
 export const editingSingleWareHouse = '/alga-express/wareHouse/edit/';
 export const userPage = '/user/profile';
 export const adminPagePath = '/adminPage';
+export const forgotPassword = '/forgot'
+export const resetPassword = '/secret/reset-password'
 
 
 
