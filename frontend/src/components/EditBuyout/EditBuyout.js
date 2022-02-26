@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {clearBuyoutsError, editBuyoutRequest, fetchSingleBuyoutRequest} from "../../store/actions/buyoutActions";
 import {useParams} from "react-router-dom";
@@ -51,27 +51,23 @@ const EditBuyout = () => {
         commission: '',
         value: '',
     });
-    // const [show, setShow] = useState(false);
 
     useEffect(() => {
         dispatch(fetchSingleBuyoutRequest(id));
-        if (oneBuyout) {
-            console.log('In oneBuyout');
-            setBuyout(prevState => ({
-                ...prevState,
-                description: oneBuyout.description,
-                image: oneBuyout.image,
-                url: oneBuyout.url,
-                country: oneBuyout.country,
-                price: oneBuyout.price || '',
-                commission: oneBuyout.commission,
-                value: oneBuyout.value || '',
-            }))}
+    }, [dispatch, id]);
 
-    }, [dispatch, id, oneBuyout && oneBuyout.description]);
-
-    console.log(oneBuyout);
-    console.log(buyout);
+    useMemo(() => {
+        oneBuyout && setBuyout(prevState => ({
+            ...prevState,
+            description: oneBuyout.description,
+            image: oneBuyout.image,
+            url: oneBuyout.url,
+            country: oneBuyout.country,
+            price: oneBuyout.price || '',
+            commission: oneBuyout.commission,
+            value: oneBuyout.value || '',
+        }));
+    }, [oneBuyout]);
 
     const inputChangeHandler = e => {
         const name = e.target.name;
@@ -225,7 +221,6 @@ const EditBuyout = () => {
                         <Grid item className={classes.item}>
                         <FormControl variant="standard" fullWidth error={Boolean(getFieldError('value'))}>
                             <InputLabel id="demo-controlled-open-select-label">Валюта</InputLabel>
-                            {console.log(buyout.value)}
                             <Select
                                 labelId="demo-controlled-open-select-label"
                                 id="demo-controlled-open-select"
