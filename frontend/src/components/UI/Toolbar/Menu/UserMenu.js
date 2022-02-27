@@ -59,15 +59,13 @@ const adminSettings = [
     {url: editingSingleTrackNumber, title: 'Смена статуса одной посылки', icon: <EditIcon/>},
     {url: processingTrackNumbersAdmin, title: 'Смена статуса посылок', icon: <EditIcon/>},
 ];
-
 const UserMenu = ({user}) => {
     const dispatch = useDispatch();
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const navigate = useNavigate();
-
-    const payments = useSelector(state => state.payments.payment);
     const users = useSelector(state => state.users.user);
+    const total = useSelector(state => state.users.total);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -93,7 +91,7 @@ const UserMenu = ({user}) => {
                     component={Link}
                     to={listPaymentsAdmin}
                 >
-                    <Badge badgeContent={payments && payments.totalElements} color="error">
+                    <Badge badgeContent={total} color="error">
                         <NotificationsIcon/>
                     </Badge>
                 </IconButton>}

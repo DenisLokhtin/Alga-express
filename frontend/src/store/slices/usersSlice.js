@@ -11,6 +11,7 @@ export const initialState = {
     userDate: null,
     userError: null,
     payment: null,
+    total: 0,
     resetError:null,
     resetLoading: false,
     forgotError:null,
@@ -119,6 +120,9 @@ const usersSlice = createSlice({
         fetchUsersFailure(state, action) {
             state.loadUserDate = false;
             state.userError = action.payload;
+        },
+        totalSend(state, action) {
+            state.total = action.payload;
         },
         resetPasswordRequest(state){
             state.resetLoading = true;

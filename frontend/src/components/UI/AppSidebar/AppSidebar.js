@@ -11,7 +11,6 @@ import {
     MenuList,
     Typography
 } from "@mui/material";
-import {makeStyles} from "@mui/styles";
 import {Link} from "react-router-dom";
 import logo from "../../../assets/logo.svg";
 import {useSelector} from "react-redux";
@@ -32,7 +31,8 @@ import {
     howCompany,
     newsCompany,
     rulesCompany,
-    sitesCompany, wareHouseCompany
+    sitesCompany,
+    wareHouseCompany
 } from "../../../paths";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import theme from "../../../theme";
