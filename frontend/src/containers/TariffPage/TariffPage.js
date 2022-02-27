@@ -35,9 +35,9 @@ const TariffsPage = () => {
         keys.forEach(key => {
             if (key === 'new') {
                 return shownTariff.push(obj[key]);
-            } else if (key === 'buyers' && user.group === 'BUYERS') {
+            } else if (key === 'buyers' && user?.group === 'BUYERS') {
                 return shownTariff.push(obj[key]);
-            } else if (key === 'advanced' && user.group === 'ADVANCED') {
+            } else if (key === 'advanced' && user?.group === 'ADVANCED') {
                 return shownTariff.push(obj[key]);
             }
         });

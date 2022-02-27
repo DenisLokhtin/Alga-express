@@ -2,7 +2,7 @@ import {put, takeEvery} from "redux-saga/effects";
 import {
     addUserPaymentFailure,
     addUserPaymentRequest,
-    addUserPaymentSuccess,
+    addUserPaymentSuccess, changePasswordFailure, changePasswordRequest, changePasswordSuccess,
     editPassportFailure,
     editPassportRequest,
     editPassportSuccess,
@@ -131,6 +131,19 @@ export function* resetPasswordSaga({payload: user}) {
     }
 }
 
+
+export function* changePasswordSaga({payload: user}) {
+    try {
+        const response = yield axiosApi.post('/users/change', user);
+        user.navigate('/', true);
+        yield put(changePasswordSuccess());
+        toast.success(response.data?.message);
+    } catch (e) {
+        yield put(changePasswordFailure(e.response.data));
+    }
+}
+
+
 export function* forgotPasswordSaga({payload: user}) {
     try {
         const response = yield axiosApi.post('/users/forgot', user);
@@ -167,6 +180,7 @@ const usersSaga = [
     takeEvery(fetchUserPaymentRequest, fetchUserPaymentSaga),
     takeEvery(fetchUsersRequest, fetchUserSaga),
     takeEvery(resetPasswordRequest, resetPasswordSaga),
+    takeEvery(changePasswordRequest, changePasswordSaga),
     takeEvery(forgotPasswordRequest, forgotPasswordSaga),
 ];
 
