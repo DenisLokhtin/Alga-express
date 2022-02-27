@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import FormElement from "../../components/UI/Form/FormElement";
-import {clearError, resetPasswordRequest} from "../../store/actions/usersActions";
+import {changePasswordRequest, clearError, resetPasswordRequest} from "../../store/actions/usersActions";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
 import LockClockIcon from '@mui/icons-material/LockClock';
 import {makeStyles} from "@mui/styles";
@@ -32,12 +32,17 @@ const ResetPassword = () => {
     const navigate = useNavigate();
     const loading = useSelector(state => state.users.resetLoading);
     const error = useSelector(state => state.users.resetError);
+    const isUser = useSelector(state => state.users.user);
 
 
     const [user, setUser] = useState({
         secretCode: '',
         password: '',
     });
+
+    const [changePassword, setChangePassword] = useState({
+        password: '',
+    })
 
     const [password, setPassword] = useState({
         passwordConfirm: ""
@@ -51,7 +56,12 @@ const ResetPassword = () => {
 
     const inputChangeHandler = e => {
         const {name, value} = e.target;
-        setUser(prevState => ({...prevState, [name]: value}));
+        if (!isUser) {
+            setUser(prevState => ({...prevState, [name]: value}));
+        } else {
+            setChangePassword(prevState => ({...prevState, [name]: value}));
+        }
+
     };
 
     const passwordOnChange = e => {
@@ -61,20 +71,38 @@ const ResetPassword = () => {
 
 
     const passwordInputError = () => {
-        if (user.password !== password.passwordConfirm) {
-            return 'Пароли не совпадают'
+        if (!isUser) {
+            if (user.password !== password.passwordConfirm) {
+                return 'Пароли не совпадают'
+            }
+        } else {
+            if (changePassword.password !== password.passwordConfirm) {
+                return 'Пароли не совпадают'
+            }
         }
+
     };
 
     const submitFormHandler = e => {
         e.preventDefault();
-        dispatch(resetPasswordRequest({...user, navigate}));
+        if (isUser) {
+            dispatch(changePasswordRequest({...changePassword, navigate}))
+        } else {
+            dispatch(resetPasswordRequest({...user, navigate}));
+        }
     };
 
     const buttonDisable = () => {
-        if (user.password === '' || user.email === '') {
-            return true
-        } else return false
+        if(!isUser){
+            if (user.password === '') {
+                return true
+            } else return false
+        } else if(isUser){
+                if (changePassword.password === '') {
+                    return true
+            } else return false
+        }
+            return false
     };
 
     return (
@@ -91,58 +119,112 @@ const ResetPassword = () => {
                     </Alert>
                 }
 
-                <Grid
-                    component="form"
-                    container
-                    className={classes.form}
-                    onSubmit={submitFormHandler}
-                    spacing={2}
-                >
-                    <FormElement
-                        type="text"
-                        label="Код"
-                        autoComplete="off"
-                        name="secretCode"
-                        value={user.secretCode}
-                        required={true}
-                        onChange={inputChangeHandler}
-                    />
+                {isUser ? (
+                    <Grid
+                        component="form"
+                        container
+                        className={classes.form}
+                        onSubmit={submitFormHandler}
+                        spacing={2}
+                    >
+                        <>
+                            <FormElement
+                                type="password"
+                                autoComplete="current-password"
+                                label="Новый пароль"
+                                name="password"
+                                value={changePassword.password}
+                                required={true}
+                                onChange={inputChangeHandler}
+                            />
+                        </>
+                        <>
+                            <FormElement
+                                type="password"
+                                autoComplete="current-passwordConfirm"
+                                label="Потвердите пароль"
+                                name="passwordConfirm"
+                                value={password.passwordConfirm}
+                                required={true}
+                                onChange={passwordOnChange}
+                                error={passwordInputError()}
+                            />
+                        </>
 
-                    <FormElement
-                        type="password"
-                        autoComplete="current-password"
-                        label="Новый пароль"
-                        name="password"
-                        value={user.password}
-                        required={true}
-                        onChange={inputChangeHandler}
-                    />
-
-                    <FormElement
-                        type="password"
-                        autoComplete="current-password"
-                        label="Потвердите пароль"
-                        name="passwordConfirm"
-                        value={password.passwordConfirm}
-                        required={true}
-                        onChange={passwordOnChange}
-                        error={passwordInputError()}
-                    />
-
-                    <Grid item xs={12}>
-                        <ButtonWithProgress
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
-                            loading={loading}
-                            disabled={buttonDisable()}
-                        >
-                            Отправить
-                        </ButtonWithProgress>
+                        <Grid item xs={12}>
+                            <ButtonWithProgress
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                className={classes.submit}
+                                loading={loading}
+                                disabled={buttonDisable()}
+                            >
+                                Отправить
+                            </ButtonWithProgress>
+                        </Grid>
                     </Grid>
-                </Grid>
+                ) : (
+                    <Grid
+                        component="form"
+                        container
+                        className={classes.form}
+                        onSubmit={submitFormHandler}
+                        spacing={2}
+                    >
+                        <>
+                            <FormElement
+                                type="text"
+                                label="Код"
+                                autoComplete="current-secretCode"
+                                name="secretCode"
+                                value={user.secretCode}
+                                required={true}
+                                onChange={inputChangeHandler}
+                            />
+                        </>
+                        <>
+                            <FormElement
+                                type="password"
+                                autoComplete="current-password"
+                                label="Новый пароль"
+                                name="password"
+                                value={user.password}
+                                required={true}
+                                onChange={inputChangeHandler}
+                            />
+                        </>
+
+                        <>
+                            <FormElement
+                                type="password"
+                                autoComplete="current-passwordConfirm"
+                                label="Потвердите пароль"
+                                name="passwordConfirm"
+                                value={password.passwordConfirm}
+                                required={true}
+                                onChange={passwordOnChange}
+                                error={passwordInputError()}
+                            />
+                        </>
+
+                        <Grid item xs={12}>
+                            <ButtonWithProgress
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                className={classes.submit}
+                                loading={loading}
+                                disabled={buttonDisable()}
+                            >
+                                Отправить
+                            </ButtonWithProgress>
+                        </Grid>
+                    </Grid>
+                )}
+
             </div>
         </Container>
     );

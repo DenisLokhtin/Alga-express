@@ -24,7 +24,7 @@ const usersSlice = createSlice({
     name,
     initialState,
     reducers: {
-        registerUser(state, action) {
+        registerUser(state) {
             state.registerLoading = true;
         },
         registerUserSuccess(state, {payload: userData}) {
@@ -36,7 +36,7 @@ const usersSlice = createSlice({
             state.registerLoading = false;
             state.registerError = action.payload;
         },
-        loginUser(state, action) {
+        loginUser(state) {
             state.loginLoading = true;
         },
         loginUserSuccess(state, action) {
@@ -48,13 +48,13 @@ const usersSlice = createSlice({
             state.loginError = action.payload;
             state.loginLoading = false;
         },
-        clearError(state, action) {
+        clearError(state) {
             state.loginError = null;
             state.registerError = null;
             state.error = null;
             state.userError = null;
         },
-        userDateRequest(state, action) {
+        userDateRequest(state) {
             state.loadUserDate = true;
         },
         userDateSuccess(state, action) {
@@ -66,7 +66,7 @@ const usersSlice = createSlice({
             state.loadUserDate = false;
             state.userError = action.payload;
         },
-        editUserDataRequest(state, action) {
+        editUserDataRequest(state) {
             state.loadUserDate = true;
         },
         editUserDataSuccess(state, action) {
@@ -77,14 +77,14 @@ const usersSlice = createSlice({
             state.loadUserDate = false;
             state.userError = action.payload;
         },
-        editPassportRequest(state, action) {
+        editPassportRequest(state) {
             state.loadUserDate = true;
         },
         editPassportSuccess(state, action) {
             state.userDate = action.payload;
             state.loadUserDate = false;
         },
-        editPassportFailure(state, action) {
+        editPassportFailure(state) {
             state.loadUserDate = false;
 
         },
@@ -132,6 +132,17 @@ const usersSlice = createSlice({
             state.resetError = null;
         },
         resetPasswordFailure(state,action){
+            state.resetLoading = false;
+            state.resetError = action.payload;
+        },
+        changePasswordRequest(state){
+            state.resetLoading = true;
+        },
+        changePasswordSuccess(state){
+            state.resetLoading = false;
+            state.resetError = null;
+        },
+        changePasswordFailure(state,action){
             state.resetLoading = false;
             state.resetError = action.payload;
         },
