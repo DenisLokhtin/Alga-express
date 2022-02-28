@@ -32,7 +32,6 @@ const BuyoutList = () => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.users.user);
     const buyouts = useSelector(state => state.buyouts.buyouts.data);
-    console.log(buyouts)
 
     useEffect(() => {
         dispatch(fetchBuyoutsRequest())
