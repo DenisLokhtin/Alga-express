@@ -40,8 +40,6 @@ const WarehousePage = () => {
         setValue("0");
     };
 
-    console.log(wareHouses)
-
     const content = wareHouses[value]?.info.split('\n').filter(info => info !== '').map(info => ({info}));
 
     return (
@@ -114,6 +112,11 @@ const WarehousePage = () => {
                     </TabPanel>
                 ))}
             </TabContext>
+
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/t86sKsR4pnk"
+                    title="YouTube video player" frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen>video</iframe>
         </Box>
     );
 };
