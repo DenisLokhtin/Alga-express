@@ -33,5 +33,8 @@ export const {
     forgotPasswordRequest,
     forgotPasswordSuccess,
     forgotPasswordFailure,
-    logout,
+    changePasswordRequest,
+    changePasswordSuccess,
+    changePasswordFailure,
+  logout,
 } = usersSlice.actions;
