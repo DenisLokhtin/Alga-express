@@ -15,7 +15,7 @@ router.get('/:page', async (req, res) => {
     }
 });
 
-router.put('/:page', auth, permit('admin'), async (req, res) => {
+router.put('/:page', auth, permit('admin', 'superAdmin'), async (req, res) => {
     try {
         const updatedPage = await Pages.findOneAndUpdate({nameURL: req.params.page}, {
             text: req.body.text,

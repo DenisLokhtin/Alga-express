@@ -103,40 +103,40 @@ const columns = [
     {
         field: 'cargoNumber',
         headerName: 'Карго-номер',
-        minWidth: 220,
-        maxWidth: 400,
+        flex: 1,
+        minWidth: 150,
         headerAlign: 'center',
-        align: 'center'
+        align: 'center',
     },
     {
         field: 'trackNumber',
         headerName: 'Трек-номер',
-        minWidth: 225,
-        maxWidth: 400,
+        flex: 1,
+        minWidth: 195,
         headerAlign: 'center',
         align: 'center'
     },
     {
         field: 'country',
         headerName: 'Страна',
-        minWidth: 220,
-        maxWidth: 400,
+        flex: 1,
+        minWidth: 200,
         headerAlign: 'center',
         align: 'center',
     },
     {
         field: 'status',
         headerName: 'Статус',
-        minWidth: 200,
-        maxWidth: 400,
+        flex: 1,
+        minWidth: 100,
         headerAlign: 'center',
         align: 'center',
     },
     {
         field: 'title',
         headerName: 'Заголовок',
-        minWidth: 225,
-        maxWidth: 400,
+        flex: 1,
+        minWidth: 200,
         headerAlign: 'center',
         align: 'center',
     },
@@ -174,9 +174,7 @@ const OrderHistory = () => {
                 return;
             }
 
-            setTimeout(() => {
-                setSelectionModel(prevSelectionModel.current);
-            });
+            setSelectionModel(prevSelectionModel.current);
 
         })();
 
@@ -185,47 +183,41 @@ const OrderHistory = () => {
         };
     }, [page, dispatch, pageLimit]);
 
-
-    const onCellClick = packageId => {
-        //Сюда приходит айди посылки
-    };
-
     return (
         <Container style={{display: 'flex', height: '550px', width: '100%', marginTop: '5em'}}>
-                <StyledDataGrid
-                    onCellClick={e => onCellClick(e.id)}
-                    rows={myRows}
-                    columns={
-                        [...columns,
-                            {field: 'trackNumber', sortable: false},
-                            {field: 'cargoNumber', sortable: false},
-                            {field: 'country', sortable: false},
-                            {field: 'status', sortable: false},
-                            {field: 'title', sortable: false},
-                        ]}
-                    pagination
-                    pageSize={pageLimit}
-                    rowsPerPageOptions={[5, 10, 20, 30]}
-                    rowCount={totalRow}
-                    checkboxSelection
-                    paginationMode="server"
-                    onPageSizeChange={newRowsLimit => setPageLimit(newRowsLimit)}
-                    onPageChange={(newPage) => {
-                        prevSelectionModel.current = selectionModel;
-                        setPage(newPage);
-                    }}
-                    onSelectionModelChange={(newSelectionModel) => {
-                        setSelectionModel(newSelectionModel);
-                    }}
-                    selectionModel={selectionModel}
-                    localeText={ruRU.components.MuiDataGrid.defaultProps.localeText}
-                    loading={loading}
-                    components={{
-                        Toolbar: CustomToolbar,
-                        LoadingOverlay: CustomLoadingOverlay,
-                        NoRowsOverlay: CustomNoRowsOverlay,
-                    }}
-                />
+            <StyledDataGrid
+                rows={myRows}
+                columns={
+                    [...columns,
+                        {field: 'trackNumber', sortable: false},
+                        {field: 'cargoNumber', sortable: false},
+                        {field: 'country', sortable: false},
+                        {field: 'status', sortable: false},
+                        {field: 'title', sortable: false},
+                    ]}
+                pagination
+                pageSize={pageLimit}
+                rowsPerPageOptions={[5, 10, 20, 30]}
+                rowCount={totalRow}
+                paginationMode="server"
+                onPageSizeChange={newRowsLimit => setPageLimit(newRowsLimit)}
+                onPageChange={(newPage) => {
+                    prevSelectionModel.current = selectionModel;
+                    setPage(newPage);
+                }}
+                onSelectionModelChange={(newSelectionModel) => {
+                    setSelectionModel(newSelectionModel);
+                }}
+                selectionModel={selectionModel}
+                localeText={ruRU.components.MuiDataGrid.defaultProps.localeText}
+                loading={loading}
+                rowHeight={70}
+                components={{
+                    Toolbar: CustomToolbar,
+                    LoadingOverlay: CustomLoadingOverlay,
+                    NoRowsOverlay: CustomNoRowsOverlay,
+                }}
+            />
         </Container>
     );
 };

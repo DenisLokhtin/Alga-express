@@ -48,11 +48,24 @@ const MarketSites = () => {
                                                    confirm={() => dispatch(deleteMarketRequest(m._id))}/>
                                     </>
                                 )}
+                                {user && user.role === 'superAdmin' && (
+                                    <>
+                                        <IconButton
+                                            onClick={() => setOpen(true)}>
+                                            <HighlightOffIcon/>
+                                        </IconButton>
+                                        <AppWindow open={open} onClose={() => setOpen(false)}
+                                                   confirm={() => dispatch(deleteMarketRequest(m._id))}/>
+                                    </>
+                                )}
                             </Grid>
                         </Fragment>
                     ))}
                 </Grid>
                 {user && user.role === 'admin' && (
+                    <MarketAdmin/>
+                )}
+                {user && user.role === 'superAdmin' && (
                     <MarketAdmin/>
                 )}
             </Grid>

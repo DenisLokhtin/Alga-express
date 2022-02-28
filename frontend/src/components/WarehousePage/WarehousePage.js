@@ -59,6 +59,21 @@ const WarehousePage = () => {
                         <AddBoxIcon/> Добавить новую страну
                     </ButtonWithProgress>
                 </Grid> : ''}
+            {user && user.role === 'superAdmin' ?
+                <Grid item xs={5}>
+                    <ButtonWithProgress
+                        type="submit"
+                        variant="contained"
+                        color="error"
+                        className={classes.submit}
+                        loading={loading}
+                        disabled={loading}
+                        component={Link}
+                        to={addWareHouseAddress}
+                    >
+                        <AddBoxIcon/> Добавить новую страну
+                    </ButtonWithProgress>
+                </Grid> : ''}
             <TabContext value={value}>
                 <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
                     <Grid container>
@@ -109,6 +124,38 @@ const WarehousePage = () => {
                                     </ButtonWithProgress>
                                 </Grid>
                             </Grid> : ''}
+                        {user && user.role === 'superAdmin' ?
+                            <Grid container>
+                                <Grid item xs={3}>
+                                    <ButtonWithProgress
+                                        type="submit"
+                                        fullWidth
+                                        variant="contained"
+                                        color="success"
+                                        className={classes.submit}
+                                        loading={loading}
+                                        disabled={loading}
+                                        component={Link}
+                                        to={editingSingleWareHouse + warehouse._id}
+                                    >
+                                        Редактировать
+                                    </ButtonWithProgress>
+                                </Grid>
+                                <Grid item xs={3}>
+                                    <ButtonWithProgress
+                                        type="submit"
+                                        fullWidth
+                                        variant="contained"
+                                        color="inherit"
+                                        className={classes.submit}
+                                        loading={loading}
+                                        disabled={loading}
+                                        onClick={() => deleteWareHouse(warehouse._id)}
+                                    >
+                                        Удалить страну
+                                    </ButtonWithProgress>
+                                </Grid>
+                            </Grid> : null}
                     </TabPanel>
                 ))}
             </TabContext>
