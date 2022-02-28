@@ -10,7 +10,7 @@ const bcrypt = require("bcrypt");
 const SALT_WORK_FACTOR = 10;
 const router = express.Router();
 
-router.get('/', auth, permit('admin'), async (req, res) => {
+router.get('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
     try {
         const users = await User.find({role: 'user'})
             .select('name');
@@ -21,15 +21,21 @@ router.get('/', auth, permit('admin'), async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    console.log('in post');
     try {
+
+        if (req.body.password !== req.body.confirmPassword) {
+            return res.status(400).send({
+                errors: {password: {message: "Пароли не совпадают"}},
+            });
+        }
+
         const tariff = await TariffGroup.findOne({new: {$exists: true}});
-        console.log(tariff);
         const user = new User({
             email: req.body.email,
             password: req.body.password,
             phone: {number: req.body.phone},
             name: req.body.name,
+            role: req.body.role,
             tariff: {
                 usa: tariff.new.usa,
                 turkey: tariff.new.turkey,
@@ -41,6 +47,11 @@ router.post('/', async (req, res) => {
 
         user.generateToken();
         await user.save();
+
+        if (req.body?.creator === 'superAdmin') {
+            return res.send({creator: req.body.creator});
+        }
+
         res.send(user);
     } catch (error) {
         res.status(400).send(error);

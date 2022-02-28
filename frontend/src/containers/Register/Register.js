@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {Link as RouterLink, useNavigate} from 'react-router-dom';
+import {Link as RouterLink} from 'react-router-dom';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
@@ -19,35 +18,33 @@ import './Register.css'
 import 'react-phone-input-2/lib/bootstrap.css'
 import {rulesCompany, userLogin} from "../../paths";
 import theme from "../../theme";
+import {FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 
 const useStyles = makeStyles(theme => ({
     form: {
-        marginTop: theme.spacing(1),
+        margin: theme.spacing(2),
     },
     submit: {
-        margin: theme.spacing(3, 0, 2),
+        margin: theme.spacing(0, 0, 1),
     },
 }));
 
-const Register = () => {
+const Register = ({userData}) => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const error = useSelector(state => state.users.registerError);
     const loading = useSelector(state => state.users.registerLoading);
 
     const [user, setUser] = useState({
+        role: '',
         email: '',
         password: '',
         phone: '',
         name: '',
+        confirmPassword: '',
     });
 
-    const [passwords, setPasswords] = useState({
-        password_2: '',
-    });
-
-    const [checkbox, setCheckbox] = useState(false);
+    const [checkbox, setCheckbox] = useState(userData?.role === 'superAdmin');
 
     useEffect(() => {
         return () => {
@@ -61,28 +58,21 @@ const Register = () => {
         setUser(prevState => ({...prevState, [name]: value}));
     };
 
-    const passwordChangeHandler = e => {
-        const {name, value} = e.target;
-
-        setPasswords(prevState => ({...prevState, [name]: value}));
+    const handleChange = event => {
+        setCheckbox(event.target.checked);
     };
 
     const submitFormHandler = e => {
         e.preventDefault();
-
-        dispatch(registerUser({...user, navigate}));
-    };
-
-    const passwordInputError = () => {
-        if (user.password !== passwords.password_2) {
-            return 'Пароли не совпадают'
-        }
+        dispatch(registerUser({...user, userData}));
     };
 
     const passwordError = () => {
-        if (user.password === passwords.password_2 && user.password !== '' && passwords.password_2 !== '' && user.email !== '' && user.name !== '' && user.phone !== '' && checkbox) {
-            return false
-        } else return true
+        return !(
+            user.password !== '' && user.confirmPassword !== '' &&
+            user.email !== '' && user.name !== '' &&
+            user.phone !== '' && checkbox
+        );
     };
 
     const getFieldError = fieldName => {
@@ -100,24 +90,51 @@ const Register = () => {
     };
 
     return (
-        <Container component="section" maxWidth="xs" style={{textAlign: 'center'}}>
+        <Container component="section" maxWidth="md">
             <div style={theme.paper}>
-                <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon/>
-                </Avatar>
-                <Typography component="h1" variant="h6">
-                    Регистрация
-                </Typography>
+                <Grid item sx={{mb: '1.3em'}}>
+                    <Avatar className={classes.avatar}>
+                        <LockOutlinedIcon/>
+                    </Avatar>
+                </Grid>
+                {userData?.role === 'superAdmin' ? (
+                    <Typography component="h1" variant="h6" align={'center'}>
+                        Регистрация пользователей
+                    </Typography>
+                ) : (
+                    <Typography component="h1" variant="h6" align={'center'}>
+                        Регистрация
+                    </Typography>
+                )}
                 <Grid
                     component="form"
                     container
                     className={classes.form}
                     onSubmit={submitFormHandler}
+                    justifyContent="center"
                     spacing={2}
                     noValidate
                 >
-
+                    {userData?.role === 'superAdmin' && (
+                        <Grid item xs={12} sm={8} md={7} lg={7}>
+                            <FormControl fullWidth>
+                                <InputLabel id="demo-simple-select-label">Выберите кого хотите создать</InputLabel>
+                                <Select
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    value={user.role}
+                                    name="role"
+                                    label="Выберите кого хотите создать"
+                                    onChange={inputChangeHandler}
+                                >
+                                    <MenuItem value={'admin'}>Администратор</MenuItem>
+                                    <MenuItem value={'warehouseman'}>Складовщик</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                    )}
                     <FormElement
+                        xs={12} sm={8} md={7} lg={7}
                         required
                         variant="outlined"
                         type="text"
@@ -127,20 +144,20 @@ const Register = () => {
                         onChange={inputChangeHandler}
                         error={getFieldError('name')}
                     />
-
-                    <PhoneInput
-                        style={{'margin': '8px'}}
-                        country={'kg'}
-                        localization={ru}
-                        required
-                        type="tel"
-                        label="Номер телефона"
-                        name="phone"
-                        value={user.phone}
-                        onChange={phoneChangeHandler}
-                    />
-
+                    <Grid item xs={12} sm={8} md={7} lg={7}>
+                        <PhoneInput
+                            country={'kg'}
+                            localization={ru}
+                            required
+                            type="tel"
+                            label="Номер телефона"
+                            name="phone"
+                            value={user.phone}
+                            onChange={phoneChangeHandler}
+                        />
+                    </Grid>
                     <FormElement
+                        xs={12} sm={8} md={7} lg={7}
                         required
                         type="email"
                         autoComplete="new-email"
@@ -150,8 +167,8 @@ const Register = () => {
                         onChange={inputChangeHandler}
                         error={getFieldError('email')}
                     />
-
                     <FormElement
+                        xs={12} sm={8} md={7} lg={7}
                         required
                         type="password"
                         autoComplete="new-password"
@@ -159,34 +176,42 @@ const Register = () => {
                         name="password"
                         value={user.password}
                         onChange={inputChangeHandler}
-                        error={passwordInputError()}
+                        error={getFieldError('password')}
                     />
-
                     <FormElement
+                        xs={12} sm={8} md={7} lg={7}
                         required
                         type="password"
                         autoComplete="new-password"
                         label="Повторите пароль"
-                        name="password_2"
-                        value={passwords.password_2}
-                        onChange={passwordChangeHandler}
-                        error={passwordInputError()}
+                        name="confirmPassword"
+                        value={user.confirmPassword}
+                        onChange={inputChangeHandler}
+                        error={getFieldError('password')}
                     />
 
-                    <Grid item xs={12}>
-                        <FormControlLabel label={<Typography component="span">
-                            Я согласен с <Link component={RouterLink} to={rulesCompany}>правилами</Link>
-                        </Typography>} onClick={() => setCheckbox(!checkbox)} style={{'marginBottom': '5px'}}
-                                          control={<Checkbox size='medium'/>}/>
-                    </Grid>
-
-                    <Grid item xs={12}>
-                        <Typography>
-                            Перед совершением покупок необходимо будет подробнее заполнить информацию о себе в личном кабинете
-                        </Typography>
-                    </Grid>
-
-                    <Grid item xs={12}>
+                    {userData?.role === 'superAdmin' ? null : (
+                        <>
+                            <Grid item xs={12} sm={8} md={7} lg={7} sx={{mt: '1.5em'}}>
+                                <Typography align="center">
+                                    Перед совершением покупок необходимо будет подробнее заполнить информацию о себе
+                                    в личном кабинете
+                                </Typography>
+                            </Grid>
+                            <Grid container justifyContent="center" alignItems="center" style={{textAlign: 'center'}}>
+                                <Checkbox
+                                    sx={{my: '1.5em'}}
+                                    checked={checkbox}
+                                    onChange={handleChange}
+                                    inputProps={{'aria-label': 'controlled'}}
+                                />
+                                <Typography>
+                                    Я согласен с <Link component={RouterLink} to={rulesCompany}>правилами</Link>
+                                </Typography>
+                            </Grid>
+                        </>
+                    )}
+                    <Grid item xs={12} sm={8} md={7} lg={7}>
                         <ButtonWithProgress
                             type="submit"
                             fullWidth
@@ -196,13 +221,14 @@ const Register = () => {
                             loading={loading}
                             disabled={passwordError()}
                         >
-                            зарегистрироваться
+                            {userData?.role === 'superAdmin' ? 'Создать пользователя' : 'зарегистрироваться'}
                         </ButtonWithProgress>
                     </Grid>
-
-                    <Grid item container justifyContent="flex-end">
-                        <Link component={RouterLink} variant="body2" to={userLogin}>
-                            Уже есть аккаунт? Войти
+                    <Grid item xs={12} sm={8} md={7} lg={7}>
+                        <Link component={RouterLink} to={userLogin}>
+                            <Typography align="right" variant="body2">
+                                Уже есть аккаунт? Войти
+                            </Typography>
                         </Link>
                     </Grid>
                 </Grid>

@@ -40,13 +40,19 @@ const UserSchema = new mongoose.Schema({
         lowercase: true,
         validate: [
             {validator: validateEmail, message: 'Email is not valid!'},
-            {validator: validateUnique, message: 'This user is already registered!'}
+            {validator: validateUnique, message: 'Этот пользователь уже зарегистрирован'}
         ],
     },
     password: {
         type: String,
-        required: true,
+        required: 'Это поле является обязательным и не должен содержать пробелы',
         trim: true,
+        validate: {
+            validator: function (value) {
+                if (value.length < 8) return false
+            },
+            message: 'Пароль не должен быть меньше чем 8 символов',
+        }
     },
     resetCode:{
         type: String,
@@ -67,7 +73,7 @@ const UserSchema = new mongoose.Schema({
         required: true,
         trim: true,
         default: 'user',
-        enum: ['admin', 'user'],
+        enum: ['admin', 'user', 'warehouseman', 'superAdmin'],
     },
     name: {
         type: String,

@@ -27,11 +27,7 @@ const AdminEditPackagePage = () => {
                     justifyContent="center"
                     alignItems="center">
                     <CircularProgress size={'4em'} sx={{marginTop: '6em'}}/>
-                </Grid> :
-                packageAdmin && <AdminEditPackage
-                    packageAdmin={packageAdmin}
-                    id={id}
-                />
+                </Grid> : packageAdmin && <AdminEditPackage packageAdmin={packageAdmin} id={id}/>
             }
         </>
     )

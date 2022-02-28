@@ -118,23 +118,25 @@ const Buyout = () => {
                 noValidate
             >
                 <h3 style={theme.title}>Заказать выкуп</h3>
-                <FormControl variant="standard" fullWidth error={Boolean(getFieldError('country'))}>
-                    <InputLabel id="demo-controlled-open-select-label">Страна</InputLabel>
-                    <Select
-                        labelId="demo-controlled-open-select-label"
-                        id="demo-controlled-open-select"
-                        value={buyout.country}
-                        label="Из какой страны выкупить"
-                        name="country"
-                        required
-                        onChange={inputChangeHandler}
-                    >
-                        <MenuItem value={'USA'}>Америка</MenuItem>
-                        <MenuItem value={'Turkey'}>Турция</MenuItem>
-                        <MenuItem value={'China'}>Китай</MenuItem>
-                    </Select>
-                    <FormHelperText error={true}>{error?.errors?.['country']?.message}</FormHelperText>
-                </FormControl>
+               <Grid item xs={12} sm={8} md={7} lg={7}>
+                   <FormControl variant="outlined" fullWidth error={Boolean(getFieldError('country'))}>
+                       <InputLabel id="demo-controlled-open-select-label">Страна</InputLabel>
+                       <Select
+                           labelId="demo-controlled-open-select-label"
+                           id="demo-controlled-open-select"
+                           value={buyout.country}
+                           label="Из какой страны выкупить"
+                           name="country"
+                           required
+                           onChange={inputChangeHandler}
+                       >
+                           <MenuItem value={'USA'}>Америка</MenuItem>
+                           <MenuItem value={'Turkey'}>Турция</MenuItem>
+                           <MenuItem value={'China'}>Китай</MenuItem>
+                       </Select>
+                       <FormHelperText error={true}>{error?.errors?.['country']?.message}</FormHelperText>
+                   </FormControl>
+               </Grid>
                 <FormElement
                     required
                     label="Описание товара (размер, цвет и тд.)"

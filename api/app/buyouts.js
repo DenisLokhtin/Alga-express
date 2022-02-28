@@ -41,7 +41,7 @@ const upload = multer({storage});
 
 const router = express.Router();
 
-router.get('/', auth, permit('admin', 'user'), async (req, res) => {
+router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) => {
     try {
 
         if (req.user.role === 'user') {
@@ -57,7 +57,7 @@ router.get('/', auth, permit('admin', 'user'), async (req, res) => {
     }
 });
 
-router.get('/:id', auth, permit('admin', 'user'), async (req, res) => {
+router.get('/:id', auth, permit('admin', 'user', 'superAdmin'), async (req, res) => {
     try {
 
         if (req.user.role === 'user') {
@@ -97,7 +97,7 @@ router.post('/', auth, upload.single('image'), async (req, res) => {
     }
 });
 
-router.delete('/:id', auth, permit('admin'), async (req, res) => {
+router.delete('/:id', auth, permit('admin', 'superAdmin'), async (req, res) => {
     try {
         const buyout = await Buyout.findById(req.params.id);
 

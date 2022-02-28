@@ -24,14 +24,35 @@ import {
 } from "../actions/usersActions";
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
+import History from '../../History';
 import {userLogin} from "../../paths";
 
-export function* registerUserSaga({payload: userData}) {
+export function* registerUserSaga({payload}) {
     try {
+        const userData = {
+            email: payload.email,
+            name: payload.name,
+            password: payload.password,
+            phone: payload.phone,
+            role: payload.role || 'user',
+            creator: payload?.userData?.role || null,
+            confirmPassword: payload.confirmPassword,
+        };
+
         const response = yield axiosApi.post('/users', userData);
-        userData.navigate('/');
-        yield put(registerUserSuccess(response.data));
-        toast.success('Вы зарегистрированы');
+        if (response.data.creator === 'superAdmin') {
+            if (payload?.role === 'admin') {
+                toast.success('Вы успешно создали администратора');
+                yield put(registerUserSuccess());
+            } else if (payload?.role === 'warehouseman') {
+                toast.success('Вы успешно создали складовщика');
+                yield put(registerUserSuccess());
+            }
+        } else {
+            yield put(registerUserSuccess(response.data));
+            History.push('/');
+            toast.success('Вы зарегистрированы');
+        }
     } catch (e) {
         toast.error(e.response.data.global);
         yield put(registerUserFailure(e.response.data));
@@ -154,8 +175,6 @@ export function* forgotPasswordSaga({payload: user}) {
         yield put(forgotPasswordFailure(e.response.data));
     }
 }
-
-
 
 export function* logoutUserSaga() {
     try {

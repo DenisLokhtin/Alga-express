@@ -28,7 +28,7 @@ const usersSlice = createSlice({
             state.registerLoading = true;
         },
         registerUserSuccess(state, {payload: userData}) {
-            state.user = userData;
+            state.user = userData === undefined ? state.user : userData;
             state.registerLoading = false;
             state.registerError = null;
         },

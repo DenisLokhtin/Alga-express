@@ -45,9 +45,7 @@ const ForgotPassword = () => {
     };
 
     const buttonDisable = () => {
-        if (user.email === '') {
-            return true
-        } else return false
+        return user.email === '';
     };
 
     return (
@@ -62,6 +60,7 @@ const ForgotPassword = () => {
         <Grid
             component="form"
             container
+            direction="column"
             className={classes.form}
             onSubmit={submitFormHandler}
             spacing={2}

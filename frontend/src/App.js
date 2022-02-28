@@ -31,6 +31,7 @@ import {
     addPaymentHandler,
     addUserPayment,
     addWareHouseAddress,
+    cargoCreateUser,
     contactsCompany,
     editBuyout,
     editPackageAdmin,
@@ -48,23 +49,20 @@ import {
     newsEditCompany,
     newsIdCompany,
     newUserRegister,
-    orderBuyouts,
+    orderBuyouts, packageHistory,
     packageInfoId,
     processingTrackNumbersAdmin,
     root,
     rulesCompany,
     sitesCompany,
     userLogin,
-    userPackageHistory,
     userPaymentsList,
     wareHouseCompany,
     editPages,
     tariffs,
     editingSingleTrackNumber,
-    userPage,
-    adminPagePath,
     forgotPassword,
-    resetPassword,
+    resetPassword, adminPagePath, userPage,
 } from "./paths";
 import OrderBuyout from "./containers/OrderBuyout/OrderBuyout";
 import SingleStatusEdit from "./containers/SingleStatusEdit/SingleStatusEdit";
@@ -77,13 +75,17 @@ import WarehousePage from "./components/WarehousePage/WarehousePage";
 import AddWareHouseAdmin from "./components/AddWareHouseAdmin/AddWareHouseAdmin";
 import EditWareHouseAdmin from "./components/EditWareHouseAdmin/EditWareHouseAdmin";
 import TariffsPage from "./containers/TariffPage/TariffPage";
-import ProtectedRoutesForUser from "./components/ProtectedRoutesForUser/ProtectedRoutesForUser";
-import ProtectedRoutesForAdmin from "./components/ProtectedRoutesForAdmin/ProtectedRoutesForAdmin";
+import ProtectedRoutesForUser from "./components/ProtectedRoutes/ProtectedRoutesForUser/ProtectedRoutesForUser";
+import ProtectedRoutesForAdmin from "./components/ProtectedRoutes/ProtectedRoutesForAdmin/ProtectedRoutesForAdmin";
 import AdminPage from "./containers/AdminPage/AdminPage";
 import UserPage from "./containers/UserPage/UserPage";
 import UpdateDates from "./components/UI/UpdateDates/UpdateDates";
+import CreateUser from "./containers/CreateUser/CreateUser";
 import ForgotPassword from "./containers/ForgotPassword/ForgotPassword";
 import ResetPassword from "./containers/ResetPassword/ResetPassword";
+import ProtectedRoutesForWarehouseman
+    from "./components/ProtectedRoutes/ProtoectedRoutesForWarehouseman/ProtectedRoutesForWarehouseman";
+import ProtectedRoutesForSuperAdmin from "./components/ProtectedRoutes/ProtectedRoutesForSuperAdmin/ProtectedRoutesForSuperAdmin";
 
 const App = () => {
     return (
@@ -91,8 +93,8 @@ const App = () => {
             <Layout>
                 <Routes>
                     <Route element={<ProtectedRoutesForUser/>}>
-                        {/* Routes for registered user and admin*/}
-                        <Route path={userPackageHistory} element={<OrderHistory/>}/>
+                        {/* Routes for registered user admin and superAdmin*/}
+                        <Route path={packageHistory} element={<OrderHistory/>}/>
                         <Route path={userPaymentsList} element={<UserPayments/>}/>
                         <Route path={newPackageRegister} element={<PackageRegister/>}/>
                         <Route path={editUserProfile} element={<UserProfileEdit/>}/>
@@ -104,7 +106,7 @@ const App = () => {
                         <Route path={addUserPayment} element={<UserPayment/>}/>
                     </Route>
                     <Route element={<ProtectedRoutesForAdmin/>}>
-                        {/* Routes for only admin */}
+                        {/* Routes for admin and superAdmin*/}
                         <Route path={adminPagePath} element={<AdminPage/>}/>
                         <Route path={newsEditCompany} element={<EditNews/>}/>
                         <Route path={editPages} element={<EditPages/>}/>
@@ -116,16 +118,21 @@ const App = () => {
                         <Route path={editWareHouseAddress} element={<EditWareHouseAdmin/>}/>
                         <Route path={listPaymentsAdmin} element={<AdminPaymentsProcessing/>}/>
                         <Route path={addUserPayment} element={<UserPayment/>}/>
+                        <Route path={addWareHouseAddress} element={<AddWareHouseAdmin/>}/>
+                        <Route path={editWareHouseAddress} element={<EditWareHouseAdmin/>}/>
                     </Route>
-                    {/* Routes for warehouseman пока что может заходить любой*/}
-                    <Route path={processingTrackNumbersAdmin} element={<WarehousemanStatusEdit/>}/>
-                    <Route path={editingSingleTrackNumber} element={<SingleStatusEdit/>}/>
+                    {/* Routes for warehouseman and SuperAdmin*/}
+                    {/*Приватные роуты можно сделать одним компонентом потом фикс*/}
+                    <Route element={<ProtectedRoutesForWarehouseman/>}>
+                        <Route path={processingTrackNumbersAdmin} element={<WarehousemanStatusEdit/>}/>
+                        <Route path={editingSingleTrackNumber} element={<SingleStatusEdit/>}/>
+                    </Route>
+                    <Route element={<ProtectedRoutesForSuperAdmin/>}>
+                        <Route path={cargoCreateUser} element={<CreateUser/>}/>
+                    </Route>
                     <Route path={editBuyout} element={<EditBuyout/>}/>
                     <Route path={wareHouseCompany} element={<WarehousePage/>}/>
-                    <Route path={addWareHouseAddress} element={<AddWareHouseAdmin/>}/>
-                    <Route path={editWareHouseAddress} element={<EditWareHouseAdmin/>}/>
                     <Route path={editTariffGroup} element={<EditTariffGroup/>}/>
-                    <Route path={editPages} element={<EditPages/>}/>
                     <Route path={tariffs} element={<TariffsPage/>}/>
                     {/* Routes for not registered user */}
                     <Route path={root} element={<HomePage/>}/>
