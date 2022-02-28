@@ -25,7 +25,7 @@ router.get('/:bank', async (req, res) => {
     }
 });
 
-router.put('/edit/:bank', auth, permit('admin'), async (req, res) => {
+router.put('/edit/:bank', auth, permit('admin', 'superAdmin'), async (req, res) => {
     try {
         const updatedRequisites = await Requisites.findOneAndUpdate({bank: req.params.bank}, {
             requisites: req.body.requisites,
@@ -38,7 +38,7 @@ router.put('/edit/:bank', auth, permit('admin'), async (req, res) => {
     }
 });
 
-router.delete('/delete/:bank', auth, permit('admin'), async (req, res) => {
+router.delete('/delete/:bank', auth, permit('admin', 'superAdmin'), async (req, res) => {
     try {
         const requisites = await Requisites.findOneAndDelete({bank: req.params.bank});
 
@@ -49,7 +49,7 @@ router.delete('/delete/:bank', auth, permit('admin'), async (req, res) => {
     }
 });
 
-router.post('/add', auth, permit('admin'), async (req, res) => {
+router.post('/add', auth, permit('admin', 'superAdmin'), async (req, res) => {
     try {
        const data = {
            requisites: req.body.requisites,

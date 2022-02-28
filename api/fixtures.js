@@ -36,10 +36,10 @@ const run = async () => {
         usd: 86
     })
 
-    const [user, admin] = await User.create(
+    const [user] = await User.create(
         {
             email: "user@gmail.com",
-            password: "123",
+            password: "12345678",
             token: nanoid(),
             role: "user",
             balance: 200,
@@ -51,15 +51,31 @@ const run = async () => {
         },
         {
             email: "admin@gmail.com",
-            password: "123",
+            password: "12345678",
             token: nanoid(),
             role: "admin",
             balance: 0,
             name: "Admin",
             avatar: 'fixtures/avatar2.jpeg',
             phone: {number: '754 76 45 54', type: 'PHONE'},
-            passport: {image: 'fixtures/passport.jpg'}
-        }
+            passport: {image: 'passport.jpg'}
+        },
+        {
+            email: "warehouseman@gmail.com",
+            password: "12345678",
+            token: nanoid(),
+            role: "warehouseman",
+            name: "Warehouseman",
+            avatar: 'fixtures/avatar2.jpeg',
+        },
+        {
+            email: "superAdmin@gmail.com",
+            password: "12345678",
+            token: nanoid(),
+            role: "superAdmin",
+            name: "superAdmin",
+            avatar: 'fixtures/avatar2.jpeg',
+        },
     );
 
     await Payment.create(
@@ -118,8 +134,9 @@ const run = async () => {
             price: 2345,
             flight: flight1,
             country: 'USA',
-            status: 'PROCESSED',
-            user: admin,
+            status: 'DONE',
+            user: user,
+            cargoNumber: '1',
             description: 'description 1',
             urlPackage: 'https://www.amazon.com/Kindle-Now-with-Built-in-Front-Light/dp/B07DPMXZZ7/ref=sr_1_1_sspa?keywords=Kindle+E-readers&pd_rd_r=04e07f5b-9cf9-4620-81fc-3b2dc7acb927&pd_rd_w=zKeef&pd_rd_wg=arLd4&pf_rd_p=b9deb6fa-f7f0-4f9b-bfa0-824f28f79589&pf_rd_r=QEHM1VE018FEWSWN0VE0&qid=1643634774&sr=8-1-spons&psc=1&spLa=ZW5jcnlwdGVkUXVhbGlmaWVyPUFMVTU2VFhQRTM5NjcmZW5jcnlwdGVkSWQ9QTAzOTMzMjk0RFBURVpKV0tPOTgmZW5jcnlwdGVkQWRJZD1BMDIxNjkzOFVBVE9CWDQ5RTUzSiZ3aWRnZXROYW1lPXNwX2F0ZiZhY3Rpb249Y2xpY2tSZWRpcmVjdCZkb05vdExvZ0NsaWNrPXRydWU=',
         },
@@ -130,8 +147,9 @@ const run = async () => {
             price: 443,
             flight: flight1,
             country: 'Turkey',
-            user: admin,
-            status: 'REGISTERED',
+            user: user,
+            status: 'ERASED',
+            cargoNumber: '2',
             description: 'description 2',
             urlPackage: 'https://www.amazon.com/Stuffed-Cushion-Collectible-Christmas-Birthday/dp/B09NW4L1BW/ref=sr_1_2?keywords=toys&pd_rd_r=8d8fe069-f701-4575-99e0-fa9735c23583&pd_rd_w=U5ydA&pd_rd_wg=doX2q&pf_rd_p=779cadfb-bc4d-465d-931f-0b68c1ba5cd5&pf_rd_r=0WN5KS5HN5P88EG8PCAR&qid=1643635527&sr=8-2',
         },
@@ -142,8 +160,9 @@ const run = async () => {
             price: 7564,
             flight: flight1,
             country: 'China',
-            status: 'DELIVERED',
+            status: 'ON_WAY',
             user: user,
+            cargoNumber: '3',
             description: 'description 3',
             urlPackage: 'https://www.amazon.com/Wowok-Money-Spary-Movies-Party/dp/B094D6SCL3/ref=sr_1_10?keywords=toys&pd_rd_r=8d8fe069-f701-4575-99e0-fa9735c23583&pd_rd_w=U5ydA&pd_rd_wg=doX2q&pf_rd_p=779cadfb-bc4d-465d-931f-0b68c1ba5cd5&pf_rd_r=0WN5KS5HN5P88EG8PCAR&qid=1643635567&sr=8-10'
         },
@@ -154,8 +173,9 @@ const run = async () => {
             price: 678,
             flight: flight2,
             country: 'China_ground',
-            status: 'ON_WAREHOUSE',
+            status: 'PROCESSED',
             user: user,
+            cargoNumber: '4',
             description: 'description 4',
             urlPackage: 'https://www.amazon.com/JLE-Display-Apples-iPhone-Graphite/dp/B09QK7YJCZ/ref=sr_1_12?keywords=toys&pd_rd_r=8d8fe069-f701-4575-99e0-fa9735c23583&pd_rd_w=U5ydA&pd_rd_wg=doX2q&pf_rd_p=779cadfb-bc4d-465d-931f-0b68c1ba5cd5&pf_rd_r=0WN5KS5HN5P88EG8PCAR&qid=1643635567&sr=8-12',
         },
@@ -166,8 +186,9 @@ const run = async () => {
             price: 345,
             flight: flight2,
             country: 'USA',
-            status: 'REGISTERED',
+            status: 'DELIVERED',
             user: user,
+            cargoNumber: '5',
             description: 'description 5',
             urlPackage: 'https://www.amazon.com/Kindle-Now-with-Built-in-Front-Light/dp/B07DPMXZZ7/ref=sr_1_1_sspa?keywords=Kindle+E-readers&pd_rd_r=04e07f5b-9cf9-4620-81fc-3b2dc7acb927&pd_rd_w=zKeef&pd_rd_wg=arLd4&pf_rd_p=b9deb6fa-f7f0-4f9b-bfa0-824f28f79589&pf_rd_r=QEHM1VE018FEWSWN0VE0&qid=1643634774&sr=8-1-spons&psc=1&spLa=ZW5jcnlwdGVkUXVhbGlmaWVyPUFMVTU2VFhQRTM5NjcmZW5jcnlwdGVkSWQ9QTAzOTMzMjk0RFBURVpKV0tPOTgmZW5jcnlwdGVkQWRJZD1BMDIxNjkzOFVBVE9CWDQ5RTUzSiZ3aWRnZXROYW1lPXNwX2F0ZiZhY3Rpb249Y2xpY2tSZWRpcmVjdCZkb05vdExvZ0NsaWNrPXRydWU=',
         },

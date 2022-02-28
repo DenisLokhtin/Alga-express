@@ -194,7 +194,7 @@ const EditBuyout = () => {
                         helperText={getFieldError('image')}
                     />
                 </Grid>
-                {user?.role === 'admin' && (
+                {(user?.role === 'admin' || user?.role === 'superAdmin') && (
                     <Grid container direction={"row"} spacing={2} justifyContent={"space-between"}>
                         <Grid item className={classes.item}>
                             <FormElement

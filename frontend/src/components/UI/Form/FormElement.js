@@ -4,7 +4,11 @@ import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import MenuItem from "@mui/material/MenuItem";
 
-const FormElement = ({label, name, value, onChange, required, error, autoComplete, type, select, options, multiline, rows, onKeyPress}) => {
+const FormElement = (props) => {
+    const {
+        label, name, value, onChange, required, error, autoComplete, type, select, options, multiline, rows, onKeyPress,
+        xs, sm, md, lg,
+    } = props
     let inputChildren = null;
 
     if (select) {
@@ -18,7 +22,7 @@ const FormElement = ({label, name, value, onChange, required, error, autoComplet
     }
 
     return (
-        <Grid item xs={12}>
+        <Grid item xs={xs} sm={sm} md={md} lg={lg}>
             <TextField
                 select={select}
                 multiline={multiline}

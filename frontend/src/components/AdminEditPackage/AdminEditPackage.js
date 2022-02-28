@@ -68,7 +68,6 @@ const AdminEditPackage = ({packageAdmin, id}) => {
         status: packageAdmin.status,
     });
 
-
     const inputChangeHandler = event => {
         let {name, value} = event.target;
 
@@ -122,7 +121,7 @@ const AdminEditPackage = ({packageAdmin, id}) => {
                 spacing={5}
             >
                 <Grid item xs={12} sm={8} md={7} lg={7}>
-                    <FormControl variant="standard" fullWidth error={Boolean(getFieldError('country'))}>
+                    <FormControl variant="outlined" fullWidth error={Boolean(getFieldError('country'))}>
                         <InputLabel id="demo-controlled-open-select-label">Country</InputLabel>
                         <Select
                             labelId="demo-controlled-open-select-label"
@@ -141,7 +140,7 @@ const AdminEditPackage = ({packageAdmin, id}) => {
                     </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={8} md={7} lg={7}>
-                    <FormControl variant="standard" fullWidth error={Boolean(getFieldError('status'))}>
+                    <FormControl variant="outlined" fullWidth error={Boolean(getFieldError('status'))}>
                         <InputLabel id="demo-controlled-open-select-label">Status</InputLabel>
                         <Select
                             labelId="demo-controlled-open-select-label"
@@ -162,98 +161,90 @@ const AdminEditPackage = ({packageAdmin, id}) => {
                         <FormHelperText error={true}>{error?.errors?.['status']?.message}</FormHelperText>
                     </FormControl>
                 </Grid>
-
-                <Grid item xs={12} sm={8} md={7} lg={7}>
-                    <FormElement
-                        name="trackNumber"
-                        value={packageEdit.trackNumber}
-                        required
-                        fullWidth
-                        onChange={inputChangeHandler}
-                        variant="outlined"
-                        label="Трек-номер"
-                        error={getFieldError('trackNumber')}
-                    />
-                </Grid>
-                <Grid item xs={12} sm={8} md={7} lg={7}>
-                    <FormElement
-                        name="title"
-                        value={packageEdit.title}
-                        onChange={inputChangeHandler}
-                        required
-                        fullWidth
-                        variant="outlined"
-                        label="Название"
-                        error={getFieldError('title')}
-                    />
-                </Grid>
-                <Grid item xs={12} sm={8} md={7} lg={7}>
-                    <FormElement
-                        name="amount"
-                        type="number"
-                        value={packageEdit.amount}
-                        onChange={inputChangeHandler}
-                        fullWidth
-                        required
-                        variant="outlined"
-                        label="Количество"
-                        error={getFieldError('amount')}
-                    />
-                </Grid>
-                <Grid item xs={12} sm={8} md={7} lg={7}>
-                    <FormElement
-                        name="cargoPrice"
-                        type="number"
-                        value={packageEdit.cargoPrice}
-                        onChange={inputChangeHandler}
-                        fullWidth
-                        required
-                        variant="outlined"
-                        label="Стоимость доставки"
-                        error={getFieldError('amount')}
-                    />
-                </Grid>
-                <Grid item xs={12} sm={8} md={7} lg={7}>
-                    <FormElement
-                        name="cargoWeight"
-                        type="number"
-                        value={packageEdit.cargoWeight}
-                        onChange={inputChangeHandler}
-                        fullWidth
-                        required
-                        variant="outlined"
-                        label="Вес посылки"
-                        error={getFieldError('amount')}
-                    />
-                </Grid>
-                <Grid item xs={12} sm={8} md={7} lg={7}>
-                    <FormElement
-                        name="urlPackage"
-                        type="text"
-                        value={packageEdit?.urlPackage}
-                        onChange={inputChangeHandler}
-                        className={classes.textField}
-                        fullWidth
-                        required
-                        variant="outlined"
-                        label="Ссылка"
-                        error={getFieldError('price')}
-                    />
-                </Grid>
-                <Grid item xs={12} sm={8} md={7} lg={7}>
-                    <FormElement
-                        name="price"
-                        type="number"
-                        value={packageEdit.price}
-                        onChange={inputChangeHandler}
-                        className={classes.textField}
-                        fullWidth
-                        required
-                        variant="outlined"
-                        label="Цена"
-                        error={getFieldError('price')}
-                    />
-                </Grid>
+                <FormElement
+                    xs={12} sm={8} md={7} lg={7}
+                    name="trackNumber"
+                    value={packageEdit.trackNumber}
+                    required
+                    fullWidth
+                    onChange={inputChangeHandler}
+                    variant="outlined"
+                    label="Трек-номер"
+                    error={getFieldError('trackNumber')}
+                />
+                <FormElement
+                    xs={12} sm={8} md={7} lg={7}
+                    name="title"
+                    value={packageEdit.title}
+                    onChange={inputChangeHandler}
+                    required
+                    fullWidth
+                    variant="outlined"
+                    label="Название"
+                    error={getFieldError('title')}
+                />
+                <FormElement
+                    xs={12} sm={8} md={7} lg={7}
+                    name="amount"
+                    type="number"
+                    value={packageEdit.amount}
+                    onChange={inputChangeHandler}
+                    fullWidth
+                    required
+                    variant="outlined"
+                    label="Количество"
+                    error={getFieldError('amount')}
+                />
+                <FormElement
+                    xs={12} sm={8} md={7} lg={7}
+                    name="cargoPrice"
+                    type="number"
+                    value={packageEdit.cargoPrice}
+                    onChange={inputChangeHandler}
+                    fullWidth
+                    required
+                    variant="outlined"
+                    label="Стоимость доставки"
+                    error={getFieldError('amount')}
+                />
+                <FormElement
+                    xs={12} sm={8} md={7} lg={7}
+                    name="cargoWeight"
+                    type="number"
+                    value={packageEdit.cargoWeight}
+                    onChange={inputChangeHandler}
+                    fullWidth
+                    required
+                    variant="outlined"
+                    label="Вес посылки"
+                    error={getFieldError('amount')}
+                />
+                <FormElement
+                    xs={12} sm={8} md={7} lg={7}
+                    name="urlPackage"
+                    type="text"
+                    value={packageEdit?.urlPackage}
+                    onChange={inputChangeHandler}
+                    className={classes.textField}
+                    fullWidth
+                    required
+                    variant="outlined"
+                    label="Ссылка"
+                    error={getFieldError('price')}
+                />
+                <FormElement
+                    xs={12} sm={8} md={7} lg={7}
+                    name="price"
+                    type="number"
+                    value={packageEdit.price}
+                    onChange={inputChangeHandler}
+                    className={classes.textField}
+                    fullWidth
+                    required
+                    variant="outlined"
+                    label="Цена"
+                    error={getFieldError('price')}
+                />
 
                 <Grid item xs={12} sm={8} md={7} lg={7}>
                     <Dimension

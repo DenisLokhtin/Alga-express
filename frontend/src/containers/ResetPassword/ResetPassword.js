@@ -93,16 +93,12 @@ const ResetPassword = () => {
     };
 
     const buttonDisable = () => {
-        if(!isUser){
-            if (user.password === '') {
-                return true
-            } else return false
-        } else if(isUser){
-                if (changePassword.password === '') {
-                    return true
-            } else return false
+        if (!isUser) {
+            return user.password === '';
+        } else if (isUser) {
+            return changePassword.password === '';
         }
-            return false
+        return false
     };
 
     return (
@@ -123,6 +119,7 @@ const ResetPassword = () => {
                     <Grid
                         component="form"
                         container
+                        direction="column"
                         className={classes.form}
                         onSubmit={submitFormHandler}
                         spacing={2}

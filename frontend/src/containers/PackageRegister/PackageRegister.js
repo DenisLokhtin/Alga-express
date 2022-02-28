@@ -13,11 +13,6 @@ const useStyles = makeStyles(() => ({
         marginTop: '50px',
     },
 
-    packageBtnContainer: {
-        textAlign: 'center',
-        margin: '50px',
-    },
-
     packageMainTitle: {
         textAlign: 'center',
         paddingBottom: '50px',
@@ -115,7 +110,7 @@ const PackageRegister = () => {
                 spacing={5}
             >
                 <Grid item xs={12} sm={8} md={7} lg={7}>
-                    <FormControl variant="standard" fullWidth error={Boolean(getFieldError('country'))}>
+                    <FormControl variant="outlined" fullWidth error={Boolean(getFieldError('country'))}>
                         <InputLabel id="demo-controlled-open-select-label">Страна</InputLabel>
                         <Select
                             labelId="demo-controlled-open-select-label"
@@ -133,83 +128,75 @@ const PackageRegister = () => {
                         <FormHelperText error={true}>{error?.errors?.['country']?.message}</FormHelperText>
                     </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={8} md={7} lg={7}>
-                    <FormElement
-                        name="trackNumber"
-                        value={packageRegister.trackNumber}
-                        required
-                        fullWidth
-                        onChange={inputChangeHandler}
-                        variant="outlined"
-                        label="Трек-номер"
-                        error={getFieldError('trackNumber')}
-                    />
-                </Grid>
-                <Grid item xs={12} sm={8} md={7} lg={7}>
-                    <FormElement
-                        name="title"
-                        value={packageRegister.title}
-                        onChange={inputChangeHandler}
-                        required
-                        fullWidth
-                        variant="outlined"
-                        label="Название"
-                        error={getFieldError('title')}
-                    />
-                </Grid>
-                <Grid item xs={12} sm={8} md={7} lg={7}>
-                    <FormElement
-                        name="amount"
-                        type="number"
-                        value={packageRegister.amount}
-                        onChange={inputChangeHandler}
-                        fullWidth
-                        required
-                        variant="outlined"
-                        label="Количество"
-                        error={getFieldError('amount')}
-                    />
-                </Grid>
-                <Grid item xs={12} sm={8} md={7} lg={7}>
-                    <FormElement
-                        name="price"
-                        type="number"
-                        value={packageRegister.price}
-                        onChange={inputChangeHandler}
-                        className={classes.textField}
-                        fullWidth
-                        required
-                        variant="outlined"
-                        label="Цена"
-                        error={getFieldError('price')}
-                    />
-                </Grid>
-                <Grid container
-                      justifyContent="center"
-                      alignItems="center"
-                      className={classes.packageBtnContainer}>
-                    {
-                        packageRegister.country &&
-                        packageRegister.amount &&
-                        packageRegister.price &&
-                        packageRegister.trackNumber &&
-                        packageRegister.title ? (
-                            <ButtonWithProgress
-                                loading={loading}
-                                disabled={loading}
-                                type="submit"
-                                variant="contained">
-                                Оформить
-                            </ButtonWithProgress>
-                        ) : (
-                            <ButtonWithProgress
-                                loading={loading}
-                                disabled={true}
-                                type="submit"
-                                variant="contained">
-                                Оформить
-                            </ButtonWithProgress>
-                        )}
+                <FormElement
+                    xs={12} sm={8} md={7} lg={7}
+                    name="trackNumber"
+                    value={packageRegister.trackNumber}
+                    required
+                    fullWidth
+                    onChange={inputChangeHandler}
+                    variant="outlined"
+                    label="Трек-номер"
+                    error={getFieldError('trackNumber')}
+                />
+                <FormElement
+                    xs={12} sm={8} md={7} lg={7}
+                    name="title"
+                    value={packageRegister.title}
+                    onChange={inputChangeHandler}
+                    required
+                    fullWidth
+                    variant="outlined"
+                    label="Название"
+                    error={getFieldError('title')}
+                />
+                <FormElement
+                    xs={12} sm={8} md={7} lg={7}
+                    name="amount"
+                    type="number"
+                    value={packageRegister.amount}
+                    onChange={inputChangeHandler}
+                    fullWidth
+                    required
+                    variant="outlined"
+                    label="Количество"
+                    error={getFieldError('amount')}
+                />
+                <FormElement
+                    xs={12} sm={8} md={7} lg={7}
+                    name="price"
+                    type="number"
+                    value={packageRegister.price}
+                    onChange={inputChangeHandler}
+                    className={classes.textField}
+                    fullWidth
+                    required
+                    variant="outlined"
+                    label="Цена"
+                    error={getFieldError('price')}
+                />
+                <Grid item xs={12} sm={8} md={7} lg={7}>{
+                    packageRegister.country &&
+                    packageRegister.amount &&
+                    packageRegister.price &&
+                    packageRegister.trackNumber &&
+                    packageRegister.title ? (
+                        <ButtonWithProgress
+                            loading={loading}
+                            disabled={loading}
+                            type="submit"
+                            variant="contained">
+                            Оформить
+                        </ButtonWithProgress>
+                    ) : (
+                        <ButtonWithProgress
+                            loading={loading}
+                            disabled={true}
+                            type="submit"
+                            variant="contained">
+                            Оформить
+                        </ButtonWithProgress>
+                    )}
                 </Grid>
             </Grid>
         </Container>

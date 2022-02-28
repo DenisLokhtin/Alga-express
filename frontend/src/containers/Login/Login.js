@@ -59,13 +59,11 @@ const Login = () => {
     };
 
     const buttonDisable = () => {
-        if (user.password === '' || user.email === '') {
-            return true
-        } else return false
+        return user.password === '' || user.email === '';
     };
 
     return (
-        <Container component="section" maxWidth="xs" style={{textAlign: 'center'}}>
+        <Container component="section" maxWidth="xs">
             <div style={theme.paper}>
                 <Avatar className={classes.avatar}>
                     <LockOpenIcon/>
@@ -85,6 +83,7 @@ const Login = () => {
                     component="form"
                     container
                     className={classes.form}
+                    direction="column"
                     onSubmit={submitFormHandler}
                     spacing={2}
                 >

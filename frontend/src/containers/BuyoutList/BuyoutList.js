@@ -51,6 +51,9 @@ const BuyoutList = () => {
                             {user && user.role === 'admin' && (
                                 <p>Заказчик: {b.user.name}</p>
                             )}
+                            {user && user.role === 'superAdmin' && (
+                                <p>Заказчик: {b.user.name}</p>
+                            )}
                             <Grid container direction={"column"} spacing={2}>
                                 <Grid item>
                                     <MaterialLink href={b.url} target={'_blank'} rel={'noopener'} className={classes.btn}>
@@ -67,13 +70,26 @@ const BuyoutList = () => {
                                     )}
                                 </Grid>
                                 <Grid item>
+                                    {user && user.role === 'superAdmin' && (
+                                        <Link
+                                            to={newPackageRegister} state={{userProps: {id: b.user._id, name: b.user.name}}}
+                                            className={classes.btn}
+                                        >
+                                            Оформить выкуп
+                                        </Link>
+                                    )}
+                                </Grid>
+                                <Grid item>
                                     {user && user.role === 'admin' && (
                                         <Link to={editBuyout.slice(0, editBuyout.length - 3) + b._id} className={classes.btn}>Редактировать выкуп</Link>
                                     )}
                                 </Grid>
+                                <Grid item>
+                                    {user && user.role === 'superAdmin' && (
+                                        <Link to={editBuyout.slice(0, editBuyout.length - 3) + b._id} className={classes.btn}>Редактировать выкуп</Link>
+                                    )}
+                                </Grid>
                             </Grid>
-
-
                         </Card>
                     </Grid>
                 ))}
