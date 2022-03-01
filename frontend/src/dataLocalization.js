@@ -5,6 +5,7 @@ export const statuses = {
     ON_WAY: 'В пути',
     PROCESSED: 'В процессе',
     DONE: 'Выдан',
+    ERASED: 'Удалён',
 };
 
 export const countries = {

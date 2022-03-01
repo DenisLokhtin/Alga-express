@@ -1,7 +1,8 @@
 import React from 'react';
 import {Container, Grid} from "@mui/material";
 import {Link} from "react-router-dom";
-import {listBuyouts, resetPassword, userPackageHistory} from "../../paths";
+import {packageHistory} from "../../paths";
+import {listBuyouts, resetPassword} from "../../paths";
 import {makeStyles} from "@mui/styles";
 import TariffPage from "../TariffPage/TariffPage";
 
@@ -29,7 +30,7 @@ const UserPage = () => {
                     <Link to={listBuyouts}>Мои заказы</Link>
                 </Grid>
                 <Grid item className={classes.box}>
-                    <Link to={userPackageHistory}>Мои посылки</Link>
+                    <Link to={packageHistory}>Мои посылки</Link>
                 </Grid>
                 <Grid item className={classes.box}>
                     <Link to={resetPassword} >Сменить пароль</Link>

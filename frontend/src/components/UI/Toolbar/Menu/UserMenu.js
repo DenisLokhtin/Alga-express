@@ -17,7 +17,7 @@ import {
     addFlightAdmin,
     addPaymentHandler,
     addUserPayment,
-    adminPagePath,
+    adminPagePath, cargoCreateUser,
     editingSingleTrackNumber,
     editPages,
     listBuyouts,
@@ -46,6 +46,31 @@ const userSettings = [
     {url: addUserPayment, title: 'Пополнить баланс', icon: <PaidIcon/>},
     {url: userPaymentsList, title: 'История пополнения', icon: <HistoryIcon/>},
     {url: packageInfo, title: 'Информация доставки', icon: <InfoIcon/>},
+];
+
+const superAdminSettings = [
+    {url: '', title: 'Личный кабинет', icon: <ManageAccountsIcon/>},
+    {url: packageHistory, title: 'История всех заказов', icon: <HistoryIcon/>},
+    {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon/>},
+    {url: cargoCreateUser, title: 'Создать пользователя', icon: <AddIcon/>},
+    {url: orderBuyouts, title: 'Заказать выкуп', icon: <ShoppingCartIcon/>},
+    {url: listBuyouts, title: 'Список заказов', icon: <FactCheckIcon/>},
+    {url: addUserPayment, title: 'Пополнить баланс', icon: <PaidIcon/>},
+    {url: userPaymentsList, title: 'История пополнения', icon: <HistoryIcon/>},
+    {url: packageInfo, title: 'Информация доставки', icon: <InfoIcon/>},
+    {url: adminPagePath, title: 'Администратор', icon: <ManageAccountsIcon/>},
+    {url: listFlightAdmin, title: 'Рейсы', icon: <FlightIcon/>},
+    {url: addFlightAdmin, title: 'Добавить рейс', icon: <AddIcon/>},
+    {url: listPaymentsAdmin, title: 'Список пополнений', icon: <FactCheckIcon/>},
+    {url: editPages, title: 'Редактировать страницы', icon: <EditIcon/>},
+    {url: addPaymentHandler, title: 'Пополнение баланса пользователя', icon: <PaidIcon/>},
+    {url: editingSingleTrackNumber, title: 'Смена статуса одной посылки', icon: <EditIcon/>},
+    {url: processingTrackNumbersAdmin, title: 'Смена статуса посылок', icon: <EditIcon/>},
+];
+
+const warehousemanSetting = [
+    {url: editingSingleTrackNumber, title: 'Смена статуса одной посылки', icon: <EditIcon/>},
+    {url: processingTrackNumbersAdmin, title: 'Смена статуса посылок', icon: <EditIcon/>},
 ];
 
 const adminSettings = [
@@ -171,7 +196,30 @@ const UserMenu = ({user}) => {
                             <Typography textAlign="center">{setting.title}</Typography>
                         </MenuItem>
                     ))}
-
+                    {user.role === 'superAdmin' && superAdminSettings.map(setting => (
+                        <MenuItem
+                            key={setting.title}
+                            component={Link}
+                            to={setting.url}
+                        >
+                            <ListItemIcon>
+                                {setting.icon}
+                            </ListItemIcon>
+                            <Typography textAlign="center">{setting.title}</Typography>
+                        </MenuItem>
+                    ))}
+                    {user.role === 'warehouseman' && warehousemanSetting.map(setting => (
+                        <MenuItem
+                            key={setting.title}
+                            component={Link}
+                            to={setting.url}
+                        >
+                            <ListItemIcon>
+                                {setting.icon}
+                            </ListItemIcon>
+                            <Typography textAlign="center">{setting.title}</Typography>
+                        </MenuItem>
+                    ))}
                     {user.role === 'user' &&
                         <div>
                             {userSettings.map((setting) => (

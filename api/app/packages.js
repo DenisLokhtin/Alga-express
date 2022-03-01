@@ -9,11 +9,10 @@ const NotFoundTrackNumber = require('../models/NotFoundTrackNumber');
 const PaymentMove = require("../models/PaymentMove");
 const User = require("../models/User");
 const packageValidate = require("../middleware/packageValidate");
-const e = require("express");
 
 const router = express.Router();
 
-router.get('/newPackages', auth, permit('admin', 'warehouseman', 'user'), async (req, res) => {
+router.get('/newPackages', auth, permit('admin', 'warehouseman', 'user', 'superAdmin'), async (req, res) => {
    try {
        const packages = await Package.find({status: 'REGISTERED'}).select('title cargoNumber amount price country');
        res.send(packages);
@@ -22,7 +21,7 @@ router.get('/newPackages', auth, permit('admin', 'warehouseman', 'user'), async 
    }
 });
 
-router.get('/', auth, permit('admin', 'warehouseman', 'user'), async (req, res) => {
+router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) => {
     const query = {};
 
     if (Number.isInteger(req.query.page))
@@ -47,7 +46,7 @@ router.get('/', auth, permit('admin', 'warehouseman', 'user'), async (req, res) 
     if (req.query.sort) {
         query.sort = {[req.query.sort]: 1};
     } else {
-        query.sort = 'date';
+        query.sort = {date: 1};
     }
 
     query.role = req.user.role;
@@ -71,7 +70,7 @@ router.get('/', auth, permit('admin', 'warehouseman', 'user'), async (req, res) 
     }
 });
 
-router.get('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req, res) => {
+router.get('/:id', auth, permit('admin', 'warehouseman', 'user', 'superAdmin'), async (req, res) => {
     try {
 
         if (req.user.role === 'user') {
@@ -83,7 +82,7 @@ router.get('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req, re
             }
         }
 
-        if ((req.user.role === 'admin') || (req.user.role === 'warehouseman')) {
+        if ((req.user.role === 'admin') || (req.user.role === 'superAdmin')) {
             const packageFind = await Package.findById(req.params.id)
                 .populate({path: 'flight user', select: 'name number description depart_date arrived_date'})
                 .select('trackNumber title amount price country status ' +
@@ -98,7 +97,7 @@ router.get('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req, re
 
 });
 
-router.post('/', auth, packageValidate, permit('admin', 'warehouseman', 'user'), async (req, res) => {
+router.post('/', auth, packageValidate, permit('admin', 'superAdmin', 'user'), async (req, res) => {
 
     let price = req.body.price;
 
@@ -130,14 +129,15 @@ router.post('/', auth, packageValidate, permit('admin', 'warehouseman', 'user'),
         res.send(newPackage);
 
     } catch (error) {
-        if (error.errors.price?.name === 'CastError') {
+        console.log(error.message);
+        if (error.errors?.price?.name === 'CastError') {
             error.errors.price.message = 'Введите корректные данные!';
         }
         res.status(400).send(error);
     }
 });
 
-router.put('/', auth, permit('admin', 'warehouseman'), async (req, res) => {
+router.put('/', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req, res) => {
     const notFoundTrackNumbers = [];
 
     const separatedBySpaces = req.body.trackNumbers.split(' ');
@@ -195,7 +195,7 @@ router.put('/', auth, permit('admin', 'warehouseman'), async (req, res) => {
 });
 
 
-router.put('/single', auth, permit('admin', 'warehouseman'), async (req, res) => {
+router.put('/single', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req, res) => {
     const notFoundTrackNumbers = [];
     try {
         if (req.body.trackNumber.length === 0) {
@@ -236,9 +236,8 @@ router.put('/single', auth, permit('admin', 'warehouseman'), async (req, res) =>
 });
 
 
-router.put('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req, res) => {
+router.put('/:id', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req, res) => {
     let result = {};
-    console.log('token', req.user._id);
     try {
         const packageFind = await Package.findById(req.params.id)
         const userDebit = await User.findById(packageFind.user._id);
@@ -281,7 +280,7 @@ router.put('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req, re
     }
 });
 
-router.delete('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req, res) => {
+router.delete('/:id', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req, res) => {
     try {
         const erasePackage = await Package.findById(req.params.id);
 
