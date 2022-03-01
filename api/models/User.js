@@ -111,6 +111,7 @@ const UserSchema = new mongoose.Schema({
         enum: ['NEW', 'BUYERS', "ADVANCED", 'SPECIAL'],
         default: "NEW",
     },
+    notification: Boolean,
 });
 
 // UserSchema.index( { "resetCode": 1 }, { expireAfterSeconds: 30 } );
