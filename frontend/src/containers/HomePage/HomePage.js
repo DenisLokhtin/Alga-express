@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import Grid from "@mui/material/Grid";
 import {makeStyles} from "@mui/styles";
 import Pic from "../../assets/main-pic.jpeg";
@@ -10,11 +10,6 @@ import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import PriceCheckIcon from '@mui/icons-material/PriceCheck';
 import Container from "@mui/material/Container";
 import theme from "../../theme";
-import {fetchNewsRequest} from "../../store/actions/newsActions";
-import {useDispatch, useSelector} from "react-redux";
-import {Link} from "react-router-dom";
-import {newsIdCompany} from "../../paths";
-import Typography from "@mui/material/Typography";
 import NewsPanel from "../../components/NewsPanel/NewsPanel";
 
 const useStyles = makeStyles({
