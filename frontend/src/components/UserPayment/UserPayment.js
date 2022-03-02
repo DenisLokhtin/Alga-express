@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Button, Container, Grid, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {addUserPaymentRequest} from "../../store/actions/usersActions";
@@ -115,8 +115,19 @@ const UserPayment = () => {
         }
     };
 
+    const messagesEndRef = useRef(null);
+
+    useEffect(() => {
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 200);
+        }
+    }, [messagesEndRef]);
+
     return (
         <Container
+            ref={messagesEndRef}
             component="section"
             maxWidth="md"
             className={classes.container}

@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {makeStyles} from "@mui/styles";
 import {createTheme} from "@mui/material/styles";
 import {useDispatch, useSelector} from "react-redux";
@@ -127,12 +127,19 @@ const UserProfileEdit = () => {
         setExpanded(isExpanded ? panel : false);
     };
 
+    const messagesEndRef = useRef(null);
+
     useEffect(() => {
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 200);
+        }
         dispatch(userDateRequest(id));
         return () => {
             dispatch(clearError());
         };
-    }, [dispatch, id]);
+    }, [dispatch, id, messagesEndRef]);
 
     useMemo(() => {
         userData && setDataUser(prevState => ({
@@ -254,9 +261,10 @@ const UserProfileEdit = () => {
             imagesPassport[i] = apiURL + '/uploads/' + pas.image;
         })
     }
-    console.log('render');
+
     return (
         <Container
+            ref={messagesEndRef}
             component="section"
             maxWidth="md"
             className={classes.container}>

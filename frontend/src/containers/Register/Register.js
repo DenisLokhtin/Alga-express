@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Link as RouterLink} from 'react-router-dom';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Checkbox from "@mui/material/Checkbox";
@@ -46,11 +46,18 @@ const Register = ({userData}) => {
 
     const [checkbox, setCheckbox] = useState(userData?.role === 'superAdmin');
 
+    const messagesEndRef = useRef(null);
+
     useEffect(() => {
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 250);
+        }
         return () => {
             dispatch(clearError());
         };
-    }, [dispatch]);
+    }, [dispatch, messagesEndRef]);
 
     const inputChangeHandler = e => {
         const {name, value} = e.target;
@@ -90,7 +97,7 @@ const Register = ({userData}) => {
     };
 
     return (
-        <Container component="section" maxWidth="md">
+        <Container ref={messagesEndRef} component="section" maxWidth="md">
             <div style={theme.paper}>
                 <Grid item sx={{mb: '1.3em'}}>
                     <Avatar className={classes.avatar}>

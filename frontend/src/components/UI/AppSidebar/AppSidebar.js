@@ -40,7 +40,7 @@ import theme from "../../../theme";
 
 const pages = [
     {title: "Новости", icon: <NewspaperIcon/>, url: newsCompany},
-    {title: "Правила", icon: <ReceiptLongIcon/> , url: rulesCompany},
+    {title: "Правила", icon: <ReceiptLongIcon/>, url: rulesCompany},
     {title: "Контакты", icon: <ContactPhoneIcon/>, url: contactsCompany},
     {title: "Как это работает?", icon: <QuestionMarkIcon/>, url: howCompany},
     {title: "О нас", icon: <InfoIcon/>, url: aboutCompany},
@@ -57,6 +57,15 @@ const AppSidebar = () => {
         setExpanded(isExpanded ? panel : false);
     };
 
+    const scroll = () => {
+        window.focus();
+        window.scroll({
+            top: 100,
+            left: 100,
+            behavior: 'smooth'
+        });
+    };
+
     return (
         <Box sx={theme.boxContainer}>
             <Link to="/" style={theme.logo}>
@@ -70,6 +79,7 @@ const AppSidebar = () => {
                         <MenuItem
                             key={page.title}
                             component={Link}
+                            onClick={() => scroll()}
                             to={page.url}
                             sx={{color: "#F5F5F7"}}
                         >
@@ -87,11 +97,11 @@ const AppSidebar = () => {
 
                 <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
                     <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
+                        expandIcon={<ExpandMoreIcon/>}
                         aria-controls="panel1bh-content"
                         id="panel1bh-header"
                     >
-                        <Typography sx={{ width: '100%', flexShrink: 0 }}>
+                        <Typography sx={{width: '100%', flexShrink: 0}}>
 
                         </Typography>
                     </AccordionSummary>

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Grid from "@mui/material/Grid";
 import {Container, TextField, Typography} from "@mui/material";
 import {makeStyles} from "@mui/styles";
@@ -21,7 +21,7 @@ const useStyles = makeStyles(() => ({
         display: 'flex'
     },
 
-  newsMainTitle: {
+    newsMainTitle: {
         textAlign: 'center',
         paddingBottom: '50px',
         '@media (max-width:600px)': {
@@ -75,8 +75,16 @@ const EditNews = () => {
         }
     };
 
-    useEffect( () => {
-        setNews(prev=>({
+    const messagesEndRef = useRef(null);
+
+    useEffect(() => {
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 250);
+        }
+
+        setNews(prev => ({
             ...prev,
             title: oneNews.title,
             description: oneNews.description,
@@ -86,7 +94,7 @@ const EditNews = () => {
         return () => {
             dispatch(clearNewsErrors());
         };
-    }, [dispatch,params.id, oneNews.title, oneNews.description]);
+    }, [dispatch, params.id, oneNews.title, oneNews.description, messagesEndRef]);
 
     const changeNews = (e) => {
         e.preventDefault();
@@ -96,6 +104,7 @@ const EditNews = () => {
     return (
         <ThemeProvider theme={theme}>
             <Container
+                ref={messagesEndRef}
                 component="section"
                 maxWidth="md"
                 className={classes.container}>
@@ -149,7 +158,7 @@ const EditNews = () => {
                             disabled={loading}
                             type="submit"
                             variant="contained">
-                           Изменить
+                            Изменить
                         </ButtonWithProgress>
                     </Grid>
                 </Grid>

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {fetchBuyoutsRequest} from "../../store/actions/buyoutActions";
 import {Card, CardMedia, Container, Grid} from "@mui/material";
@@ -34,12 +34,19 @@ const BuyoutList = () => {
     console.log(buyouts)
 
 
+    const messagesEndRef = useRef(null);
+
     useEffect(() => {
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 250);
+        }
         dispatch(fetchBuyoutsRequest())
-    }, [dispatch]);
+    }, [messagesEndRef, dispatch]);
 
     return (
-        <Container>
+        <Container ref={messagesEndRef}>
             <Grid container>
                 {buyouts && buyouts.map(b => (
                     <Grid item xs={8} sm={6} md={4} lg={3} key={b._id}>

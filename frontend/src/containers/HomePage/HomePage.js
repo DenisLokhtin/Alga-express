@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import Grid from "@mui/material/Grid";
 import {makeStyles} from "@mui/styles";
 import Pic from "../../assets/main-pic.jpeg";
@@ -36,8 +36,18 @@ const useStyles = makeStyles({
 const HomePage = () => {
     const classes = useStyles();
 
+    const messagesEndRef = useRef(null);
+
+    useEffect(() => {
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 200);
+        }
+    }, [messagesEndRef]);
+
     return (
-        <Grid container flexDirection="column" spacing={2}>
+        <Grid ref={messagesEndRef} container flexDirection="column" spacing={2}>
             <Grid item lg={12}>
                 <h1 className={classes.block}>
                     Служба доставки из Турции и Сша
