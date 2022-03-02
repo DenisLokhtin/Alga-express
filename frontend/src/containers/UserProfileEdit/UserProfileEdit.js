@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {makeStyles} from "@mui/styles";
 import {createTheme} from "@mui/material/styles";
 import {useDispatch, useSelector} from "react-redux";
@@ -131,8 +131,6 @@ const UserProfileEdit = () => {
     const [expanded, setExpanded] = useState('panel1');
     const [value, setValue] = useState(null);
     const [inputValue, setInputValue] = useState('');
-
-    if(value) console.log(value);
 
     let imageURL = noImage;
     let imagesPassport = [];
