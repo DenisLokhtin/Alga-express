@@ -63,6 +63,7 @@ router.get('/:id', async (req, res) => {
 
 
 router.post('/', auth, permit('admin', 'superAdmin'), upload.single('picture'), async (req, res) => {
+    console.log(req.body)
     try {
         const carouselData = {
             info: req.body.info,
