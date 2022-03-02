@@ -11,6 +11,7 @@ const PaymentMove = require("../models/PaymentMove");
 const fs = require("fs");
 const Currency = require("../models/Currency");
 
+
 const newDir = `${config.uploadPath}/buyouts`;
 
 const storage = multer.diskStorage({
@@ -45,10 +46,10 @@ router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) =>
     try {
 
         if (req.user.role === 'user') {
-            const selfBuyouts = await Buyout.find({user: req.user._id}).populate('user', 'name ');
+            const selfBuyouts = await Buyout.find({user: req.user._id}).populate('user', 'name email ');
             res.send({data: selfBuyouts});
         } else {
-            const buyouts = await Buyout.find({$and: [{deleted: {$ne: true}}, {status: 'NEW'}]}).populate('user', 'name');
+            const buyouts = await Buyout.find({$and: [{deleted: {$ne: true}}]}).populate('user', 'name email');
             res.send({total: buyouts.length, data: buyouts});
         }
 
@@ -136,7 +137,7 @@ router.put('/:id', auth, upload.single('image'), permit('admin', 'user'), async 
                 const currencyCorrect = Number(currency[value.toLowerCase()]);
                 const totalPrice = ((price * (commission / 100) + price) * currencyCorrect).toFixed(2);
                 updatedPrice.totalPrice = Number(totalPrice);
-                updatedPrice.status = 'ORDERED';
+                updatedPrice.status = 'ACCEPTED';
                 await updatedPrice.save();
 
                 await User.findByIdAndUpdate(updatedPrice.user, {balance: user.balance - totalPrice})
@@ -178,6 +179,22 @@ router.put('/:id', auth, upload.single('image'), permit('admin', 'user'), async 
         console.log(error);
     }
 });
+
+router.put('/change/:id',auth, permit('admin'),async (req,res)=>{
+    try {
+        console.log(req.params.id)
+        const buyout = await Buyout.findById(req.params.id);
+
+        if (Object.keys(buyout).length === 0) {
+            return res.status(404).send({error: `Выкуп с ID=${req.params.id} не найден.`});
+        } else {
+            await Buyout.findByIdAndUpdate(req.params.id,{status: 'ORDERED'});
+            return res.send({message: `Выкуп успешно заказан.`})
+        }
+    } catch (error) {
+        res.status(404).send(error);
+    }
+})
 
 
 module.exports = router;

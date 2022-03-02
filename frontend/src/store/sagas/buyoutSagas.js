@@ -9,7 +9,7 @@ import {
     deleteBuyoutRequest,
     deleteBuyoutSuccess,
     editBuyoutFailure,
-    editBuyoutRequest,
+    editBuyoutRequest, editBuyoutStatusFailure, editBuyoutStatusRequest, editBuyoutStatusSuccess,
     editBuyoutSuccess,
     fetchBuyoutsFailure,
     fetchBuyoutsRequest,
@@ -84,6 +84,16 @@ function* editBuyoutSagas({payload}) {
     }
 }
 
+function* editBuyoutStatusSagas({payload: id}) {
+    try {
+        yield axiosApi.put(`/buyouts/change/` + id,);
+        yield put(editBuyoutStatusSuccess());
+        toast.success('Успешно обновлен!');
+    } catch (e) {
+        yield put(editBuyoutStatusFailure(e.response.data));
+    }
+}
+
 
 const buyoutSaga = [
     takeEvery(fetchBuyoutsRequest, getBuyoutSagas),
@@ -91,6 +101,7 @@ const buyoutSaga = [
     takeEvery(deleteBuyoutRequest, deleteBuyoutSaga),
     takeEvery(fetchSingleBuyoutRequest, getOneBuyoutSagas),
     takeEvery(editBuyoutRequest, editBuyoutSagas),
+    takeEvery(editBuyoutStatusRequest, editBuyoutStatusSagas),
 ];
 
 export default buyoutSaga;

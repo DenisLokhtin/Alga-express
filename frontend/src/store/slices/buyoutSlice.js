@@ -70,7 +70,17 @@ const buyoutSlice = createSlice({
         editBuyoutFailure(state,action){
             state.createLoading =false;
             state.createError = action.payload;
-        }
+        },
+        editBuyoutStatusRequest(state){
+            state.createLoading = true;
+        },
+        editBuyoutStatusSuccess(state){
+            state.createLoading = false;
+        },
+        editBuyoutStatusFailure(state,action){
+            state.createLoading =false;
+            state.createError = action.payload;
+        },
     }
 });
 
