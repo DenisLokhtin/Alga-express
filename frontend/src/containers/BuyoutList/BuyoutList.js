@@ -35,7 +35,7 @@ const BuyoutList = () => {
 
 
     useEffect(() => {
-        dispatch(fetchBuyoutsRequest())
+        dispatch(fetchBuyoutsRequest());
     }, [dispatch]);
 
     return (

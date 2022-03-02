@@ -73,7 +73,7 @@ const PackageRegister = () => {
         country: '',
     });
 
-    const [value, setValue] = React.useState(users[0]);
+    const [value, setValue] = React.useState({});
     const [inputValue, setInputValue] = React.useState('');
 
     const inputChangeHandler = e => {
@@ -217,7 +217,6 @@ const PackageRegister = () => {
                             />
                         ):(
                             <Autocomplete
-                                // value={value}
                                 onChange={(event, newValue) => {
                                     setValue(newValue);
                                 }}

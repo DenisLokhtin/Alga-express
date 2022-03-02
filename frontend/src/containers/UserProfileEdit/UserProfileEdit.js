@@ -15,14 +15,20 @@ import {
     ImageListItem,
     MenuItem,
     Paper,
-    Select,
+    Select, TextField,
     Typography,
 } from "@mui/material";
 import IconButton from '@mui/material/IconButton';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import AddCircleOutlineTwoToneIcon from '@mui/icons-material/AddCircleOutlineTwoTone';
 import FormElement from "../../components/UI/Form/FormElement";
-import {clearError, editPassportRequest, editUserDataRequest, userDateRequest} from "../../store/actions/usersActions";
+import {
+    clearError,
+    editPassportRequest,
+    editUserDataRequest,
+    fetchUsersRequest,
+    userDateRequest
+} from "../../store/actions/usersActions";
 import {useParams} from "react-router-dom";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
 import PhoneInput from "react-phone-input-2";
@@ -31,6 +37,7 @@ import Avatar from "@mui/material/Avatar";
 import noImage from '../../assets/no_avatar.png';
 import {apiURL} from "../../config";
 import FileInput from "../../components/UI/FileInput/FileInput";
+import Autocomplete from '@mui/material/Autocomplete';
 
 
 const useStyles = makeStyles(() => ({
@@ -104,6 +111,7 @@ const UserProfileEdit = () => {
     const error = useSelector(state => state.users.userError);
     const userData = useSelector(state => state.users.userDate);
     const user = useSelector(state => state.users.user);
+    const users = useSelector(state => state.users.users);
 
     const [dataUser, setDataUser] = useState({
         name: '',
@@ -116,11 +124,14 @@ const UserProfileEdit = () => {
             type: '',
         }
     ]);
-    const [userSelect, setUserSelect] = useState({});
     const [passport, setPassport] = useState([]);
     const [disabled, setDisabled] = useState(false);
     const [refresh, setRefresh] = useState(true);
     const [expanded, setExpanded] = useState('panel1');
+    const [value, setValue] = useState(null);
+    const [inputValue, setInputValue] = useState('');
+
+    if(value) console.log(value);
 
     let imageURL = noImage;
     let imagesPassport = [];
@@ -133,24 +144,29 @@ const UserProfileEdit = () => {
         if (user.role === 'user') {
             dispatch(userDateRequest(user._id));
         } else {
-            dispatch(userDateRequest(userSelect._id));
+            dispatch(fetchUsersRequest());
         }
 
         return () => {
             dispatch(clearError());
         };
-    }, [dispatch, user._id]);
+    }, [dispatch, user._id, user.role]);
+
+    useEffect(() => {
+        value && dispatch(userDateRequest(value._id));
+
+    }, [dispatch, value]);
 
     useMemo(() => {
-        userData && setDataUser(prevState => ({
+        userData && setDataUser({
             name: userData.name,
             email: userData.email,
             avatar: userData.avatar,
-        }));
+        });
 
-        userData && setPhone(prevState => ([
+        userData && setPhone([
             ...userData.phone,
-        ]));
+        ]);
 
         userData && setPassport([...userData.passport]);
     }, [userData]);
@@ -292,6 +308,23 @@ const UserProfileEdit = () => {
                             профиль пользователя
                         </Typography>
                     </AccordionSummary>
+                    <Grid>
+                        <Autocomplete
+                            onChange={(event, newValue) => {
+                                setValue(newValue);
+                            }}
+                            inputValue={inputValue}
+                            onInputChange={(event, newInputValue) => {
+                                setInputValue(newInputValue);
+                            }}
+                            name={users}
+                            id="usersSelected"
+                            options={users}
+                            getOptionLabel={(option)=>(option.name + ' ' + option.email)}
+                            sx={{ width: 300 }}
+                            renderInput={(params) => <TextField {...params} label="Пользователи" />}
+                        />
+                    </Grid>
                     <AccordionDetails>
                         <Grid
                             container
