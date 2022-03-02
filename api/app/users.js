@@ -13,7 +13,7 @@ const router = express.Router();
 router.get('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
     try {
         const users = await User.find({role: 'user'})
-            .select('name');
+            .select('name email');
         res.send(users);
     } catch (e) {
         res.status(500).send(e);

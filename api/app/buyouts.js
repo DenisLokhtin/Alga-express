@@ -45,10 +45,10 @@ router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) =>
     try {
 
         if (req.user.role === 'user') {
-            const selfBuyouts = await Buyout.find({user: req.user._id}).populate('user', 'name ');
+            const selfBuyouts = await Buyout.find({user: req.user._id}).populate('user', 'name email ');
             res.send({data: selfBuyouts});
         } else {
-            const buyouts = await Buyout.find({$and: [{deleted: {$ne: true}}, {status: 'NEW'}]}).populate('user', 'name');
+            const buyouts = await Buyout.find({$and: [{deleted: {$ne: true}}, {status: 'NEW'}]}).populate('user', 'name email');
             res.send({total: buyouts.length, data: buyouts});
         }
 
