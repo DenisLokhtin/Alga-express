@@ -62,7 +62,7 @@ import {
     tariffs,
     editingSingleTrackNumber,
     forgotPassword,
-    resetPassword, adminPagePath, userPage, addCarousel,
+    resetPassword, adminPagePath, userPage, addCarousel, editCarousel,
 } from "./paths";
 import OrderBuyout from "./containers/OrderBuyout/OrderBuyout";
 import SingleStatusEdit from "./containers/SingleStatusEdit/SingleStatusEdit";
@@ -87,6 +87,7 @@ import ProtectedRoutesForWarehouseman
     from "./components/ProtectedRoutes/ProtoectedRoutesForWarehouseman/ProtectedRoutesForWarehouseman";
 import ProtectedRoutesForSuperAdmin from "./components/ProtectedRoutes/ProtectedRoutesForSuperAdmin/ProtectedRoutesForSuperAdmin";
 import AddCarouselAdmin from "./components/AddCarouselAdmin/AddCarouselAdmin";
+import EditCarouselAdmin from "./components/EditCarouselAdmin/EditCarouselAdmin";
 
 const App = () => {
     return (
@@ -121,6 +122,7 @@ const App = () => {
                         <Route path={addUserPayment} element={<UserPayment/>}/>
                         <Route path={addWareHouseAddress} element={<AddWareHouseAdmin/>}/>
                         <Route path={addCarousel} element={<AddCarouselAdmin/>}/>
+                        <Route path={editCarousel} element={<EditCarouselAdmin/>}/>
                         <Route path={editWareHouseAddress} element={<EditWareHouseAdmin/>}/>
                     </Route>
                     {/* Routes for warehouseman and SuperAdmin*/}

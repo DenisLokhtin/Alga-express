@@ -53,7 +53,7 @@ export function* addCarouselsSaga({payload}) {
 
 function* carouselsEditSaga({payload}) {
     try {
-        yield axiosApi.put(`/carousels/${payload.id}`, payload.carousels);
+        yield axiosApi.put(`/carousels/${payload.carouselId}`, payload.carousels);
         yield put(changeCarouselsSuccess());
         toast.success('Изображение в карусели отредактировано!');
         payload.navigate('/carousels');

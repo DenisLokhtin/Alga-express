@@ -6,9 +6,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {deleteCarouselsRequest, fetchCarouselsRequest} from "../../store/actions/carouselActions";
 import {apiURL} from "../../config";
 import {Link} from "react-router-dom";
-import {addCarousel} from "../../paths";
+import {addCarousel, editingSingleCarousel} from "../../paths";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
+import {Grid} from "@mui/material";
 
 const Carousel = () => {
     const settings = {
@@ -41,7 +42,7 @@ const Carousel = () => {
                 <ButtonWithProgress
                     type="submit"
                     variant="contained"
-                    color="success"
+                    color="error"
                     loading={loading}
                     disabled={loading}
                     component={Link}
@@ -56,24 +57,53 @@ const Carousel = () => {
                         <h3>{carousel.info}</h3>
                         <img width="100%" src={apiURL + '/' + carousel.picture} alt={carousel.info}/>
                         {user && user.role === 'admin' && (
-                            <button onClick={() => deleteCarousel(carousel._id)}>
+                            <ButtonWithProgress
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="error"
+                                loading={loading}
+                                disabled={loading}
+                                onClick={() => deleteCarousel(carousel._id)}
+                            >
                                 Удалить изображение
-                            </button>
+                            </ButtonWithProgress>
                         )}
                         {user && user.role === 'superAdmin' && (
-                            <button onClick={() => deleteCarousel(carousel._id)}>
+                            <ButtonWithProgress
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="error"
+                                loading={loading}
+                                disabled={loading}
+                                onClick={() => deleteCarousel(carousel._id)}
+                            >
                                 Удалить изображение
-                            </button>
+                            </ButtonWithProgress>
                         )}
 
-
+                        {user && (user.role === 'superAdmin' || user.role === 'admin') && (
+                            <Grid item xs={3}>
+                                <ButtonWithProgress
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    color="success"
+                                    loading={loading}
+                                    disabled={loading}
+                                    component={Link}
+                                    to={editingSingleCarousel + carousel._id}
+                                >
+                                    Редактировать изображение
+                                </ButtonWithProgress>
+                            </Grid>
+                        )}
                     </div>
-
                 ))}
             </Slider>
-
         </div>
     );
-}
+};
 
 export default Carousel;

@@ -45,6 +45,7 @@ const HomePage = () => {
                 </h1>
             </Grid>
 
+            <br/>
             <Grid container>
                 <Grid item xs={12}>
                     <Grid item>

@@ -42,6 +42,8 @@ export const cargoCreateUser = '/cargo/create/user';
 export const forgotPassword = '/forgot';
 export const resetPassword = '/secret/reset-password';
 export const addCarousel = '/alga-express/carousel/add';
+export const editCarousel = '/alga-express/carousel/edit/:id';
+export const editingSingleCarousel = '/alga-express/carousel/edit/';
 
 
 
