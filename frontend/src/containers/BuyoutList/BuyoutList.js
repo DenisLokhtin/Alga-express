@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {fetchBuyoutsRequest} from "../../store/actions/buyoutActions";
 import {Card, CardMedia, Container, Grid} from "@mui/material";
@@ -7,7 +7,6 @@ import {makeStyles} from "@mui/styles";
 import {apiURL} from "../../config";
 import {editBuyout, newPackageRegister} from "../../paths";
 import {Link} from "react-router-dom";
-
 
 
 const useStyles = makeStyles({
@@ -33,12 +32,19 @@ const BuyoutList = () => {
     const user = useSelector(state => state.users.user);
     const buyouts = useSelector(state => state.buyouts.buyouts.data);
 
+    const messagesEndRef = useRef(null);
+
     useEffect(() => {
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 250);
+        }
         dispatch(fetchBuyoutsRequest())
-    }, [dispatch]);
+    }, [messagesEndRef, dispatch]);
 
     return (
-        <Container>
+        <Container ref={messagesEndRef}>
             <Grid container>
                 {buyouts && buyouts.map(b => (
                     <Grid item xs={8} sm={6} md={4} lg={3} key={b._id}>
@@ -56,13 +62,15 @@ const BuyoutList = () => {
                             )}
                             <Grid container direction={"column"} spacing={2}>
                                 <Grid item>
-                                    <MaterialLink href={b.url} target={'_blank'} rel={'noopener'} className={classes.btn}>
+                                    <MaterialLink href={b.url} target={'_blank'} rel={'noopener'}
+                                                  className={classes.btn}>
                                         Ссылка на товар</MaterialLink>
                                 </Grid>
                                 <Grid item>
                                     {user && user.role === 'admin' && (
                                         <Link
-                                            to={newPackageRegister} state={{userProps: {id: b.user._id, name: b.user.name}}}
+                                            to={newPackageRegister}
+                                            state={{userProps: {id: b.user._id, name: b.user.name}}}
                                             className={classes.btn}
                                         >
                                             Оформить выкуп
@@ -72,7 +80,8 @@ const BuyoutList = () => {
                                 <Grid item>
                                     {user && user.role === 'superAdmin' && (
                                         <Link
-                                            to={newPackageRegister} state={{userProps: {id: b.user._id, name: b.user.name}}}
+                                            to={newPackageRegister}
+                                            state={{userProps: {id: b.user._id, name: b.user.name}}}
                                             className={classes.btn}
                                         >
                                             Оформить выкуп
@@ -81,12 +90,14 @@ const BuyoutList = () => {
                                 </Grid>
                                 <Grid item>
                                     {user && user.role === 'admin' && (
-                                        <Link to={editBuyout.slice(0, editBuyout.length - 3) + b._id} className={classes.btn}>Редактировать выкуп</Link>
+                                        <Link to={editBuyout.slice(0, editBuyout.length - 3) + b._id}
+                                              className={classes.btn}>Редактировать выкуп</Link>
                                     )}
                                 </Grid>
                                 <Grid item>
                                     {user && user.role === 'superAdmin' && (
-                                        <Link to={editBuyout.slice(0, editBuyout.length - 3) + b._id} className={classes.btn}>Редактировать выкуп</Link>
+                                        <Link to={editBuyout.slice(0, editBuyout.length - 3) + b._id}
+                                              className={classes.btn}>Редактировать выкуп</Link>
                                     )}
                                 </Grid>
                             </Grid>

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import Grid from "@mui/material/Grid";
 import {makeStyles} from "@mui/styles";
 import Pic from "../../assets/main-pic.jpeg";
@@ -10,11 +10,6 @@ import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import PriceCheckIcon from '@mui/icons-material/PriceCheck';
 import Container from "@mui/material/Container";
 import theme from "../../theme";
-import {fetchNewsRequest} from "../../store/actions/newsActions";
-import {useDispatch, useSelector} from "react-redux";
-import {Link} from "react-router-dom";
-import {newsIdCompany} from "../../paths";
-import Typography from "@mui/material/Typography";
 import NewsPanel from "../../components/NewsPanel/NewsPanel";
 
 const useStyles = makeStyles({
@@ -41,8 +36,18 @@ const useStyles = makeStyles({
 const HomePage = () => {
     const classes = useStyles();
 
+    const messagesEndRef = useRef(null);
+
+    useEffect(() => {
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 200);
+        }
+    }, [messagesEndRef]);
+
     return (
-        <Grid container flexDirection="column" spacing={2}>
+        <Grid ref={messagesEndRef} container flexDirection="column" spacing={2}>
             <Grid item lg={12}>
                 <h1 className={classes.block}>
                     Служба доставки из Турции и Сша

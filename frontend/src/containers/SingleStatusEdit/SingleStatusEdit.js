@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {
     Container,
@@ -80,14 +80,21 @@ const WarehousemanStatusEdit = () => {
         })
     };
 
+    const messagesEndRef = useRef(null);
+
     useEffect(() => {
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 200);
+        }
         return () => {
             dispatch(clearTextFieldsErrors());
         };
-    }, [dispatch]);
+    }, [dispatch, messagesEndRef]);
 
     return (
-        <Container className={classes.container} maxWidth="md" style={{textAlign: 'center'}}>
+        <Container ref={messagesEndRef} className={classes.container} maxWidth="md" style={{textAlign: 'center'}}>
             <Grid container component="form" onSubmit={submit} justifyContent="center" spacing={4}>
                 <Grid item xs={12} sm={8} md={7} lg={7}>
                     <FormControl variant="standard" fullWidth>

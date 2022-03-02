@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {fetchTariffsRequest} from "../../store/actions/tariffActions";
 import {Grid} from "@mui/material";
@@ -20,14 +20,18 @@ const TariffsPage = () => {
     const classes = useStyles();
     const tariff = useSelector(state => state.tariffs.tariffs);
     const user = useSelector(state => state.users.user);
-    console.log(tariff)
-
+    const messagesEndRef = useRef(null);
 
     useEffect(() => {
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 200);
+        }
         dispatch(fetchTariffsRequest());
-    }, [dispatch])
+    }, [dispatch, messagesEndRef]);
 
-    const shownTariff = []
+    const shownTariff = [];
 
     if (tariff && tariff.length !==0) {
         const obj = tariff[0];
@@ -44,7 +48,7 @@ const TariffsPage = () => {
     }
 
     return (
-        <Grid>
+        <Grid ref={messagesEndRef}>
             <h3>Ваш тариф</h3>
             {shownTariff.length !== 0 && shownTariff.map((t,i) => (
                 <Grid item key={i} className={classes.box}>

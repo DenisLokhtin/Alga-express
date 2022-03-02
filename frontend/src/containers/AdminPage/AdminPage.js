@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Container, Grid} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchCurrencies} from "../../store/actions/currenciesActions";
@@ -11,22 +11,29 @@ const AdminPage = () => {
     const currencies = useSelector(state => state.currencies.currencies);
     const newPackages = useSelector(state => state.package.orders);
 
+    const messagesEndRef = useRef(null);
+
     useEffect(() => {
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 250);
+        }
         dispatch(fetchCurrencies());
         dispatch(fetchNewPackages());
-    }, [dispatch]);
+    }, [dispatch, messagesEndRef]);
 
     return (
-        <Container>
+        <Container ref={messagesEndRef}>
             <Grid container sx={{paddingY: "20px"}} spacing={2}>
                 <Grid item xs={12} md={12} lg={12}>
                     <NewPackageFilter newPackages={newPackages}/>
                 </Grid>
 
                 {currencies.length !== 0 &&
-                    <Grid item xs={12} md={12} lg={12}>
-                        <CurrenciesCard currency={currencies[0]}/>
-                    </Grid>}
+                <Grid item xs={12} md={12} lg={12}>
+                    <CurrenciesCard currency={currencies[0]}/>
+                </Grid>}
             </Grid>
         </Container>
     );
