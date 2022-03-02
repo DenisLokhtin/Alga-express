@@ -12,6 +12,7 @@ const Pages = require("./models/Pages");
 const TariffGroup = require("./models/TariffGroup");
 const WareHouse = require("./models/WareHouse");
 const Currency = require("./models/Currency");
+const Player = require("./models/Player");
 
 const run = async () => {
     await mongoose.connect(config.db.url, config.db.options);
@@ -106,7 +107,8 @@ const run = async () => {
         },
         {
             country: 'Склад в США',
-            info: '<p class=\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\"><strong>Безналоговый штат </strong><em>(по поводу заказа электроники: мобильных телефонов, смарт часов, ноутбуков обращайтесь к менеджеру)</em></p><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Получатель</strong>: <em>*Имя Фамилия* латиницей</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Адресная строка 1</strong>: <em>*41B Germay Drive*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Адресная строка 2</strong>: <em>*ALGA-KG1* указывать обязательно!</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Город</strong>: <em>*Wilmington*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Штат</strong>: <em>*DE (Delaware)*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Почтовый код</strong>: <em>*19804*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Телефон</strong>: <em>*+1 (302) 669-1014*</em></div>'},
+            info: '<p class=\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\"><strong>Безналоговый штат </strong><em>(по поводу заказа электроники: мобильных телефонов, смарт часов, ноутбуков обращайтесь к менеджеру)</em></p><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Получатель</strong>: <em>*Имя Фамилия* латиницей</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Адресная строка 1</strong>: <em>*41B Germay Drive*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Адресная строка 2</strong>: <em>*ALGA-KG1* указывать обязательно!</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Город</strong>: <em>*Wilmington*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Штат</strong>: <em>*DE (Delaware)*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Почтовый код</strong>: <em>*19804*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Телефон</strong>: <em>*+1 (302) 669-1014*</em></div>'
+        },
     );
 
     const [flight1, flight2] = await Flight.create(
@@ -274,6 +276,12 @@ const run = async () => {
         {
             bank: 'М Банк',
             requisites: '0774769434',
+        },
+    );
+
+    await Player.create(
+        {
+            urlYoutube: 'https://youtu.be/t86sKsR4pnk',
         },
     );
 
