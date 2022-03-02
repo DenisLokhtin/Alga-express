@@ -19,6 +19,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 import theme from "../../theme";
 import FormElement from "../../components/UI/Form/FormElement";
 import {fetchUsersRequest} from "../../store/actions/usersActions";
+import {editBuyoutStatusRequest} from "../../store/actions/buyoutActions";
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -58,7 +59,6 @@ const PackageRegister = () => {
     const error = useSelector(state => state.package.createPackageError);
     const data = useLocation();
     const buyoutUser = data?.state?.userProps;
-    console.log(buyoutUser)
 
     useEffect(() => {
         dispatch(fetchUsersRequest());
@@ -101,6 +101,9 @@ const PackageRegister = () => {
         if(user?.role === 'admin'){
             if(buyoutUser){
                 dispatch(createPackageRequest({...packageRegister,userId:buyoutUser.id, navigate}));
+                dispatch(editBuyoutStatusRequest(buyoutUser.buyoutId));
+                console.log(buyoutUser.buyoutId);
+                console.log(buyoutUser)
             } else {
                 dispatch(createPackageRequest({...packageRegister,userId:value?._id, navigate}));
             }
