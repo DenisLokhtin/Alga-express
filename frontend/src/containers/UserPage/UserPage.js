@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Container, Grid} from "@mui/material";
 import {Link} from "react-router-dom";
 import {packageHistory} from "../../paths";
@@ -22,8 +22,19 @@ const useStyles = makeStyles(()=> ({
 
 const UserPage = () => {
     const classes = useStyles();
+
+    const messagesEndRef = useRef(null);
+
+    useEffect(() => {
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 200);
+        }
+    }, [messagesEndRef]);
+
     return (
-        <Container>
+        <Container ref={messagesEndRef}>
             <h2>Личная страница пользователя</h2>
             <Grid container justifyContent={"space-between"}>
                 <Grid item className={classes.box}>

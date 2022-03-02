@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {
     Container,
@@ -17,12 +17,12 @@ import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWit
 import FormElement from "../../components/UI/Form/FormElement";
 
 const menuItems = [
-        {value: 'REGISTERED', text: 'Оформлен'},
-        {value: 'ON_WAREHOUSE', text: 'На складе'},
-        {value: 'ON_WAY', text: 'Вылетел'},
-        {value: 'PROCESSED', text: 'Обрабатывается'},
-        {value: 'DELIVERED', text: 'Готово к выдаче'},
-        {value: 'DONE', text: 'Выдано'},
+    {value: 'REGISTERED', text: 'Оформлен'},
+    {value: 'ON_WAREHOUSE', text: 'На складе'},
+    {value: 'ON_WAY', text: 'Вылетел'},
+    {value: 'PROCESSED', text: 'Обрабатывается'},
+    {value: 'DELIVERED', text: 'Готово к выдаче'},
+    {value: 'DONE', text: 'Выдано'},
 ];
 
 const useStyles = makeStyles(() => ({
@@ -76,18 +76,26 @@ const WarehousemanStatusEdit = () => {
         dispatch(changeStatusesRequest(packageStatus));
     };
 
+    const messagesEndRef = useRef(null);
+
     useEffect(() => {
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 200);
+        }
         return () => {
             dispatch(clearTextFieldsErrors());
         };
-    }, [dispatch]);
+    }, [dispatch, messagesEndRef]);
 
     return (
-        <Container className={classes.container} maxWidth="md" style={{textAlign: 'center'}}>
+        <Container ref={messagesEndRef} className={classes.container} maxWidth="md" style={{textAlign: 'center'}}>
             <Grid container component="form" onSubmit={submit} justifyContent="center" spacing={4}>
                 <Grid item xs={12} sm={8} md={7} lg={7}>
                     <FormControl variant="standard" fullWidth>
-                        <InputLabel id="demo-controlled-open-select-label" required>Выберите статус трек-номеров</InputLabel>
+                        <InputLabel id="demo-controlled-open-select-label" required>Выберите статус
+                            трек-номеров</InputLabel>
                         <Select
                             labelId="demo-controlled-open-select-label"
                             id="demo-controlled-open-select"
@@ -131,7 +139,8 @@ const WarehousemanStatusEdit = () => {
                         <Grid item xs={12} sm={8} md={7} lg={7} className={classes.notFoundTitleContainer}>
                             <Typography variant="h4" align='center' mb={4}>Не найденные трек-номера</Typography>
                         </Grid>
-                        <Grid item xs={12} sm={8} md={7} lg={7} mb={4} className={classes.notFoundTrackNumbersContainer}>
+                        <Grid item xs={12} sm={8} md={7} lg={7} mb={4}
+                              className={classes.notFoundTrackNumbersContainer}>
                             <List>
                                 {notFoundTrackNumbers.map(packageInfo => (
                                     <ListItem key={packageInfo.trackNumber}>

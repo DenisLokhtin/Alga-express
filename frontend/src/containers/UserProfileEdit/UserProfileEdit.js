@@ -15,7 +15,8 @@ import {
     ImageListItem,
     MenuItem,
     Paper,
-    Select, TextField,
+    Select,
+    TextField,
     Typography,
 } from "@mui/material";
 import IconButton from '@mui/material/IconButton';
@@ -140,6 +141,8 @@ const UserProfileEdit = () => {
         setExpanded(isExpanded ? panel : false);
     };
 
+    const messagesEndRef = useRef(null);
+
     useEffect(() => {
         if (user.role === 'user') {
             dispatch(userDateRequest(user._id));
@@ -156,6 +159,18 @@ const UserProfileEdit = () => {
         value && dispatch(userDateRequest(value._id));
 
     }, [dispatch, value]);
+
+    useEffect(() => {
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 200);
+        }
+        dispatch(userDateRequest(id));
+        return () => {
+            dispatch(clearError());
+        };
+    }, [dispatch, id, messagesEndRef]);
 
     useMemo(() => {
         userData && setDataUser({
@@ -280,6 +295,7 @@ const UserProfileEdit = () => {
 
     return (
         <Container
+            ref={messagesEndRef}
             component="section"
             maxWidth="md"
             className={classes.container}>

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Grid from "@mui/material/Grid";
 import {
     Container,
@@ -105,8 +105,14 @@ const EditPackage = () => {
         }
     };
 
+    const messagesEndRef = useRef(null);
 
-    useEffect( () => {
+    useEffect(() => {
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 250);
+        }
         dispatch(getPackageByIdRequest(params.id));
         onePackage && setPackageRegister(prevState => ({
             ...prevState,
@@ -124,9 +130,8 @@ const EditPackage = () => {
             dispatch(clearTextFieldsErrors());
         };
     }, [dispatch, onePackage, params.id, onePackage.trackNumber, onePackage.title, onePackage.amount, onePackage.price,
-        onePackage.country, onePackage.width, onePackage.height, onePackage.length, onePackage.urlPackage
+        onePackage.country, onePackage.width, onePackage.height, onePackage.length, onePackage.urlPackage, messagesEndRef
     ]);
-
 
 
     const changePackage = (e) => {
@@ -137,6 +142,7 @@ const EditPackage = () => {
     return (
         <ThemeProvider theme={theme}>
             <Container
+                ref={messagesEndRef}
                 component="section"
                 maxWidth="md"
                 className={classes.container}>

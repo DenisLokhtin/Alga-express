@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Box, Container, LinearProgress, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {getOrdersHistoryRequest} from "../../store/actions/packageRegisterActions";
@@ -163,8 +163,16 @@ const OrderHistory = () => {
         }
     });
 
+    const messagesEndRef = useRef(null);
+
     useEffect(() => {
         let active = true;
+
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 200);
+        }
 
         dispatch(getOrdersHistoryRequest({page, limit: pageLimit}));
 
@@ -181,10 +189,10 @@ const OrderHistory = () => {
         return () => {
             active = false;
         };
-    }, [page, dispatch, pageLimit]);
+    }, [page, dispatch, pageLimit, messagesEndRef]);
 
     return (
-        <Container style={{display: 'flex', height: '550px', width: '100%', marginTop: '5em'}}>
+        <Container ref={messagesEndRef} style={{display: 'flex', height: '550px', width: '100%', marginTop: '5em'}}>
             <StyledDataGrid
                 rows={myRows}
                 columns={
