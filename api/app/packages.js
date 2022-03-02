@@ -99,6 +99,8 @@ router.get('/:id', auth, permit('admin', 'warehouseman', 'user', 'superAdmin'), 
 
 router.post('/', auth, packageValidate, permit('admin', 'superAdmin', 'user'), async (req, res) => {
 
+    console.log(req.body)
+
     let price = req.body.price;
 
     if (req.body.price.indexOf(',') === 0) {
@@ -108,6 +110,7 @@ router.post('/', auth, packageValidate, permit('admin', 'superAdmin', 'user'), a
     }
 
     try {
+
         const packageData = {
             country: req.body.country,
             title: req.body.title,
@@ -117,16 +120,32 @@ router.post('/', auth, packageValidate, permit('admin', 'superAdmin', 'user'), a
             user: req.user._id
         };
 
+        const packageAdmin = {
+            country: req.body.country,
+            title: req.body.title,
+            trackNumber: req.body.trackNumber,
+            amount: req.body.amount,
+            price: price,
+            user: req.body.userId,
+        }
+
+
         const notFoundTrackNumber = await NotFoundTrackNumber.findOne({notFoundTrackNumber: packageData.trackNumber});
 
         if (notFoundTrackNumber) {
             packageData.status = notFoundTrackNumber.status;
         }
 
-        const newPackage = new Package(packageData);
 
-        await newPackage.save();
-        res.send(newPackage);
+        if(req.user.role === 'admin'){
+            const newPackage = new Package(packageAdmin);
+            await newPackage.save();
+          return  res.send(newPackage);
+        }else{
+            const newPackage = new Package(packageData);
+            await newPackage.save();
+            return  res.send(newPackage);
+        }
 
     } catch (error) {
         console.log(error.message);

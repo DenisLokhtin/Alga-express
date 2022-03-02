@@ -33,6 +33,7 @@ const BuyoutList = () => {
     const user = useSelector(state => state.users.user);
     const buyouts = useSelector(state => state.buyouts.buyouts.data);
 
+
     useEffect(() => {
         dispatch(fetchBuyoutsRequest())
     }, [dispatch]);
@@ -62,7 +63,7 @@ const BuyoutList = () => {
                                 <Grid item>
                                     {user && user.role === 'admin' && (
                                         <Link
-                                            to={newPackageRegister} state={{userProps: {id: b.user._id, name: b.user.name}}}
+                                            to={newPackageRegister} state={{userProps: {id: b.user._id, name: b.user.name, email:b.user.email}}}
                                             className={classes.btn}
                                         >
                                             Оформить выкуп
@@ -89,6 +90,18 @@ const BuyoutList = () => {
                                         <Link to={editBuyout.slice(0, editBuyout.length - 3) + b._id} className={classes.btn}>Редактировать выкуп</Link>
                                     )}
                                 </Grid>
+
+                                <Grid item>
+                                    {user && user.role === 'admin' && (
+                                        <Link
+                                            to={newPackageRegister}
+                                            className={classes.btn}
+                                        >
+                                            Создать посылку
+                                        </Link>
+                                    )}
+                                </Grid>
+
                             </Grid>
                         </Card>
                     </Grid>
