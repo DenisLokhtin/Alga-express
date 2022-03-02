@@ -36,7 +36,7 @@ const BuyoutSchema = new mongoose.Schema({
     status: {
         type: String,
         trim: true,
-        enum: ['NEW', 'ORDERED', 'DONE'],
+        enum: ['NEW', 'ACCEPTED', 'ORDERED'],
         default: 'NEW',
     },
     price: {

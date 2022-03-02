@@ -115,7 +115,6 @@ const usersSlice = createSlice({
         },
         fetchUsersSuccess(state, action) {
             state.loadUserDate = false;
-            console.log(action.payload);
             state.users = action.payload;
         },
         fetchUsersFailure(state, action) {
