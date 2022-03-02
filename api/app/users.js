@@ -20,6 +20,16 @@ router.get('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
     }
 });
 
+router.get('/notification', auth, permit('admin'), async (req, res) => {
+    try {
+        const notification = await User.findById(req.user._id)
+            .select('notification');
+        res.send(notification);
+    } catch (e) {
+        res.status(500).send(e);
+    }
+});
+
 router.post('/', async (req, res) => {
     try {
 
@@ -55,6 +65,18 @@ router.post('/', async (req, res) => {
         res.send(user);
     } catch (error) {
         res.status(400).send(error);
+    }
+});
+
+router.put('/notification', auth, permit('admin'), async (req, res) => {
+    try {
+        const notification = await User.findById(req.user._id);
+        notification.notification = req.body.payload;
+
+        notification.save({validateBeforeSave: false});
+        res.send(notification.notification);
+    } catch (e) {
+        res.status(500).send(e);
     }
 });
 

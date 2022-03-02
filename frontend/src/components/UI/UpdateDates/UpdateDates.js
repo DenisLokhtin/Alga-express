@@ -10,6 +10,7 @@ const UpdateDates = ({children}) => {
     const audio = new Audio(ring);
     audio.volume = 0.50;
     const user = useSelector(state => state.users.user);
+    const notification = useSelector(state => state.users.notification);
     const paymentCount = useSelector(state => state.payments.payment);
     const buyouts = useSelector(state => state.buyouts.buyouts);
     const [totalCounts, setTotalCounts] = useState(0);
@@ -20,7 +21,7 @@ const UpdateDates = ({children}) => {
         await audio.play();
         setPlay(false);
     }
-    if (play) playNotification().then();
+    if (play && notification) playNotification().then();
 
     useMemo(() => {
         if (user && user.role === 'admin') {

@@ -10,7 +10,7 @@ import {
     rulesCompany,
     sitesCompany
 } from "../../../paths";
-import {Box, IconButton, Typography} from "@mui/material";
+import {Box, Typography} from "@mui/material";
 import {Link} from "react-router-dom";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import InstagramIcon from '@mui/icons-material/Instagram';
@@ -33,7 +33,11 @@ const useStyles = makeStyles({
         textDecoration: "none"
     },
     netLinks: {
-        display: "flex"
+        display: "flex",
+        alignItems: "center",
+        "& > a" : {
+              margin: '10px 0 0 15px',
+        },
     }
 })
 
@@ -69,13 +73,12 @@ const Footer = () => {
                             ️0 702 465 333 (Склад)
                         </Typography>
                         <Box className={classes.netLinks}>
-                            <IconButton component={Link} to="https://www.instagram.com/alga_express/">
+                            <a href="https://www.instagram.com/alga_express/" target="_blank" rel="noreferrer">
                                 <InstagramIcon sx={{color: "white"}}/>
-                            </IconButton>
-
-                            <IconButton component={Link} to="https://api.whatsapp.com/send?phone=996774769434">
+                            </a>
+                            <a href="https://api.whatsapp.com/send?phone=996774769434" target="_blank" rel="noreferrer">
                                 <WhatsAppIcon sx={{color: "white"}}/>
-                            </IconButton>
+                            </a>
                         </Box>
                     </Box>
                 </Grid>

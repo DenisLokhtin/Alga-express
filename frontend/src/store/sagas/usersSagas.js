@@ -2,22 +2,41 @@ import {put, takeEvery} from "redux-saga/effects";
 import {
     addUserPaymentFailure,
     addUserPaymentRequest,
-    addUserPaymentSuccess, changePasswordFailure, changePasswordRequest, changePasswordSuccess,
+    addUserPaymentSuccess,
+    changeNotificationFailure,
+    changeNotificationRequest,
+    changeNotificationSuccess,
+    changePasswordFailure,
+    changePasswordRequest,
+    changePasswordSuccess,
     editPassportFailure,
     editPassportRequest,
     editPassportSuccess,
     editUserDataFailure,
     editUserDataRequest,
-    editUserDataSuccess, fetchUserPaymentFailure,
-    fetchUserPaymentRequest, fetchUserPaymentSuccess, fetchUsersFailure,
-    fetchUsersRequest, fetchUsersSuccess, forgotPasswordFailure, forgotPasswordRequest, forgotPasswordSuccess,
+    editUserDataSuccess,
+    fetchUserPaymentFailure,
+    fetchUserPaymentRequest,
+    fetchUserPaymentSuccess,
+    fetchUsersFailure,
+    fetchUsersRequest,
+    fetchUsersSuccess,
+    forgotPasswordFailure,
+    forgotPasswordRequest,
+    forgotPasswordSuccess,
     loginUser,
     loginUserFailure,
     loginUserSuccess,
     logout,
     registerUser,
     registerUserFailure,
-    registerUserSuccess, resetPasswordFailure, resetPasswordRequest, resetPasswordSuccess,
+    registerUserSuccess,
+    resetPasswordFailure,
+    resetPasswordRequest,
+    resetPasswordSuccess,
+    switchNotificationFailure,
+    switchNotificationRequest,
+    switchNotificationSuccess,
     userDateFailure,
     userDateRequest,
     userDateSuccess,
@@ -176,6 +195,24 @@ export function* forgotPasswordSaga({payload: user}) {
     }
 }
 
+export function* switchNotificationSaga() {
+    try {
+        const response = yield axiosApi.get('/users/notification');
+        yield put(switchNotificationSuccess(response.data));
+    } catch (e) {
+        yield put(switchNotificationFailure(e.response.data));
+    }
+}
+
+export function* changeNotificationSaga(payload) {
+    try {
+        const response = yield axiosApi.put('/users/notification', payload);
+        yield put(changeNotificationSuccess(response.data));
+    } catch (e) {
+        yield put(changeNotificationFailure(e.response.data));
+    }
+}
+
 export function* logoutUserSaga() {
     try {
         yield axiosApi.delete('/users/sessions');
@@ -201,6 +238,9 @@ const usersSaga = [
     takeEvery(resetPasswordRequest, resetPasswordSaga),
     takeEvery(changePasswordRequest, changePasswordSaga),
     takeEvery(forgotPasswordRequest, forgotPasswordSaga),
+    takeEvery(switchNotificationRequest, switchNotificationSaga),
+    takeEvery(changeNotificationRequest, changeNotificationSaga),
+
 ];
 
 export default usersSaga;

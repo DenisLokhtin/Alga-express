@@ -36,5 +36,12 @@ export const {
     changePasswordRequest,
     changePasswordSuccess,
     changePasswordFailure,
+    switchNotificationRequest,
+    switchNotificationSuccess,
+    switchNotificationFailure,
+    changeNotificationRequest,
+    changeNotificationSuccess,
+    changeNotificationFailure,
+
   logout,
 } = usersSlice.actions;
