@@ -69,7 +69,7 @@ router.post('/', auth, permit('admin', 'superAdmin'), upload.single('picture'), 
         };
 
         if (req.file) {
-            carouselData.picture = 'uploads/carousel/' + req.file.filename;
+            carouselData.picture = 'uploads/' + req.file.filename;
         }
 
         const carousel = new Carousel(carouselData);
