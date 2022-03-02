@@ -103,6 +103,7 @@ const UserProfileEdit = () => {
     const loading = useSelector(state => state.users.loadUserDate);
     const error = useSelector(state => state.users.userError);
     const userData = useSelector(state => state.users.userDate);
+    const user = useSelector(state => state.users.user);
 
     const [dataUser, setDataUser] = useState({
         name: '',
@@ -115,6 +116,7 @@ const UserProfileEdit = () => {
             type: '',
         }
     ]);
+    const [userSelect, setUserSelect] = useState({});
     const [passport, setPassport] = useState([]);
     const [disabled, setDisabled] = useState(false);
     const [refresh, setRefresh] = useState(true);
@@ -128,11 +130,16 @@ const UserProfileEdit = () => {
     };
 
     useEffect(() => {
-        dispatch(userDateRequest(id));
+        if (user.role === 'user') {
+            dispatch(userDateRequest(user._id));
+        } else {
+            dispatch(userDateRequest(userSelect._id));
+        }
+
         return () => {
             dispatch(clearError());
         };
-    }, [dispatch, id]);
+    }, [dispatch, user._id]);
 
     useMemo(() => {
         userData && setDataUser(prevState => ({
@@ -254,7 +261,7 @@ const UserProfileEdit = () => {
             imagesPassport[i] = apiURL + '/uploads/' + pas.image;
         })
     }
-    console.log('render');
+
     return (
         <Container
             component="section"
