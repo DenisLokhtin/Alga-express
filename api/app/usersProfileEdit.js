@@ -108,6 +108,7 @@ router.get('/payment', auth, async (req, res) => {
 });
 
 router.get('/:id', auth, async (req, res) => {
+    console.log('In back: ', req.params.id);
     try {
         const user = await User.findById(req.params.id)
             .select('email name passport phone avatar');

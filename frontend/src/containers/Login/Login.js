@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Link as RouterLink, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import FormElement from "../../components/UI/Form/FormElement";
@@ -41,11 +41,18 @@ const Login = () => {
         password: ''
     });
 
+    const messagesEndRef = useRef(null);
+
     useEffect(() => {
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 200);
+        }
         return () => {
             dispatch(clearError());
         };
-    }, [dispatch]);
+    }, [dispatch, messagesEndRef]);
 
     const inputChangeHandler = e => {
         const {name, value} = e.target;
@@ -63,7 +70,7 @@ const Login = () => {
     };
 
     return (
-        <Container component="section" maxWidth="xs">
+        <Container ref={messagesEndRef} component="section" maxWidth="xs">
             <div style={theme.paper}>
                 <Avatar className={classes.avatar}>
                     <LockOpenIcon/>

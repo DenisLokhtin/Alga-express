@@ -21,7 +21,7 @@ const UpdateDates = ({children}) => {
         await audio.play();
         setPlay(false);
     }
-    if (play && notification) playNotification().then();
+    if (play && notification && user && user.role === 'admin') playNotification().then();
 
     useMemo(() => {
         if (user && user.role === 'admin') {

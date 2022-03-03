@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
 import {getOrderByIdRequest} from "../../store/actions/packageRegisterActions";
@@ -21,15 +21,21 @@ const SpecificPackage = () => {
     const params = useParams();
     const oneOrder = useSelector(state => state.package.order);
     const loading = useSelector(state => state.package.getOrderByIdLoading);
+    const messagesEndRef = useRef(null);
 
     useEffect(() => {
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 200);
+        }
         dispatch(getOrderByIdRequest(params.id));
-    }, [dispatch, params.id]);
+    }, [dispatch, params.id, messagesEndRef]);
 
     return (
         <>
             {loading ? <Grid container justifyContent="center" alignItems="center"><CircularProgress/></Grid> : (
-                <Grid container direction="column" alignItems="center" spacing={3} className={classes.orderContainer}>
+                <Grid ref={messagesEndRef} container direction="column" alignItems="center" spacing={3} className={classes.orderContainer}>
                     <Grid item>
                         <Typography>{`Название: ${oneOrder?.title}`}</Typography>
                     </Grid>

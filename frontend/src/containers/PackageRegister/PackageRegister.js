@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {clearTextFieldsErrors, createPackageRequest} from "../../store/actions/packageRegisterActions";
 import {
@@ -73,7 +73,7 @@ const PackageRegister = () => {
         country: '',
     });
 
-    const [value, setValue] = React.useState(users[0]);
+    const [value, setValue] = React.useState({});
     const [inputValue, setInputValue] = React.useState('');
 
     const inputChangeHandler = e => {
@@ -112,14 +112,22 @@ const PackageRegister = () => {
         }
     };
 
+    const messagesEndRef = useRef(null);
+
     useEffect(() => {
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 200);
+        }
         return () => {
             dispatch(clearTextFieldsErrors());
         };
-    }, [dispatch]);
+    }, [dispatch, messagesEndRef]);
 
     return (
         <Container
+            ref={messagesEndRef}
             component="section"
             maxWidth="md"
             className={classes.container}>
@@ -220,7 +228,6 @@ const PackageRegister = () => {
                             />
                         ):(
                             <Autocomplete
-                                // value={value}
                                 onChange={(event, newValue) => {
                                     setValue(newValue);
                                 }}

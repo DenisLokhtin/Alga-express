@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {fetchUserPaymentRequest} from "../../store/actions/usersActions";
 import {Container, Grid} from "@mui/material";
@@ -72,12 +72,19 @@ const UserPayments = () => {
     const paymentData = useSelector(state => state.users.payment);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
+    const messagesEndRef = useRef(null);
 
     useEffect(() => {
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 200);
+        }
         dispatch(fetchUserPaymentRequest({page: page, limit: rowsPerPage}));
     }, [dispatch,
         page,
         rowsPerPage,
+        messagesEndRef
     ]);
 
     const handleChangePage = (event, newPage) => {
@@ -91,6 +98,7 @@ const UserPayments = () => {
 
     return (
         <Container
+            ref={messagesEndRef}
             component="section"
             maxWidth="md"
             className={classes.container}

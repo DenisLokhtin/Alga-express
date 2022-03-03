@@ -160,7 +160,6 @@ const usersSlice = createSlice({
         switchNotificationRequest(state) {
         },
         switchNotificationSuccess(state, action) {
-            console.log(action.payload);
             state.notification = action.payload.notification;
         },
         switchNotificationFailure(state, action) {

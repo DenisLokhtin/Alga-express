@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import FormElement from "../../components/UI/Form/FormElement";
 import {makeStyles} from "@mui/styles";
 import {AlertTitle, Container, Grid} from "@mui/material";
@@ -48,8 +48,18 @@ const ForgotPassword = () => {
         return user.email === '';
     };
 
+    const messagesEndRef = useRef(null);
+
+    useEffect(() => {
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 200);
+        }
+    }, [messagesEndRef]);
+
     return (
-        <Container component="section" maxWidth="xs" style={{textAlign: 'center'}}>
+        <Container ref={messagesEndRef} component="section" maxWidth="xs" style={{textAlign: 'center'}}>
             <div style={theme.paper}>
                 {
                     error &&
