@@ -1,8 +1,5 @@
 const mongoose = require('mongoose');
 const idValidator = require('mongoose-id-validator');
-const {customAlphabet} = require("nanoid");
-
-const nanoid = customAlphabet('1234567890', 8);
 
 const PackageSchema = new mongoose.Schema({
     trackNumber: {
@@ -10,6 +7,14 @@ const PackageSchema = new mongoose.Schema({
         trim: true,
         unique: true,
         required: 'Поле Трек-Номер обязательное',
+        validate: {
+            validator: async trackNumber => {
+                const uniqueTrackNumber = await Package.findOne({trackNumber});
+
+                if (uniqueTrackNumber) return false;
+            },
+            message: 'Этот Трек-номер уже есть в базе!',
+        },
     },
     title: {
         type: String,
@@ -66,12 +71,20 @@ const PackageSchema = new mongoose.Schema({
     },
     date: {
         type: Date,
-        default: Date.now,
+        default: Date.now
     },
     cargoNumber: {
         type: String,
         trim: true,
-        unique: true
+        unique: true,
+        validate: {
+            validator: async trackNumber => {
+                const uniqueTrackNumber = await Package.findOne({trackNumber});
+
+                if (uniqueTrackNumber) return false;
+            },
+            message: 'Этот Карго-номер уже есть в базе!',
+        },
     },
     cargoWeight: {
         type: Number,
@@ -89,7 +102,6 @@ const PackageSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
-
 });
 
 PackageSchema.pre('save',  function (next) {

@@ -40,13 +40,28 @@ const UserSchema = new mongoose.Schema({
         lowercase: true,
         validate: [
             {validator: validateEmail, message: 'Email is not valid!'},
-            {validator: validateUnique, message: 'This user is already registered!'}
+            {validator: validateUnique, message: 'Этот пользователь уже зарегистрирован'}
         ],
     },
     password: {
         type: String,
-        required: true,
+        required: 'Это поле является обязательным и не должен содержать пробелы',
         trim: true,
+        validate: {
+            validator: function (value) {
+                if (value.length < 8) return false
+            },
+            message: 'Пароль не должен быть меньше чем 8 символов',
+        }
+    },
+    resetCode:{
+        type: String,
+        trim: true,
+        expireAt: {
+            type: Date,
+            default: Date.now,
+            index: { expires: '1m' },
+        },
     },
     token: {
         type: String,
@@ -58,7 +73,7 @@ const UserSchema = new mongoose.Schema({
         required: true,
         trim: true,
         default: 'user',
-        enum: ['admin', 'user'],
+        enum: ['admin', 'user', 'warehouseman', 'superAdmin'],
     },
     name: {
         type: String,
@@ -102,21 +117,23 @@ const UserSchema = new mongoose.Schema({
         enum: ['NEW', 'BUYERS', "ADVANCED", 'SPECIAL'],
         default: "NEW",
     },
+    notification: Boolean,
 });
+
+// UserSchema.index( { "resetCode": 1 }, { expireAfterSeconds: 30 } );
 
 UserSchema.pre('save', async function (next) {
     if (!this.isModified('password')) return next();
 
     const salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
-    const hash = await bcrypt.hash(this.password, salt);
+    this.password = await bcrypt.hash(this.password, salt);
 
-    this.password = hash;
 
     next();
 });
 
 UserSchema.set('toJSON', {
-    transform: (doc, ret, options) => {
+    transform: (doc, ret,) => {
         delete ret.password;
         return ret;
     },

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Link as RouterLink, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import FormElement from "../../components/UI/Form/FormElement";
@@ -13,7 +13,7 @@ import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import Alert from '@mui/material/Alert';
 import {AlertTitle} from "@mui/material";
-import {newUserRegister} from "../../paths";
+import {forgotPassword, newUserRegister} from "../../paths";
 import theme from "../../theme";
 
 const useStyles = makeStyles(theme => ({
@@ -41,11 +41,18 @@ const Login = () => {
         password: ''
     });
 
+    const messagesEndRef = useRef(null);
+
     useEffect(() => {
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 200);
+        }
         return () => {
             dispatch(clearError());
         };
-    }, [dispatch]);
+    }, [dispatch, messagesEndRef]);
 
     const inputChangeHandler = e => {
         const {name, value} = e.target;
@@ -59,13 +66,11 @@ const Login = () => {
     };
 
     const buttonDisable = () => {
-        if (user.password === '' || user.email === '') {
-            return true
-        } else return false
+        return user.password === '' || user.email === '';
     };
 
     return (
-        <Container component="section" maxWidth="xs" style={{textAlign: 'center'}}>
+        <Container ref={messagesEndRef} component="section" maxWidth="xs">
             <div style={theme.paper}>
                 <Avatar className={classes.avatar}>
                     <LockOpenIcon/>
@@ -85,6 +90,7 @@ const Login = () => {
                     component="form"
                     container
                     className={classes.form}
+                    direction="column"
                     onSubmit={submitFormHandler}
                     spacing={2}
                 >
@@ -125,6 +131,11 @@ const Login = () => {
                     <Grid item container justifyContent="flex-end">
                         <Link component={RouterLink} variant="body2" to={newUserRegister}>
                             Нет аккаунта? Зарегистрироваться
+                        </Link>
+                    </Grid>
+                    <Grid item container justifyContent="flex-end">
+                        <Link component={RouterLink} variant="body2" to={forgotPassword}>
+                            Забыли пароль?
                         </Link>
                     </Grid>
                 </Grid>

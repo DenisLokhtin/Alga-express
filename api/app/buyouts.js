@@ -9,7 +9,8 @@ const permit = require("../middleware/permit");
 const User = require("../models/User");
 const PaymentMove = require("../models/PaymentMove");
 const fs = require("fs");
-const {log} = require("nodemon/lib/utils");
+const Currency = require("../models/Currency");
+
 
 const newDir = `${config.uploadPath}/buyouts`;
 
@@ -41,14 +42,14 @@ const upload = multer({storage});
 
 const router = express.Router();
 
-router.get('/', auth, permit('admin', 'user'), async (req, res) => {
+router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) => {
     try {
 
         if (req.user.role === 'user') {
-            const selfBuyouts = await Buyout.find({user: req.user._id}).populate('user', 'name ');
+            const selfBuyouts = await Buyout.find({user: req.user._id}).populate('user', 'name email ');
             res.send({data: selfBuyouts});
         } else {
-            const buyouts = await Buyout.find({deleted: {$ne: true}}).populate('user', 'name');
+            const buyouts = await Buyout.find({$and: [{deleted: {$ne: true}}]}).populate('user', 'name email');
             res.send({total: buyouts.length, data: buyouts});
         }
 
@@ -57,7 +58,7 @@ router.get('/', auth, permit('admin', 'user'), async (req, res) => {
     }
 });
 
-router.get('/:id', auth, permit('admin', 'user'), async (req, res) => {
+router.get('/:id', auth, permit('admin', 'user', 'superAdmin'), async (req, res) => {
     try {
 
         if (req.user.role === 'user') {
@@ -97,7 +98,7 @@ router.post('/', auth, upload.single('image'), async (req, res) => {
     }
 });
 
-router.delete('/:id', auth, permit('admin'), async (req, res) => {
+router.delete('/:id', auth, permit('admin', 'superAdmin'), async (req, res) => {
     try {
         const buyout = await Buyout.findById(req.params.id);
 
@@ -116,21 +117,27 @@ router.delete('/:id', auth, permit('admin'), async (req, res) => {
 router.put('/:id', auth, upload.single('image'), permit('admin', 'user'), async (req, res) => {
     const price = Number(req.body.price);
     const commission = Number(req.body.commission);
+    const value = req.body.value;
+    console.log('body: ', req.body);
+    console.log('price: ', typeof (price), price);
+    console.log('commission: ', typeof (commission), commission);
     try {
         if (req.user.role === 'admin') {
             const updatedPrice = await Buyout.findById(req.params.id);
             const user = await User.findById(updatedPrice.user);
-
+            const currency = await Currency.findOne();
             //поверка на наличие изменения цены доставки, если цена изменилась тогда выполняется
             //создание новой записи в paymentMove и списывается средства с баланса пользователя.
             //согласно комиссии пользователя.
             //Еще нужно добавить курс вылюты.
-            if (req.body.price !== updatedPrice.price) {
+            if ((price !== updatedPrice.price) || (commission !== updatedPrice.commission) || (value !== updatedPrice.value)) {
                 updatedPrice.price = price;
                 updatedPrice.commission = commission;
-                const totalPrice = (price + price * (commission / 100)).toFixed(2);
-                updatedPrice.totalPrice = totalPrice;
-                updatedPrice.status = 'ORDERED';
+                updatedPrice.value = value;
+                const currencyCorrect = Number(currency[value.toLowerCase()]);
+                const totalPrice = ((price * (commission / 100) + price) * currencyCorrect).toFixed(2);
+                updatedPrice.totalPrice = Number(totalPrice);
+                updatedPrice.status = 'ACCEPTED';
                 await updatedPrice.save();
 
                 await User.findByIdAndUpdate(updatedPrice.user, {balance: user.balance - totalPrice})
@@ -172,6 +179,22 @@ router.put('/:id', auth, upload.single('image'), permit('admin', 'user'), async 
         console.log(error);
     }
 });
+
+router.put('/change/:id',auth, permit('admin'),async (req,res)=>{
+    try {
+        console.log(req.params.id)
+        const buyout = await Buyout.findById(req.params.id);
+
+        if (Object.keys(buyout).length === 0) {
+            return res.status(404).send({error: `Выкуп с ID=${req.params.id} не найден.`});
+        } else {
+            await Buyout.findByIdAndUpdate(req.params.id,{status: 'ORDERED'});
+            return res.send({message: `Выкуп успешно заказан.`})
+        }
+    } catch (error) {
+        res.status(404).send(error);
+    }
+})
 
 
 module.exports = router;

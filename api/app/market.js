@@ -32,7 +32,7 @@ router.get('/', async (req, res) => {
 });
 
 
-router.post('/', auth, permit('admin'),upload.single('image'), async (req, res) => {
+router.post('/', auth, permit('admin', 'superAdmin'),upload.single('image'), async (req, res) => {
     try {
         const marketData = {
             title: req.body.title,

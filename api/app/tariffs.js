@@ -16,7 +16,7 @@ router.get('/', async(req,res)=>{
     }
 });
 
-router.put('/', auth, permit('admin'), async (req, res) => {
+router.put('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
     try {
 
         console.log(req.body.id);

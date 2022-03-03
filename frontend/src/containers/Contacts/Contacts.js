@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import Container from "@mui/material/Container";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchPagesRequest} from "../../store/actions/pagesAction";
@@ -39,13 +39,19 @@ const Contacts = () => {
     const page = useSelector(state => state.pages.page);
     const classes = useStyles();
 
-    useEffect(() => {
-        dispatch(fetchPagesRequest('contacts'));
-    }, [dispatch]);
+    const messagesEndRef = useRef(null);
 
+    useEffect(() => {
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 250);
+        }
+        dispatch(fetchPagesRequest('contacts'));
+    }, [messagesEndRef, dispatch]);
 
     return (
-        <Container style={{'textAlign': 'center'}} component='div'>
+        <Container style={{'textAlign': 'center'}} component='div' ref={messagesEndRef}>
             <Container style={{
                 'borderRadius': '3px',
                 'margin': '10px 0 20px 0',

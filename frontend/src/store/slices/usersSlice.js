@@ -11,6 +11,12 @@ export const initialState = {
     userDate: null,
     userError: null,
     payment: null,
+    total: 0,
+    resetError:null,
+    resetLoading: false,
+    forgotError:null,
+    forgotLoading: false,
+    notification: false,
 };
 
 const name = 'users';
@@ -19,11 +25,11 @@ const usersSlice = createSlice({
     name,
     initialState,
     reducers: {
-        registerUser(state, action) {
+        registerUser(state) {
             state.registerLoading = true;
         },
         registerUserSuccess(state, {payload: userData}) {
-            state.user = userData;
+            state.user = userData === undefined ? state.user : userData;
             state.registerLoading = false;
             state.registerError = null;
         },
@@ -31,7 +37,7 @@ const usersSlice = createSlice({
             state.registerLoading = false;
             state.registerError = action.payload;
         },
-        loginUser(state, action) {
+        loginUser(state) {
             state.loginLoading = true;
         },
         loginUserSuccess(state, action) {
@@ -43,13 +49,13 @@ const usersSlice = createSlice({
             state.loginError = action.payload;
             state.loginLoading = false;
         },
-        clearError(state, action) {
+        clearError(state) {
             state.loginError = null;
             state.registerError = null;
             state.error = null;
             state.userError = null;
         },
-        userDateRequest(state, action) {
+        userDateRequest(state) {
             state.loadUserDate = true;
         },
         userDateSuccess(state, action) {
@@ -61,7 +67,7 @@ const usersSlice = createSlice({
             state.loadUserDate = false;
             state.userError = action.payload;
         },
-        editUserDataRequest(state, action) {
+        editUserDataRequest(state) {
             state.loadUserDate = true;
         },
         editUserDataSuccess(state, action) {
@@ -72,14 +78,14 @@ const usersSlice = createSlice({
             state.loadUserDate = false;
             state.userError = action.payload;
         },
-        editPassportRequest(state, action) {
+        editPassportRequest(state) {
             state.loadUserDate = true;
         },
         editPassportSuccess(state, action) {
             state.userDate = action.payload;
             state.loadUserDate = false;
         },
-        editPassportFailure(state, action) {
+        editPassportFailure(state) {
             state.loadUserDate = false;
 
         },
@@ -109,13 +115,68 @@ const usersSlice = createSlice({
         },
         fetchUsersSuccess(state, action) {
             state.loadUserDate = false;
-            console.log(action.payload);
             state.users = action.payload;
         },
         fetchUsersFailure(state, action) {
             state.loadUserDate = false;
             state.userError = action.payload;
         },
+        totalSend(state, action) {
+            state.total = action.payload;
+        },
+        resetPasswordRequest(state){
+            state.resetLoading = true;
+        },
+        resetPasswordSuccess(state){
+            state.resetLoading = false;
+            state.resetError = null;
+        },
+        resetPasswordFailure(state,action){
+            state.resetLoading = false;
+            state.resetError = action.payload;
+        },
+        changePasswordRequest(state){
+            state.resetLoading = true;
+        },
+        changePasswordSuccess(state){
+            state.resetLoading = false;
+            state.resetError = null;
+        },
+        changePasswordFailure(state,action){
+            state.resetLoading = false;
+            state.resetError = action.payload;
+        },
+        forgotPasswordRequest(state){
+            state.forgotLoading = true;
+        },
+        forgotPasswordSuccess(state){
+            state.forgotLoading = false;
+            state.forgotError = null;
+        },
+        forgotPasswordFailure(state,action){
+            state.forgotLoading = false;
+            state.forgotError = action.payload;
+        },
+        switchNotificationRequest(state) {
+        },
+        switchNotificationSuccess(state, action) {
+            state.notification = action.payload.notification;
+        },
+        switchNotificationFailure(state, action) {
+
+        },
+        changeNotificationRequest(state) {
+
+        },
+        changeNotificationSuccess(state, action) {
+            console.log(action.payload);
+            state.notification = action.payload;
+
+        },
+        changeNotificationFailure(state, action) {
+
+        },
+
         logout(state) {
             state.user = null;
         },

@@ -4,12 +4,11 @@ const permit = require("../middleware/permit");
 const Payment = require("../models/Payment");
 const PaymentMove = require("../models/PaymentMove");
 const User = require("../models/User");
-const sendMail = require("../middleware/sendMail");
 const TariffGroup = require("../models/TariffGroup");
 
 const router = express.Router();
 
-router.get('/', auth, permit('admin'), async (req, res) => {
+router.get('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
     let page = 0;
     let limit = 10;
 
@@ -34,7 +33,7 @@ router.get('/', auth, permit('admin'), async (req, res) => {
     }
 });
 
-router.get('/tariff', auth, permit('admin'), async (req, res) => {
+router.get('/tariff', auth, permit('admin', 'superAdmin'), async (req, res) => {
     try {
         const tariff = await TariffGroup.findOne();
         res.send(tariff);
@@ -44,7 +43,7 @@ router.get('/tariff', auth, permit('admin'), async (req, res) => {
 });
 
 
-router.post('/', auth, permit('admin'), async (req, res) => {
+router.post('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
     let pay = Number(req.body.pay).toFixed(2);
     pay = Number(pay);
 
@@ -86,7 +85,7 @@ router.post('/', auth, permit('admin'), async (req, res) => {
     }
 });
 
-router.post('/cash', auth, permit('admin'), async (req, res) => {
+router.post('/cash', auth, permit('admin', 'superAdmin'), async (req, res) => {
     let serializedPrice = req.body.price;
 
     if (serializedPrice.includes(',') && serializedPrice.includes('.')) {
@@ -149,7 +148,7 @@ router.post('/cash', auth, permit('admin'), async (req, res) => {
     }
 });
 
-router.put('/:id', auth, permit('admin'), async (req, res) => {
+router.put('/:id', auth, permit('admin', 'superAdmin'), async (req, res) => {
     const payId = req.params.id;
     let pay = 0;
     if (req.body.pay) {

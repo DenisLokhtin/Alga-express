@@ -16,7 +16,7 @@ export function* getTariffsSagas() {
         yield put(fetchTariffsSuccess(response.data));
     } catch (e) {
         toast.error('Не удалось загрузить тарифы');
-        yield put(fetchTariffsFailure(e.response.data));
+        yield put(fetchTariffsFailure(e.response));
     }
 }
 

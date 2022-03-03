@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Box, Divider, Grid, IconButton, ListItemIcon, Menu, MenuItem} from "@mui/material";
+import React, {useEffect, useMemo, useState} from 'react';
+import {Box, Divider, FormControlLabel, Grid, IconButton, ListItemIcon, Menu, MenuItem, Switch} from "@mui/material";
 import {Link, useNavigate} from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
@@ -10,14 +10,14 @@ import HistoryIcon from "@mui/icons-material/History";
 import AddIcon from "@mui/icons-material/Add";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import FlightIcon from "@mui/icons-material/Flight";
-import {logout} from "../../../../store/actions/usersActions";
+import {changeNotificationRequest, logout, switchNotificationRequest} from "../../../../store/actions/usersActions";
 import {useDispatch, useSelector} from "react-redux";
 import Fade from '@mui/material/Fade';
 import {
     addFlightAdmin,
     addPaymentHandler,
     addUserPayment,
-    adminPagePath,
+    adminPagePath, cargoCreateUser,
     editingSingleTrackNumber,
     editPages,
     listBuyouts,
@@ -48,6 +48,31 @@ const userSettings = [
     {url: packageInfo, title: 'Информация доставки', icon: <InfoIcon/>},
 ];
 
+const superAdminSettings = [
+    {url: '', title: 'Личный кабинет', icon: <ManageAccountsIcon/>},
+    {url: packageHistory, title: 'История всех заказов', icon: <HistoryIcon/>},
+    {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon/>},
+    {url: cargoCreateUser, title: 'Создать пользователя', icon: <AddIcon/>},
+    {url: orderBuyouts, title: 'Заказать выкуп', icon: <ShoppingCartIcon/>},
+    {url: listBuyouts, title: 'Список заказов', icon: <FactCheckIcon/>},
+    {url: addUserPayment, title: 'Пополнить баланс', icon: <PaidIcon/>},
+    {url: userPaymentsList, title: 'История пополнения', icon: <HistoryIcon/>},
+    {url: packageInfo, title: 'Информация доставки', icon: <InfoIcon/>},
+    {url: adminPagePath, title: 'Администратор', icon: <ManageAccountsIcon/>},
+    {url: listFlightAdmin, title: 'Рейсы', icon: <FlightIcon/>},
+    {url: addFlightAdmin, title: 'Добавить рейс', icon: <AddIcon/>},
+    {url: listPaymentsAdmin, title: 'Список пополнений', icon: <FactCheckIcon/>},
+    {url: editPages, title: 'Редактировать страницы', icon: <EditIcon/>},
+    {url: addPaymentHandler, title: 'Пополнение баланса пользователя', icon: <PaidIcon/>},
+    {url: editingSingleTrackNumber, title: 'Смена статуса одной посылки', icon: <EditIcon/>},
+    {url: processingTrackNumbersAdmin, title: 'Смена статуса посылок', icon: <EditIcon/>},
+];
+
+const warehousemanSetting = [
+    {url: editingSingleTrackNumber, title: 'Смена статуса одной посылки', icon: <EditIcon/>},
+    {url: processingTrackNumbersAdmin, title: 'Смена статуса посылок', icon: <EditIcon/>},
+];
+
 const adminSettings = [
     {url: adminPagePath, title: 'Администратор', icon: <ManageAccountsIcon/>},
     {url: listFlightAdmin, title: 'Рейсы', icon: <FlightIcon/>},
@@ -59,15 +84,23 @@ const adminSettings = [
     {url: editingSingleTrackNumber, title: 'Смена статуса одной посылки', icon: <EditIcon/>},
     {url: processingTrackNumbersAdmin, title: 'Смена статуса посылок', icon: <EditIcon/>},
 ];
-
 const UserMenu = ({user}) => {
     const dispatch = useDispatch();
     const [anchorEl, setAnchorEl] = useState(null);
+    const [not, setNot] = useState(false);
     const open = Boolean(anchorEl);
     const navigate = useNavigate();
-
-    const payments = useSelector(state => state.payments.payment);
     const users = useSelector(state => state.users.user);
+    const notification = useSelector(state => state.users.notification);
+    const total = useSelector(state => state.users.total);
+
+    useEffect(() => {
+        dispatch(switchNotificationRequest());
+    }, [dispatch]);
+
+    useMemo(() => {
+        setNot(notification);
+    }, [notification]);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -83,6 +116,10 @@ const UserMenu = ({user}) => {
         navigate('/');
     };
 
+    const changeSwitchNotification = () => {
+        dispatch(changeNotificationRequest(!not));
+    };
+
     return (
         <Grid container alignItems="center" justifyContent="space-evenly">
             <Grid item>
@@ -93,10 +130,12 @@ const UserMenu = ({user}) => {
                     component={Link}
                     to={listPaymentsAdmin}
                 >
-                    <Badge badgeContent={payments && payments.totalElements} color="error">
+                    <Badge badgeContent={total} color="error">
                         <NotificationsIcon/>
                     </Badge>
                 </IconButton>}
+                <FormControlLabel control={<Switch checked={not} onChange={changeSwitchNotification}/>} label="Оповещение" />
+
             </Grid>
 
             <Grid item>
@@ -145,6 +184,7 @@ const UserMenu = ({user}) => {
                     <Divider/>
 
                     {user.role === 'admin' && adminSettings.map(setting => (
+
                         <MenuItem
                             key={setting.title}
                             component={Link}
@@ -156,7 +196,30 @@ const UserMenu = ({user}) => {
                             <Typography textAlign="center">{setting.title}</Typography>
                         </MenuItem>
                     ))}
-
+                    {user.role === 'superAdmin' && superAdminSettings.map(setting => (
+                        <MenuItem
+                            key={setting.title}
+                            component={Link}
+                            to={setting.url}
+                        >
+                            <ListItemIcon>
+                                {setting.icon}
+                            </ListItemIcon>
+                            <Typography textAlign="center">{setting.title}</Typography>
+                        </MenuItem>
+                    ))}
+                    {user.role === 'warehouseman' && warehousemanSetting.map(setting => (
+                        <MenuItem
+                            key={setting.title}
+                            component={Link}
+                            to={setting.url}
+                        >
+                            <ListItemIcon>
+                                {setting.icon}
+                            </ListItemIcon>
+                            <Typography textAlign="center">{setting.title}</Typography>
+                        </MenuItem>
+                    ))}
                     {user.role === 'user' &&
                         <div>
                             {userSettings.map((setting) => (

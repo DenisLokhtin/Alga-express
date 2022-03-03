@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState} from 'react';
+import React, {Fragment, useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {deleteMarketRequest, fetchMarketRequest} from "../../store/actions/marketActions";
 import {Card, CardMedia, Container, Grid, IconButton, Link, Typography} from "@mui/material";
@@ -12,13 +12,20 @@ const MarketSites = () => {
     const market = useSelector(state => state.market.sites);
     const user = useSelector((state => state.users.user));
     const [open, setOpen] = useState(false);
+    const messagesEndRef = useRef(null);
 
     useEffect(() => {
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 200);
+        }
         dispatch(fetchMarketRequest());
-    }, [dispatch]);
+    }, [dispatch, messagesEndRef]);
 
     return (
         <Container
+            ref={messagesEndRef}
             component="section"
             maxWidth="md"
             style={{textAlign: "center"}}>
@@ -48,11 +55,24 @@ const MarketSites = () => {
                                                    confirm={() => dispatch(deleteMarketRequest(m._id))}/>
                                     </>
                                 )}
+                                {user && user.role === 'superAdmin' && (
+                                    <>
+                                        <IconButton
+                                            onClick={() => setOpen(true)}>
+                                            <HighlightOffIcon/>
+                                        </IconButton>
+                                        <AppWindow open={open} onClose={() => setOpen(false)}
+                                                   confirm={() => dispatch(deleteMarketRequest(m._id))}/>
+                                    </>
+                                )}
                             </Grid>
                         </Fragment>
                     ))}
                 </Grid>
                 {user && user.role === 'admin' && (
+                    <MarketAdmin/>
+                )}
+                {user && user.role === 'superAdmin' && (
                     <MarketAdmin/>
                 )}
             </Grid>

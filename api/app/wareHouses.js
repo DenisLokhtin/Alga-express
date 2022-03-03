@@ -29,7 +29,7 @@ router.get('/:id', async (req, res) => {
 });
 
 
-router.post('/', auth, permit('admin'), async (req, res) => {
+router.post('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
     try {
         const warehouseData = {
             country: req.body.country,
@@ -43,7 +43,7 @@ router.post('/', auth, permit('admin'), async (req, res) => {
     }
 });
 
-router.delete('/:id', auth, permit('admin'), async (req, res) => {
+router.delete('/:id', auth, permit('admin', 'superAdmin'), async (req, res) => {
     try {
         const warehouse = await Warehouse.findByIdAndRemove(req.params.id);
 
@@ -57,7 +57,7 @@ router.delete('/:id', auth, permit('admin'), async (req, res) => {
     }
 });
 
-router.put('/:id', auth, permit('admin'), async (req, res) => {
+router.put('/:id', auth, permit('admin', 'superAdmin'), async (req, res) => {
     try {
         const updatedWarehouse = await Warehouse.findByIdAndUpdate(req.params.id, {
             country: req.body.country,

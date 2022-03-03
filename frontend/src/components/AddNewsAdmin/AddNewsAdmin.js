@@ -3,7 +3,7 @@ import FormElement from "../../components/UI/Form/FormElement";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
 import FileInput from "../../components/UI/FileInput/FileInput";
 import {useDispatch, useSelector} from "react-redux";
-import {Container, Grid} from "@mui/material";
+import {Grid} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import {addNewsRequest} from "../../store/actions/newsActions";
 import {Editor} from "@tinymce/tinymce-react";
