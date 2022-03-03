@@ -5,6 +5,7 @@ import {packageHistory} from "../../paths";
 import {listBuyouts, resetPassword} from "../../paths";
 import {makeStyles} from "@mui/styles";
 import TariffPage from "../TariffPage/TariffPage";
+import Currency from "../../components/Currency/Currency";
 
 
 const useStyles = makeStyles(()=> ({
@@ -25,6 +26,7 @@ const UserPage = () => {
     return (
         <Container>
             <h2>Личная страница пользователя</h2>
+            <Currency/>
             <Grid container justifyContent={"space-between"}>
                 <Grid item className={classes.box}>
                     <Link to={listBuyouts}>Мои заказы</Link>
