@@ -95,8 +95,8 @@ const UserMenu = ({user}) => {
     const total = useSelector(state => state.users.total);
 
     useEffect(() => {
-        dispatch(switchNotificationRequest());
-    }, [dispatch]);
+        user && user.role === 'admin' && dispatch(switchNotificationRequest());
+    }, [dispatch, user]);
 
     useMemo(() => {
         setNot(notification);
@@ -134,7 +134,7 @@ const UserMenu = ({user}) => {
                         <NotificationsIcon/>
                     </Badge>
                 </IconButton>}
-                <FormControlLabel control={<Switch checked={not} onChange={changeSwitchNotification}/>} label="Оповещение" />
+                {user?.role === 'admin' && <FormControlLabel control={<Switch checked={not} onChange={changeSwitchNotification}/>} label="Оповещение" />}
 
             </Grid>
 

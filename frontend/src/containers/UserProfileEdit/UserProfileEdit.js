@@ -164,7 +164,6 @@ const UserProfileEdit = () => {
                 behavior: 'smooth'
             }, 200);
         }
-        dispatch(userDateRequest(id));
         return () => {
             dispatch(clearError());
         };
@@ -322,7 +321,7 @@ const UserProfileEdit = () => {
                             профиль пользователя
                         </Typography>
                     </AccordionSummary>
-                    <Grid>
+                    {user && user.role === 'admin' ? (<Grid>
                         <Autocomplete
                             onChange={(event, newValue) => {
                                 setValue(newValue);
@@ -338,7 +337,7 @@ const UserProfileEdit = () => {
                             sx={{ width: 300 }}
                             renderInput={(params) => <TextField {...params} label="Пользователи" />}
                         />
-                    </Grid>
+                    </Grid>) : null}
                     <AccordionDetails>
                         <Grid
                             container
