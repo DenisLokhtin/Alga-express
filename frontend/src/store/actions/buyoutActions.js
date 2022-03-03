@@ -1,7 +1,7 @@
 import buyoutSlice from "../slices/buyoutSlice";
 
 export const {
-fetchBuyoutsRequest,
+    fetchBuyoutsRequest,
     fetchBuyoutsSuccess,
     fetchBuyoutsFailure,
     addBuyoutRequest,
@@ -20,4 +20,7 @@ fetchBuyoutsRequest,
     editBuyoutStatusRequest,
     editBuyoutStatusSuccess,
     editBuyoutStatusFailure,
+    fetchBuyoutsList,
+    fetchBuyoutsListSuccess,
+    fetchBuyoutsListFailure
 } = buyoutSlice.actions;
