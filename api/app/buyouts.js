@@ -10,6 +10,7 @@ const User = require("../models/User");
 const PaymentMove = require("../models/PaymentMove");
 const fs = require("fs");
 const Currency = require("../models/Currency");
+const filter = require("../middleware/filter");
 
 
 const newDir = `${config.uploadPath}/buyouts`;
@@ -55,6 +56,46 @@ router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) =>
 
     } catch (e) {
         res.sendStatus(500);
+    }
+});
+
+router.get('/list', auth, permit('admin', 'user', 'superAdmin'), async (req, res) => {
+    console.log(req.query);
+    const query = {};
+
+    if (Number.isInteger(req.query.page))
+        return res.status(403).send({error: 'Не корректные данные запроса'});
+
+    let page = 0;
+    let limit = 20;
+
+    if (req.query.page) {
+        page = Number(req.query.page);
+    }
+
+    if (req.query.limit) {
+        limit = Number(req.query.limit);
+    }
+
+    if (req.query.id) query.id = req.query.id;
+    if (req.query.history) query.history = req.query.history;
+
+    query.role = req.user.role;
+    query.user_id = req.user._id;
+
+    try {
+
+        const size = await Buyout.find();
+
+        const buyouts = await Buyout.find(query)
+            .populate('user', 'name')
+            .sort({date: 1})
+            .limit(limit)
+            .skip(page * limit);
+
+        res.send({totalPage: size.length, data: buyouts});
+    } catch (e) {
+        res.status(500).send(e);
     }
 });
 
