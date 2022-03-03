@@ -10,8 +10,6 @@ const User = require("../models/User");
 const PaymentMove = require("../models/PaymentMove");
 const fs = require("fs");
 const Currency = require("../models/Currency");
-const filter = require("../middleware/filter");
-
 
 const newDir = `${config.uploadPath}/buyouts`;
 
@@ -60,7 +58,6 @@ router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) =>
 });
 
 router.get('/list', auth, permit('admin', 'user', 'superAdmin'), async (req, res) => {
-    console.log(req.query);
     const query = {};
 
     if (Number.isInteger(req.query.page))
@@ -84,7 +81,6 @@ router.get('/list', auth, permit('admin', 'user', 'superAdmin'), async (req, res
     query.user_id = req.user._id;
 
     try {
-
         const size = await Buyout.find();
 
         const buyouts = await Buyout.find(query)
