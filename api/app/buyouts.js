@@ -191,7 +191,7 @@ router.put('/:id', auth, upload.single('image'), permit('admin', 'user'), async 
             }
 
             res.send(updatedPrice);
-        //
+
         } else if (req.user.role === 'user') {
             const newObj = {
                 description: req.body.description,
@@ -206,9 +206,7 @@ router.put('/:id', auth, upload.single('image'), permit('admin', 'user'), async 
                 new: true,
                 runValidators: true
             });
-
             res.send(updatedBuyout);
-
         }
 
     } catch (error) {
