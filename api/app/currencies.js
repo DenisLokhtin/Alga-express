@@ -5,7 +5,7 @@ const auth = require('../middleware/auth');
 
 const router = express.Router();
 
-router.get('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
+router.get('/', auth, permit('admin', 'superAdmin','user'), async (req, res) => {
    try {
        const currency = await Currency.find();
        res.send(currency);
