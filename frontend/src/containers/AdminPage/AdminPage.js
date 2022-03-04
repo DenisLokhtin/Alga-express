@@ -56,15 +56,15 @@ const AdminPage = () => {
     const buyouts = useSelector(state => state.buyouts.buyouts);
     const messagesEndRef = useRef(null);
 
-    const orders = useSelector(state => state.package.orders);
-    const loading = useSelector(state => state.package.getOrdersLoading);
-    const totalRow = useSelector(state => state.package.totalPage);
-    const [page, setPage] = React.useState(0);
-    const [pageLimit, setPageLimit] = useState(2);
-    const [selectionModel, setSelectionModel] = React.useState([]);
-    const prevSelectionModel = React.useRef(selectionModel);
+    const packages = useSelector(state => state.package.orders);
+    const packagesLoading = useSelector(state => state.package.getOrdersLoading);
+    const packagesTotalRow = useSelector(state => state.package.totalPage);
+    const [page, setPage] = useState(0);
+    const [pageLimit, setPageLimit] = useState(10);
+    const [selectionModel, setSelectionModel] = useState([]);
+    const prevSelectionModel = useRef(selectionModel);
 
-    const myRows = orders.map(order => {
+    const packagesRows = packages.map(order => {
         return {
             id: order._id,
             cargoNumber: order.cargoNumber,
@@ -89,12 +89,12 @@ const AdminPage = () => {
         <Container ref={messagesEndRef}>
             <Grid container sx={{paddingY: "20px"}} spacing={2}>
 
-                <Grid item xs={12} md={12} lg={12} sx={{height: 400}}>
+                <Grid item xs={12} md={12} lg={12} sx={{height: "80vh"}}>
                     <TableComponent
-                        rows={myRows}
+                        rows={packagesRows}
                         columns={columns}
                         pageSize={pageLimit}
-                        rowCount={totalRow}
+                        rowCount={packagesTotalRow}
                         rowHeight={70}
                         onPageSizeChange={newRowsLimit => setPageLimit(newRowsLimit)}
                         onPageChange={(newPage) => {
@@ -105,7 +105,7 @@ const AdminPage = () => {
                         onSelectionModelChange={(newSelectionModel) => {
                             setSelectionModel(newSelectionModel);
                         }}
-                        loading={loading}
+                        loading={packagesLoading}
                         onClick={(e) => {console.log(e)}}
                     />
                 </Grid>
