@@ -7,8 +7,8 @@ import {makeStyles} from "@mui/styles";
 import {changeCarouselsRequest, fetchOneCarouselsRequest} from "../../store/actions/carouselActions";
 import FormElement from "../UI/Form/FormElement";
 import FileInput from "../UI/FileInput/FileInput";
-import Resizer from "react-image-file-resizer";
 import Container from "@mui/material/Container";
+import {apiURL} from "../../config";
 
 const useStyles = makeStyles(theme => ({
     submit: {
@@ -55,7 +55,7 @@ const EditCarouselAdmin = () => {
     }, [dispatch, params.id, oneCarousel.info]);
 
     useMemo(() => {
-        setSingleCarousel({
+        oneCarousel && setSingleCarousel({
             info: oneCarousel.info,
             picture: oneCarousel.picture,
         });
@@ -63,7 +63,12 @@ const EditCarouselAdmin = () => {
 
     const changeCarousel = (e) => {
         e.preventDefault();
-        dispatch(changeCarouselsRequest({singleCarousel, carouselId: params.id, navigate}));
+
+            const formData = new FormData();
+            Object.keys(singleCarousel).forEach(key => {
+                formData.append(key, singleCarousel[key]);
+            });
+        dispatch(changeCarouselsRequest({formData, carouselId: params.id, navigate}));
     };
 
     const onInputTextareaChange = e => {
@@ -83,41 +88,13 @@ const EditCarouselAdmin = () => {
         }
     };
 
-    const resizeFile = (file) =>
-        new Promise((resolve) => {
-            Resizer.imageFileResizer(
-                file,
-                300,
-                400,
-                "JPEG",
-                100,
-                0,
-                (uri) => {
-                    resolve(uri);
-                },
-                "base64"
-            );
-        });
 
-    const dataURIToBlob = (dataURI) => {
-        const splitDataURI = dataURI.split(",");
-        const byteString =
-            splitDataURI[0].indexOf("base64") >= 0
-                ? atob(splitDataURI[1])
-                : decodeURI(splitDataURI[1]);
-        const mimeString = splitDataURI[0].split(":")[1].split(";")[0];
-        const ia = new Uint8Array(byteString.length);
-        for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
-        return new Blob([ia], {type: mimeString});
-    };
 
     const fileChangeHandler = async (e) => {
         const name = e.target.name;
         const file = e.target.files[0]
-        const image = await resizeFile(file);
-        const newFile = dataURIToBlob(image);
         setSingleCarousel(prevState => {
-            return {...prevState, [name]: newFile};
+            return {...prevState, [name]: file};
         });
     };
 
@@ -142,14 +119,20 @@ const EditCarouselAdmin = () => {
                 >
 
                     <Grid item xs={12}>
+                    {/*<p>Заголовок изображения</p>*/}
                     <FormElement
+                        label={singleCarousel.info ? "" : "Заголовок изображения"}
                         required
-                        label="Заголовок изображения"
                         name="info"
-                        value={oneCarousel.info || ''}
+                        value={singleCarousel.info}
                         onChange={onInputTextareaChange}
                         error={getFieldError('info')}
                     />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <img src={apiURL + '/' + singleCarousel.picture} alt={singleCarousel.info}/>
+
+
                     </Grid>
 
                     <Grid item xs={12}>
@@ -159,7 +142,6 @@ const EditCarouselAdmin = () => {
                             type
                             name="picture"
                             onChange={fileChangeHandler}
-                            value={oneCarousel.picture || ''}
                         />
 
                     </Grid>

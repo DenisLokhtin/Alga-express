@@ -7,8 +7,9 @@ const config = require("../config");
 const {nanoid} = require("nanoid");
 const path = require("path");
 const fs = require("fs");
-const Buyout = require("../models/Buyout");
-const newDir = `${config.uploadPath}/carousel`
+const {rootPath} = require("../config");
+const newDir = `${config.uploadPath}/carousel`;
+
 
 const router = express.Router();
 
@@ -22,16 +23,15 @@ const storage = multer.diskStorage({
 
         cb(null, config.uploadPath);
     },
-    filename: async(req, file, cb) => {
+    filename: async (req, file, cb) => {
         let pathFile = 'carousel/' + nanoid() + path.extname(file.originalname);
-        //Проверяю на наличие файла в базе
+
         const image = await Carousel.findById(req.params.id);
-        //Если найдена запись, то мы передаем такое же имя файла
-        if (image && image.picture){
+
+        if (image && image.picture) {
 
             pathFile = image.picture.slice(8, image.picture.length);
         }
-        // Записываем фоный файл, под старым названием
         cb(null, pathFile);
     }
 });
@@ -63,7 +63,7 @@ router.get('/:id', async (req, res) => {
 
 
 router.post('/', auth, permit('admin', 'superAdmin'), upload.single('picture'), async (req, res) => {
-    console.log(req.body)
+
     try {
         const carouselData = {
             info: req.body.info,
@@ -83,10 +83,12 @@ router.post('/', auth, permit('admin', 'superAdmin'), upload.single('picture'), 
 
 router.delete('/:id', auth, permit('admin', 'superAdmin'), async (req, res) => {
     try {
-        const carousel = await Carousel.findByIdAndRemove(req.params.id);
-
-        if (carousel) {
-            res.send(`Изображение в '${carousel.picture} removed'`);
+        // const carousel = await Carousel.findByIdAndRemove(req.params.id);
+        const carousel = await Carousel.findById(req.params.id);
+        const removeCarousel = await Carousel.deleteOne(carousel._id);
+        if (removeCarousel.deletedCount === 1) {
+            res.send(`Изображение удалено'`);
+            fs.unlinkSync(rootPath + '/public/' + carousel.picture);
         } else {
             res.status(404).send({error: 'Picture not found'});
         }
@@ -101,13 +103,20 @@ router.put('/:id', auth, permit('admin', 'superAdmin'), upload.single('picture')
         updatedCarousel.info = req.body.info;
 
         if (req.file) {
-            updatedCarousel.picture = 'uploads/carousel/' + req.file.filename;
-        }
 
+            updatedCarousel.picture = 'uploads/' + req.file.filename + '?' + new Date().getTime();;
+            // remove old image
+            // fs.unlinkSync(rootPath + '/public/' + updatedCarousel.picture);
+            // fs.writeFile(newDir + '/' + nanoid() + path.extname(req.file.originalname), req.file.$binary, err => {
+            //     if (err) {
+            //         res.send('Не удалось изменить изображение')
+            //     }
+            // });
+        }
         const carousel = new Carousel(updatedCarousel);
         await carousel.save();
-
         res.send(carousel);
+        // res.status(200).redirect('/');
     } catch (error) {
         res.status(400).send(error);
     }

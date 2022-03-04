@@ -7,7 +7,6 @@ import FormElement from "../UI/Form/FormElement";
 import {useNavigate} from "react-router-dom";
 import theme from "../../theme";
 import FileInput from "../UI/FileInput/FileInput";
-import Resizer from "react-image-file-resizer";
 import {addCarouselsRequest} from "../../store/actions/carouselActions";
 
 const useStyles = makeStyles(theme => ({
@@ -82,41 +81,41 @@ const AddCarouselAdmin = () => {
         }));
     };
 
-    const resizeFile = (file) =>
-        new Promise((resolve) => {
-            Resizer.imageFileResizer(
-                file,
-                300,
-                400,
-                "JPEG",
-                100,
-                0,
-                (uri) => {
-                    resolve(uri);
-                },
-                "base64"
-            );
-        });
+    // const resizeFile = (file) =>
+    //     new Promise((resolve) => {
+    //         Resizer.imageFileResizer(
+    //             file,
+    //             300,
+    //             400,
+    //             "JPEG",
+    //             100,
+    //             0,
+    //             (uri) => {
+    //                 resolve(uri);
+    //             },
+    //             "base64"
+    //         );
+    //     });
 
-    const dataURIToBlob = (dataURI) => {
-        const splitDataURI = dataURI.split(",");
-        const byteString =
-            splitDataURI[0].indexOf("base64") >= 0
-                ? atob(splitDataURI[1])
-                : decodeURI(splitDataURI[1]);
-        const mimeString = splitDataURI[0].split(":")[1].split(";")[0];
-        const ia = new Uint8Array(byteString.length);
-        for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
-        return new Blob([ia], {type: mimeString});
-    };
+    // const dataURIToBlob = (dataURI) => {
+    //     const splitDataURI = dataURI.split(",");
+    //     const byteString =
+    //         splitDataURI[0].indexOf("base64") >= 0
+    //             ? atob(splitDataURI[1])
+    //             : decodeURI(splitDataURI[1]);
+    //     const mimeString = splitDataURI[0].split(":")[1].split(";")[0];
+    //     const ia = new Uint8Array(byteString.length);
+    //     for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
+    //     return new Blob([ia], {type: mimeString});
+    // };
 
     const fileChangeHandler = async (e) => {
         const name = e.target.name;
         const file = e.target.files[0]
-        const image = await resizeFile(file);
-        const newFile = dataURIToBlob(image);
+        // const image = await resizeFile(file);
+        // const newFile = dataURIToBlob(image);
         setCarousel(prevState => {
-            return {...prevState, [name]: newFile};
+            return {...prevState, [name]: file};
         });
     };
 
@@ -135,14 +134,17 @@ const AddCarouselAdmin = () => {
                 noValidate
             >
                 <h3 style={theme.title}>Добавить изображение на слайдер</h3>
-                <FormElement
-                    required
-                    label="Заголовок изображения"
-                    name="info"
-                    value={carousel.info}
-                    onChange={onInputTextareaChange}
-                    error={getFieldError('info')}
-                />
+                <Grid item xs={12}>
+                    {/*<p>Заголовок изображения</p>*/}
+                    <FormElement
+                        label="Заголовок изображения"
+                        required
+                        name="info"
+                        value={carousel.info}
+                        onChange={onInputTextareaChange}
+                        error={getFieldError('info')}
+                    />
+                </Grid>
 
                 <Grid item xs>
                     <FileInput
