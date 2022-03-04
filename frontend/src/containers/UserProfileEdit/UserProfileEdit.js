@@ -486,7 +486,7 @@ const UserProfileEdit = () => {
                                         disabled={loading}
                                         type="submit"
                                         variant="contained">
-                                        Сохранить
+                                        <span>Сохранить</span>
                                     </ButtonWithProgress>
                                 </Grid>
                             </Grid>
