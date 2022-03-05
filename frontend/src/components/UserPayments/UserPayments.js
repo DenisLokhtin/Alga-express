@@ -1,11 +1,48 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {fetchUserPaymentRequest} from "../../store/actions/usersActions";
 import {Container, Grid} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import {createTheme} from "@mui/material/styles";
-import TableListPaginations from "../TableListPaginations/TableListPaginations";
+import TableComponent from "../TableComponent/TableComponent";
+import dayjs from "dayjs";
+import {apiURL} from "../../config";
 
+const columns = [
+    {
+        field: 'date',
+        headerName: 'Дата',
+        flex: 1,
+        minWidth: 150,
+        headerAlign: 'center',
+        align: 'center',
+    },
+    {
+        field: 'description',
+        headerName: 'Описание',
+        flex: 1,
+        minWidth: 195,
+        headerAlign: 'center',
+        align: 'center'
+    },
+    {
+        field: 'image',
+        headerName: 'Фото',
+        renderCell: (params) => <img src={params.value} alt='image'/>,
+        flex: 1,
+        minWidth: 200,
+        headerAlign: 'center',
+        align: 'center',
+    },
+    {
+        field: 'status',
+        headerName: 'Статус',
+        flex: 1,
+        minWidth: 100,
+        headerAlign: 'center',
+        align: 'center',
+    },
+];
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -69,23 +106,59 @@ theme.typography.h4 = {
 const UserPayments = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
+    const [heights, setHeights] = useState(0);
     const paymentData = useSelector(state => state.users.payment);
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [rowsPerPage, setRowsPerPage] = useState(20);
+    const [selectionModel, setSelectionModel] = useState([]);
+    const prevSelectionModel = useRef(selectionModel);
+
+    const rows = paymentData && paymentData.data.map(payment => {
+        return {
+            id: payment._id,
+            date: dayjs(payment.date).format('DD/MM/YYYY'),
+            description: payment.description,
+            image: apiURL + '/' + payment.image,
+            status: payment?.status === true ? 'Принят' : 'В обработке',
+        }
+    });
+
     const messagesEndRef = useRef(null);
 
     useEffect(() => {
+        let active = true;
+
         if (!!messagesEndRef.current) {
             messagesEndRef.current.scrollIntoView({
                 behavior: 'smooth'
             }, 200);
         }
         dispatch(fetchUserPaymentRequest({page: page, limit: rowsPerPage}));
+
+        (() => {
+
+            if (!active) {
+                return;
+            }
+
+            setSelectionModel(prevSelectionModel.current);
+
+        })();
+
+        return () => {
+            active = false;
+        };
     }, [dispatch,
         page,
         rowsPerPage,
         messagesEndRef
     ]);
+
+    useMemo(() => {
+        if (paymentData) {
+            setHeights(paymentData.data.length * 150 + 170);
+        }
+    }, [paymentData]);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -107,13 +180,27 @@ const UserPayments = () => {
                 container
                 item
                 justifyContent='center'
+                height={heights}
             >
-                {paymentData && <TableListPaginations
-                data={paymentData}
-                page={page}
-                rowsPerPage={rowsPerPage}
-                changePage={handleChangePage}
-                changeRowsPerPage={handleChangeRowsPerPage}
+                {rows && <TableComponent
+                    rows={rows}
+                    columns={[...columns,
+                        {field: 'date', sortable: false},
+                        {field: 'description', sortable: false},
+                        {field: 'image', sortable: false},
+                        {field: 'status', sortable: false},
+                    ]}
+                    pageSize={rowsPerPage}
+                    rowCount={paymentData && paymentData.totalElements}
+                    onPageSizeChange={handleChangeRowsPerPage}
+                    onPageChange={handleChangePage}
+                    onSelectionModelChange={(newSelectionModel) => {
+                        setSelectionModel(newSelectionModel);
+                    }}
+                    selectionModel={selectionModel}
+                    rowHeight={150}
+                    onClick={() => console.log('text')}
+                    // loading={loading}
                 />}
             </Grid>
         </Container>
