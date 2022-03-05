@@ -5,15 +5,14 @@ const name = "currencies";
 const currenciesSlice = createSlice({
     name,
     initialState: {
-        currencies: [],
+        currencies: {},
         loading: false,
         error: null
     },
     reducers: {
-        fetchCurrencies(state, action) {
+        fetchCurrencies(state) {
             state.loading = true;
             state.error = null;
-            state.currencies = [];
         },
         fetchCurrenciesSuccess(state, action) {
             state.loading = false;
@@ -23,13 +22,12 @@ const currenciesSlice = createSlice({
         fetchCurrenciesFailure(state, action) {
             state.loading = false;
             state.error = action.payload;
-            state.currencies = [];
         },
-        updateCurrencies(state, action) {
+        updateCurrencies(state) {
             state.loading = true;
             state.error = null;
         },
-        updateCurrenciesSuccess(state, action) {
+        updateCurrenciesSuccess(state) {
             state.loading = false;
             state.error = null;
         },
