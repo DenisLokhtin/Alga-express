@@ -28,7 +28,7 @@ const columns = [
     {
         field: 'image',
         headerName: 'Фото',
-        renderCell: (params) => <img src={params.value} alt='image'/>,
+        renderCell: (params) => <img src={params.value} alt={params.value}/>,
         flex: 1,
         minWidth: 200,
         headerAlign: 'center',
