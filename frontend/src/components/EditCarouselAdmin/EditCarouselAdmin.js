@@ -48,7 +48,6 @@ const EditCarouselAdmin = () => {
     const loading = useSelector(state => state.carousels.carouselsLoading);
     const error = useSelector(state => state.carousels.carouselsError);
 
-
     useEffect(() => {
         dispatch(fetchOneCarouselsRequest(params.id));
 
@@ -63,11 +62,10 @@ const EditCarouselAdmin = () => {
 
     const changeCarousel = (e) => {
         e.preventDefault();
-
-            const formData = new FormData();
-            Object.keys(singleCarousel).forEach(key => {
-                formData.append(key, singleCarousel[key]);
-            });
+        const formData = new FormData();
+        Object.keys(singleCarousel).forEach(key => {
+            formData.append(key, singleCarousel[key]);
+        });
         dispatch(changeCarouselsRequest({formData, carouselId: params.id, navigate}));
     };
 
@@ -88,16 +86,18 @@ const EditCarouselAdmin = () => {
         }
     };
 
-
-
     const fileChangeHandler = async (e) => {
         const name = e.target.name;
-        const file = e.target.files[0]
+        const file = e.target.files[0];
+        if (name === 'picture') {
+            setImagePreload(URL.createObjectURL(e.target.files[0]));
+        }
         setSingleCarousel(prevState => {
             return {...prevState, [name]: file};
         });
     };
 
+    const [imagePreload, setImagePreload] = useState(null);
 
     return (
         <div>
@@ -119,19 +119,21 @@ const EditCarouselAdmin = () => {
                 >
 
                     <Grid item xs={12}>
-                    {/*<p>Заголовок изображения</p>*/}
-                    <FormElement
-                        label={singleCarousel.info ? "" : "Заголовок изображения"}
-                        required
-                        name="info"
-                        value={singleCarousel.info}
-                        onChange={onInputTextareaChange}
-                        error={getFieldError('info')}
-                    />
+                        <FormElement
+                            label={singleCarousel.info ? "" : "Заголовок изображения"}
+                            required
+                            name="info"
+                            value={singleCarousel.info}
+                            onChange={onInputTextareaChange}
+                            error={getFieldError('info')}
+                        />
                     </Grid>
                     <Grid item xs={12}>
-                        <img src={apiURL + '/' + singleCarousel.picture} alt={singleCarousel.info}/>
 
+                        {imagePreload ?
+                            <img src={imagePreload} alt="preview imagePreload"/> :
+                            <img src={apiURL + '/' + singleCarousel.picture} alt={singleCarousel.info}/>
+                        }
 
                     </Grid>
 
