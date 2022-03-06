@@ -26,7 +26,8 @@ import UserPayments from "./components/UserPayments/UserPayments";
 import WarehousemanStatusEdit from "./containers/WarehousemanStatusEdit/WarehousemanStatusEdit";
 import AdminPaymentsProcessing from "./components/AdminPaymentsProcessing/AdminPaymentsProcessing";
 import {
-    aboutCompany, addCarousel,
+    aboutCompany,
+    addCarousel,
     addFlightAdmin,
     addPaymentHandler,
     addUserPayment,
@@ -34,7 +35,8 @@ import {
     adminPagePath,
     cargoCreateUser,
     contactsCompany,
-    editBuyout, editCarousel,
+    editBuyout,
+    editCarousel,
     editingSingleTrackNumber,
     editPackageAdmin,
     editPackageUser,
@@ -90,6 +92,8 @@ import ProtectedRoutesForWarehouseman
     from "./components/ProtectedRoutes/ProtoectedRoutesForWarehouseman/ProtectedRoutesForWarehouseman";
 import ProtectedRoutesForSuperAdmin
     from "./components/ProtectedRoutes/ProtectedRoutesForSuperAdmin/ProtectedRoutesForSuperAdmin";
+import AddCarouselAdmin from "./components/AddCarouselAdmin/AddCarouselAdmin";
+import EditCarouselAdmin from "./components/EditCarouselAdmin/EditCarouselAdmin";
 
 const App = () => {
     return (
