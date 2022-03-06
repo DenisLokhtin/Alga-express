@@ -280,7 +280,7 @@ const UserProfileEdit = () => {
     };
 
     if (dataUser.avatar) {
-        imageURL = apiURL + userData.avatar;
+        imageURL = apiURL + '/' + userData.avatar;
     }
 
     if (userData && userData.passport) {

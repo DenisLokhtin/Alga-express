@@ -1,5 +1,5 @@
 const comparisonValue = (width, length, height, weight, price) => {
-    const sizePrice = width * length * height / 6000;
+    const sizePrice = (width * length * height / 6000) * price;
     const weightPrice = weight * price;
 
     if (sizePrice >= weightPrice) {
@@ -11,7 +11,6 @@ const comparisonValue = (width, length, height, weight, price) => {
 
 const adminEdit = (user, packageOrder, updateData, price) => {
     const result = {};
-    console.log('adminEdit', updateData.status);
     if (packageOrder.status === 'DONE') {
         result.code = 406;
         result.error = 'Заказ выполнен - редактировнию не подлежит';
@@ -46,18 +45,19 @@ const adminEdit = (user, packageOrder, updateData, price) => {
 
         if (updateData.cargoWeight) {
             packageOrder.cargoWeight = updateData.cargoWeight;
-            packageOrder.status = 'PROCESSED';
-            console.log('in cargoWeight');
-            if (packageOrder.country === "USA") {
+            if (packageOrder.country === "usa") {
                 packageOrder.cargoPrice = updateData.cargoWeight * price.usa;
             }
-            if (packageOrder.country === "TURKEY") {
+            if (packageOrder.country === "turkey") {
                 packageOrder.cargoPrice = updateData.cargoWeight * price.turkey;
             }
-            if (packageOrder.country === "CHINA") {
+            if (packageOrder.country === "turkeyGround") {
+                packageOrder.cargoPrice = updateData.cargoWeight * price.turkeyGround;
+            }
+            if (packageOrder.country === "china") {
                 packageOrder.cargoPrice = updateData.cargoWeight * price.china;
             }
-            if (packageOrder.country === "China_ground") {
+            if (packageOrder.country === "chinaGround") {
                 packageOrder.cargoPrice = updateData.cargoWeight * price.chinaGround;
             }
         }
@@ -66,21 +66,23 @@ const adminEdit = (user, packageOrder, updateData, price) => {
             packageOrder.width = updateData.width;
             packageOrder.length = updateData.length;
             packageOrder.height = updateData.height;
-            packageOrder.status = 'PROCESSED';
 
-            if (packageOrder.country === "USA") {
+            if (packageOrder.country === "usa") {
                 packageOrder.cargoPrice = comparisonValue(updateData.width, updateData.length, updateData.height, packageOrder.weight, price.usa);
             }
 
-            if (packageOrder.country === "TURKEY") {
+            if (packageOrder.country === "turkey") {
                 packageOrder.cargoPrice = comparisonValue(updateData.width, updateData.length, updateData.height, packageOrder.weight, price.turkey);
             }
 
-            if (packageOrder.country === "CHINA") {
-                packageOrder.cargoPrice = comparisonValue(updateData.width, updateData.length, updateData.height, packageOrder.weight, price.china);
-
+            if (packageOrder.country === "turkeyGround") {
+                packageOrder.cargoPrice = comparisonValue(updateData.width, updateData.length, updateData.height, packageOrder.weight, price.turkeyGround);
             }
-            if (packageOrder.country === "China_ground") {
+
+            if (packageOrder.country === "china") {
+                packageOrder.cargoPrice = comparisonValue(updateData.width, updateData.length, updateData.height, packageOrder.weight, price.china);
+            }
+            if (packageOrder.country === "chinaGround") {
                 packageOrder.cargoPrice = comparisonValue(updateData.width, updateData.length, updateData.height, packageOrder.weight, price.chinaGround);
             }
         }
@@ -93,7 +95,6 @@ const adminEdit = (user, packageOrder, updateData, price) => {
 
     }
 
-    console.log(packageOrder);
     result.code = 200;
     result.success = packageOrder;
     return result;
