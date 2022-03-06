@@ -272,7 +272,6 @@ const UserProfileEdit = () => {
         const formData = new FormData();
 
         passport.forEach(key => {
-            console.log(key);
             formData.append(`passport`, key);
         });
 
@@ -286,7 +285,7 @@ const UserProfileEdit = () => {
 
     if (userData && userData.passport) {
         userData.passport.forEach((pas, i) => {
-            imagesPassport[i] = apiURL + '/uploads/' + pas.image;
+            imagesPassport[i] = apiURL + '/' + pas.image;
         })
     }
 
