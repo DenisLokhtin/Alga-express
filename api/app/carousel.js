@@ -28,10 +28,10 @@ const storage = multer.diskStorage({
 
         const image = await Carousel.findById(req.params.id);
 
-        if (image && image.picture) {
-
-            pathFile = image.picture.slice(8, image.picture.length);
+        if (image) {
+            fs.unlinkSync(rootPath + '/public/uploads/' + image.picture.slice(8, image.picture.length));
         }
+
         cb(null, pathFile);
     }
 });
@@ -103,20 +103,12 @@ router.put('/:id', auth, permit('admin', 'superAdmin'), upload.single('picture')
         updatedCarousel.info = req.body.info;
 
         if (req.file) {
-
-            updatedCarousel.picture = 'uploads/' + req.file.filename + '?' + new Date().getTime();;
-            // remove old image
-            // fs.unlinkSync(rootPath + '/public/' + updatedCarousel.picture);
-            // fs.writeFile(newDir + '/' + nanoid() + path.extname(req.file.originalname), req.file.$binary, err => {
-            //     if (err) {
-            //         res.send('Не удалось изменить изображение')
-            //     }
-            // });
+            updatedCarousel.picture = 'uploads/' + req.file.filename;
         }
+
         const carousel = new Carousel(updatedCarousel);
         await carousel.save();
         res.send(carousel);
-        // res.status(200).redirect('/');
     } catch (error) {
         res.status(400).send(error);
     }
