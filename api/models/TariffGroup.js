@@ -14,6 +14,11 @@ const TariffGroupSchema = new mongoose.Schema({
                 min: 0,
                 default: 4.3,
             },
+            turkeyGround: {
+                type: Number,
+                min: 0,
+                default: 3,
+            },
             china: {
                 type: Number,
                 min: 0,
@@ -37,6 +42,11 @@ const TariffGroupSchema = new mongoose.Schema({
                 type: Number,
                 min: 0,
                 default: 4.2,
+            },
+            turkeyGround: {
+                type: Number,
+                min: 0,
+                default: 2.5,
             },
             china: {
                 type: Number,
@@ -62,6 +72,11 @@ const TariffGroupSchema = new mongoose.Schema({
                 type: Number,
                 min: 0,
                 default: 4,
+            },
+            turkeyGround: {
+                type: Number,
+                min: 0,
+                default: 2,
             },
             china: {
                 type: Number,
