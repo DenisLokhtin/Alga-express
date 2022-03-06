@@ -42,7 +42,7 @@ const PackageSchema = new mongoose.Schema({
     country: {
         type: String,
         trim: true,
-        enum: ['USA', 'Turkey', 'China', 'China_ground'],
+        enum: ['usa', 'turkey', 'turkeyGround', 'china', 'chinaGround'],
         required: 'Поле Страна обязательное',
     },
     width: {

@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {makeStyles} from "@mui/styles";
 import {createTheme} from "@mui/material/styles";
 import {useDispatch, useSelector} from "react-redux";
@@ -16,13 +16,20 @@ import {
     MenuItem,
     Paper,
     Select,
+    TextField,
     Typography,
 } from "@mui/material";
 import IconButton from '@mui/material/IconButton';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import AddCircleOutlineTwoToneIcon from '@mui/icons-material/AddCircleOutlineTwoTone';
 import FormElement from "../../components/UI/Form/FormElement";
-import {clearError, editPassportRequest, editUserDataRequest, userDateRequest} from "../../store/actions/usersActions";
+import {
+    clearError,
+    editPassportRequest,
+    editUserDataRequest,
+    fetchUsersRequest,
+    userDateRequest
+} from "../../store/actions/usersActions";
 import {useParams} from "react-router-dom";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
 import PhoneInput from "react-phone-input-2";
@@ -31,6 +38,7 @@ import Avatar from "@mui/material/Avatar";
 import noImage from '../../assets/no_avatar.png';
 import {apiURL} from "../../config";
 import FileInput from "../../components/UI/FileInput/FileInput";
+import Autocomplete from '@mui/material/Autocomplete';
 
 
 const useStyles = makeStyles(() => ({
@@ -103,6 +111,8 @@ const UserProfileEdit = () => {
     const loading = useSelector(state => state.users.loadUserDate);
     const error = useSelector(state => state.users.userError);
     const userData = useSelector(state => state.users.userDate);
+    const user = useSelector(state => state.users.user);
+    const users = useSelector(state => state.users.users);
 
     const [dataUser, setDataUser] = useState({
         name: '',
@@ -119,6 +129,8 @@ const UserProfileEdit = () => {
     const [disabled, setDisabled] = useState(false);
     const [refresh, setRefresh] = useState(true);
     const [expanded, setExpanded] = useState('panel1');
+    const [value, setValue] = useState(null);
+    const [inputValue, setInputValue] = useState('');
 
     let imageURL = noImage;
     let imagesPassport = [];
@@ -127,23 +139,46 @@ const UserProfileEdit = () => {
         setExpanded(isExpanded ? panel : false);
     };
 
+    const messagesEndRef = useRef(null);
+
     useEffect(() => {
-        dispatch(userDateRequest(id));
+        if (user.role === 'user') {
+            dispatch(userDateRequest(user._id));
+        } else {
+            dispatch(fetchUsersRequest());
+        }
+
         return () => {
             dispatch(clearError());
         };
-    }, [dispatch, id]);
+    }, [dispatch, user._id, user.role]);
+
+    useEffect(() => {
+        value && dispatch(userDateRequest(value._id));
+
+    }, [dispatch, value]);
+
+    useEffect(() => {
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 200);
+        }
+        return () => {
+            dispatch(clearError());
+        };
+    }, [dispatch, id, messagesEndRef]);
 
     useMemo(() => {
-        userData && setDataUser(prevState => ({
+        userData && setDataUser({
             name: userData.name,
             email: userData.email,
             avatar: userData.avatar,
-        }));
+        });
 
-        userData && setPhone(prevState => ([
+        userData && setPhone([
             ...userData.phone,
-        ]));
+        ]);
 
         userData && setPassport([...userData.passport]);
     }, [userData]);
@@ -237,7 +272,6 @@ const UserProfileEdit = () => {
         const formData = new FormData();
 
         passport.forEach(key => {
-            console.log(key);
             formData.append(`passport`, key);
         });
 
@@ -246,17 +280,18 @@ const UserProfileEdit = () => {
     };
 
     if (dataUser.avatar) {
-        imageURL = apiURL + userData.avatar;
+        imageURL = apiURL + '/' + userData.avatar;
     }
 
     if (userData && userData.passport) {
         userData.passport.forEach((pas, i) => {
-            imagesPassport[i] = apiURL + '/uploads/' + pas.image;
+            imagesPassport[i] = apiURL + '/' + pas.image;
         })
     }
-    console.log('render');
+
     return (
         <Container
+            ref={messagesEndRef}
             component="section"
             maxWidth="md"
             className={classes.container}>
@@ -285,6 +320,23 @@ const UserProfileEdit = () => {
                             профиль пользователя
                         </Typography>
                     </AccordionSummary>
+                    {user && user.role === 'admin' ? (<Grid>
+                        <Autocomplete
+                            onChange={(event, newValue) => {
+                                setValue(newValue);
+                            }}
+                            inputValue={inputValue}
+                            onInputChange={(event, newInputValue) => {
+                                setInputValue(newInputValue);
+                            }}
+                            name={users}
+                            id="usersSelected"
+                            options={users}
+                            getOptionLabel={(option)=>(option.name + ' ' + option.email)}
+                            sx={{ width: 300 }}
+                            renderInput={(params) => <TextField {...params} label="Пользователи" />}
+                        />
+                    </Grid>) : null}
                     <AccordionDetails>
                         <Grid
                             container
@@ -433,7 +485,7 @@ const UserProfileEdit = () => {
                                         disabled={loading}
                                         type="submit"
                                         variant="contained">
-                                        Сохранить
+                                        <span>Сохранить</span>
                                     </ButtonWithProgress>
                                 </Grid>
                             </Grid>

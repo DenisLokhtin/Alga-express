@@ -26,20 +26,24 @@ import UserPayments from "./components/UserPayments/UserPayments";
 import WarehousemanStatusEdit from "./containers/WarehousemanStatusEdit/WarehousemanStatusEdit";
 import AdminPaymentsProcessing from "./components/AdminPaymentsProcessing/AdminPaymentsProcessing";
 import {
-    aboutCompany,
+    aboutCompany, addCarousel,
     addFlightAdmin,
     addPaymentHandler,
     addUserPayment,
     addWareHouseAddress,
+    adminPagePath,
     cargoCreateUser,
     contactsCompany,
-    editBuyout,
+    editBuyout, editCarousel,
+    editingSingleTrackNumber,
     editPackageAdmin,
     editPackageUser,
+    editPages,
     editTariffGroup,
     editUserProfile,
     editWareHouseAddress,
     faqCompany,
+    forgotPassword,
     howCompany,
     listBuyouts,
     listFlightAdmin,
@@ -49,20 +53,19 @@ import {
     newsEditCompany,
     newsIdCompany,
     newUserRegister,
-    orderBuyouts, packageHistory,
+    orderBuyouts,
+    packageHistory,
     packageInfoId,
     processingTrackNumbersAdmin,
+    resetPassword,
     root,
     rulesCompany,
     sitesCompany,
+    tariffs,
     userLogin,
+    userPage,
     userPaymentsList,
     wareHouseCompany,
-    editPages,
-    tariffs,
-    editingSingleTrackNumber,
-    forgotPassword,
-    resetPassword, adminPagePath, userPage, addCarousel, editCarousel,
 } from "./paths";
 import OrderBuyout from "./containers/OrderBuyout/OrderBuyout";
 import SingleStatusEdit from "./containers/SingleStatusEdit/SingleStatusEdit";
@@ -85,9 +88,8 @@ import ForgotPassword from "./containers/ForgotPassword/ForgotPassword";
 import ResetPassword from "./containers/ResetPassword/ResetPassword";
 import ProtectedRoutesForWarehouseman
     from "./components/ProtectedRoutes/ProtoectedRoutesForWarehouseman/ProtectedRoutesForWarehouseman";
-import ProtectedRoutesForSuperAdmin from "./components/ProtectedRoutes/ProtectedRoutesForSuperAdmin/ProtectedRoutesForSuperAdmin";
-import AddCarouselAdmin from "./components/AddCarouselAdmin/AddCarouselAdmin";
-import EditCarouselAdmin from "./components/EditCarouselAdmin/EditCarouselAdmin";
+import ProtectedRoutesForSuperAdmin
+    from "./components/ProtectedRoutes/ProtectedRoutesForSuperAdmin/ProtectedRoutesForSuperAdmin";
 
 const App = () => {
     return (

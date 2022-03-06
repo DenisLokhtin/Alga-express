@@ -8,6 +8,7 @@ const adminEdit = require("../middleware/adminEdit");
 const NotFoundTrackNumber = require('../models/NotFoundTrackNumber');
 const PaymentMove = require("../models/PaymentMove");
 const User = require("../models/User");
+const Currency = require('../models/Currency');
 const packageValidate = require("../middleware/packageValidate");
 
 const router = express.Router();
@@ -99,6 +100,8 @@ router.get('/:id', auth, permit('admin', 'warehouseman', 'user', 'superAdmin'), 
 
 router.post('/', auth, packageValidate, permit('admin', 'superAdmin', 'user'), async (req, res) => {
 
+    console.log(req.body)
+
     let price = req.body.price;
 
     if (req.body.price.indexOf(',') === 0) {
@@ -108,6 +111,7 @@ router.post('/', auth, packageValidate, permit('admin', 'superAdmin', 'user'), a
     }
 
     try {
+
         const packageData = {
             country: req.body.country,
             title: req.body.title,
@@ -117,16 +121,32 @@ router.post('/', auth, packageValidate, permit('admin', 'superAdmin', 'user'), a
             user: req.user._id
         };
 
+        const packageAdmin = {
+            country: req.body.country,
+            title: req.body.title,
+            trackNumber: req.body.trackNumber,
+            amount: req.body.amount,
+            price: price,
+            user: req.body.userId,
+        }
+
+
         const notFoundTrackNumber = await NotFoundTrackNumber.findOne({notFoundTrackNumber: packageData.trackNumber});
 
         if (notFoundTrackNumber) {
             packageData.status = notFoundTrackNumber.status;
         }
 
-        const newPackage = new Package(packageData);
 
-        await newPackage.save();
-        res.send(newPackage);
+        if(req.user.role === 'admin'){
+            const newPackage = new Package(packageAdmin);
+            await newPackage.save();
+          return  res.send(newPackage);
+        }else{
+            const newPackage = new Package(packageData);
+            await newPackage.save();
+            return  res.send(newPackage);
+        }
 
     } catch (error) {
         console.log(error.message);
@@ -241,6 +261,8 @@ router.put('/:id', auth, permit('admin', 'warehouseman', 'superAdmin'), async (r
     try {
         const packageFind = await Package.findById(req.params.id)
         const userDebit = await User.findById(packageFind.user._id);
+        const currency = await Currency.findOne({});
+        console.log(currency);
         const prices = userDebit.tariff;
 
         if (req.user.role === 'user')
@@ -256,10 +278,11 @@ router.put('/:id', auth, permit('admin', 'warehouseman', 'superAdmin'), async (r
             return res.status(result.code).send({message: result.message});
 
         if (result.success) {
+            const debitAmount = (result.success.cargoPrice) * currency.usd;
             if (result.success.cargoPrice) {
                 const permitData = {
                     debit: packageFind._id,
-                    debit_amount: result.success.cargoPrice,
+                    debit_amount: debitAmount,
                     permitPayment: req.user._id,
                     lastBalance: packageFind.user.balance,
                     status: 'DEBIT',
@@ -267,7 +290,7 @@ router.put('/:id', auth, permit('admin', 'warehouseman', 'superAdmin'), async (r
 
                 const paySave = new PaymentMove(permitData);
                 await paySave.save();
-                await User.findByIdAndUpdate(packageFind.user._id, {balance: userDebit.balance - result.success.cargoPrice});
+                await User.findByIdAndUpdate(packageFind.user._id, {balance: userDebit.balance - debitAmount});
 
             }
             await result.success.save();

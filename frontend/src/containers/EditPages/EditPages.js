@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
 import {useDispatch, useSelector} from "react-redux";
 import {Container, FormControl, Grid, InputLabel, MenuItem, Select} from "@mui/material";
@@ -34,11 +34,18 @@ const EditPages = () => {
         text: "",
     });
 
+    const messagesEndRef = useRef(null);
+
     useEffect(() => {
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 250);
+        }
         if (!!page) {
             setData({page: page.nameURL, text: page.text});
         }
-    }, [page]);
+    }, [page, messagesEndRef]);
 
     const submitFormHandler = e => {
         e.preventDefault();
@@ -63,6 +70,7 @@ const EditPages = () => {
         <Container
             component="section"
             maxWidth="md"
+            ref={messagesEndRef}
             className={classes.container}
             style={{textAlign: 'center'}}
         >

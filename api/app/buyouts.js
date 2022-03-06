@@ -45,15 +45,53 @@ router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) =>
     try {
 
         if (req.user.role === 'user') {
-            const selfBuyouts = await Buyout.find({user: req.user._id}).populate('user', 'name ');
+            const selfBuyouts = await Buyout.find({user: req.user._id}).populate('user', 'name email ');
             res.send({data: selfBuyouts});
         } else {
-            const buyouts = await Buyout.find({$and: [{deleted: {$ne: true}}, {status: 'NEW'}]}).populate('user', 'name');
+            const buyouts = await Buyout.find({$and: [{deleted: {$ne: true}}]}).populate('user', 'name email');
             res.send({total: buyouts.length, data: buyouts});
         }
 
     } catch (e) {
         res.sendStatus(500);
+    }
+});
+
+router.get('/list', auth, permit('admin', 'user', 'superAdmin'), async (req, res) => {
+    const query = {};
+
+    if (Number.isInteger(req.query.page))
+        return res.status(403).send({error: 'Не корректные данные запроса'});
+
+    let page = 0;
+    let limit = 20;
+
+    if (req.query.page) {
+        page = Number(req.query.page);
+    }
+
+    if (req.query.limit) {
+        limit = Number(req.query.limit);
+    }
+
+    if (req.query.id) query.id = req.query.id;
+    if (req.query.history) query.history = req.query.history;
+
+    query.role = req.user.role;
+    query.user_id = req.user._id;
+
+    try {
+        const size = await Buyout.find();
+
+        const buyouts = await Buyout.find(query)
+            .populate('user', 'name')
+            .sort({date: 1})
+            .limit(limit)
+            .skip(page * limit);
+
+        res.send({totalPage: size.length, data: buyouts});
+    } catch (e) {
+        res.status(500).send(e);
     }
 });
 
@@ -136,7 +174,7 @@ router.put('/:id', auth, upload.single('image'), permit('admin', 'user'), async 
                 const currencyCorrect = Number(currency[value.toLowerCase()]);
                 const totalPrice = ((price * (commission / 100) + price) * currencyCorrect).toFixed(2);
                 updatedPrice.totalPrice = Number(totalPrice);
-                updatedPrice.status = 'ORDERED';
+                updatedPrice.status = 'ACCEPTED';
                 await updatedPrice.save();
 
                 await User.findByIdAndUpdate(updatedPrice.user, {balance: user.balance - totalPrice})
@@ -153,7 +191,7 @@ router.put('/:id', auth, upload.single('image'), permit('admin', 'user'), async 
             }
 
             res.send(updatedPrice);
-        //
+
         } else if (req.user.role === 'user') {
             const newObj = {
                 description: req.body.description,
@@ -168,9 +206,7 @@ router.put('/:id', auth, upload.single('image'), permit('admin', 'user'), async 
                 new: true,
                 runValidators: true
             });
-
             res.send(updatedBuyout);
-
         }
 
     } catch (error) {
@@ -178,6 +214,22 @@ router.put('/:id', auth, upload.single('image'), permit('admin', 'user'), async 
         console.log(error);
     }
 });
+
+router.put('/change/:id',auth, permit('admin'),async (req,res)=>{
+    try {
+        console.log(req.params.id)
+        const buyout = await Buyout.findById(req.params.id);
+
+        if (Object.keys(buyout).length === 0) {
+            return res.status(404).send({error: `Выкуп с ID=${req.params.id} не найден.`});
+        } else {
+            await Buyout.findByIdAndUpdate(req.params.id,{status: 'ORDERED'});
+            return res.send({message: `Выкуп успешно заказан.`})
+        }
+    } catch (error) {
+        res.status(404).send(error);
+    }
+})
 
 
 module.exports = router;

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {deleteNewsRequest, fetchNewsRequest} from "../../store/actions/newsActions";
 import {makeStyles} from "@mui/styles";
@@ -30,10 +30,16 @@ const News = () => {
     const news = useSelector(state => state.news.news);
     const user = useSelector((state => state.users.user));
     const [open, setOpen] = useState(false);
+    const messagesEndRef = useRef(null);
 
     useEffect(() => {
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 200);
+        }
         dispatch(fetchNewsRequest());
-    }, [dispatch]);
+    }, [dispatch, messagesEndRef]);
 
     const deleteNews = newsId => {
         dispatch(deleteNewsRequest(newsId))
@@ -41,7 +47,7 @@ const News = () => {
 
     return (
         <>
-            <Grid container direction={"column"} justifyContent={"center"}>
+            <Grid ref={messagesEndRef} container direction={"column"} justifyContent={"center"}>
                 <Grid item>
                     <h2 style={theme.title}>Новости</h2>
                 </Grid>

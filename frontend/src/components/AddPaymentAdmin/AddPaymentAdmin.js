@@ -17,8 +17,6 @@ const AddPaymentAdmin = () => {
         price: '',
     });
 
-    console.log(error);
-
     useEffect(() => {
         dispatch(fetchUsersRequest());
     }, [dispatch]);
@@ -49,7 +47,6 @@ const AddPaymentAdmin = () => {
         e.preventDefault();
         dispatch(addPaymentAdminRequest(payment));
     };
-
 
     return (
         <>

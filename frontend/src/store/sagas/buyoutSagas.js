@@ -10,8 +10,14 @@ import {
     deleteBuyoutSuccess,
     editBuyoutFailure,
     editBuyoutRequest,
+    editBuyoutStatusFailure,
+    editBuyoutStatusRequest,
+    editBuyoutStatusSuccess,
     editBuyoutSuccess,
     fetchBuyoutsFailure,
+    fetchBuyoutsList,
+    fetchBuyoutsListFailure,
+    fetchBuyoutsListSuccess,
     fetchBuyoutsRequest,
     fetchBuyoutsSuccess,
     fetchSingleBuyoutFailure,
@@ -74,13 +80,31 @@ export function* deleteBuyoutSaga({payload: id}) {
 }
 
 function* editBuyoutSagas({payload}) {
-    console.log(JSON.stringify(payload.formData));
     try {
         yield axiosApi.put(`/buyouts/` + payload.id, payload.obj);
         yield put(editBuyoutSuccess());
         toast.success('Успешно обновлен!');
     } catch (e) {
         yield put(editBuyoutFailure(e.response.data));
+    }
+}
+
+function* editBuyoutStatusSagas({payload: id}) {
+    try {
+        yield axiosApi.put(`/buyouts/change/` + id,);
+        yield put(editBuyoutStatusSuccess());
+        toast.success('Успешно обновлен!');
+    } catch (e) {
+        yield put(editBuyoutStatusFailure(e.response.data));
+    }
+}
+
+function* fetchBuyoutsListSaga({payload}) {
+    try {
+        const {data} = yield axiosApi.get(`/buyouts/list?page=${payload.page}&limit=${payload.limit}`)
+        yield put(fetchBuyoutsListSuccess(data));
+    } catch (e) {
+        yield put(fetchBuyoutsListFailure(e));
     }
 }
 
@@ -91,6 +115,8 @@ const buyoutSaga = [
     takeEvery(deleteBuyoutRequest, deleteBuyoutSaga),
     takeEvery(fetchSingleBuyoutRequest, getOneBuyoutSagas),
     takeEvery(editBuyoutRequest, editBuyoutSagas),
+    takeEvery(editBuyoutStatusRequest, editBuyoutStatusSagas),
+    takeEvery(fetchBuyoutsList, fetchBuyoutsListSaga)
 ];
 
 export default buyoutSaga;

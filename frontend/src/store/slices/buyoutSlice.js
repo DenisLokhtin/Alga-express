@@ -3,12 +3,14 @@ import {createSlice} from "@reduxjs/toolkit";
 const name = 'buyout'
 const initialState = {
     buyouts: [],
+    totalPage: 0,
     singleBuyout: null,
     fetchLoading: false,
     createLoading: false,
     createError: null,
     deleteLoading: false,
     deleteError:null,
+    fetchError: null
 }
 
 const buyoutSlice = createSlice({
@@ -70,7 +72,29 @@ const buyoutSlice = createSlice({
         editBuyoutFailure(state,action){
             state.createLoading =false;
             state.createError = action.payload;
-        }
+        },
+        editBuyoutStatusRequest(state){
+            state.createLoading = true;
+        },
+        editBuyoutStatusSuccess(state){
+            state.createLoading = false;
+        },
+        editBuyoutStatusFailure(state,action){
+            state.createLoading =false;
+            state.createError = action.payload;
+        },
+        fetchBuyoutsList(state){
+            state.fetchLoading = true;
+        },
+        fetchBuyoutsListSuccess(state, action){
+            state.fetchLoading = false;
+            state.totalPage = action.payload.totalPage;
+            state.buyouts = action.payload.data;
+        },
+        fetchBuyoutsListFailure(state, action){
+            state.fetchLoading = false;
+            state.fetchError = action.payload;
+        },
     }
 });
 

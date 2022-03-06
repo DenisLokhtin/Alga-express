@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import FormElement from "../../components/UI/Form/FormElement";
@@ -32,11 +32,18 @@ const AddFlight = () => {
         number: ""
     });
 
+    const messagesEndRef = useRef(null);
+
     useEffect(() => {
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 250);
+        }
         return () => {
             dispatch(clearFlightsError());
         }
-    }, [dispatch]);
+    }, [dispatch, messagesEndRef]);
 
     const onChangeHandler = (e) => {
         const {name, value} = e.target;
@@ -63,7 +70,7 @@ const AddFlight = () => {
     };
 
     return (
-        <Container style={{justifyContent: "center"}} component="section" maxWidth="xs">
+        <Container ref={messagesEndRef} style={{justifyContent: "center"}} component="section" maxWidth="xs">
             <div style={theme.paper}>
                 <Avatar className={classes.avatar}>
                     <FlightIcon fontSize='large'/>

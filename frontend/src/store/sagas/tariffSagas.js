@@ -21,7 +21,6 @@ export function* getTariffsSagas() {
 }
 
 export function* putTariffsSagas({payload}) {
-    console.log(payload);
     try {
         const response = yield axiosApi.put('/tariffs', payload);
         console.log(response.data)
