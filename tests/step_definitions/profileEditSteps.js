@@ -27,10 +27,12 @@ Given('я зашел на страницу {string}',(page) => {
 });
 
 Then('я кликаю на select и выбираю флаг и код страны',() => {
+    I.wait(3);
     I.click(`//div[@class=" flag-dropdown"]`);
 });
 
 Then( 'выбираю страну', () => {
+    I.wait(3);
     I.click('//div//li[@data-flag-key="flag_no_81"]')
 });
 
