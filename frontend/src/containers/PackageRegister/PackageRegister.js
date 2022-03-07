@@ -156,9 +156,9 @@ const PackageRegister = () => {
                             required
                             onChange={inputChangeHandler}
                         >
-                            <MenuItem value={'USA'}>Америка</MenuItem>
-                            <MenuItem value={'Turkey'}>Турция</MenuItem>
-                            <MenuItem value={'China'}>Китай (Авия доставка)</MenuItem>
+                            <MenuItem value={'usa'}>Америка</MenuItem>
+                            <MenuItem value={'turkey'}>Турция</MenuItem>
+                            <MenuItem value={'china'}>Китай (Авия доставка)</MenuItem>
                         </Select>
                         <FormHelperText error={true}>{error?.errors?.['country']?.message}</FormHelperText>
                     </FormControl>
