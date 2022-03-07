@@ -60,8 +60,10 @@ const PackageRegister = () => {
     const data = useLocation();
     const buyoutUser = data?.state?.userProps;
 
+
+
     useEffect(() => {
-        if (user && user.role !== 'user') {
+        if(user?.role !== 'user'){
             dispatch(fetchUsersRequest());
         }
     }, [dispatch]);
@@ -74,6 +76,7 @@ const PackageRegister = () => {
         price: '',
         country: '',
     });
+
 
     const [value, setValue] = React.useState({});
     const [inputValue, setInputValue] = React.useState('');

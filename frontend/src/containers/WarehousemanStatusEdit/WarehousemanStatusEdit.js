@@ -16,6 +16,7 @@ import {changeStatusesRequest, clearTextFieldsErrors} from "../../store/actions/
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
 import FormElement from "../../components/UI/Form/FormElement";
 
+
 const menuItems = [
     {value: 'REGISTERED', text: 'Оформлен'},
     {value: 'ON_WAREHOUSE', text: 'На складе'},

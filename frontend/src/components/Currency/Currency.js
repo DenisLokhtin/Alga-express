@@ -45,7 +45,7 @@ const Currency = () => {
                                 }}
                                 aria-label="United States"
                             />
-                            <span>USD <b>{currencies[0]?.usd}</b> COM</span>
+                            <span>USD <b>{currencies?.usd}</b> COM</span>
                         </Grid>
                     <Grid item className={classes.underline}>
                             <ReactCountryFlag
@@ -56,7 +56,7 @@ const Currency = () => {
                                 }}
                                 aria-label="Turkey"
                             />
-                            <span>TRL <b>{currencies[0]?.try}</b> COM</span>
+                            <span>TRL <b>{currencies?.try}</b> COM</span>
                     </Grid>
                     <Grid item className={classes.underline}>
                             <ReactCountryFlag
@@ -67,7 +67,7 @@ const Currency = () => {
                                 }}
                                 aria-label="China"
                             />
-                            <span>CNY <b>{currencies[0]?.cny}</b> COM</span>
+                            <span>CNY <b>{currencies?.cny}</b> COM</span>
                     </Grid>
                 </>
             )}
