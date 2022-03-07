@@ -19,7 +19,7 @@ import {
     addUserPayment,
     adminPagePath, cargoCreateUser,
     editingSingleTrackNumber,
-    editPages,
+    editPages, editUserProfile,
     listBuyouts,
     listFlightAdmin,
     listPaymentsAdmin,
@@ -38,7 +38,7 @@ import PaidIcon from '@mui/icons-material/Paid';
 import InfoIcon from '@mui/icons-material/Info';
 
 const userSettings = [
-    {url: '', title: 'Личный кабинет', icon: <ManageAccountsIcon/>},
+    {url: editUserProfile, title: 'Личный кабинет', icon: <ManageAccountsIcon/>},
     {url: packageHistory, title: 'История заказов', icon: <HistoryIcon/>},
     {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon/>},
     {url: orderBuyouts, title: 'Заказать выкуп', icon: <ShoppingCartIcon/>},
@@ -49,7 +49,7 @@ const userSettings = [
 ];
 
 const superAdminSettings = [
-    {url: '', title: 'Личный кабинет', icon: <ManageAccountsIcon/>},
+    {url: editUserProfile, title: 'Личный кабинет', icon: <ManageAccountsIcon/>},
     {url: packageHistory, title: 'История всех заказов', icon: <HistoryIcon/>},
     {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon/>},
     {url: cargoCreateUser, title: 'Создать пользователя', icon: <AddIcon/>},
