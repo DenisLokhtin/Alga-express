@@ -3,14 +3,12 @@ import {Container, Grid} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchCurrencies} from "../../store/actions/currenciesActions";
 import CurrenciesCard from "../../components/CurrenciesCard/CurrenciesCard";
-import {fetchNewPackages} from "../../store/actions/packageRegisterActions";
-import NewPackageFilter from "../../components/NewPackageFilter/NewPackageFilter";
+import NewPackagesDataGrid from "../../components/DataGrids/NewPackagesDataGrid/NewPackagesDataGrid";
 
 const AdminPage = () => {
     const dispatch = useDispatch();
     const currencies = useSelector(state => state.currencies.currencies);
-    const newPackages = useSelector(state => state.package.orders);
-
+    // const buyouts = useSelector(state => state.buyouts.buyouts);
     const messagesEndRef = useRef(null);
 
     useEffect(() => {
@@ -20,14 +18,13 @@ const AdminPage = () => {
             }, 250);
         }
         dispatch(fetchCurrencies());
-        dispatch(fetchNewPackages());
     }, [dispatch, messagesEndRef]);
 
     return (
         <Container ref={messagesEndRef}>
             <Grid container sx={{paddingY: "20px"}} spacing={2}>
-                <Grid item xs={12} md={12} lg={12}>
-                    <NewPackageFilter newPackages={newPackages}/>
+                <Grid item xs={12} md={12} lg={12} sx={{height: 500}}>
+                    <NewPackagesDataGrid/>
                 </Grid>
 
                 {currencies.length !== 0 &&

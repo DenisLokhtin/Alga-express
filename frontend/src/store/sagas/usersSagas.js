@@ -135,7 +135,6 @@ export function* userPaymentSaga({payload}) {
 }
 
 export function* fetchUserPaymentSaga({payload}) {
-    console.log('payload', payload);
     const page = payload.page;
     const limit = payload.limit;
 

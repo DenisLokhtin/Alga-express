@@ -19,7 +19,7 @@ import {
     addUserPayment,
     adminPagePath, cargoCreateUser,
     editingSingleTrackNumber,
-    editPages,
+    editPages, editUserProfile,
     listBuyouts,
     listFlightAdmin,
     listPaymentsAdmin,
@@ -38,7 +38,7 @@ import PaidIcon from '@mui/icons-material/Paid';
 import InfoIcon from '@mui/icons-material/Info';
 
 const userSettings = [
-    {url: '', title: 'Личный кабинет', icon: <ManageAccountsIcon/>},
+    {url: editUserProfile, title: 'Личный кабинет', icon: <ManageAccountsIcon/>},
     {url: packageHistory, title: 'История заказов', icon: <HistoryIcon/>},
     {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon/>},
     {url: orderBuyouts, title: 'Заказать выкуп', icon: <ShoppingCartIcon/>},
@@ -49,7 +49,7 @@ const userSettings = [
 ];
 
 const superAdminSettings = [
-    {url: '', title: 'Личный кабинет', icon: <ManageAccountsIcon/>},
+    {url: editUserProfile, title: 'Личный кабинет', icon: <ManageAccountsIcon/>},
     {url: packageHistory, title: 'История всех заказов', icon: <HistoryIcon/>},
     {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon/>},
     {url: cargoCreateUser, title: 'Создать пользователя', icon: <AddIcon/>},
@@ -95,8 +95,8 @@ const UserMenu = ({user}) => {
     const total = useSelector(state => state.users.total);
 
     useEffect(() => {
-        dispatch(switchNotificationRequest());
-    }, [dispatch]);
+        user && user.role === 'admin' && dispatch(switchNotificationRequest());
+    }, [dispatch, user]);
 
     useMemo(() => {
         setNot(notification);
@@ -134,7 +134,7 @@ const UserMenu = ({user}) => {
                         <NotificationsIcon/>
                     </Badge>
                 </IconButton>}
-                <FormControlLabel control={<Switch checked={not} onChange={changeSwitchNotification}/>} label="Оповещение" />
+                {user?.role === 'admin' && <FormControlLabel control={<Switch checked={not} onChange={changeSwitchNotification}/>} label="Оповещение" />}
 
             </Grid>
 

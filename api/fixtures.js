@@ -12,6 +12,7 @@ const Pages = require("./models/Pages");
 const TariffGroup = require("./models/TariffGroup");
 const WareHouse = require("./models/WareHouse");
 const Currency = require("./models/Currency");
+const Buyout = require("./models/Buyout");
 const Player = require("./models/Player");
 
 const run = async () => {
@@ -94,6 +95,29 @@ const run = async () => {
         },
     );
 
+
+    await Buyout.create(
+        {
+            description: 'Zara kid dress',
+            user: user,
+            status: "NEW",
+            image: 'fixtures/zara_dress.png',
+            url:'https://www.zara.com/ww/en/textured-floral-dress-p01247405.html?v1=161209856&v2=2021154',
+            country: 'USA',
+            datetime: '2022-05-15',
+        },
+        {
+            description: 'Amazon vitamin',
+            user: user,
+            status: "NEW",
+            image: 'fixtures/amazon_vitamin.png',
+            url:'https://www.amazon.com/Natural-Apple-Cider-Vinegar-Gummies/dp/B07VQN6Y88?ref_=Oct_d_odotd_d_3_5c86e41b&pd_rd_w=jMHbI&pf_rd_p=a10c66f2-5465-4d26-ac0f-6b448ca4162d&pf_rd_r=NC7EBFRPNG8GVB6HAV58&pd_rd_r=684afbb3-05e4-4fdb-b1ed-2460f255726b&pd_rd_wg=N8D7N',
+            country: 'USA',
+            datetime: '2022-05-15',
+        },
+    );
+
+
     await WareHouse.create(
         {
             country: 'Склад в Китае',
@@ -107,8 +131,7 @@ const run = async () => {
         },
         {
             country: 'Склад в США',
-            info: '<p class=\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\"><strong>Безналоговый штат </strong><em>(по поводу заказа электроники: мобильных телефонов, смарт часов, ноутбуков обращайтесь к менеджеру)</em></p><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Получатель</strong>: <em>*Имя Фамилия* латиницей</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Адресная строка 1</strong>: <em>*41B Germay Drive*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Адресная строка 2</strong>: <em>*ALGA-KG1* указывать обязательно!</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Город</strong>: <em>*Wilmington*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Штат</strong>: <em>*DE (Delaware)*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Почтовый код</strong>: <em>*19804*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Телефон</strong>: <em>*+1 (302) 669-1014*</em></div>'
-        },
+            info: '<p class=\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\"><strong>Безналоговый штат </strong><em>(по поводу заказа электроники: мобильных телефонов, смарт часов, ноутбуков обращайтесь к менеджеру)</em></p><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Получатель</strong>: <em>*Имя Фамилия* латиницей</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Адресная строка 1</strong>: <em>*41B Germay Drive*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Адресная строка 2</strong>: <em>*ALGA-KG1* указывать обязательно!</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Город</strong>: <em>*Wilmington*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Штат</strong>: <em>*DE (Delaware)*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Почтовый код</strong>: <em>*19804*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Телефон</strong>: <em>*+1 (302) 669-1014*</em></div>'},
     );
 
     const [flight1, flight2] = await Flight.create(
@@ -135,11 +158,12 @@ const run = async () => {
             amount: 1,
             price: 2345,
             flight: flight1,
-            country: 'USA',
+            country: 'usa',
             status: 'DONE',
             user: user,
             cargoNumber: '1',
             description: 'description 1',
+            cargoNumber: '000001',
             urlPackage: 'https://www.amazon.com/Kindle-Now-with-Built-in-Front-Light/dp/B07DPMXZZ7/ref=sr_1_1_sspa?keywords=Kindle+E-readers&pd_rd_r=04e07f5b-9cf9-4620-81fc-3b2dc7acb927&pd_rd_w=zKeef&pd_rd_wg=arLd4&pf_rd_p=b9deb6fa-f7f0-4f9b-bfa0-824f28f79589&pf_rd_r=QEHM1VE018FEWSWN0VE0&qid=1643634774&sr=8-1-spons&psc=1&spLa=ZW5jcnlwdGVkUXVhbGlmaWVyPUFMVTU2VFhQRTM5NjcmZW5jcnlwdGVkSWQ9QTAzOTMzMjk0RFBURVpKV0tPOTgmZW5jcnlwdGVkQWRJZD1BMDIxNjkzOFVBVE9CWDQ5RTUzSiZ3aWRnZXROYW1lPXNwX2F0ZiZhY3Rpb249Y2xpY2tSZWRpcmVjdCZkb05vdExvZ0NsaWNrPXRydWU=',
         },
         {
@@ -148,11 +172,12 @@ const run = async () => {
             amount: 1,
             price: 443,
             flight: flight1,
-            country: 'Turkey',
+            country: 'turkey',
             user: user,
             status: 'ERASED',
             cargoNumber: '2',
             description: 'description 2',
+            cargoNumber: '000002',
             urlPackage: 'https://www.amazon.com/Stuffed-Cushion-Collectible-Christmas-Birthday/dp/B09NW4L1BW/ref=sr_1_2?keywords=toys&pd_rd_r=8d8fe069-f701-4575-99e0-fa9735c23583&pd_rd_w=U5ydA&pd_rd_wg=doX2q&pf_rd_p=779cadfb-bc4d-465d-931f-0b68c1ba5cd5&pf_rd_r=0WN5KS5HN5P88EG8PCAR&qid=1643635527&sr=8-2',
         },
         {
@@ -161,11 +186,12 @@ const run = async () => {
             amount: 1,
             price: 7564,
             flight: flight1,
-            country: 'China',
+            country: 'china',
             status: 'ON_WAY',
             user: user,
             cargoNumber: '3',
             description: 'description 3',
+            cargoNumber: '000003',
             urlPackage: 'https://www.amazon.com/Wowok-Money-Spary-Movies-Party/dp/B094D6SCL3/ref=sr_1_10?keywords=toys&pd_rd_r=8d8fe069-f701-4575-99e0-fa9735c23583&pd_rd_w=U5ydA&pd_rd_wg=doX2q&pf_rd_p=779cadfb-bc4d-465d-931f-0b68c1ba5cd5&pf_rd_r=0WN5KS5HN5P88EG8PCAR&qid=1643635567&sr=8-10'
         },
         {
@@ -174,7 +200,7 @@ const run = async () => {
             amount: 1,
             price: 678,
             flight: flight2,
-            country: 'China_ground',
+            country: 'chinaGround',
             status: 'PROCESSED',
             user: user,
             cargoNumber: '4',
@@ -187,11 +213,12 @@ const run = async () => {
             amount: 1,
             price: 345,
             flight: flight2,
-            country: 'USA',
+            country: 'usa',
             status: 'DELIVERED',
             user: user,
             cargoNumber: '5',
             description: 'description 5',
+            cargoNumber: '000005',
             urlPackage: 'https://www.amazon.com/Kindle-Now-with-Built-in-Front-Light/dp/B07DPMXZZ7/ref=sr_1_1_sspa?keywords=Kindle+E-readers&pd_rd_r=04e07f5b-9cf9-4620-81fc-3b2dc7acb927&pd_rd_w=zKeef&pd_rd_wg=arLd4&pf_rd_p=b9deb6fa-f7f0-4f9b-bfa0-824f28f79589&pf_rd_r=QEHM1VE018FEWSWN0VE0&qid=1643634774&sr=8-1-spons&psc=1&spLa=ZW5jcnlwdGVkUXVhbGlmaWVyPUFMVTU2VFhQRTM5NjcmZW5jcnlwdGVkSWQ9QTAzOTMzMjk0RFBURVpKV0tPOTgmZW5jcnlwdGVkQWRJZD1BMDIxNjkzOFVBVE9CWDQ5RTUzSiZ3aWRnZXROYW1lPXNwX2F0ZiZhY3Rpb249Y2xpY2tSZWRpcmVjdCZkb05vdExvZ0NsaWNrPXRydWU=',
         },
     );

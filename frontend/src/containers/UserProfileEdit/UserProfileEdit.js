@@ -164,7 +164,6 @@ const UserProfileEdit = () => {
                 behavior: 'smooth'
             }, 200);
         }
-        dispatch(userDateRequest(id));
         return () => {
             dispatch(clearError());
         };
@@ -273,7 +272,6 @@ const UserProfileEdit = () => {
         const formData = new FormData();
 
         passport.forEach(key => {
-            console.log(key);
             formData.append(`passport`, key);
         });
 
@@ -282,12 +280,12 @@ const UserProfileEdit = () => {
     };
 
     if (dataUser.avatar) {
-        imageURL = apiURL + userData.avatar;
+        imageURL = apiURL + '/' + userData.avatar;
     }
 
     if (userData && userData.passport) {
         userData.passport.forEach((pas, i) => {
-            imagesPassport[i] = apiURL + '/uploads/' + pas.image;
+            imagesPassport[i] = apiURL + '/' + pas.image;
         })
     }
 
@@ -322,7 +320,7 @@ const UserProfileEdit = () => {
                             профиль пользователя
                         </Typography>
                     </AccordionSummary>
-                    <Grid>
+                    {user && user.role === 'admin' ? (<Grid>
                         <Autocomplete
                             onChange={(event, newValue) => {
                                 setValue(newValue);
@@ -338,7 +336,7 @@ const UserProfileEdit = () => {
                             sx={{ width: 300 }}
                             renderInput={(params) => <TextField {...params} label="Пользователи" />}
                         />
-                    </Grid>
+                    </Grid>) : null}
                     <AccordionDetails>
                         <Grid
                             container
@@ -487,7 +485,7 @@ const UserProfileEdit = () => {
                                         disabled={loading}
                                         type="submit"
                                         variant="contained">
-                                        Сохранить
+                                        <span>Сохранить</span>
                                     </ButtonWithProgress>
                                 </Grid>
                             </Grid>
