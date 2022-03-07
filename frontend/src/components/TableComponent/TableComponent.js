@@ -84,7 +84,7 @@ function CustomLoadingOverlay() {
     );
 }
 
-function CustomNoRowsOverlay(loading) {
+function CustomNoRowsOverlay() {
     return (
         <StyledGridOverlay>
             <Box sx={{mt: 3, mb: 3}}>

@@ -111,7 +111,6 @@ const AddNewsAdmin = () => {
     };
 
     const handleEditorChange = (content) => {
-        console.log(content);
         setNews(prevState => {
             return {...prevState, description: content}
         });

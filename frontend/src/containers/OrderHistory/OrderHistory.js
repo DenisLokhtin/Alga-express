@@ -53,10 +53,10 @@ const OrderHistory = () => {
     const dispatch = useDispatch();
     const orders = useSelector(state => state.package.orders);
     const totalRow = useSelector(state => state.package.totalPage);
-    const [page, setPage] = React.useState(0);
+    const [page, setPage] = useState(0);
     const [pageLimit, setPageLimit] = useState(20);
-    const [selectionModel, setSelectionModel] = React.useState([]);
-    const prevSelectionModel = React.useRef(selectionModel);
+    const [selectionModel, setSelectionModel] = useState([]);
+    const prevSelectionModel = useRef(selectionModel);
 
     const myRows = orders.map(order => {
         return {
@@ -98,29 +98,31 @@ const OrderHistory = () => {
     }, [page, dispatch, pageLimit, messagesEndRef]);
 
     return (
-        <Container ref={messagesEndRef} style={{display: 'flex', height: '550px', width: '100%', marginTop: '5em'}}>
+        <Container
+            ref={messagesEndRef}
+            style={{display: 'flex', height: '550px', width: '100%', marginTop: '5em'}}>
             <TableComponent
-            rows={myRows}
-            columns = {[...columns,
-            {field: 'trackNumber', sortable: false},
-            {field: 'cargoNumber', sortable: false},
-            {field: 'country', sortable: false},
-            {field: 'status', sortable: false},
-            {field: 'title', sortable: false},
-        ]}
-            pageSize = {pageLimit}
-            rowCount = {totalRow}
-            onPageSizeChange = {newRowsLimit => setPageLimit(newRowsLimit)}
-            onPageChange = {(newPage) => {
-            prevSelectionModel.current = selectionModel;
-            setPage(newPage);
-        }}
-            onSelectionModelChange = {(newSelectionModel) => {
-            setSelectionModel(newSelectionModel);
-        }}
-            selectionModel = {selectionModel}
-            rowHeight = {70}
-            loading = {loading}
+                rows={myRows}
+                columns={[...columns,
+                    {field: 'trackNumber', sortable: false},
+                    {field: 'cargoNumber', sortable: false},
+                    {field: 'country', sortable: false},
+                    {field: 'status', sortable: false},
+                    {field: 'title', sortable: false},
+                ]}
+                pageSize={pageLimit}
+                rowCount={totalRow}
+                onPageSizeChange={newRowsLimit => setPageLimit(newRowsLimit)}
+                onPageChange={(newPage) => {
+                    prevSelectionModel.current = selectionModel;
+                    setPage(newPage);
+                }}
+                onSelectionModelChange={(newSelectionModel) => {
+                    setSelectionModel(newSelectionModel);
+                }}
+                selectionModel={selectionModel}
+                rowHeight={70}
+                loading={loading}
             />
         </Container>
     );
