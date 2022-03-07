@@ -60,9 +60,6 @@ const Buyout = () => {
             formData.append(key, buyout[key]);
         });
 
-        console.log(formData);
-        console.log(buyout);
-
         dispatch(addBuyoutRequest(formData));
         setBuyout({
             description: "",

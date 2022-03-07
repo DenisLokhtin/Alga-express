@@ -102,8 +102,6 @@ const PackageRegister = () => {
             if(buyoutUser){
                 dispatch(createPackageRequest({...packageRegister,userId:buyoutUser.id, navigate}));
                 dispatch(editBuyoutStatusRequest(buyoutUser.buyoutId));
-                console.log(buyoutUser.buyoutId);
-                console.log(buyoutUser)
             } else {
                 dispatch(createPackageRequest({...packageRegister,userId:value?._id, navigate}));
             }

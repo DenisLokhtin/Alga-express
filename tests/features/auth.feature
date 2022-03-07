@@ -12,8 +12,8 @@
       | name                            | user user user      |
       | //form//div//input[@type='tel'] | 550555555           |
       | email                           | test_user@gmail.com |
-      | password                        | 123456789           |
-      | confirmPassword                      | 123456789           |
+      | password                        | 12345678            |
+      | confirmPassword                 | 12345678            |
     И нажимаю на чекбокс
     И нажимаю на кнопку "зарегистрироваться"
     Затем я вижу текст "Вы зарегистрированы"

@@ -100,6 +100,11 @@ const UserSchema = new mongoose.Schema({
             min: 0,
             default: 0,
         },
+        turkeyGround: {
+            type: Number,
+            min: 0,
+            default: 0,
+        },
         china: {
             type: Number,
             min: 0,

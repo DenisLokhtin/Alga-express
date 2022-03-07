@@ -53,7 +53,7 @@ const columns = [
 const AdminPage = () => {
     const dispatch = useDispatch();
     const currencies = useSelector(state => state.currencies.currencies);
-    const buyouts = useSelector(state => state.buyouts.buyouts);
+    // const buyouts = useSelector(state => state.buyouts.buyouts);
     const messagesEndRef = useRef(null);
 
     const packages = useSelector(state => state.package.orders);
