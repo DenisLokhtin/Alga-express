@@ -29,6 +29,7 @@ import {
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
 import History from '../../History';
+import {packageHistory} from "../../paths";
 
 function* packageRegisterSagas({payload: packageData}) {
     try {
@@ -103,15 +104,14 @@ function* getOrderById({payload: orderId}) {
     }
 }
 
-function* changeStatuses({payload: packageData}) {
+function* changeStatuses({payload}) {
     try {
-        const response = yield axiosApi.put('/packages/single', packageData);
+        const response = yield axiosApi.put('/packages', payload.packageData);
         yield put(changeStatusesSuccess());
-
         if (!response.data.length) {
             toast.success(response.data.message);
+            payload.navigate(packageHistory);
         }
-
     } catch (error) {
         if (error.response.data && error.response.data.length > 0) {
             toast.error('Некоторые трек-номера не были найдены в базе', {
@@ -124,7 +124,7 @@ function* changeStatuses({payload: packageData}) {
 
 function* changeSingleStatus({payload: packageData}) {
     try {
-        const response = yield axiosApi.put('/packages', packageData);
+        const response = yield axiosApi.put('/packages/single', packageData);
         yield put(changeStatusSuccess());
 
         if (!response.data.length) {

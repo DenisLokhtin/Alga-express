@@ -15,6 +15,7 @@ import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 import {changeStatusesRequest, clearTextFieldsErrors} from "../../store/actions/packageRegisterActions";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
 import FormElement from "../../components/UI/Form/FormElement";
+import {useNavigate} from "react-router-dom";
 
 const menuItems = [
     {value: 'REGISTERED', text: 'Оформлен'},
@@ -48,6 +49,7 @@ const useStyles = makeStyles(() => ({
 
 const WarehousemanStatusEdit = () => {
     const classes = useStyles();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const notFoundTrackNumbers = useSelector(state => state.package.notFoundTrackNumbers);
     const error = useSelector(state => state.package.changeStatusesError);
@@ -73,7 +75,7 @@ const WarehousemanStatusEdit = () => {
 
     const submit = e => {
         e.preventDefault();
-        dispatch(changeStatusesRequest(packageStatus));
+        dispatch(changeStatusesRequest({...packageStatus, navigate}));
     };
 
     const messagesEndRef = useRef(null);
