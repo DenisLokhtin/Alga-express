@@ -1,13 +1,24 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Container, Grid} from "@mui/material";
+import {Container} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchCurrencies} from "../../store/actions/currenciesActions";
 import CurrenciesCard from "../../components/CurrenciesCard/CurrenciesCard";
 import TableComponent from "../../components/TableComponent/TableComponent";
 import {countries, statuses} from "../../dataLocalization";
 import {getOrdersHistoryRequest} from "../../store/actions/packageRegisterActions";
+import Box from "@mui/material/Box";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import TabPanel from "../../components/UI/TabPanel/TabPanel";
 
-const columns = [
+function a11yProps(index) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    };
+}
+
+const packagesColumns = [
     {
         field: 'cargoNumber',
         headerName: 'Карго-номер',
@@ -52,17 +63,25 @@ const columns = [
 
 const AdminPage = () => {
     const dispatch = useDispatch();
-    const currencies = useSelector(state => state.currencies.currencies);
-    // const buyouts = useSelector(state => state.buyouts.buyouts);
     const messagesEndRef = useRef(null);
+    const [value, setValue] = React.useState(0);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+
+    const currencies = useSelector(state => state.currencies.currencies);
+
+    const buyouts = useSelector(state => state.buyouts.buyouts);
 
     const packages = useSelector(state => state.package.orders);
     const packagesLoading = useSelector(state => state.package.getOrdersLoading);
     const packagesTotalRow = useSelector(state => state.package.totalPage);
-    const [page, setPage] = useState(0);
-    const [pageLimit, setPageLimit] = useState(10);
+
+    const [packagesPage, setPackagesPage] = useState(0);
+    const [packagesPageLimit, setPackagesPageLimit] = useState(10);
     const [selectionModel, setSelectionModel] = useState([]);
-    const prevSelectionModel = useRef(selectionModel);
+    const packagesPrevSelectionModel = useRef(selectionModel);
 
     const packagesRows = packages.map(order => {
         return {
@@ -82,24 +101,34 @@ const AdminPage = () => {
             }, 250);
         }
         dispatch(fetchCurrencies());
-        dispatch(getOrdersHistoryRequest({page, limit: pageLimit}));
-    }, [dispatch, messagesEndRef, page, pageLimit]);
+        dispatch(getOrdersHistoryRequest({page: packagesPage, limit: packagesPageLimit}));
+    }, [dispatch, messagesEndRef, packagesPage, packagesPageLimit]);
+
+    console.log(packages);
 
     return (
         <Container ref={messagesEndRef}>
-            <Grid container sx={{paddingY: "20px"}} spacing={2}>
+            <Box sx={{ width: '100%' }}>
+                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                        <Tab label="Посылки" {...a11yProps(0)} />
+                        <Tab label="Выкупы" {...a11yProps(1)} />
+                        <Tab label="Пополнения" {...a11yProps(3)} />
+                        <Tab label="Валюты" {...a11yProps(4)} />
+                    </Tabs>
+                </Box>
 
-                <Grid item xs={12} md={12} lg={12} sx={{height: "80vh"}}>
+                <TabPanel value={value} index={0}>
                     <TableComponent
                         rows={packagesRows}
-                        columns={columns}
-                        pageSize={pageLimit}
+                        columns={packagesColumns}
+                        pageSize={packagesPageLimit}
                         rowCount={packagesTotalRow}
                         rowHeight={70}
-                        onPageSizeChange={newRowsLimit => setPageLimit(newRowsLimit)}
+                        onPageSizeChange={newRowsLimit => setPackagesPageLimit(newRowsLimit)}
                         onPageChange={(newPage) => {
-                            prevSelectionModel.current = selectionModel;
-                            setPage(newPage);
+                            packagesPrevSelectionModel.current = selectionModel;
+                            setPackagesPage(newPage);
                         }}
                         selectionModel={selectionModel}
                         onSelectionModelChange={(newSelectionModel) => {
@@ -108,13 +137,21 @@ const AdminPage = () => {
                         loading={packagesLoading}
                         onClick={(e) => {console.log(e)}}
                     />
-                </Grid>
+                </TabPanel>
 
-                {currencies.length !== 0 &&
-                <Grid item xs={12} md={12} lg={12}>
-                    <CurrenciesCard currency={currencies[0]}/>
-                </Grid>}
-            </Grid>
+                <TabPanel value={value} index={1}>
+
+                </TabPanel>
+
+                <TabPanel value={value} index={2}>
+
+                </TabPanel>
+
+                <TabPanel value={value} index={3}>
+                    {currencies &&
+                        <CurrenciesCard currency={currencies}/>}
+                </TabPanel>
+            </Box>
         </Container>
     );
 };
