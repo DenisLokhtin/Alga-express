@@ -60,8 +60,12 @@ const PackageRegister = () => {
     const data = useLocation();
     const buyoutUser = data?.state?.userProps;
 
+
+
     useEffect(() => {
-        dispatch(fetchUsersRequest());
+        if(user?.role !== 'user'){
+            dispatch(fetchUsersRequest());
+        }
     }, [dispatch]);
 
 
