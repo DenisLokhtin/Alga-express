@@ -29,7 +29,7 @@ import {
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
 import History from '../../History';
-import {packageHistory} from "../../paths";
+
 
 function* packageRegisterSagas({payload: packageData}) {
     try {
@@ -110,7 +110,7 @@ function* changeStatuses({payload}) {
         yield put(changeStatusesSuccess());
         if (!response.data.length) {
             toast.success(response.data.message);
-            payload.navigate(packageHistory);
+            History.push('/')
         }
     } catch (error) {
         if (error.response.data && error.response.data.length > 0) {
