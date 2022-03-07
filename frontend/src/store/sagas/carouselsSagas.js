@@ -63,6 +63,7 @@ function* carouselsEditSaga({payload}) {
 }
 
 function* deleteCarouselsSaga({payload: id}) {
+    console.log(id);
     try {
         yield axiosApi.delete(`/carousels/${id}`);
         yield put(deleteCarouselsSuccess(id));

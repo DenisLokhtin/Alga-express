@@ -83,10 +83,8 @@ router.post('/', auth, permit('admin', 'superAdmin'), upload.single('picture'), 
 
 router.delete('/:id', auth, permit('admin', 'superAdmin'), async (req, res) => {
     try {
-        // const carousel = await Carousel.findByIdAndRemove(req.params.id);
-        const carousel = await Carousel.findById(req.params.id);
-        const removeCarousel = await Carousel.deleteOne(carousel._id);
-        if (removeCarousel.deletedCount === 1) {
+        const carousel = await Carousel.findByIdAndRemove(req.params.id);
+        if (carousel) {
             res.send(`Изображение удалено'`);
             fs.unlinkSync(rootPath + '/public/' + carousel.picture);
         } else {
