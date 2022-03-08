@@ -66,7 +66,7 @@ const PackageRegister = () => {
         if(user?.role !== 'user'){
             dispatch(fetchUsersRequest());
         }
-    }, [dispatch]);
+    }, [dispatch, user]);
 
 
     const [packageRegister, setPackageRegister] = useState({

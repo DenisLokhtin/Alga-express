@@ -13,6 +13,7 @@ const TariffGroup = require("./models/TariffGroup");
 const WareHouse = require("./models/WareHouse");
 const Currency = require("./models/Currency");
 const Buyout = require("./models/Buyout");
+const Carousel = require("./models/Carousel");
 
 const run = async () => {
     await mongoose.connect(config.db.url, config.db.options);
@@ -303,6 +304,25 @@ const run = async () => {
         {
             bank: 'М Банк',
             requisites: '0774769434',
+        },
+    );
+
+    await Carousel.create(
+        {
+            info: 'Название к первой картинке',
+            picture: 'fixtures/01.jpeg',
+        },
+        {
+            info: 'Название ко второй картинке',
+            picture: 'fixtures/02.jpeg',
+        },
+        {
+            info: 'Название к третьей картинке',
+            picture: 'fixtures/03.jpeg',
+        },
+        {
+            info: 'Название к четвертой картинке',
+            picture: 'fixtures/04.jpeg',
         },
     );
 
