@@ -4,10 +4,34 @@ import axiosApi from "../axiosApi";
 import createSagaMiddleware from 'redux-saga';
 import {rootSagas} from "./rootSagas";
 import {configureStore} from "@reduxjs/toolkit";
-import usersSlice, {initialState} from "./slices/userSlice";
+import packageSlice from "./slices/packageRegisterSlice";
+import usersSlice, {initialState} from "./slices/usersSlice";
+import newsSlice from "./slices/newsSlice";
+import marketSlice from "./slices/marketSlice";
+import flightSlice from "./slices/flightSlice";
+import buyoutSlice from "./slices/buyoutSlice";
+import paymentSlice from "./slices/paymentSlices";
+import wareHouseSlice from "./slices/wareHouseSlice";
+import pagesSlice from "./slices/pagesSlice";
+import requisitesSlice from "./slices/requisitesSlice";
+import tariffSlice from "./slices/tariffSlice";
+import currenciesSlice from "./slices/currenciesSlice";
+import carouselsSlice from "./slices/carouselSlice";
 
 const rootReducer = combineReducers({
     'users': usersSlice.reducer,
+    'market': marketSlice.reducer,
+    'package': packageSlice.reducer,
+    'news':newsSlice.reducer,
+    'flights': flightSlice.reducer,
+    'buyouts':buyoutSlice.reducer,
+    'payments': paymentSlice.reducer,
+    'wareHouses': wareHouseSlice.reducer,
+    'pages': pagesSlice.reducer,
+    'requisites': requisitesSlice.reducer,
+    'tariffs':tariffSlice.reducer,
+    'currencies': currenciesSlice.reducer,
+    'carousels': carouselsSlice.reducer,
 });
 
 const persistedState = loadFromLocalStorage();
@@ -36,7 +60,7 @@ store.subscribe(() => {
 
 axiosApi.interceptors.request.use(config => {
     try {
-        config.headers['Authorization'] = store.getState().users.user.token
+        config.headers['Authorization'] = store.getState().users.user.token;
     } catch (e) {}
 
     return config;
