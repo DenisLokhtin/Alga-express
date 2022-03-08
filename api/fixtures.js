@@ -13,6 +13,7 @@ const TariffGroup = require("./models/TariffGroup");
 const WareHouse = require("./models/WareHouse");
 const Currency = require("./models/Currency");
 const Buyout = require("./models/Buyout");
+const Carousel = require("./models/Carousel");
 const Player = require("./models/Player");
 
 const run = async () => {
@@ -205,6 +206,7 @@ const run = async () => {
             user: user,
             cargoNumber: '4',
             description: 'description 4',
+            cargoNumber: '000004',
             urlPackage: 'https://www.amazon.com/JLE-Display-Apples-iPhone-Graphite/dp/B09QK7YJCZ/ref=sr_1_12?keywords=toys&pd_rd_r=8d8fe069-f701-4575-99e0-fa9735c23583&pd_rd_w=U5ydA&pd_rd_wg=doX2q&pf_rd_p=779cadfb-bc4d-465d-931f-0b68c1ba5cd5&pf_rd_r=0WN5KS5HN5P88EG8PCAR&qid=1643635567&sr=8-12',
         },
         {
@@ -303,6 +305,25 @@ const run = async () => {
         {
             bank: 'М Банк',
             requisites: '0774769434',
+        },
+    );
+
+    await Carousel.create(
+        {
+            info: 'Название к первой картинке',
+            picture: 'fixtures/01.jpeg',
+        },
+        {
+            info: 'Название ко второй картинке',
+            picture: 'fixtures/02.jpeg',
+        },
+        {
+            info: 'Название к третьей картинке',
+            picture: 'fixtures/03.jpeg',
+        },
+        {
+            info: 'Название к четвертой картинке',
+            picture: 'fixtures/04.jpeg',
         },
     );
 

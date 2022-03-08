@@ -18,6 +18,7 @@ const pages = require('./app/Pages');
 const requisites = require('./app/requisites');
 const tariffs = require('./app/tariffs');
 const currencies = require('./app/currencies');
+const carousels = require('./app/carousel');
 const players = require('./app/player');
 
 const app = express();
@@ -40,6 +41,7 @@ app.use('/pages', pages);
 app.use('/requisites', requisites);
 app.use('/tariffs', tariffs);
 app.use('/currencies', currencies);
+app.use('/carousels', carousels);
 app.use('/players', players);
 
 const run = async () => {

@@ -11,6 +11,7 @@ import pagesSagas from "./sagas/pagesSagas";
 import requisitesSagas from "./sagas/requisitesSagas";
 import tariffSagas from "./sagas/tariffSagas";
 import currenciesSagas from "./sagas/currenciesSagas";
+import carouselsSagas from "./sagas/carouselsSagas";
 import playerSaga from "./sagas/playerSagas";
 
 export function* rootSagas() {
@@ -27,6 +28,7 @@ export function* rootSagas() {
         ...requisitesSagas,
         ...tariffSagas,
         ...currenciesSagas,
+        ...carouselsSagas,
         ...playerSaga,
     ]);
 }
