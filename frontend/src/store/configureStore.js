@@ -16,6 +16,7 @@ import pagesSlice from "./slices/pagesSlice";
 import requisitesSlice from "./slices/requisitesSlice";
 import tariffSlice from "./slices/tariffSlice";
 import currenciesSlice from "./slices/currenciesSlice";
+import playerSlice from "./slices/playerSlice";
 
 const rootReducer = combineReducers({
     'users': usersSlice.reducer,
@@ -29,7 +30,8 @@ const rootReducer = combineReducers({
     'pages': pagesSlice.reducer,
     'requisites': requisitesSlice.reducer,
     'tariffs':tariffSlice.reducer,
-    'currencies': currenciesSlice.reducer
+    'currencies': currenciesSlice.reducer,
+    'players': playerSlice.reducer
 });
 
 const persistedState = loadFromLocalStorage();

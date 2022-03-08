@@ -28,17 +28,17 @@ import AdminPaymentsProcessing from "./components/AdminPaymentsProcessing/AdminP
 import {
     aboutCompany,
     addFlightAdmin,
-    addPaymentHandler,
+    addPaymentHandler, addPlayer,
     addUserPayment,
     addWareHouseAddress,
     adminPagePath,
     cargoCreateUser,
     contactsCompany,
-    editBuyout,
+    editBuyout, editingSinglePlayer,
     editingSingleTrackNumber,
     editPackageAdmin,
     editPackageUser,
-    editPages,
+    editPages, editPlayer,
     editTariffGroup,
     editUserProfile,
     editWareHouseAddress,
@@ -90,6 +90,8 @@ import ProtectedRoutesForWarehouseman
     from "./components/ProtectedRoutes/ProtoectedRoutesForWarehouseman/ProtectedRoutesForWarehouseman";
 import ProtectedRoutesForSuperAdmin
     from "./components/ProtectedRoutes/ProtectedRoutesForSuperAdmin/ProtectedRoutesForSuperAdmin";
+import AddPlayerAdmin from "./components/AddPlayerAdmin/AddPlayerAdmin";
+import EditPlayerAdmin from "./components/EditPlayerAdmin/EditPlayerAdmin";
 
 const App = () => {
 
@@ -125,6 +127,8 @@ const App = () => {
                         <Route path={addUserPayment} element={<UserPayment/>}/>
                         <Route path={addWareHouseAddress} element={<AddWareHouseAdmin/>}/>
                         <Route path={editWareHouseAddress} element={<EditWareHouseAdmin/>}/>
+                        <Route path={addPlayer} element={<AddPlayerAdmin/>}/>
+                        <Route path={editPlayer} element={<EditPlayerAdmin/>}/>
                     </Route>
                     {/* Routes for warehouseman and SuperAdmin*/}
                     {/*Приватные роуты можно сделать одним компонентом потом фикс*/}

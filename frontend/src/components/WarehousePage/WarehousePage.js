@@ -8,6 +8,7 @@ import {Link} from "react-router-dom";
 import {addWareHouseAddress, editingSingleWareHouse} from "../../paths";
 import {deleteWareHouseRequest, fetchWareHouseRequest} from "../../store/actions/wareHouseActions";
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import Player from "../Player/Player";
 
 const useStyles = makeStyles(theme => ({
     submit: {
@@ -167,10 +168,7 @@ const WarehousePage = () => {
                 ))}
             </TabContext>
 
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/t86sKsR4pnk"
-                    title="YouTube video player" frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen>video</iframe>
+            <Player/>
         </Box>
     );
 };

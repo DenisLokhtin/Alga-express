@@ -38,9 +38,13 @@ export const editWareHouseAddress = '/alga-express/wareHouse/edit/:id';
 export const editingSingleWareHouse = '/alga-express/wareHouse/edit/';
 export const userPage = '/user/profile';
 export const adminPagePath = '/adminPage';
-export const cargoCreateUser = '/cargo/create/user'
-export const forgotPassword = '/forgot'
-export const resetPassword = '/secret/reset-password'
+export const cargoCreateUser = '/cargo/create/user';
+export const forgotPassword = '/forgot';
+export const resetPassword = '/secret/reset-password';
+export const addPlayer = '/alga-express/player/add';
+export const editPlayer = '/alga-express/player/edit/:id';
+export const editingSinglePlayer = '/alga-express/player/edit/';
+
 
 
 
