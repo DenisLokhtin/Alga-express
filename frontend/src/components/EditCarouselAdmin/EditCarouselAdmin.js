@@ -123,7 +123,7 @@ const EditCarouselAdmin = () => {
                             label={singleCarousel.info ? "" : "Заголовок изображения"}
                             required
                             name="info"
-                            value={singleCarousel.info}
+                            value={singleCarousel.info || ''}
                             onChange={onInputTextareaChange}
                             error={getFieldError('info')}
                         />

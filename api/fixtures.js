@@ -329,7 +329,7 @@ const run = async () => {
 
     await Player.create(
         {
-            urlYoutube: 'https://youtu.be/t86sKsR4pnk',
+            urlYoutube: 'https://www.youtube.com/watch?v=sfd2xj9xtN0',
         },
     );
 

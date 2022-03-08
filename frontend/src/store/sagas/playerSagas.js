@@ -51,7 +51,7 @@ function* playerEditSaga({payload}) {
         yield axiosApi.put(`/players/${payload.playerId}`, payload.singlePlayer);
         yield put(changePlayerSuccess());
         toast.success('Видео отредактировано!');
-        payload.navigate('/alga-express/players');
+        payload.navigate('/alga-express/wareHouses');
     } catch (e) {
         yield put(changePlayerFailure(e.response.data));
     }

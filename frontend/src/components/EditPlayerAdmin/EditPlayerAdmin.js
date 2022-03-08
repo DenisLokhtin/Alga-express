@@ -1,12 +1,12 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {changeWareHouseRequest, fetchOneWareHouseRequest} from "../../store/actions/wareHouseActions";
 import {useNavigate, useParams} from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {makeStyles} from "@mui/styles";
-import {Editor} from "@tinymce/tinymce-react";
 import {changePlayerRequest, fetchOnePlayerRequest} from "../../store/actions/playerActions";
+import FormElement from "../UI/Form/FormElement";
+import Container from "@mui/material/Container";
 
 const useStyles = makeStyles(theme => ({
     submit: {
@@ -15,7 +15,18 @@ const useStyles = makeStyles(theme => ({
     tableContainer: {
         boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
         marginBottom: '80px'
-    }
+    },
+    container: {
+        width: "90%",
+        margin: "0 auto",
+        marginTop: theme.spacing(2),
+        [theme.breakpoints.up('sm')]: {
+            width: '60%',
+        },
+        [theme.breakpoints.up('md')]: {
+            width: '50%',
+        },
+    },
 }));
 
 const EditPlayerAdmin = () => {
@@ -32,6 +43,7 @@ const EditPlayerAdmin = () => {
     const params = useParams();
 
     const loading = useSelector(state => state.players.singleLoading);
+    const error = useSelector(state => state.players.playerError);
 
     useEffect(() => {
         dispatch(fetchOnePlayerRequest(params.id));
@@ -40,7 +52,7 @@ const EditPlayerAdmin = () => {
 
     useMemo(() => {
         setSinglePlayer({
-            country: onePlayer.urlYoutube,
+            urlYoutube: onePlayer.urlYoutube,
         });
     }, [onePlayer]);
 
@@ -49,43 +61,69 @@ const EditPlayerAdmin = () => {
         dispatch(changePlayerRequest({singlePlayer, playerId: params.id, navigate}));
     };
 
-    const handleEditorChange = (content) => {
-        setSinglePlayer(prevState => {
-            return {...prevState, urlYoutube: content}
-        });
+    const onInputTextareaChange = e => {
+        const {name, value} = e.target;
+        console.log(name, value);
+        setSinglePlayer(prev => ({
+            ...prev,
+            [name]: value
+        }));
     };
 
+    const getFieldError = fieldName => {
+        try {
+            return error.errors[fieldName].message;
+        } catch (e) {
+            return undefined;
+        }
+    };
 
     return (
         <div>
-            <h3>Изменить ссылку на видео из Youtube</h3>
-            <h3>{onePlayer.urlYoutube}</h3>
-            <Grid item xs={12} sm={8} md={7} lg={7}>
-            </Grid>
-            <hr/>
-            <Grid
-                component="form"
-                onSubmit={changePlayer}
-                justifyContent="center"
-                container
-                noValidate
-                spacing={5}
-            >
-
-                <Grid item xs={3} sm={8} md={3} lg={7}
-                      className={classes.submit}>
-                    <ButtonWithProgress
-                        type="submit"
-                        variant="contained"
-                        color="success"
-                        className={classes.submit}
-                        loading={loading}
-                        disabled={loading}
-                    >
-                        Применить
-                    </ButtonWithProgress>
+            <Container
+                component="section"
+                maxWidth="md"
+                className={classes.container}>
+                <h3>Изменить ссылку на видео из Youtube</h3>
+                <Grid item xs={12} sm={8} md={7} lg={7}>
                 </Grid>
-            </Grid>
+                <hr/>
+                <Grid
+                    component="form"
+                    onSubmit={changePlayer}
+                    justifyContent="center"
+                    container
+                    noValidate
+                    spacing={5}
+                >
+
+                    <Grid item xs={12}>
+                        <FormElement
+                            label={singlePlayer.urlYoutube ? "" : "Ссылка с youtube"}
+                            required
+                            name="urlYoutube"
+                            value={singlePlayer.urlYoutube || ''}
+                            onChange={onInputTextareaChange}
+                            error={getFieldError('info')}
+                        />
+                    </Grid>
+
+                    <Grid item xs={3} sm={8} md={3} lg={7}
+                          className={classes.submit}>
+                        <ButtonWithProgress
+                            type="submit"
+                            variant="contained"
+                            color="success"
+                            className={classes.submit}
+                            loading={loading}
+                            disabled={loading}
+                        >
+                            Применить
+                        </ButtonWithProgress>
+                    </Grid>
+                </Grid>
+
+            </Container>
         </div>
     );
 };

@@ -3,15 +3,13 @@ import {makeStyles} from "@mui/styles";
 import {Grid} from "@mui/material";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {Link} from "react-router-dom";
-import {addPlayer, editingSinglePlayer, editPlayer} from "../../paths";
+import {addPlayer, editingSinglePlayer} from "../../paths";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import {useDispatch, useSelector} from "react-redux";
 import {deletePlayerRequest, fetchPlayerRequest} from "../../store/actions/playerActions";
-import {fetchWareHouseRequest} from "../../store/actions/wareHouseActions";
 import YouTubePlayer from "react-player/youtube";
-import ReactPlayer from "react-player";
 
 const useStyles = makeStyles(theme => ({
     submit: {
@@ -50,7 +48,7 @@ const useStyles = makeStyles(theme => ({
     videoMain: {
         border: '1px solid',
         borderColor: 'rgba(0, 0, 0, 0.12)',
-    }
+    },
 }));
 
 
@@ -84,14 +82,7 @@ const Player = () => {
     return (
         <div className={classes.videoMain}>
 
-            <YouTubePlayer
-                showinfo="0"
-                enablejsapi="1"
-                rigin="http://localhost:3000"
-                url={urlFromYoutube}
-            />
-
-            {user && (user.role === 'admin' || user.role === 'superAdmin') ?
+            {user && (user.role === 'admin' || user.role === 'superAdmin') && !urlFromYoutube ?
                 <Grid item xs={5}>
                     <ButtonWithProgress
                         type="submit"
@@ -106,7 +97,7 @@ const Player = () => {
                     </ButtonWithProgress>
                 </Grid> : ''}
 
-            {user && (user.role === 'admin' || user.role === 'superAdmin') ?
+            {user && (user.role === 'admin' || user.role === 'superAdmin') && urlFromYoutube ?
                 <Grid item xs={5}>
                     <ButtonWithProgress
                         type="submit"
@@ -122,7 +113,7 @@ const Player = () => {
                     </ButtonWithProgress>
                 </Grid> : ''}
 
-            {user && (user.role === 'admin' || user.role === 'superAdmin') ?
+            {user && (user.role === 'admin' || user.role === 'superAdmin') && urlFromYoutube ?
                 <Grid item xs={5}>
                     <ButtonWithProgress
                         type="submit"
@@ -131,11 +122,19 @@ const Player = () => {
                         className={classes.submit}
                         loading={loading}
                         disabled={loading}
-                        onClick={() => deletePlayer('id')}
+                        onClick={() => deletePlayer(IdFromYoutube)}
                     >
                         <DeleteForeverIcon/> Удалить текущее видео
                     </ButtonWithProgress>
                 </Grid> : ''}
+
+            <YouTubePlayer
+                showinfo="0"
+                enablejsapi="1"
+                origin="http://localhost:3000"
+                url={urlFromYoutube}
+            />
+
         </div>
     );
 };

@@ -8,7 +8,7 @@ const initialState = {
     singleLoading: false,
     fetchLoading: false,
     addLoading: false,
-    addError: null,
+    playerError: null,
 }
 
 const playerSlice = createSlice({
