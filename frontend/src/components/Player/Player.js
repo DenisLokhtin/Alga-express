@@ -9,7 +9,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import {useDispatch, useSelector} from "react-redux";
 import {deletePlayerRequest, fetchPlayerRequest} from "../../store/actions/playerActions";
-import YouTubePlayer from "react-player/youtube";
+import ReactPlayer from "react-player";
 
 const useStyles = makeStyles(theme => ({
     submit: {
@@ -128,10 +128,18 @@ const Player = () => {
                     </ButtonWithProgress>
                 </Grid> : ''}
 
-            <YouTubePlayer
-                showinfo="0"
-                enablejsapi="1"
-                origin="http://localhost:3000"
+            <ReactPlayer
+                config={{
+                    youtube: {
+                        playerVars: {
+                            showinfo: 0,
+                            enablejsapi: 1,
+                            origin: 'http://localhost:3000',
+                        },
+                    },
+                }}
+                playing={false}
+                controls={true}
                 url={urlFromYoutube}
             />
 
