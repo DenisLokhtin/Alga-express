@@ -63,7 +63,6 @@ const EditPlayerAdmin = () => {
 
     const onInputTextareaChange = e => {
         const {name, value} = e.target;
-        console.log(name, value);
         setSinglePlayer(prev => ({
             ...prev,
             [name]: value

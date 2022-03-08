@@ -132,9 +132,9 @@ const Player = () => {
                 config={{
                     youtube: {
                         playerVars: {
+                            origin: window.location.origin,
                             showinfo: 0,
                             enablejsapi: 1,
-                            origin: 'http://localhost:3000',
                         },
                     },
                 }}
