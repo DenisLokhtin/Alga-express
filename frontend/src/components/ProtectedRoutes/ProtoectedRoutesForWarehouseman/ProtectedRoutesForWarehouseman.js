@@ -5,7 +5,7 @@ import {useSelector} from "react-redux";
 const HasAccess = () => {
     const user = useSelector(state => state.users.user);
 
-    return user?.role === 'warehouseman' || user?.role === 'superAdmin';
+    return user?.role === 'warehouseman' || user?.role === 'superAdmin' || user?.role === 'admin';
 };
 
 const ProtectedRoutesForWarehouseman = () => {
