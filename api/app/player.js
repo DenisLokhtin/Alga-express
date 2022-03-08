@@ -30,13 +30,10 @@ router.get('/:id', async (req, res) => {
 
 
 router.post('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
-    console.log(req.body)
     try {
         const playerData = {
             urlYoutube: req.body.urlYoutube,
         };
-
-
         const player = new Player(playerData);
         await player.save();
         res.send(player);
@@ -63,7 +60,6 @@ router.put('/:id', auth, permit('admin', 'superAdmin'), async (req, res) => {
     try {
         const updatedPlayer = await Player.findById(req.params.id);
         updatedPlayer.urlYoutube = req.body.urlYoutube;
-
 
         const player = new Player(updatedPlayer);
         await player.save();
