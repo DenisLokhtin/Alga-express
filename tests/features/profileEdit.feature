@@ -12,7 +12,7 @@
       | password | 12345678       |
     И нажимаю на кнопку "войти"
 
-    Допустим я зашел на страницу "user/userProfile/edit/6220c21b8d0d4dc8630afa7e"
+    Допустим я зашел на страницу "user/userProfile/edit/"
     Если я удалю поля:
       | email | user@gmail.com |
       | name  | User           |

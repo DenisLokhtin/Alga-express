@@ -16,7 +16,7 @@
     То я вижу текст "Вы авторизированы!"
 
     Если я захожу на страницу "/user/package/register" кликаю на select
-    И выбираю страну
+    И выбираю страну из списка packageRegister
     Затем я ввожу данные:
       | trackNumber | 1551232    |
       | title       | some title |

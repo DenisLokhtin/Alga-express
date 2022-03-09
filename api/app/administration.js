@@ -160,7 +160,7 @@ router.put('/:id', auth, permit('admin', 'superAdmin'), async (req, res) => {
             .populate({path: 'userPayment', select: 'user'});
         const userPayment = await Payment.findById(userPaymentMove.userPayment)
             .populate('user', 'name');
-        const user = await User.findById(userPayment.user);
+        const user = await User.findById(userPayment.user._id);
 
         if (pay > 0) {
             const permitData = {

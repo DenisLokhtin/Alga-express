@@ -18,6 +18,7 @@ const pages = require('./app/Pages');
 const requisites = require('./app/requisites');
 const tariffs = require('./app/tariffs');
 const currencies = require('./app/currencies');
+const carousels = require('./app/carousel');
 
 const app = express();
 app.use(express.json());
@@ -38,7 +39,8 @@ app.use('/warehouses', wareHouses);
 app.use('/pages', pages);
 app.use('/requisites', requisites);
 app.use('/tariffs', tariffs);
-app.use('/currencies', currencies)
+app.use('/currencies', currencies);
+app.use('/carousels', carousels);
 
 const run = async () => {
     await mongoose.connect(config.db.url);

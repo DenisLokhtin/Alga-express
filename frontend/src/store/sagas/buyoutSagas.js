@@ -80,7 +80,6 @@ export function* deleteBuyoutSaga({payload: id}) {
 }
 
 function* editBuyoutSagas({payload}) {
-    console.log(JSON.stringify(payload.formData));
     try {
         yield axiosApi.put(`/buyouts/` + payload.id, payload.obj);
         yield put(editBuyoutSuccess());

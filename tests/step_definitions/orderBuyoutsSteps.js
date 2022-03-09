@@ -5,7 +5,7 @@ Given('я зашёл на страницу {string} кликаю на select', (
     I.click("//form//div[@id]");
 });
 
-When('выбираю страну',() => {
+When('выбираю страну страну из списка orderBuyouts',() => {
     I.click(`//ul//li[@data-value="China"]`);
 });
 

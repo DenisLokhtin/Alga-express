@@ -5,7 +5,7 @@ export const newPackageRegister = '/user/package/register';
 export const packageInfo = '/user/package/info/';
 export const editPackageUser = '/user/package/edit/:id';
 export const packageHistory = "/package/history";
-export const editUserProfile = '/user/userProfile/edit/:id';
+export const editUserProfile = '/user/userProfile/edit';
 export const userPaymentsList = '/user/payments';
 export const addUserPayment = '/user/payments/add';
 export const newUserRegister = '/user/register';
@@ -38,9 +38,12 @@ export const editWareHouseAddress = '/alga-express/wareHouse/edit/:id';
 export const editingSingleWareHouse = '/alga-express/wareHouse/edit/';
 export const userPage = '/user/profile';
 export const adminPagePath = '/adminPage';
-export const cargoCreateUser = '/cargo/create/user'
-export const forgotPassword = '/forgot'
-export const resetPassword = '/secret/reset-password'
+export const cargoCreateUser = '/cargo/create/user';
+export const forgotPassword = '/forgot';
+export const resetPassword = '/secret/reset-password';
+export const addCarousel = '/alga-express/carousel/add';
+export const editCarousel = '/alga-express/carousel/edit/:id';
+export const editingSingleCarousel = '/alga-express/carousel/edit/';
 
 
 
