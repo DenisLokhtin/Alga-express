@@ -130,15 +130,13 @@ router.post('/', auth, packageValidate, permit('admin', 'superAdmin', 'user'), a
             user: req.body.userId,
         }
 
-
         const notFoundTrackNumber = await NotFoundTrackNumber.findOne({notFoundTrackNumber: packageData.trackNumber});
 
         if (notFoundTrackNumber) {
             packageData.status = notFoundTrackNumber.status;
         }
 
-
-        if (req.user.role === 'admin') {
+        if(req.user.role === 'admin'){
             const newPackage = new Package(packageAdmin);
             await newPackage.save();
             return res.send(newPackage);
@@ -207,47 +205,6 @@ router.put('/', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req,
             res.status(404).send(notFoundTrackNumbers);
         } else {
             res.send({message: 'Трек-номера были успешно изменены'});
-        }
-
-    } catch (error) {
-        res.sendStatus(500)
-    }
-});
-
-
-router.put('/single', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req, res) => {
-    const notFoundTrackNumbers = [];
-    try {
-        if (req.body.trackNumber.length === 0) {
-            return res.status(400).send({
-                errors: {
-                    trackNumber: {message: "Введите трек-номер"},
-                },
-            });
-        }
-
-        const updatedStatus = await Package.findOneAndUpdate(
-            {trackNumber: req.body.trackNumber},
-            {status: req.body.status},
-            {new: true, runValidators: true});
-
-        if (!updatedStatus) {
-            const notFoundTrackNumberData = {
-                notFoundTrackNumber: req.body.trackNumber,
-                status: req.body.status,
-            };
-
-            const notFoundTrackNumber = new NotFoundTrackNumber(notFoundTrackNumberData);
-
-            await notFoundTrackNumber.save();
-
-            notFoundTrackNumbers.push({trackNumber: req.body.trackNumber});
-        }
-
-        if (notFoundTrackNumbers.length > 0) {
-            res.status(404).send(notFoundTrackNumbers);
-        } else {
-            res.send({message: 'Статус трек-номера был успешно изменен'});
         }
 
     } catch (error) {
