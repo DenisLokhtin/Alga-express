@@ -99,9 +99,6 @@ router.get('/:id', auth, permit('admin', 'warehouseman', 'user', 'superAdmin'), 
 });
 
 router.post('/', auth, packageValidate, permit('admin', 'superAdmin', 'user'), async (req, res) => {
-
-    console.log(req.body)
-
     let price = req.body.price;
 
     if (req.body.price.indexOf(',') === 0) {
@@ -130,13 +127,11 @@ router.post('/', auth, packageValidate, permit('admin', 'superAdmin', 'user'), a
             user: req.body.userId,
         }
 
-
         const notFoundTrackNumber = await NotFoundTrackNumber.findOne({notFoundTrackNumber: packageData.trackNumber});
 
         if (notFoundTrackNumber) {
             packageData.status = notFoundTrackNumber.status;
         }
-
 
         if(req.user.role === 'admin'){
             const newPackage = new Package(packageAdmin);
@@ -213,48 +208,6 @@ router.put('/', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req,
         res.sendStatus(500)
     }
 });
-
-
-router.put('/single', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req, res) => {
-    const notFoundTrackNumbers = [];
-    try {
-        if (req.body.trackNumber.length === 0) {
-            return res.status(400).send({
-                errors: {
-                    trackNumber: {message: "Введите трек-номер"},
-                },
-            });
-        }
-
-        const updatedStatus = await Package.findOneAndUpdate(
-            {trackNumber: req.body.trackNumber},
-            {status: req.body.status},
-            {new: true, runValidators: true});
-
-        if (!updatedStatus) {
-            const notFoundTrackNumberData = {
-                notFoundTrackNumber: req.body.trackNumber,
-                status: req.body.status,
-            };
-
-            const notFoundTrackNumber = new NotFoundTrackNumber(notFoundTrackNumberData);
-
-            await notFoundTrackNumber.save();
-
-            notFoundTrackNumbers.push({trackNumber: req.body.trackNumber});
-        }
-
-        if (notFoundTrackNumbers.length > 0) {
-            res.status(404).send(notFoundTrackNumbers);
-        } else {
-            res.send({message: 'Статус трек-номера был успешно изменен'});
-        }
-
-    } catch (error) {
-        res.sendStatus(500)
-    }
-});
-
 
 router.put('/:id', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req, res) => {
     let result = {};

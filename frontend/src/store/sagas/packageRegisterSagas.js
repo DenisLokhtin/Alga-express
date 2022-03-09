@@ -23,13 +23,11 @@ import {
     changeStatusesError,
     changeStatusesSuccess,
     changeStatusesRequest,
-    changeStatusSuccess,
-    changeStatusError, changeStatusRequest, fetchNewPackagesSuccess, fetchNewPackagesFailure, fetchNewPackages,
+    fetchNewPackagesSuccess, fetchNewPackagesFailure, fetchNewPackages,
 } from "../actions/packageRegisterActions";
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
 import History from '../../History';
-
 
 function* packageRegisterSagas({payload: packageData}) {
     try {
@@ -104,9 +102,9 @@ function* getOrderById({payload: orderId}) {
     }
 }
 
-function* changeStatuses({payload}) {
+function* changeStatuses({payload: packageData}) {
     try {
-        const response = yield axiosApi.put('/packages', payload.packageData);
+        const response = yield axiosApi.put('/packages', packageData);
         yield put(changeStatusesSuccess());
         if (!response.data.length) {
             toast.success(response.data.message);
@@ -122,25 +120,6 @@ function* changeStatuses({payload}) {
     }
 }
 
-function* changeSingleStatus({payload: packageData}) {
-    try {
-        const response = yield axiosApi.put('/packages/single', packageData);
-        yield put(changeStatusSuccess());
-
-        if (!response.data.length) {
-            toast.success(response.data.message);
-        }
-
-    } catch (error) {
-        if (error.response.data && error.response.data.length > 0) {
-            toast.error('Некоторые трек-номера не были найдены в базе', {
-                autoClose: 5000,
-            });
-        }
-        yield put(changeStatusError(error.response.data));
-    }
-}
-
 export function* fetchNewPackagesSaga() {
     try {
         const {data} = yield axiosApi.get('/packages/newPackages');
@@ -149,8 +128,6 @@ export function* fetchNewPackagesSaga() {
         yield put(fetchNewPackagesFailure(e));
     }
 }
-
-
 
 const packageSagas = [
     takeEvery(createPackageRequest, packageRegisterSagas),
@@ -161,7 +138,6 @@ const packageSagas = [
     takeEvery(getOrdersHistoryRequest, getOrdersHistorySagas),
     takeEvery(getOrderByIdRequest, getOrderById),
     takeEvery(changeStatusesRequest, changeStatuses),
-    takeEvery(changeStatusRequest, changeSingleStatus),
     takeEvery(fetchNewPackages, fetchNewPackagesSaga)
 ];
 
