@@ -11,6 +11,7 @@ import PriceCheckIcon from '@mui/icons-material/PriceCheck';
 import Container from "@mui/material/Container";
 import theme from "../../theme";
 import NewsPanel from "../../components/NewsPanel/NewsPanel";
+import Carousel from "../../components/Carousel/Carousel";
 
 const useStyles = makeStyles({
     block: {
@@ -53,6 +54,18 @@ const HomePage = () => {
                     Служба доставки из Турции и Сша
                 </h1>
             </Grid>
+
+            <br/>
+            <Grid container>
+                <Grid item xs={12}>
+                    <Grid item>
+                        <Container style={{textAlign: 'center'}}>
+                            <Carousel/>
+                        </Container>
+                    </Grid>
+                </Grid>
+            </Grid>
+
             <Grid container>
                 <Grid item xs={10}>
                     <Grid item>

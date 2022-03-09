@@ -4,7 +4,10 @@ import {
     addPaymentAdminRequest,
     fetchPaymentFailure,
     fetchPaymentRequest,
-    fetchPaymentSuccess, fetchTariffGroupFailure, fetchTariffGroupRequest, fetchTariffGroupSuccess,
+    fetchPaymentSuccess,
+    fetchTariffGroupFailure,
+    fetchTariffGroupRequest,
+    fetchTariffGroupSuccess,
     paymentAcceptedRequest,
     paymentAcceptedSuccess,
 } from "../actions/paymentActions";

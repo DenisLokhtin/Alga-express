@@ -1,5 +1,5 @@
-import React, {useEffect, useMemo, useState} from 'react';
-import {Box, Divider, FormControlLabel, Grid, IconButton, ListItemIcon, Menu, MenuItem, Switch} from "@mui/material";
+import React, {useState} from 'react';
+import {Box, Divider, Grid, IconButton, ListItemIcon, Menu, MenuItem} from "@mui/material";
 import {Link, useNavigate} from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
@@ -10,16 +10,18 @@ import HistoryIcon from "@mui/icons-material/History";
 import AddIcon from "@mui/icons-material/Add";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import FlightIcon from "@mui/icons-material/Flight";
-import {changeNotificationRequest, logout, switchNotificationRequest} from "../../../../store/actions/usersActions";
+import {logout} from "../../../../store/actions/usersActions";
 import {useDispatch, useSelector} from "react-redux";
 import Fade from '@mui/material/Fade';
 import {
     addFlightAdmin,
     addPaymentHandler,
     addUserPayment,
-    adminPagePath, cargoCreateUser,
+    adminPagePath,
+    cargoCreateUser,
     editingSingleTrackNumber,
-    editPages, editUserProfile,
+    editPages,
+    editUserProfile,
     listBuyouts,
     listFlightAdmin,
     listPaymentsAdmin,
@@ -87,20 +89,10 @@ const adminSettings = [
 const UserMenu = ({user}) => {
     const dispatch = useDispatch();
     const [anchorEl, setAnchorEl] = useState(null);
-    const [not, setNot] = useState(false);
     const open = Boolean(anchorEl);
     const navigate = useNavigate();
     const users = useSelector(state => state.users.user);
-    const notification = useSelector(state => state.users.notification);
     const total = useSelector(state => state.users.total);
-
-    useEffect(() => {
-        user && user.role === 'admin' && dispatch(switchNotificationRequest());
-    }, [dispatch, user]);
-
-    useMemo(() => {
-        setNot(notification);
-    }, [notification]);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -114,10 +106,6 @@ const UserMenu = ({user}) => {
         setAnchorEl(false);
         dispatch(logout());
         navigate('/');
-    };
-
-    const changeSwitchNotification = () => {
-        dispatch(changeNotificationRequest(!not));
     };
 
     return (
@@ -134,7 +122,6 @@ const UserMenu = ({user}) => {
                         <NotificationsIcon/>
                     </Badge>
                 </IconButton>}
-                {user?.role === 'admin' && <FormControlLabel control={<Switch checked={not} onChange={changeSwitchNotification}/>} label="Оповещение" />}
 
             </Grid>
 
