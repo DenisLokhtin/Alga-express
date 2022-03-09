@@ -76,7 +76,8 @@ const TableComponent = (
         selectionModel,
         onSelectionModelChange,
         rowHeight,
-        onClick
+        onRowClick,
+        onCellClick
     }) => {
 
     return (
@@ -100,7 +101,8 @@ const TableComponent = (
                 LoadingOverlay: CustomLoadingOverlay,
                 NoRowsOverlay: CustomNoRowsOverlay,
             }}
-            onCellClick={onClick}
+            onCellClick={onCellClick}
+            onRowClick={onRowClick}
         />
     );
 };
