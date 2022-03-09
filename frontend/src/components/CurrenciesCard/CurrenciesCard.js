@@ -38,8 +38,8 @@ const CurrenciesCard = ({currency}) => {
             <CardContent>
                 <Grid container spacing={1}>
                     <Grid item xs={12} md={12} lg={12}>
-                        <Grid container spacing={2} justifyContent="space-evenly">
-                            <Grid item>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} md={12} lg={12}>
                                 <TextField
                                     inputMode="numeric"
                                     label="USD"
@@ -51,7 +51,7 @@ const CurrenciesCard = ({currency}) => {
                                     variant="outlined"
                                 />
                             </Grid>
-                            <Grid item>
+                            <Grid item xs={12} md={12} lg={12}>
                                 <TextField
                                     inputMode="numeric"
                                     label="TRY"
@@ -63,7 +63,7 @@ const CurrenciesCard = ({currency}) => {
                                     variant="outlined"
                                 />
                             </Grid>
-                            <Grid item>
+                            <Grid item xs={12} md={12} lg={12}>
                                 <TextField
                                     inputMode="numeric"
                                     label="CNY"
