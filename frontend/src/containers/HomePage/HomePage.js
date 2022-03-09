@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from 'react';
 import Grid from "@mui/material/Grid";
 import {makeStyles} from "@mui/styles";
-import Pic from "../../../public/assets/main-pic.jpeg";
+import Pic from "../../assets/main-pic.jpeg";
 import {Card, CardMedia, List, ListItem, ListItemAvatar, ListItemText} from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
