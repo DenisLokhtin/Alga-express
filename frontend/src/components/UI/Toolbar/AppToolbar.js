@@ -5,7 +5,7 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import BurgerMenu from "../BurgerMenu/BurgerMenu";
 import {Link} from "react-router-dom";
-import logo from '../../../assets/logo.svg';
+import logo from '../../../../public/assets/logo.svg';
 import UserMenu from "./Menu/UserMenu";
 import Anonymous from "./Menu/Anonymous";
 import {
