@@ -16,6 +16,7 @@ import pagesSlice from "./slices/pagesSlice";
 import requisitesSlice from "./slices/requisitesSlice";
 import tariffSlice from "./slices/tariffSlice";
 import currenciesSlice from "./slices/currenciesSlice";
+import deliverySlice from "./slices/deliverySlice";
 import carouselsSlice from "./slices/carouselSlice";
 
 const rootReducer = combineReducers({
@@ -31,6 +32,7 @@ const rootReducer = combineReducers({
     'requisites': requisitesSlice.reducer,
     'tariffs':tariffSlice.reducer,
     'currencies': currenciesSlice.reducer,
+    'delivery': deliverySlice.reducer,
     'carousels': carouselsSlice.reducer,
 });
 

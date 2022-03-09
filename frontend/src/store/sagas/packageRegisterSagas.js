@@ -23,6 +23,12 @@ import {
     changeStatusesError,
     changeStatusesSuccess,
     changeStatusesRequest,
+    changeStatusSuccess,
+    changeDeliveryStatusRequest,
+    changeDeliveryStatusSuccess,
+    changeDeliveryStatusError,
+    changeStatusError, changeStatusRequest,
+    // fetchNewPackagesSuccess, fetchNewPackagesFailure, fetchNewPackages,
     fetchNewPackagesSuccess, fetchNewPackagesFailure, fetchNewPackages,
 } from "../actions/packageRegisterActions";
 import axiosApi from "../../axiosApi";
@@ -120,6 +126,28 @@ function* changeStatuses({payload: packageData}) {
     }
 }
 
+function* changeDeliveryStatus({payload: data}) {
+    try {
+        yield axiosApi.put('/packages/packageDelivery', data);
+        yield put(changeDeliveryStatusSuccess());
+        toast.success('Статус доставки изменён');
+    } catch (error) {
+        toast.error('не удалось сменить статус доставки');
+        yield put(changeDeliveryStatusError(error.response.data));
+    }
+}
+
+
+// export function* fetchNewPackagesSaga() {
+//     try {
+//         const {data} = yield axiosApi.get('/packages/newPackages');
+//         yield put(fetchNewPackagesSuccess(data));
+//     } catch (e) {
+//         yield put(fetchNewPackagesFailure(e));
+//     }
+// }
+
+
 export function* fetchNewPackagesSaga() {
     try {
         const {data} = yield axiosApi.get('/packages/newPackages');
@@ -139,6 +167,8 @@ const packageSagas = [
     takeEvery(getOrderByIdRequest, getOrderById),
     takeEvery(changeStatusesRequest, changeStatuses),
     takeEvery(fetchNewPackages, fetchNewPackagesSaga)
+    takeEvery(changeStatusRequest, changeSingleStatus),
+    takeEvery(changeDeliveryStatusRequest, changeDeliveryStatus),
 ];
 
 export default packageSagas;

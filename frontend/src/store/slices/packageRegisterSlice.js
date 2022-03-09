@@ -19,6 +19,8 @@ const initialState = {
     notFoundTrackNumbers: [],
     changeStatusesLoading: false,
     changeStatusesError: null,
+    changeDeliveryStatusLoading: false,
+    changeDeliveryStatusFailure: null,
 };
 
 const packageSlice = createSlice({
@@ -152,6 +154,19 @@ const packageSlice = createSlice({
             state.notFoundTrackNumbers = error;
         },
 
+        changeDeliveryStatusRequest(state) {
+            state.changeStatusesLoading = true;
+        },
+
+        changeDeliveryStatusSuccess(state) {
+            state.changeStatusesLoading = false;
+        },
+
+        changeDeliveryStatusError(state, {payload: error}) {
+            state.changeStatusesError = error;
+            state.changeStatusesLoading = false;
+            state.notFoundTrackNumbers = error;
+        },
         clearAdminErrors(state) {
             state.editAdminError = false;
         },
