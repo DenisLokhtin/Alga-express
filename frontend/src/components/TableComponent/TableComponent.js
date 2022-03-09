@@ -34,10 +34,11 @@ const StyledGridOverlay = styled(GridOverlay)(({theme}) => ({
     },
 }));
 
-function CustomToolbar() {
+function CustomToolbar(toolbarElements) {
     return (
         <GridToolbarContainer>
             <GridToolbarDensitySelector/>
+            {toolbarElements}
         </GridToolbarContainer>
     );
 }
@@ -77,7 +78,8 @@ const TableComponent = (
         onSelectionModelChange,
         rowHeight,
         onRowClick,
-        onCellClick
+        onCellClick,
+        toolbarElements
     }) => {
 
     return (
@@ -97,7 +99,7 @@ const TableComponent = (
             loading={loading}
             rowHeight={rowHeight}
             components={{
-                Toolbar: CustomToolbar,
+                Toolbar: () => CustomToolbar(toolbarElements),
                 LoadingOverlay: CustomLoadingOverlay,
                 NoRowsOverlay: CustomNoRowsOverlay,
             }}

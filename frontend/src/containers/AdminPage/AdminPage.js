@@ -15,6 +15,7 @@ import {fetchBuyoutsList} from "../../store/actions/buyoutActions";
 import dayjs from "dayjs";
 import {fetchPaymentRequest} from "../../store/actions/paymentActions";
 import {apiURL} from "../../config";
+import SwitchElement from "../../components/UI/SwitchElement/SwitchElement";
 
 function a11yProps(index) {
     return {
@@ -35,6 +36,7 @@ const AdminPage = () => {
     const currencies = useSelector(state => state.currencies.currencies);
 
     const buyouts = useSelector(state => state.buyouts.buyouts);
+    const [buyoutsHistory, setBuyoutsHistory] = useState(false);
     const buyoutsLoading = useSelector(state => state.buyouts.fetchLoading);
     const buyoutsTotalRow = useSelector(state => state.buyouts.totalPage);
     const [buyoutsPage, setBuyoutsPage] = useState(0);
@@ -43,6 +45,7 @@ const AdminPage = () => {
     const buyoutsPrevSelection = useRef(buyoutsSelectionModel);
 
     const packages = useSelector(state => state.package.orders);
+    const [packagesHistory, setPackagesHistory] = useState(false);
     const packagesLoading = useSelector(state => state.package.getOrdersLoading);
     const packagesTotalRow = useSelector(state => state.package.totalPage);
     const [packagesPage, setPackagesPage] = useState(0);
@@ -51,6 +54,7 @@ const AdminPage = () => {
     const packagesPrevSelectionModel = useRef(packagesSelectionModel);
 
     const payments = useSelector(state => state.payments.payment.data);
+    const [paymentsHistory, setPaymentsHistory] = useState(false);
     const paymentsLoading = useSelector(state => state.payments.fetchLoading);
     const paymentsTotalRow = useSelector(state => state.payments.payment.totalPage);
     const [paymentsPage, setPaymentsPage] = useState(0);
@@ -106,6 +110,10 @@ const AdminPage = () => {
         dispatch(getOrdersHistoryRequest({page: packagesPage, limit: packagesPageLimit}));
         dispatch(fetchBuyoutsList({page: buyoutsPage, limit: buyoutsPageLimit}));
         dispatch(fetchPaymentRequest({page: paymentsPage, limit: paymentsPageLimit}));
+
+        if (packagesHistory) {
+            dispatch(getOrdersHistoryRequest({page: packagesPage, limit: packagesPageLimit, history: true}));
+        }
     }, [dispatch,
         messagesEndRef,
         packagesPage,
@@ -114,6 +122,7 @@ const AdminPage = () => {
         buyoutsPageLimit,
         paymentsPage,
         paymentsPageLimit,
+        packagesHistory
     ]);
 
     return (
@@ -146,6 +155,12 @@ const AdminPage = () => {
                         }}
                         loading={packagesLoading}
                         onCellClick={(e) => {console.log(e)}}
+                        toolbarElements={
+                            <SwitchElement
+                                checked={packagesHistory}
+                                onChange={(e) => setPackagesHistory(e.target.checked)}
+                            />
+                        }
                     />
                 </TabPanelComponent>
 
@@ -167,6 +182,12 @@ const AdminPage = () => {
                         }}
                         loading={buyoutsLoading}
                         onCellClick={(e) => {console.log(e)}}
+                        toolbarElements={
+                            <SwitchElement
+                                checked={buyoutsHistory}
+                                onChange={(e) => setBuyoutsHistory(e.target.checked)}
+                            />
+                        }
                     />
                 </TabPanelComponent>
 
@@ -188,6 +209,12 @@ const AdminPage = () => {
                         }}
                         loading={paymentsLoading}
                         onRowClick={(e) => {console.log(e)}}
+                        toolbarElements={
+                            <SwitchElement
+                                checked={paymentsHistory}
+                                onChange={(e) => setPaymentsHistory(e.target.checked)}
+                            />
+                        }
                     />
                 </TabPanelComponent>
 
