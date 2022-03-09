@@ -102,6 +102,10 @@ const PackageSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
+    delivery: {
+        type: Boolean,
+        default: false
+    }
 });
 
 PackageSchema.pre('save',  function (next) {

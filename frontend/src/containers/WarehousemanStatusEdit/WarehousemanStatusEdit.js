@@ -77,6 +77,7 @@ const WarehousemanStatusEdit = () => {
         dispatch(changeStatusesRequest(packageStatus));
     };
 
+    console.log(packageStatus);
     const messagesEndRef = useRef(null);
 
     useEffect(() => {
