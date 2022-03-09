@@ -32,5 +32,8 @@ export const {
     changeStatusRequest,
     changeStatusSuccess,
     changeStatusError,
+    changeDeliveryStatusRequest,
+    changeDeliveryStatusSuccess,
+    changeDeliveryStatusError,
     clearAdminErrors,
 } = packageSlice.actions;

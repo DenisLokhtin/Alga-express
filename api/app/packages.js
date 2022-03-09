@@ -14,12 +14,12 @@ const packageValidate = require("../middleware/packageValidate");
 const router = express.Router();
 
 router.get('/newPackages', auth, permit('admin', 'warehouseman', 'user', 'superAdmin'), async (req, res) => {
-   try {
-       const packages = await Package.find({status: 'REGISTERED'}).select('title cargoNumber amount price country');
-       res.send(packages);
-   } catch (e) {
-       res.status(500).send(e);
-   }
+    try {
+        const packages = await Package.find({status: 'REGISTERED'}).select('title cargoNumber amount price country');
+        res.send(packages);
+    } catch (e) {
+        res.status(500).send(e);
+    }
 });
 
 router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) => {
@@ -60,7 +60,7 @@ router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) =>
 
         const packages = await Package.find(findFilter)
             .populate({path: 'flight user', select: 'name number description depart_date arrived_date'})
-            .select('title trackNumber country cargoNumber status description')
+            .select('title trackNumber country cargoNumber status description delivery')
             .sort(query.sort)
             .limit(limit)
             .skip(page * limit);
@@ -77,7 +77,7 @@ router.get('/:id', auth, permit('admin', 'warehouseman', 'user', 'superAdmin'), 
         if (req.user.role === 'user') {
             const packageFind = await Package.findById(req.params.id)
                 .populate({path: 'flight user', select: 'name number description depart_date arrived_date'})
-                .select('trackNumber title amount price country status date cargoNumber urlPackage');
+                .select('trackNumber title amount price country status date cargoNumber urlPackage delivery');
             if (packageFind.user._id.toString() === req.user._id.toString()) {
                 return res.send(packageFind);
             }
@@ -87,7 +87,7 @@ router.get('/:id', auth, permit('admin', 'warehouseman', 'user', 'superAdmin'), 
             const packageFind = await Package.findById(req.params.id)
                 .populate({path: 'flight user', select: 'name number description depart_date arrived_date'})
                 .select('trackNumber title amount price country status ' +
-                    'date cargoNumber width length height cargoWeight cargoPrice urlPackage');
+                    'date cargoNumber width length height cargoWeight cargoPrice urlPackage delivery');
             return res.send(packageFind);
         }
 
@@ -138,14 +138,14 @@ router.post('/', auth, packageValidate, permit('admin', 'superAdmin', 'user'), a
         }
 
 
-        if(req.user.role === 'admin'){
+        if (req.user.role === 'admin') {
             const newPackage = new Package(packageAdmin);
             await newPackage.save();
-          return  res.send(newPackage);
-        }else{
+            return res.send(newPackage);
+        } else {
             const newPackage = new Package(packageData);
             await newPackage.save();
-            return  res.send(newPackage);
+            return res.send(newPackage);
         }
 
     } catch (error) {
@@ -169,9 +169,9 @@ router.put('/', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req,
     const filtered = trackNumbersData.filter(packageStatus => packageStatus.trackNumber !== '');
 
     const uniquePackages = filtered.filter((packageInfo, index, self) =>
-            index === self.findIndex((packageData) => (
-                packageData.trackNumber === packageInfo.trackNumber
-            ))
+        index === self.findIndex((packageData) => (
+            packageData.trackNumber === packageInfo.trackNumber
+        ))
     );
 
     try {
@@ -255,6 +255,19 @@ router.put('/single', auth, permit('admin', 'warehouseman', 'superAdmin'), async
     }
 });
 
+router.put('/packageDelivery', auth, permit('user'), async (req, res) => {
+    try {
+        const updatedPackage = await Package.findOneAndUpdate({trackNumber: req.body.trackNumber}, {
+            delivery: true,
+        }, );
+
+        res.send(updatedPackage);
+
+    } catch (error) {
+        console.log(error);
+        res.status(400).send(error);
+    }
+});
 
 router.put('/:id', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req, res) => {
     let result = {};

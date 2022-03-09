@@ -1,53 +1,50 @@
 import {createSlice} from "@reduxjs/toolkit";
 
-const name = 'flight';
+const name = 'delivery';
 
-const flightSlice = createSlice({
+const deliverySlice = createSlice({
     name,
     initialState: {
-        flights: [],
+        delivery: [],
         error: null,
         loading: false,
-        flightsCount: 0
     },
     reducers: {
-        postFlightRequest(state) {
+        postDeliveryRequest(state) {
             state.loading = true;
         },
-        postFlightSuccess(state) {
+        postDeliverySuccess(state) {
             state.loading = false;
         },
-        postFlightFailure(state, action) {
+        postDeliveryFailure(state, action) {
             state.loading = false;
             state.error = action.payload;
         },
-        getFlightsRequest(state) {
+        getDeliveryRequest(state) {
             state.loading = true;
         },
-        getFlightsSuccess(state, action) {
+        getDeliverySuccess(state, action) {
             state.loading = false;
-            state.flights = action.payload.data;
-            state.flightsCount = action.payload.totalElements;
+            state.delivery = action.payload.data;
         },
-        getFlightsFailure(state, action) {
+        getDeliveryFailure(state, action) {
             state.loading = false;
             state.error = action.payload;
         },
-        putFlightRequest(state) {
+        putDeliveryRequest(state) {
             state.loading = true;
         },
-        putFlightSuccess(state) {
+        putDeliverySuccess(state) {
             state.loading = false;
         },
-        putFlightFailure(state, action) {
+        putDeliveryFailure(state, action) {
             state.loading = false;
             state.error = action.payload;
         },
-        clearFlightsError(state) {
+        clearDeliveryError(state) {
             state.error = null;
         }
-
     }
 });
 
-export default flightSlice;
+export default deliverySlice;
