@@ -32,26 +32,11 @@ const AddCarouselAdmin = () => {
     const dispatch = useDispatch();
     const error = useSelector(state => state.carousels.carouselsError);
     const loading = useSelector(state => state.carousels.carouselsLoading);
-
     const [carousel, setCarousel] = useState({
         info: '',
         picture: null,
     });
-
     const submitFormHandler = e => {
-        // e.preventDefault();
-        // const formData = new FormData();
-        // const carouselData = {};
-        // Object.keys(carousel).forEach(key => {
-        //     formData.append(key, carousel[key]);
-        //     carouselData[key] = carousel[key];
-        // });
-        // console.log(carouselData);
-        // dispatch(addCarouselsRequest({carouselData, navigate}));
-        // setCarousel({
-        //     info: '',
-        // })
-
         e.preventDefault();
 
         const formData = new FormData();
@@ -81,34 +66,6 @@ const AddCarouselAdmin = () => {
         }));
     };
 
-    // const resizeFile = (file) =>
-    //     new Promise((resolve) => {
-    //         Resizer.imageFileResizer(
-    //             file,
-    //             300,
-    //             400,
-    //             "JPEG",
-    //             100,
-    //             0,
-    //             (uri) => {
-    //                 resolve(uri);
-    //             },
-    //             "base64"
-    //         );
-    //     });
-
-    // const dataURIToBlob = (dataURI) => {
-    //     const splitDataURI = dataURI.split(",");
-    //     const byteString =
-    //         splitDataURI[0].indexOf("base64") >= 0
-    //             ? atob(splitDataURI[1])
-    //             : decodeURI(splitDataURI[1]);
-    //     const mimeString = splitDataURI[0].split(":")[1].split(";")[0];
-    //     const ia = new Uint8Array(byteString.length);
-    //     for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
-    //     return new Blob([ia], {type: mimeString});
-    // };
-
     const fileChangeHandler = async (e) => {
         const name = e.target.name;
         const file = e.target.files[0]
@@ -135,7 +92,6 @@ const AddCarouselAdmin = () => {
             >
                 <h3 style={theme.title}>Добавить изображение на слайдер</h3>
                 <Grid item xs={12}>
-                    {/*<p>Заголовок изображения</p>*/}
                     <FormElement
                         label="Заголовок изображения"
                         required
@@ -154,7 +110,6 @@ const AddCarouselAdmin = () => {
                         name="picture"
                         onChange={fileChangeHandler}
                     />
-
                 </Grid>
 
                 <Grid item xs={12}>

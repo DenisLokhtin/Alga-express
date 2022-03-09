@@ -36,7 +36,6 @@ const useStyles = makeStyles({
 
 const HomePage = () => {
     const classes = useStyles();
-
     const messagesEndRef = useRef(null);
 
     useEffect(() => {
@@ -54,8 +53,6 @@ const HomePage = () => {
                     Служба доставки из Турции и Сша
                 </h1>
             </Grid>
-
-            <br/>
             <Grid container>
                 <Grid item xs={12}>
                     <Grid item>

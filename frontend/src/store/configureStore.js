@@ -72,7 +72,6 @@ axiosApi.interceptors.response.use(res => res, e => {
     if (!e.response) {
         e.response = {data: {global: 'No internet'}};
     }
-
     throw e;
 });
 

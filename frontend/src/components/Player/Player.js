@@ -53,17 +53,13 @@ const useStyles = makeStyles(theme => ({
 
 
 const Player = () => {
-
     const dispatch = useDispatch();
     const user = useSelector(state => state.users.user);
     const classes = useStyles();
-
     const loading = useSelector(state => state.players.createLoading);
-
     const deletePlayer = (id) => {
         dispatch(deletePlayerRequest(id));
     };
-
     const players = useSelector(state => state.players.player);
     const messagesEndRef = useRef(null);
 
@@ -75,7 +71,6 @@ const Player = () => {
         }
         dispatch(fetchPlayerRequest());
     }, [dispatch, messagesEndRef]);
-
     const urlFromYoutube = players && players[0] ? players[0].urlYoutube : '';
     const IdFromYoutube = players && players[0] ? players[0]._id : '';
 
@@ -142,7 +137,6 @@ const Player = () => {
                 controls={true}
                 url={urlFromYoutube}
             />
-
         </div>
     );
 };

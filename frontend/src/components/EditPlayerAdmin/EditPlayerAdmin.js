@@ -30,18 +30,14 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const EditPlayerAdmin = () => {
-
     const navigate = useNavigate();
     const onePlayer = useSelector(state => state.players.onePlayer);
     const classes = useStyles();
-
     const [singlePlayer, setSinglePlayer] = useState({
         urlYoutube: '',
     });
-
     const dispatch = useDispatch();
     const params = useParams();
-
     const loading = useSelector(state => state.players.singleLoading);
     const error = useSelector(state => state.players.playerError);
 
@@ -95,7 +91,6 @@ const EditPlayerAdmin = () => {
                     noValidate
                     spacing={5}
                 >
-
                     <Grid item xs={12}>
                         <FormElement
                             label={singlePlayer.urlYoutube ? "" : "Ссылка с youtube"}
@@ -106,7 +101,6 @@ const EditPlayerAdmin = () => {
                             error={getFieldError('info')}
                         />
                     </Grid>
-
                     <Grid item xs={3} sm={8} md={3} lg={7}
                           className={classes.submit}>
                         <ButtonWithProgress
@@ -121,7 +115,6 @@ const EditPlayerAdmin = () => {
                         </ButtonWithProgress>
                     </Grid>
                 </Grid>
-
             </Container>
         </div>
     );

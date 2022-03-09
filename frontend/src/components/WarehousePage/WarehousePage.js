@@ -38,16 +38,13 @@ const WarehousePage = () => {
     const loading = useSelector(state => state.wareHouses.createLoading);
     const classes = useStyles();
     const [value, setValue] = React.useState("0");
-
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
-
     const deleteWareHouse = (id) => {
         dispatch(deleteWareHouseRequest(id));
         setValue("0");
     };
-
     const content = wareHouses[value]?.info.split('\n').filter(info => info !== '').map(info => ({info}));
 
     return (
@@ -167,7 +164,6 @@ const WarehousePage = () => {
                     </TabPanel>
                 ))}
             </TabContext>
-
             <Player/>
         </Box>
     );
