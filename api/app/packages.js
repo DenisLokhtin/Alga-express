@@ -14,12 +14,12 @@ const packageValidate = require("../middleware/packageValidate");
 const router = express.Router();
 
 router.get('/newPackages', auth, permit('admin', 'warehouseman', 'user', 'superAdmin'), async (req, res) => {
-   try {
-       const packages = await Package.find({status: 'REGISTERED'}).select('title cargoNumber amount price country');
-       res.send(packages);
-   } catch (e) {
-       res.status(500).send(e);
-   }
+    try {
+        const packages = await Package.find({status: 'REGISTERED'}).select('title cargoNumber amount price country');
+        res.send(packages);
+    } catch (e) {
+        res.status(500).send(e);
+    }
 });
 
 router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) => {
@@ -60,7 +60,7 @@ router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) =>
 
         const packages = await Package.find(findFilter)
             .populate({path: 'flight user', select: 'name number description depart_date arrived_date'})
-            .select('title trackNumber country cargoNumber status description')
+            .select('title trackNumber country cargoNumber status description delivery')
             .sort(query.sort)
             .limit(limit)
             .skip(page * limit);
@@ -77,7 +77,7 @@ router.get('/:id', auth, permit('admin', 'warehouseman', 'user', 'superAdmin'), 
         if (req.user.role === 'user') {
             const packageFind = await Package.findById(req.params.id)
                 .populate({path: 'flight user', select: 'name number description depart_date arrived_date'})
-                .select('trackNumber title amount price country status date cargoNumber urlPackage');
+                .select('trackNumber title amount price country status date cargoNumber urlPackage delivery');
             if (packageFind.user._id.toString() === req.user._id.toString()) {
                 return res.send(packageFind);
             }
@@ -87,7 +87,7 @@ router.get('/:id', auth, permit('admin', 'warehouseman', 'user', 'superAdmin'), 
             const packageFind = await Package.findById(req.params.id)
                 .populate({path: 'flight user', select: 'name number description depart_date arrived_date'})
                 .select('trackNumber title amount price country status ' +
-                    'date cargoNumber width length height cargoWeight cargoPrice urlPackage');
+                    'date cargoNumber width length height cargoWeight cargoPrice urlPackage delivery');
             return res.send(packageFind);
         }
 
@@ -130,22 +130,20 @@ router.post('/', auth, packageValidate, permit('admin', 'superAdmin', 'user'), a
             user: req.body.userId,
         }
 
-
         const notFoundTrackNumber = await NotFoundTrackNumber.findOne({notFoundTrackNumber: packageData.trackNumber});
 
         if (notFoundTrackNumber) {
             packageData.status = notFoundTrackNumber.status;
         }
 
-
         if(req.user.role === 'admin'){
             const newPackage = new Package(packageAdmin);
             await newPackage.save();
-          return  res.send(newPackage);
-        }else{
+            return res.send(newPackage);
+        } else {
             const newPackage = new Package(packageData);
             await newPackage.save();
-            return  res.send(newPackage);
+            return res.send(newPackage);
         }
 
     } catch (error) {
@@ -169,9 +167,9 @@ router.put('/', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req,
     const filtered = trackNumbersData.filter(packageStatus => packageStatus.trackNumber !== '');
 
     const uniquePackages = filtered.filter((packageInfo, index, self) =>
-            index === self.findIndex((packageData) => (
-                packageData.trackNumber === packageInfo.trackNumber
-            ))
+        index === self.findIndex((packageData) => (
+            packageData.trackNumber === packageInfo.trackNumber
+        ))
     );
 
     try {
@@ -214,47 +212,19 @@ router.put('/', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req,
     }
 });
 
-
-router.put('/single', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req, res) => {
-    const notFoundTrackNumbers = [];
+router.put('/packageDelivery', auth, permit('user'), async (req, res) => {
     try {
-        if (req.body.trackNumber.length === 0) {
-            return res.status(400).send({
-                errors: {
-                    trackNumber: {message: "Введите трек-номер"},
-                },
-            });
-        }
+        const updatedPackage = await Package.findOneAndUpdate({trackNumber: req.body.trackNumber}, {
+            delivery: true,
+        }, );
 
-        const updatedStatus = await Package.findOneAndUpdate(
-            {trackNumber: req.body.trackNumber},
-            {status: req.body.status},
-            {new: true, runValidators: true});
-
-        if (!updatedStatus) {
-            const notFoundTrackNumberData = {
-                notFoundTrackNumber: req.body.trackNumber,
-                status: req.body.status,
-            };
-
-            const notFoundTrackNumber = new NotFoundTrackNumber(notFoundTrackNumberData);
-
-            await notFoundTrackNumber.save();
-
-            notFoundTrackNumbers.push({trackNumber: req.body.trackNumber});
-        }
-
-        if (notFoundTrackNumbers.length > 0) {
-            res.status(404).send(notFoundTrackNumbers);
-        } else {
-            res.send({message: 'Статус трек-номера был успешно изменен'});
-        }
+        res.send(updatedPackage);
 
     } catch (error) {
-        res.sendStatus(500)
+        console.log(error);
+        res.status(400).send(error);
     }
 });
-
 
 router.put('/:id', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req, res) => {
     let result = {};

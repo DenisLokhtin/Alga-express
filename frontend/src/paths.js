@@ -25,7 +25,6 @@ export const listFlightAdmin = '/cargo/flights';
 export const addFlightAdmin = '/cargo/newFlight';
 export const listPaymentsAdmin = '/cargo/payments';
 export const processingTrackNumbersAdmin = '/cargo/processingNumbers/edit';
-export const editingSingleTrackNumber = '/cargo/singleTrackNumber/edit';
 export const orderBuyouts = '/user/orderBuyouts';
 export const editPages = '/cargo/editPages';
 export const editBuyout = '/user/buyout/edit/:id';

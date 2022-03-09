@@ -38,7 +38,6 @@ import {
     contactsCompany,
     editBuyout,
     editCarousel,
-    editingSingleTrackNumber,
     editPackageAdmin,
     editPackageUser,
     editPages,
@@ -72,7 +71,6 @@ import {
     wareHouseCompany,
 } from "./paths";
 import OrderBuyout from "./containers/OrderBuyout/OrderBuyout";
-import SingleStatusEdit from "./containers/SingleStatusEdit/SingleStatusEdit";
 import EditPages from "./containers/EditPages/EditPages";
 import EditBuyout from "./components/EditBuyout/EditBuyout";
 import BuyoutList from "./containers/BuyoutList/BuyoutList";
@@ -141,7 +139,6 @@ const App = () => {
                     {/*Приватные роуты можно сделать одним компонентом потом фикс*/}
                     <Route element={<ProtectedRoutesForWarehouseman/>}>
                         <Route path={processingTrackNumbersAdmin} element={<WarehousemanStatusEdit/>}/>
-                        <Route path={editingSingleTrackNumber} element={<SingleStatusEdit/>}/>
                     </Route>
                     <Route element={<ProtectedRoutesForSuperAdmin/>}>
                         <Route path={cargoCreateUser} element={<CreateUser/>}/>
