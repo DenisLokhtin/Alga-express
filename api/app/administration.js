@@ -6,6 +6,7 @@ const PaymentMove = require("../models/PaymentMove");
 const User = require("../models/User");
 const TariffGroup = require("../models/TariffGroup");
 
+
 const router = express.Router();
 
 router.get('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
@@ -160,7 +161,6 @@ router.put('/:id', auth, permit('admin', 'superAdmin'), async (req, res) => {
         const userPayment = await Payment.findById(userPaymentMove.userPayment)
             .populate('user', 'name');
         const user = await User.findById(userPayment.user);
-
 
         if (pay > 0) {
             const permitData = {

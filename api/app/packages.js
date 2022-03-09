@@ -202,6 +202,9 @@ router.put('/', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req,
             }
         }
 
+        const packages = await Package.find({status: 'DELIVERED'});
+        console.log(packages);
+
         if (notFoundTrackNumbers.length > 0) {
             res.status(404).send(notFoundTrackNumbers);
         } else {
