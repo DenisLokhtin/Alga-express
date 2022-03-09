@@ -11,6 +11,7 @@ import pagesSagas from "./sagas/pagesSagas";
 import requisitesSagas from "./sagas/requisitesSagas";
 import tariffSagas from "./sagas/tariffSagas";
 import currenciesSagas from "./sagas/currenciesSagas";
+import deliverySagas from "./sagas/deliverySagas";
 
 export function* rootSagas() {
     yield all([
@@ -25,6 +26,7 @@ export function* rootSagas() {
         ...pagesSagas,
         ...requisitesSagas,
         ...tariffSagas,
-        ...currenciesSagas
+        ...currenciesSagas,
+        ...deliverySagas,
     ]);
 }

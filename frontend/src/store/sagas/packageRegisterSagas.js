@@ -24,7 +24,11 @@ import {
     changeStatusesSuccess,
     changeStatusesRequest,
     changeStatusSuccess,
-    changeStatusError, changeStatusRequest, fetchNewPackagesSuccess, fetchNewPackagesFailure, fetchNewPackages,
+    changeDeliveryStatusRequest,
+    changeDeliveryStatusSuccess,
+    changeDeliveryStatusError,
+    changeStatusError, changeStatusRequest,
+    // fetchNewPackagesSuccess, fetchNewPackagesFailure, fetchNewPackages,
 } from "../actions/packageRegisterActions";
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
@@ -122,6 +126,17 @@ function* changeStatuses({payload: packageData}) {
     }
 }
 
+function* changeDeliveryStatus({payload: data}) {
+    try {
+        yield axiosApi.put('/packages/packageDelivery', data);
+        yield put(changeDeliveryStatusSuccess());
+        toast.success('Статус доставки изменён');
+    } catch (error) {
+        toast.error('не удалось сменить статус доставки');
+        yield put(changeDeliveryStatusError(error.response.data));
+    }
+}
+
 function* changeSingleStatus({payload: packageData}) {
     try {
         const response = yield axiosApi.put('/packages', packageData);
@@ -141,15 +156,14 @@ function* changeSingleStatus({payload: packageData}) {
     }
 }
 
-export function* fetchNewPackagesSaga() {
-    try {
-        const {data} = yield axiosApi.get('/packages/newPackages');
-        yield put(fetchNewPackagesSuccess(data));
-    } catch (e) {
-        yield put(fetchNewPackagesFailure(e));
-    }
-}
-
+// export function* fetchNewPackagesSaga() {
+//     try {
+//         const {data} = yield axiosApi.get('/packages/newPackages');
+//         yield put(fetchNewPackagesSuccess(data));
+//     } catch (e) {
+//         yield put(fetchNewPackagesFailure(e));
+//     }
+// }
 
 
 const packageSagas = [
@@ -162,7 +176,7 @@ const packageSagas = [
     takeEvery(getOrderByIdRequest, getOrderById),
     takeEvery(changeStatusesRequest, changeStatuses),
     takeEvery(changeStatusRequest, changeSingleStatus),
-    takeEvery(fetchNewPackages, fetchNewPackagesSaga)
+    takeEvery(changeDeliveryStatusRequest, changeDeliveryStatus),
 ];
 
 export default packageSagas;

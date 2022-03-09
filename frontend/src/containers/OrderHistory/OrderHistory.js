@@ -6,6 +6,7 @@ import {DataGrid, GridOverlay, GridToolbarContainer, GridToolbarDensitySelector,
 import {styled} from "@mui/material/styles";
 import theme from "../../theme";
 import {countries, statuses} from "../../dataLocalization";
+import DeliveryModal from "../../components/DeliveryModal/DeliveryModal";
 
 function CustomToolbar() {
     return (
@@ -99,50 +100,19 @@ const StyledDataGrid = styled(DataGrid)(({theme}) => ({
     },
 }));
 
-const columns = [
-    {
-        field: 'cargoNumber',
-        headerName: 'Карго-номер',
-        flex: 1,
-        minWidth: 150,
-        headerAlign: 'center',
-        align: 'center',
-    },
-    {
-        field: 'trackNumber',
-        headerName: 'Трек-номер',
-        flex: 1,
-        minWidth: 195,
-        headerAlign: 'center',
-        align: 'center'
-    },
-    {
-        field: 'country',
-        headerName: 'Страна',
-        flex: 1,
-        minWidth: 200,
-        headerAlign: 'center',
-        align: 'center',
-    },
-    {
-        field: 'status',
-        headerName: 'Статус',
-        flex: 1,
-        minWidth: 100,
-        headerAlign: 'center',
-        align: 'center',
-    },
-    {
-        field: 'title',
-        headerName: 'Заголовок',
-        flex: 1,
-        minWidth: 200,
-        headerAlign: 'center',
-        align: 'center',
-    },
-];
-
 const OrderHistory = () => {
+    const [open, setOpen] = useState(false);
+    const [currentModal, setCurrentModal] = useState({
+        cargoNumber: "1",
+        country: "Китай-Авия",
+        delivery: "false",
+        id: "6220b025363a1780b6f28293",
+        status: "В пути",
+        title: "package 3",
+        trackNumber: "DnS5myCQv6H4H1_4YCtPM",
+    });
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
     const loading = useSelector(state => state.package.getOrdersLoading);
     const dispatch = useDispatch();
     const orders = useSelector(state => state.package.orders);
@@ -152,6 +122,80 @@ const OrderHistory = () => {
     const [selectionModel, setSelectionModel] = React.useState([]);
     const prevSelectionModel = React.useRef(selectionModel);
 
+    const columns = [
+        {
+            field: 'cargoNumber',
+            headerName: 'Карго-номер',
+            flex: 1,
+            minWidth: 150,
+            headerAlign: 'center',
+            align: 'center',
+        },
+        {
+            field: 'trackNumber',
+            headerName: 'Трек-номер',
+            flex: 1,
+            minWidth: 195,
+            headerAlign: 'center',
+            align: 'center'
+        },
+        {
+            field: 'country',
+            headerName: 'Страна',
+            flex: 1,
+            minWidth: 200,
+            headerAlign: 'center',
+            align: 'center',
+        },
+        {
+            field: 'status',
+            headerName: 'Статус',
+            flex: 1,
+            minWidth: 100,
+            headerAlign: 'center',
+            align: 'center',
+        },
+        {
+            field: 'title',
+            headerName: 'Заголовок',
+            flex: 1,
+            minWidth: 200,
+            headerAlign: 'center',
+            align: 'center',
+        },
+        {
+            field: 'delivery',
+            headerName: 'Доставка',
+            flex: 1,
+            minWidth: 200,
+            headerAlign: 'center',
+            align: 'center',
+            renderCell: (params) => {
+                const onClick = (e) => {
+                    e.stopPropagation();
+                    setCurrentModal({...params.row});
+                };
+                if (!params.row.delivery) {
+                    return (
+                        <div onClick={onClick}>
+                            <a onClick={handleOpen}
+                               style={{color: theme.palette.mode === 'light' ? 'rgba(0,0,0,.85)' : 'rgba(255,255,255,0.65)',}}
+                               href="#">
+                                Заказать доставку
+                            </a>
+                        </div>
+                    );
+                } else {
+                    return (
+                        <div>
+                            Доставка оформлена
+                        </div>
+                    )
+                }
+            }
+        },
+    ];
+
     const myRows = orders.map(order => {
         return {
             id: order._id,
@@ -160,6 +204,7 @@ const OrderHistory = () => {
             title: order.title,
             country: countries[order.country],
             status: statuses[order.status],
+            delivery: order.delivery,
         }
     });
 
@@ -189,10 +234,12 @@ const OrderHistory = () => {
         return () => {
             active = false;
         };
+
     }, [page, dispatch, pageLimit, messagesEndRef]);
 
     return (
         <Container ref={messagesEndRef} style={{display: 'flex', height: '550px', width: '100%', marginTop: '5em'}}>
+            <DeliveryModal title={currentModal.title} track={currentModal.trackNumber} status={currentModal.status} country={currentModal.country} open={open} close={handleClose}/>
             <StyledDataGrid
                 rows={myRows}
                 columns={
@@ -202,6 +249,7 @@ const OrderHistory = () => {
                         {field: 'country', sortable: false},
                         {field: 'status', sortable: false},
                         {field: 'title', sortable: false},
+                        {field: 'delivery', sortable: false},
                     ]}
                 pagination
                 pageSize={pageLimit}
