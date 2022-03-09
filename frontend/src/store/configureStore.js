@@ -17,6 +17,7 @@ import requisitesSlice from "./slices/requisitesSlice";
 import tariffSlice from "./slices/tariffSlice";
 import currenciesSlice from "./slices/currenciesSlice";
 import deliverySlice from "./slices/deliverySlice";
+import carouselsSlice from "./slices/carouselSlice";
 
 const rootReducer = combineReducers({
     'users': usersSlice.reducer,
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
     'tariffs':tariffSlice.reducer,
     'currencies': currenciesSlice.reducer,
     'delivery': deliverySlice.reducer,
+    'carousels': carouselsSlice.reducer,
 });
 
 const persistedState = loadFromLocalStorage();

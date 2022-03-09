@@ -27,6 +27,7 @@ import WarehousemanStatusEdit from "./containers/WarehousemanStatusEdit/Warehous
 import AdminPaymentsProcessing from "./components/AdminPaymentsProcessing/AdminPaymentsProcessing";
 import {
     aboutCompany,
+    addCarousel,
     addFlightAdmin,
     addPaymentHandler,
     addUserPayment,
@@ -35,6 +36,7 @@ import {
     cargoCreateUser,
     contactsCompany,
     editBuyout,
+    editCarousel,
     editingSingleTrackNumber,
     editPackageAdmin,
     editPackageUser,
@@ -90,9 +92,10 @@ import ProtectedRoutesForWarehouseman
     from "./components/ProtectedRoutes/ProtoectedRoutesForWarehouseman/ProtectedRoutesForWarehouseman";
 import ProtectedRoutesForSuperAdmin
     from "./components/ProtectedRoutes/ProtectedRoutesForSuperAdmin/ProtectedRoutesForSuperAdmin";
+import AddCarouselAdmin from "./components/AddCarouselAdmin/AddCarouselAdmin";
+import EditCarouselAdmin from "./components/EditCarouselAdmin/EditCarouselAdmin";
 
 const App = () => {
-
     return (
         <UpdateDates>
             <Layout>
@@ -124,6 +127,8 @@ const App = () => {
                         <Route path={listPaymentsAdmin} element={<AdminPaymentsProcessing/>}/>
                         <Route path={addUserPayment} element={<UserPayment/>}/>
                         <Route path={addWareHouseAddress} element={<AddWareHouseAdmin/>}/>
+                        <Route path={addCarousel} element={<AddCarouselAdmin/>}/>
+                        <Route path={editCarousel} element={<EditCarouselAdmin/>}/>
                         <Route path={editWareHouseAddress} element={<EditWareHouseAdmin/>}/>
                     </Route>
                     {/* Routes for warehouseman and SuperAdmin*/}

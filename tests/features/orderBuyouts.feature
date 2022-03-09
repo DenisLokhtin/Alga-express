@@ -16,7 +16,7 @@
     То я вижу текст "Вы авторизированы!"
 
     Если я захожу на страницу "/user/orderBuyouts" кликаю на select
-    И выбираю страну
+    И выбираю страну страну из списка orderBuyouts
     Затем я ввожу данные:
       | description | зеленая футболка                            |
       | url         | https://www.polo.co.za/men/apparel/t-shirts |

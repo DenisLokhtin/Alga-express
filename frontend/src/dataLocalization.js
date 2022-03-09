@@ -9,8 +9,9 @@ export const statuses = {
 };
 
 export const countries = {
-    USA: 'Америка',
-    Turkey: 'Турция',
-    China: 'Китай-Авия',
-    China_ground: 'Китай (Наземная доставка)',
+    usa: 'Америка',
+    turkey: 'Турция-Авиа',
+    turkeyGround: 'Турция (Наземная доставка)',
+    china: 'Китай-Авиа',
+    chinaGround: 'Китай (Наземная доставка)',
 };

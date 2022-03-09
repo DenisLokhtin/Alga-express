@@ -8,6 +8,7 @@ const adminEdit = require("../middleware/adminEdit");
 const NotFoundTrackNumber = require('../models/NotFoundTrackNumber');
 const PaymentMove = require("../models/PaymentMove");
 const User = require("../models/User");
+const Currency = require('../models/Currency');
 const packageValidate = require("../middleware/packageValidate");
 
 const router = express.Router();
@@ -273,6 +274,8 @@ router.put('/:id', auth, permit('admin', 'warehouseman', 'superAdmin'), async (r
     try {
         const packageFind = await Package.findById(req.params.id)
         const userDebit = await User.findById(packageFind.user._id);
+        const currency = await Currency.findOne({});
+        console.log(currency);
         const prices = userDebit.tariff;
 
         if (req.user.role === 'user')
@@ -288,10 +291,11 @@ router.put('/:id', auth, permit('admin', 'warehouseman', 'superAdmin'), async (r
             return res.status(result.code).send({message: result.message});
 
         if (result.success) {
+            const debitAmount = (result.success.cargoPrice) * currency.usd;
             if (result.success.cargoPrice) {
                 const permitData = {
                     debit: packageFind._id,
-                    debit_amount: result.success.cargoPrice,
+                    debit_amount: debitAmount,
                     permitPayment: req.user._id,
                     lastBalance: packageFind.user.balance,
                     status: 'DEBIT',
@@ -299,7 +303,7 @@ router.put('/:id', auth, permit('admin', 'warehouseman', 'superAdmin'), async (r
 
                 const paySave = new PaymentMove(permitData);
                 await paySave.save();
-                await User.findByIdAndUpdate(packageFind.user._id, {balance: userDebit.balance - result.success.cargoPrice});
+                await User.findByIdAndUpdate(packageFind.user._id, {balance: userDebit.balance - debitAmount});
 
             }
             await result.success.save();

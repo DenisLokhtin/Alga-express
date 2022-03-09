@@ -1,11 +1,9 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Box, Container, LinearProgress, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {getOrdersHistoryRequest} from "../../store/actions/packageRegisterActions";
-import {DataGrid, GridOverlay, GridToolbarContainer, GridToolbarDensitySelector, ruRU} from "@mui/x-data-grid";
-import {styled} from "@mui/material/styles";
-import theme from "../../theme";
 import {countries, statuses} from "../../dataLocalization";
+import TableComponent from "../../components/TableComponent/TableComponent";
+import {Container} from "@mui/material";
 import DeliveryModal from "../../components/DeliveryModal/DeliveryModal";
 
 function CustomToolbar() {
@@ -239,8 +237,9 @@ const OrderHistory = () => {
 
     return (
         <Container ref={messagesEndRef} style={{display: 'flex', height: '550px', width: '100%', marginTop: '5em'}}>
-            <DeliveryModal title={currentModal.title} track={currentModal.trackNumber} status={currentModal.status} country={currentModal.country} open={open} close={handleClose}/>
-            <StyledDataGrid
+            <DeliveryModal title={currentModal.title} track={currentModal.trackNumber} status={currentModal.status}
+                           country={currentModal.country} open={open} close={handleClose}/>
+            <TableComponent
                 rows={myRows}
                 columns={
                     [...columns,
@@ -253,9 +252,7 @@ const OrderHistory = () => {
                     ]}
                 pagination
                 pageSize={pageLimit}
-                rowsPerPageOptions={[5, 10, 20, 30]}
                 rowCount={totalRow}
-                paginationMode="server"
                 onPageSizeChange={newRowsLimit => setPageLimit(newRowsLimit)}
                 onPageChange={(newPage) => {
                     prevSelectionModel.current = selectionModel;
@@ -265,14 +262,8 @@ const OrderHistory = () => {
                     setSelectionModel(newSelectionModel);
                 }}
                 selectionModel={selectionModel}
-                localeText={ruRU.components.MuiDataGrid.defaultProps.localeText}
-                loading={loading}
                 rowHeight={70}
-                components={{
-                    Toolbar: CustomToolbar,
-                    LoadingOverlay: CustomLoadingOverlay,
-                    NoRowsOverlay: CustomNoRowsOverlay,
-                }}
+                loading={loading}
             />
         </Container>
     );

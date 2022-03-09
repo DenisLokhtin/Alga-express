@@ -5,8 +5,8 @@ Given('я захожу на страницу {string} кликаю на select',
     I.click("//form//div[@id='demo-controlled-open-select']");
 });
 
-When('выбираю страну', async () => {
-    I.click(`//ul//li[@data-value="Turkey"]`);
+When('выбираю страну из списка packageRegister', async () => {
+    I.click(`//*[@id="menu-country"]/div[3]/ul/li[2]`);
 });
 
 Then('я ввожу данные:', (table) => {
