@@ -34,8 +34,13 @@ const DeliveryModal = (props) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        setAddress({...address, trackNumber: props.track});
-    },[props.track]);
+        setAddress({
+            street: '',
+            house: '',
+            flat: '',
+            trackNumber: props.track,
+        });
+    }, [props.track]);
 
     const submitFormHandler = e => {
         e.preventDefault();
