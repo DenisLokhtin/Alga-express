@@ -30,6 +30,7 @@
     "react-icons": "^4.3.1",
     "react-image-file-resizer": "^0.4.7",
     "react-phone-input-2": "^2.14.0",
+    "react-player": "^2.9.0",
     "react-redux": "^7.2.6",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",

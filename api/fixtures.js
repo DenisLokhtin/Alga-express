@@ -14,6 +14,7 @@ const WareHouse = require("./models/WareHouse");
 const Currency = require("./models/Currency");
 const Buyout = require("./models/Buyout");
 const Carousel = require("./models/Carousel");
+const Player = require("./models/Player");
 
 const run = async () => {
     await mongoose.connect(config.db.url, config.db.options);
@@ -322,6 +323,12 @@ const run = async () => {
         {
             info: 'Название к четвертой картинке',
             picture: 'fixtures/04.jpeg',
+        },
+    );
+
+    await Player.create(
+        {
+            urlYoutube: 'https://www.youtube.com/watch?v=sfd2xj9xtN0',
         },
     );
 
