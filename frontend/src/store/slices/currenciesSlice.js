@@ -5,7 +5,7 @@ const name = "currencies";
 const currenciesSlice = createSlice({
     name,
     initialState: {
-        currencies: {},
+        currencies: null,
         loading: false,
         error: null
     },

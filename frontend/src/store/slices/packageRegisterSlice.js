@@ -19,6 +19,8 @@ const initialState = {
     notFoundTrackNumbers: [],
     changeStatusesLoading: false,
     changeStatusesError: null,
+    changeDeliveryStatusLoading: false,
+    changeDeliveryStatusFailure: null,
 };
 
 const packageSlice = createSlice({
@@ -26,7 +28,7 @@ const packageSlice = createSlice({
     initialState,
 
     reducers: {
-        fetchNewPackages(state, action) {
+        fetchNewPackages(state) {
             state.getOrdersLoading = true;
         },
         fetchNewPackagesSuccess(state, action) {
@@ -151,15 +153,16 @@ const packageSlice = createSlice({
             state.changeStatusesLoading = false;
             state.notFoundTrackNumbers = error;
         },
-        changeStatusRequest(state) {
+
+        changeDeliveryStatusRequest(state) {
             state.changeStatusesLoading = true;
         },
 
-        changeStatusSuccess(state) {
+        changeDeliveryStatusSuccess(state) {
             state.changeStatusesLoading = false;
         },
 
-        changeStatusError(state, {payload: error}) {
+        changeDeliveryStatusError(state, {payload: error}) {
             state.changeStatusesError = error;
             state.changeStatusesLoading = false;
             state.notFoundTrackNumbers = error;
