@@ -10,4 +10,7 @@ export const {
     postDeliveryRequest,
     postDeliverySuccess,
     postDeliveryFailure,
+    deleteDeliveryRequest,
+    deleteDeliverySuccess,
+    deleteDeliveryFailure,
 } = deliverySlice.actions;

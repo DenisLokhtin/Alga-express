@@ -257,9 +257,12 @@ router.put('/single', auth, permit('admin', 'warehouseman', 'superAdmin'), async
 
 router.put('/packageDelivery', auth, permit('user'), async (req, res) => {
     try {
+        const onePackage = await Package.find({trackNumber: req.body.trackNumber});
+
+
         const updatedPackage = await Package.findOneAndUpdate({trackNumber: req.body.trackNumber}, {
-            delivery: true,
-        }, );
+            delivery: !onePackage[0].delivery,
+        });
 
         res.send(updatedPackage);
 

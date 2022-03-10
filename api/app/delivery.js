@@ -30,11 +30,8 @@ router.put('/', auth, permit('user'), async (req, res) => {
 
 router.post('/', auth, permit('user'), async (req, res) => {
     try {
-        console.log(req.body);
         const deliveryData = {
-            street: req.body.street,
-            house: req.body.house,
-            flat: req.body.flat,
+            address: req.body.address,
             user: req.user._id,
             trackNumber: req.body.trackNumber,
         };
@@ -47,6 +44,15 @@ router.post('/', auth, permit('user'), async (req, res) => {
     } catch (error) {
         console.log(error.message);
         res.status(400).send(error);
+    }
+});
+
+router.delete('/:trackNumber', auth, permit('user'), async (req, res) => {
+    try {
+        await Delivery.findOneAndDelete({trackNumber: req.params.trackNumber});
+        res.send('Удалено');
+    } catch (error) {
+        res.status(404).send(error);
     }
 });
 

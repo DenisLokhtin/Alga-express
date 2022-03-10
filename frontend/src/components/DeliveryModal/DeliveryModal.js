@@ -8,7 +8,7 @@ import TextField from "@mui/material/TextField";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {useDispatch} from "react-redux";
 import {postDeliveryRequest} from "../../store/actions/deliveryAction";
-import {changeDeliveryStatusRequest} from "../../store/actions/packageRegisterActions";
+import {changeDeliveryStatusRequest, getOrdersHistoryRequest} from "../../store/actions/packageRegisterActions";
 import {useEffect} from "react";
 
 const styleModal = {
@@ -25,9 +25,7 @@ const styleModal = {
 
 const DeliveryModal = (props) => {
     const [address, setAddress] = useState({
-        street: '',
-        house: '',
-        flat: '',
+        address: '',
         trackNumber: props.track,
     });
 
@@ -35,17 +33,19 @@ const DeliveryModal = (props) => {
 
     useEffect(() => {
         setAddress({
-            street: '',
-            house: '',
-            flat: '',
+            address: '',
             trackNumber: props.track,
         });
     }, [props.track]);
 
     const submitFormHandler = e => {
         e.preventDefault();
+        props.close();
+        const page = props.page;
+        const pageLimit = props.pageLimit;
         dispatch(changeDeliveryStatusRequest(address));
         dispatch(postDeliveryRequest(address));
+        dispatch(getOrdersHistoryRequest({page, limit: pageLimit}));
     };
 
     const inputChangeHandler = e => {
@@ -73,39 +73,8 @@ const DeliveryModal = (props) => {
                         <Typography>Статус: {props.status}</Typography>
                         <Typography>Страна: {props.country}</Typography>
                         <Typography><b>Укажите адрес:</b></Typography>
-                        <TextField
-                            xs={12} sm={8} md={7} lg={7}
-                            style={{marginTop: 10}}
-                            required
-                            variant="outlined"
-                            type="text"
-                            label="Улица"
-                            name="street"
-                            value={address.street}
-                            onChange={inputChangeHandler}
-                        />
-                        <TextField
-                            xs={12} sm={8} md={7} lg={7}
-                            style={{marginTop: 10}}
-                            required
-                            variant="outlined"
-                            type="text"
-                            label="Дом"
-                            name="house"
-                            value={address.house}
-                            onChange={inputChangeHandler}
-                        />
-                        <TextField
-                            xs={12} sm={8} md={7} lg={7}
-                            style={{marginTop: 10}}
-                            required
-                            variant="outlined"
-                            type="text"
-                            label="Квартира"
-                            name="flat"
-                            value={address.flat}
-                            onChange={inputChangeHandler}
-                        />
+                        <textarea name="address" id="address" cols="80" rows="7" placeholder="Введите ваш адрес"
+                                  onChange={inputChangeHandler}/>
                         <Grid item xs={12} sm={8} md={7} lg={7}>
                             <ButtonWithProgress
                                 type="submit"
@@ -113,6 +82,7 @@ const DeliveryModal = (props) => {
                                 variant="contained"
                                 color="primary"
                                 style={{marginTop: 10, width: '172%'}}
+                                disabled={address.address === ''}
                             >
                                 Подтвердить
                             </ButtonWithProgress>
