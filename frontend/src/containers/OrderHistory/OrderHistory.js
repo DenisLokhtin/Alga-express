@@ -25,7 +25,7 @@ const OrderHistory = () => {
     const orders = useSelector(state => state.package.orders);
     const totalRow = useSelector(state => state.package.totalPage);
     const [page, setPage] = React.useState(0);
-    const [pageLimit, setPageLimit] = useState(5);
+    const [pageLimit, setPageLimit] = useState(20);
     const [selectionModel, setSelectionModel] = React.useState([]);
     const prevSelectionModel = React.useRef(selectionModel);
 
