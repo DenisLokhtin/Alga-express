@@ -74,6 +74,7 @@ const warehousemanSetting = [
 
 const adminSettings = [
     {url: adminPagePath, title: 'Администратор', icon: <ManageAccountsIcon/>},
+    {url: packageHistory, title: 'История всех заказов', icon: <HistoryIcon/>},
     {url: listFlightAdmin, title: 'Рейсы', icon: <FlightIcon/>},
     {url: addFlightAdmin, title: 'Добавить рейс', icon: <AddIcon/>},
     {url: listPaymentsAdmin, title: 'Список пополнений', icon: <FactCheckIcon/>},

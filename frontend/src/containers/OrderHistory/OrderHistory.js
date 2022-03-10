@@ -3,8 +3,12 @@ import {useDispatch, useSelector} from "react-redux";
 import {getOrdersHistoryRequest} from "../../store/actions/packageRegisterActions";
 import {countries, statuses} from "../../dataLocalization";
 import TableComponent from "../../components/TableComponent/TableComponent";
-import {Container} from "@mui/material";
+import {Button, Container} from "@mui/material";
 import DeliveryModal from "../../components/DeliveryModal/DeliveryModal";
+import {Link} from "react-router-dom";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import CurrencyLiraIcon from "@mui/icons-material/CurrencyLira";
+import CurrencyYenIcon from "@mui/icons-material/CurrencyYen";
 
 const OrderHistory = () => {
     const [open, setOpen] = useState(false);
@@ -70,6 +74,37 @@ const OrderHistory = () => {
             align: 'center',
         },
         {
+            field: 'price',
+            headerName: 'Цена товара',
+            flex: 1,
+            minWidth: 150,
+            headerAlign: 'center',
+            align: 'center',
+            renderCell: (params => {
+                const order = orders.find(order => order._id === params.id);
+
+                if (order.currency === 'usd') {
+                    return (
+                        <div style={{display: 'flex', alignItems: 'center'}}>
+                            {order.price} <AttachMoneyIcon/>
+                        </div>
+                    )
+                } else if (order.currency === 'cny') {
+                    return (
+                        <div style={{display: 'flex', alignItems: 'center'}}>
+                            {order.price} <CurrencyYenIcon/>
+                        </div>
+                    )
+                } else if (order.currency === 'try') {
+                    return (
+                        <div style={{display: 'flex', alignItems: 'center'}}>
+                            {order.price} <CurrencyLiraIcon/>
+                        </div>
+                    )
+                }
+            })
+        },
+        {
             field: 'delivery',
             headerName: 'Доставка',
             flex: 1,
@@ -105,6 +140,28 @@ const OrderHistory = () => {
                 }
             }
         },
+        {
+            field: 'edit',
+            headerName: 'Редактирование',
+            flex: 1,
+            minWidth: 155,
+            headerAlign: 'center',
+            align: 'center',
+            renderCell: (params) => {
+                return (
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        style={{marginLeft: 16}}
+                        disabled={params.row.status !== 'Оформлен'}
+                    >
+                        <Link to={`/user/package/edit/${params.id}`}
+                              style={{textDecoration: 'none', color: 'inherit'}}>Редактировать</Link>
+                    </Button>
+                )
+            }
+        },
     ];
 
     const myRows = orders.map(order => {
@@ -116,6 +173,8 @@ const OrderHistory = () => {
             country: countries[order.country],
             status: statuses[order.status],
             delivery: order.delivery,
+            edit: 'Редактировать',
+            price: order.price,
         }
     });
 

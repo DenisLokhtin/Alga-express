@@ -7,7 +7,7 @@ import MenuItem from "@mui/material/MenuItem";
 const FormElement = (props) => {
     const {
         label, name, value, onChange, required, error, autoComplete, type, select, options, multiline, rows, onKeyPress,
-        xs, sm, md, lg,
+        xs, sm, md, lg, fullWidth, InputProps,
     } = props
     let inputChildren = null;
 
@@ -25,7 +25,9 @@ const FormElement = (props) => {
         <Grid item xs={xs} sm={sm} md={md} lg={lg}>
             <TextField
                 select={select}
+                InputProps={InputProps}
                 multiline={multiline}
+                fullWidth={fullWidth}
                 rows={rows}
                 type={type}
                 required={required}
