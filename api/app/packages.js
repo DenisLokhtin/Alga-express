@@ -60,7 +60,7 @@ router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) =>
 
         const packages = await Package.find(findFilter)
             .populate({path: 'flight user', select: 'name number description depart_date arrived_date'})
-            .select('title trackNumber country cargoNumber status description delivery')
+            .select('title trackNumber country cargoNumber status description price currency delivery')
             .sort(query.sort)
             .limit(limit)
             .skip(page * limit);
@@ -77,7 +77,7 @@ router.get('/:id', auth, permit('admin', 'warehouseman', 'user', 'superAdmin'), 
         if (req.user.role === 'user') {
             const packageFind = await Package.findById(req.params.id)
                 .populate({path: 'flight user', select: 'name number description depart_date arrived_date'})
-                .select('trackNumber title amount price country status date cargoNumber urlPackage delivery');
+                .select('trackNumber title amount price country status date cargoNumber currency urlPackage delivery');
             if (packageFind.user._id.toString() === req.user._id.toString()) {
                 return res.send(packageFind);
             }
@@ -100,8 +100,6 @@ router.get('/:id', auth, permit('admin', 'warehouseman', 'user', 'superAdmin'), 
 
 router.post('/', auth, packageValidate, permit('admin', 'superAdmin', 'user'), async (req, res) => {
 
-    console.log(req.body)
-
     let price = req.body.price;
 
     if (req.body.price.indexOf(',') === 0) {
@@ -118,7 +116,8 @@ router.post('/', auth, packageValidate, permit('admin', 'superAdmin', 'user'), a
             trackNumber: req.body.trackNumber,
             amount: req.body.amount,
             price: price,
-            user: req.user._id
+            user: req.user._id,
+            currency: req.body.currency,
         };
 
         const packageAdmin = {
@@ -128,6 +127,7 @@ router.post('/', auth, packageValidate, permit('admin', 'superAdmin', 'user'), a
             amount: req.body.amount,
             price: price,
             user: req.body.userId,
+            currency: req.body.currency,
         }
 
         const notFoundTrackNumber = await NotFoundTrackNumber.findOne({notFoundTrackNumber: packageData.trackNumber});
@@ -136,7 +136,7 @@ router.post('/', auth, packageValidate, permit('admin', 'superAdmin', 'user'), a
             packageData.status = notFoundTrackNumber.status;
         }
 
-        if(req.user.role === 'admin'){
+        if (req.user.role === 'admin') {
             const newPackage = new Package(packageAdmin);
             await newPackage.save();
             return res.send(newPackage);
@@ -167,9 +167,9 @@ router.put('/', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req,
     const filtered = trackNumbersData.filter(packageStatus => packageStatus.trackNumber !== '');
 
     const uniquePackages = filtered.filter((packageInfo, index, self) =>
-        index === self.findIndex((packageData) => (
-            packageData.trackNumber === packageInfo.trackNumber
-        ))
+            index === self.findIndex((packageData) => (
+                packageData.trackNumber === packageInfo.trackNumber
+            ))
     );
 
     try {
@@ -229,7 +229,7 @@ router.put('/packageDelivery', auth, permit('user'), async (req, res) => {
     }
 });
 
-router.put('/:id', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req, res) => {
+router.put('/:id', auth, permit('admin', 'warehouseman', 'superAdmin', 'user'), async (req, res) => {
     let result = {};
     try {
         const packageFind = await Package.findById(req.params.id)
@@ -266,7 +266,7 @@ router.put('/:id', auth, permit('admin', 'warehouseman', 'superAdmin'), async (r
                 await User.findByIdAndUpdate(packageFind.user._id, {balance: userDebit.balance - debitAmount});
 
             }
-            await result.success.save();
+            await result.success.save({validateBeforeSave: false});
             return res.status(result.code).send(result.success);
         }
 

@@ -20,6 +20,9 @@ import theme from "../../theme";
 import FormElement from "../../components/UI/Form/FormElement";
 import {fetchUsersRequest} from "../../store/actions/usersActions";
 import {editBuyoutStatusRequest} from "../../store/actions/buyoutActions";
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import CurrencyLiraIcon from '@mui/icons-material/CurrencyLira';
+import CurrencyYenIcon from '@mui/icons-material/CurrencyYen';
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -60,8 +63,6 @@ const PackageRegister = () => {
     const data = useLocation();
     const buyoutUser = data?.state?.userProps;
 
-
-
     useEffect(() => {
         if(user?.role !== 'user'){
             dispatch(fetchUsersRequest());
@@ -75,9 +76,11 @@ const PackageRegister = () => {
         amount: '',
         price: '',
         country: '',
+        currency: '',
     });
 
 
+    console.log(packageRegister);
     const [value, setValue] = React.useState({});
     const [inputValue, setInputValue] = React.useState('');
 
@@ -128,11 +131,13 @@ const PackageRegister = () => {
         };
     }, [dispatch, messagesEndRef]);
 
+
+    console.log(error);
     return (
         <Container
             ref={messagesEndRef}
             component="section"
-            maxWidth="md"
+            maxWidth="sm"
             className={classes.container}>
             <Grid item>
                 <Typography
@@ -149,7 +154,7 @@ const PackageRegister = () => {
                 noValidate
                 spacing={5}
             >
-                <Grid item xs={12} sm={8} md={7} lg={7}>
+                <Grid item xs={12} sm={8} md={7} lg={9}>
                     <FormControl variant="outlined" fullWidth error={Boolean(getFieldError('country'))}>
                         <InputLabel id="demo-controlled-open-select-label">Страна</InputLabel>
                         <Select
@@ -169,7 +174,7 @@ const PackageRegister = () => {
                     </FormControl>
                 </Grid>
                 <FormElement
-                    xs={12} sm={8} md={7} lg={7}
+                    xs={12} sm={8} md={7} lg={9}
                     name="trackNumber"
                     value={packageRegister.trackNumber}
                     required
@@ -180,7 +185,7 @@ const PackageRegister = () => {
                     error={getFieldError('trackNumber')}
                 />
                 <FormElement
-                    xs={12} sm={8} md={7} lg={7}
+                    xs={12} sm={8} md={7} lg={9}
                     name="title"
                     value={packageRegister.title}
                     onChange={inputChangeHandler}
@@ -190,31 +195,59 @@ const PackageRegister = () => {
                     label="Название"
                     error={getFieldError('title')}
                 />
-                <FormElement
-                    xs={12} sm={8} md={7} lg={7}
-                    name="amount"
-                    type="number"
-                    value={packageRegister.amount}
-                    onChange={inputChangeHandler}
-                    fullWidth
-                    required
-                    variant="outlined"
-                    label="Количество"
-                    error={getFieldError('amount')}
-                />
-                <FormElement
-                    xs={12} sm={8} md={7} lg={7}
-                    name="price"
-                    type="number"
-                    value={packageRegister.price}
-                    onChange={inputChangeHandler}
-                    className={classes.textField}
-                    fullWidth
-                    required
-                    variant="outlined"
-                    label="Цена"
-                    error={getFieldError('price')}
-                />
+                    <FormElement
+                        xs={12} sm={8} md={7} lg={9}
+                        name="amount"
+                        type="number"
+                        value={packageRegister.amount}
+                        onChange={inputChangeHandler}
+                        // fullWidth
+                        required
+                        variant="outlined"
+                        label="Количество"
+                        error={getFieldError('amount')}
+                    />
+                    <FormElement
+                        xs={12} sm={8} md={7} lg={4.5}
+                        name="price"
+                        type="number"
+                        value={packageRegister.price}
+                        onChange={inputChangeHandler}
+                        className={classes.textField}
+                        // fullWidth
+                        required
+                        variant="outlined"
+                        label="Цена"
+                        error={getFieldError('price')}
+                    />
+                    <Grid item xs={12} sm={8} md={7} lg={4.5}>
+                        <FormControl variant="outlined" fullWidth error={Boolean(getFieldError('currency'))}>
+                            <InputLabel id="demo-controlled-open-select-label">Валюта</InputLabel>
+                            <Select
+                                labelId="demo-controlled-open-select-label"
+                                id="demo-controlled-open-select"
+                                value={packageRegister.currency}
+                                label="Выберите валюту"
+                                name="currency"
+                                required
+                                onChange={inputChangeHandler}
+                            >
+                                <MenuItem value={'usd'}>
+                                    Доллар
+                                    <AttachMoneyIcon/>
+                                </MenuItem>
+                                <MenuItem value={'try'}>
+                                    Турецкая лира
+                                    <CurrencyLiraIcon/>
+                                </MenuItem>
+                                <MenuItem value={'cny'}>
+                                    Юань
+                                    <CurrencyYenIcon/>
+                                </MenuItem>
+                            </Select>
+                            <FormHelperText error={true}>{error?.errors?.['currency']?.message}</FormHelperText>
+                        </FormControl>
+                    </Grid>
                 {user?.role === 'admin' && (
                     <Grid item xs={12} sm={8} md={7} lg={7}>
 
@@ -254,6 +287,7 @@ const PackageRegister = () => {
                     packageRegister.amount &&
                     packageRegister.price &&
                     packageRegister.trackNumber &&
+                    packageRegister.currency &&
                     packageRegister.title ? (
                         <ButtonWithProgress
                             loading={loading}
