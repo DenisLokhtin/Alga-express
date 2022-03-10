@@ -1,6 +1,6 @@
 const express = require("express");
 const Package = require('../models/Package');
-const filter = require("../middleware/filter");
+const filterPackage = require("../middleware/filter");
 const auth = require("../middleware/auth");
 const permit = require("../middleware/permit");
 const userEdit = require("../middleware/userEdit");
@@ -28,18 +28,15 @@ router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) =>
     if (Number.isInteger(req.query.page))
         return res.status(403).send({error: 'Не корректные данные запроса'});
 
-    let page = null;
-    let limit = null;
+    let page = 0;
+    let limit = 20;
 
     if (req.query.page) {
         page = Number(req.query.page);
-    } else {
-        page = 0
     }
+
     if (req.query.limit) {
         limit = Number(req.query.limit);
-    } else {
-        limit = 20;
     }
 
     if (req.query.id) query.id = req.query.id;
@@ -55,7 +52,7 @@ router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) =>
     let findFilter = {};
 
     try {
-        findFilter = filter(query);
+        findFilter = filterPackage(query, 'packages');
         const size = await Package.find(findFilter);
 
         const packages = await Package.find(findFilter)
@@ -275,7 +272,6 @@ router.put('/:id', auth, permit('admin', 'warehouseman', 'superAdmin'), async (r
         const packageFind = await Package.findById(req.params.id)
         const userDebit = await User.findById(packageFind.user._id);
         const currency = await Currency.findOne({});
-        console.log(currency);
         const prices = userDebit.tariff;
 
         if (req.user.role === 'user')
