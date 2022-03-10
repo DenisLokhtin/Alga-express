@@ -4,7 +4,9 @@ const initialState = {
     orders: [],
     totalPage: 0,
     order: null,
-    onePackage: [],
+    package: null,
+    getUserPackageByIdLoading: null,
+    editUserPackageLoading: null,
     createPackageLoading: false,
     createPackageError: null,
     getOrdersLoading: false,
@@ -28,7 +30,7 @@ const packageSlice = createSlice({
     initialState,
 
     reducers: {
-        fetchNewPackages(state, action) {
+        fetchNewPackages(state) {
             state.getOrdersLoading = true;
         },
         fetchNewPackagesSuccess(state, action) {
@@ -83,29 +85,29 @@ const packageSlice = createSlice({
         },
 
         getPackageByIdRequest(state) {
-            state.createPackageLoading = true;
+            state.getUserPackageByIdLoading = true;
         },
 
         getPackageByIdSuccess(state, {payload: packageData}) {
-            state.createPackageLoading = false;
-            state.onePackage = packageData;
+            state.getUserPackageByIdLoading = false;
+            state.package = packageData;
         },
 
         getPackageByIdFailure(state, {payload: getPackageError}) {
             state.createPackageError = getPackageError;
-            state.createPackageLoading = false;
+            state.getUserPackageByIdLoading = false;
         },
 
         changePackageRequest(state) {
-            state.createPackageLoading = true;
+            state.editUserPackageLoading = true;
         },
 
         changePackageSuccess(state) {
-            state.createPackageRequest = false;
+            state.editUserPackageLoading = false;
         },
 
         changePackageFailure(state, {payload: packageChangeError}) {
-            state.createPackageRequest = false;
+            state.editUserPackageLoading = false;
             state.changePackageError = packageChangeError;
         },
 
@@ -153,19 +155,6 @@ const packageSlice = createSlice({
             state.changeStatusesLoading = false;
             state.notFoundTrackNumbers = error;
         },
-        changeStatusRequest(state) {
-            state.changeStatusesLoading = true;
-        },
-
-        changeStatusSuccess(state) {
-            state.changeStatusesLoading = false;
-        },
-
-        changeStatusError(state, {payload: error}) {
-            state.changeStatusesError = error;
-            state.changeStatusesLoading = false;
-            state.notFoundTrackNumbers = error;
-        },
 
         changeDeliveryStatusRequest(state) {
             state.changeStatusesLoading = true;
@@ -183,7 +172,9 @@ const packageSlice = createSlice({
         clearAdminErrors(state) {
             state.editAdminError = false;
         },
-
+        clearPackage(state) {
+            state.package = null;
+        }
     },
 });
 

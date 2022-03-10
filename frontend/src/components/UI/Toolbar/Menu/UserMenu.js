@@ -19,7 +19,6 @@ import {
     addUserPayment,
     adminPagePath,
     cargoCreateUser,
-    editingSingleTrackNumber,
     editPages,
     editUserProfile,
     listBuyouts,
@@ -66,24 +65,22 @@ const superAdminSettings = [
     {url: listPaymentsAdmin, title: 'Список пополнений', icon: <FactCheckIcon/>},
     {url: editPages, title: 'Редактировать страницы', icon: <EditIcon/>},
     {url: addPaymentHandler, title: 'Пополнение баланса пользователя', icon: <PaidIcon/>},
-    {url: editingSingleTrackNumber, title: 'Смена статуса одной посылки', icon: <EditIcon/>},
     {url: processingTrackNumbersAdmin, title: 'Смена статуса посылок', icon: <EditIcon/>},
 ];
 
 const warehousemanSetting = [
-    {url: editingSingleTrackNumber, title: 'Смена статуса одной посылки', icon: <EditIcon/>},
     {url: processingTrackNumbersAdmin, title: 'Смена статуса посылок', icon: <EditIcon/>},
 ];
 
 const adminSettings = [
     {url: adminPagePath, title: 'Администратор', icon: <ManageAccountsIcon/>},
+    {url: packageHistory, title: 'История всех заказов', icon: <HistoryIcon/>},
     {url: listFlightAdmin, title: 'Рейсы', icon: <FlightIcon/>},
     {url: addFlightAdmin, title: 'Добавить рейс', icon: <AddIcon/>},
     {url: listPaymentsAdmin, title: 'Список пополнений', icon: <FactCheckIcon/>},
     {url: editPages, title: 'Редактировать страницы', icon: <EditIcon/>},
     {url: addPaymentHandler, title: 'Пополнение баланса пользователя', icon: <PaidIcon/>},
     {url: listBuyouts, title: 'Список заказов', icon: <FactCheckIcon/>},
-    {url: editingSingleTrackNumber, title: 'Смена статуса одной посылки', icon: <EditIcon/>},
     {url: processingTrackNumbersAdmin, title: 'Смена статуса посылок', icon: <EditIcon/>},
 ];
 const UserMenu = ({user}) => {

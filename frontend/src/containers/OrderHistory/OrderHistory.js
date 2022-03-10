@@ -1,10 +1,16 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {getOrdersHistoryRequest} from "../../store/actions/packageRegisterActions";
+import {changeDeliveryStatusRequest, getOrdersHistoryRequest} from "../../store/actions/packageRegisterActions";
 import {countries, statuses} from "../../dataLocalization";
 import TableComponent from "../../components/TableComponent/TableComponent";
-import {Container} from "@mui/material";
+import {Button, Container} from "@mui/material";
 import DeliveryModal from "../../components/DeliveryModal/DeliveryModal";
+import {Link} from "react-router-dom";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import CurrencyLiraIcon from "@mui/icons-material/CurrencyLira";
+import CurrencyYenIcon from "@mui/icons-material/CurrencyYen";
+import Checkbox from "@mui/material/Checkbox";
+import {deleteDeliveryRequest} from "../../store/actions/deliveryAction";
 
 const OrderHistory = () => {
     const [open, setOpen] = useState(false);
@@ -17,14 +23,13 @@ const OrderHistory = () => {
         title: "package 3",
         trackNumber: "DnS5myCQv6H4H1_4YCtPM",
     });
-    const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const loading = useSelector(state => state.package.getOrdersLoading);
     const dispatch = useDispatch();
     const orders = useSelector(state => state.package.orders);
     const totalRow = useSelector(state => state.package.totalPage);
     const [page, setPage] = React.useState(0);
-    const [pageLimit, setPageLimit] = useState(5);
+    const [pageLimit, setPageLimit] = useState(20);
     const [selectionModel, setSelectionModel] = React.useState([]);
     const prevSelectionModel = React.useRef(selectionModel);
 
@@ -70,39 +75,80 @@ const OrderHistory = () => {
             align: 'center',
         },
         {
+            field: 'price',
+            headerName: 'Цена товара',
+            flex: 1,
+            minWidth: 150,
+            headerAlign: 'center',
+            align: 'center',
+            renderCell: (params => {
+                const order = orders.find(order => order._id === params.id);
+
+                if (order.currency === 'usd') {
+                    return (
+                        <div style={{display: 'flex', alignItems: 'center'}}>
+                            {order.price} <AttachMoneyIcon/>
+                        </div>
+                    )
+                } else if (order.currency === 'cny') {
+                    return (
+                        <div style={{display: 'flex', alignItems: 'center'}}>
+                            {order.price} <CurrencyYenIcon/>
+                        </div>
+                    )
+                } else if (order.currency === 'try') {
+                    return (
+                        <div style={{display: 'flex', alignItems: 'center'}}>
+                            {order.price} <CurrencyLiraIcon/>
+                        </div>
+                    )
+                }
+            })
+        },
+        {
             field: 'delivery',
             headerName: 'Доставка',
             flex: 1,
-            minWidth: 200,
+            minWidth: 75,
             headerAlign: 'center',
             align: 'center',
             renderCell: (params) => {
                 const onClick = (e) => {
                     e.stopPropagation();
-                    setCurrentModal({...params.row});
+                    if (e.target.checked) {
+                        setOpen(true);
+                        setCurrentModal({...params.row});
+                    } else {
+                        dispatch(changeDeliveryStatusRequest({...params.row}));
+                        dispatch(deleteDeliveryRequest({...params.row}));
+                        dispatch(getOrdersHistoryRequest({page, limit: pageLimit}));
+                    }
                 };
-                if (!params.row.delivery) {
-                    return (
-                        <div onClick={onClick}>
-                            <button onClick={handleOpen}
-                                    style={{
-                                        color: 'rgba(0,0,0,.85)',
-                                        border: 'none',
-                                        cursor: 'pointer',
-                                        background: 'none',
-                                        textDecoration: 'underline'
-                                    }}>
-                                Заказать доставку
-                            </button>
-                        </div>
-                    );
-                } else {
-                    return (
-                        <div>
-                            Доставка оформлена
-                        </div>
-                    )
-                }
+                return (
+                    <Checkbox checked={params.row.delivery} onChange={(e) => onClick(e)}/>
+                );
+            }
+        },
+        {
+            field: 'edit',
+            headerName: 'Редактирование',
+            flex: 1,
+            minWidth: 155,
+            headerAlign: 'center',
+            align: 'center',
+            renderCell: (params) => {
+                return (
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        style={{marginLeft: 16}}
+                        disabled={params.row.status !== 'Оформлен'}
+                    >
+                        <Link to={`/user/package/edit/${params.id}`}
+                              style={{textDecoration: 'none', color: 'inherit'}}>Редактировать</Link>
+                    </Button>
+                )
             }
         },
     ];
@@ -116,6 +162,8 @@ const OrderHistory = () => {
             country: countries[order.country],
             status: statuses[order.status],
             delivery: order.delivery,
+            edit: 'Редактировать',
+            price: order.price,
         }
     });
 
@@ -151,7 +199,8 @@ const OrderHistory = () => {
     return (
         <Container ref={messagesEndRef} style={{display: 'flex', height: '550px', width: '100%', marginTop: '5em'}}>
             <DeliveryModal title={currentModal.title} track={currentModal.trackNumber} status={currentModal.status}
-                           country={currentModal.country} open={open} close={handleClose}/>
+                           country={currentModal.country} open={open} page={page} pageLimit={pageLimit}
+                           close={handleClose}/>
             <TableComponent
                 rows={myRows}
                 columns={
