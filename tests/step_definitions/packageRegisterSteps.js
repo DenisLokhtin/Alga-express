@@ -17,3 +17,12 @@ Then('я ввожу данные:', (table) => {
         I.fillField(name, value);
     });
 });
+
+Then('Нажимаю на select выбора валют', async () => {
+    I.click("(//*[@id=\"demo-controlled-open-select\"])[2]");
+});
+
+Then('выбираю валюту из списка валют', async () => {
+    I.click(`//*[@id="menu-currency"]/div[3]/ul/li[1]`);
+    I.wait(3);
+});
