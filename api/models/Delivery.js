@@ -2,20 +2,10 @@ const mongoose = require("mongoose");
 const idValidator = require('mongoose-id-validator');
 
 const DeliverySchema = new mongoose.Schema({
-    street: {
+    address: {
         type: String,
         trim: true,
-        required: '"Улица" это обязательное поле'
-    },
-    house: {
-        type: String,
-        trim: true,
-        required: '"Дом" это обязательное поле'
-    },
-    flat: {
-        type: String,
-        trim: true,
-        required: '"Этаж" это обязательное поле'
+        required: '"Адрес" это обязательное поле'
     },
     trackNumber: {
         type: String,

@@ -41,6 +41,16 @@ const deliverySlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
+        deleteDeliveryRequest(state) {
+            state.loading = true;
+        },
+        deleteDeliverySuccess(state) {
+            state.loading = false;
+        },
+        deleteDeliveryFailure(state, action) {
+            state.loading = false;
+            state.error = action.payload;
+        },
         clearDeliveryError(state) {
             state.error = null;
         }

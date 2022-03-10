@@ -11,6 +11,9 @@ import {
     postDeliveryRequest,
     postDeliverySuccess,
     postDeliveryFailure,
+    deleteDeliveryRequest,
+    deleteDeliverySuccess,
+    deleteDeliveryFailure,
 } from '../actions/deliveryAction';
 
 function* postDelivery({payload: data}) {
@@ -43,10 +46,22 @@ function* putDelivery({payload}) {
     }
 }
 
+function* deleteDelivery({payload}) {
+    try {
+        yield axiosApi.delete(`/delivery/${payload.trackNumber}`);
+        yield put(deleteDeliverySuccess());
+        toast.success('Заказ на доcтавку Удалён!');
+    } catch (e) {
+        yield put(deleteDeliveryFailure(e.response.data.message));
+        toast.error(e.response.data.message);
+    }
+}
+
 const deliverySagas = [
     takeEvery(postDeliveryRequest, postDelivery),
     takeEvery(getDeliveryRequest, getDelivery),
     takeEvery(putDeliveryRequest, putDelivery),
+    takeEvery(deleteDeliveryRequest, deleteDelivery),
 ];
 
 export default deliverySagas;
