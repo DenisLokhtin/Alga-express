@@ -118,7 +118,8 @@ router.post('/', auth, packageValidate, permit('admin', 'superAdmin', 'user'), a
             trackNumber: req.body.trackNumber,
             amount: req.body.amount,
             price: price,
-            user: req.user._id
+            user: req.user._id,
+            priceCurrency: req.body.priceCurrency,
         };
 
         const packageAdmin = {
@@ -127,6 +128,7 @@ router.post('/', auth, packageValidate, permit('admin', 'superAdmin', 'user'), a
             trackNumber: req.body.trackNumber,
             amount: req.body.amount,
             price: price,
+            priceCurrency: req.body.priceCurrency,
             user: req.body.userId,
         }
 

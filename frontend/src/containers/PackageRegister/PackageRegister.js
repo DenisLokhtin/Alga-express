@@ -20,6 +20,9 @@ import theme from "../../theme";
 import FormElement from "../../components/UI/Form/FormElement";
 import {fetchUsersRequest} from "../../store/actions/usersActions";
 import {editBuyoutStatusRequest} from "../../store/actions/buyoutActions";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import CurrencyLiraIcon from "@mui/icons-material/CurrencyLira";
+import CurrencyYuanIcon from "@mui/icons-material/CurrencyYuan";
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -37,6 +40,12 @@ const useStyles = makeStyles(() => ({
     checkboxContainer: {
         marginTop: '50px',
     },
+    item: {
+        width: '40px',
+    },
+    item2: {
+        width: '70%',
+    },
 }));
 
 theme.typography.h4 = {
@@ -47,6 +56,8 @@ theme.typography.h4 = {
     [theme.breakpoints.up('md')]: {
         fontSize: '2rem',
     },
+
+
 };
 
 const PackageRegister = () => {
@@ -61,9 +72,8 @@ const PackageRegister = () => {
     const buyoutUser = data?.state?.userProps;
 
 
-
     useEffect(() => {
-        if(user?.role !== 'user'){
+        if (user?.role !== 'user') {
             dispatch(fetchUsersRequest());
         }
     }, [dispatch, user]);
@@ -75,6 +85,7 @@ const PackageRegister = () => {
         amount: '',
         price: '',
         country: '',
+        priceCurrency: '',
     });
 
 
@@ -103,15 +114,15 @@ const PackageRegister = () => {
 
     const submitFormHandler = e => {
         e.preventDefault();
-        if(user?.role === 'admin'){
-            if(buyoutUser){
-                dispatch(createPackageRequest({...packageRegister,userId:buyoutUser.id, navigate}));
+        if (user?.role === 'admin') {
+            if (buyoutUser) {
+                dispatch(createPackageRequest({...packageRegister, userId: buyoutUser.id, navigate}));
                 dispatch(editBuyoutStatusRequest(buyoutUser.buyoutId));
             } else {
-                dispatch(createPackageRequest({...packageRegister,userId:value?._id, navigate}));
+                dispatch(createPackageRequest({...packageRegister, userId: value?._id, navigate}));
             }
-        } else{
-            dispatch(createPackageRequest({...packageRegister,...user, navigate}));
+        } else {
+            dispatch(createPackageRequest({...packageRegister, ...user, navigate}));
         }
     };
 
@@ -162,8 +173,10 @@ const PackageRegister = () => {
                             onChange={inputChangeHandler}
                         >
                             <MenuItem value={'usa'}>Америка</MenuItem>
-                            <MenuItem value={'turkey'}>Турция</MenuItem>
+                            <MenuItem value={'turkey'}>Турция (Авия доставка)</MenuItem>
+                            <MenuItem value={'turkeyGround'}>Турция (Наземная доставка)</MenuItem>
                             <MenuItem value={'china'}>Китай (Авия доставка)</MenuItem>
+                            <MenuItem value={'chinaGround'}>Китай (Наземная доставка)</MenuItem>
                         </Select>
                         <FormHelperText error={true}>{error?.errors?.['country']?.message}</FormHelperText>
                     </FormControl>
@@ -202,79 +215,103 @@ const PackageRegister = () => {
                     label="Количество"
                     error={getFieldError('amount')}
                 />
-                <FormElement
-                    xs={12} sm={8} md={7} lg={7}
-                    name="price"
-                    type="number"
-                    value={packageRegister.price}
-                    onChange={inputChangeHandler}
-                    className={classes.textField}
-                    fullWidth
-                    required
-                    variant="outlined"
-                    label="Цена"
-                    error={getFieldError('price')}
-                />
-                {user?.role === 'admin' && (
-                    <Grid item xs={12} sm={8} md={7} lg={7}>
+                <Grid container item xs={12} sm={8} md={7} lg={7}>
+                    <FormElement
+                        xs={12} sm={8} md={7} lg={7}
+                        name="price"
+                        type="number"
+                        value={packageRegister.price}
+                        onChange={inputChangeHandler}
+                        className={classes.item2}
+                        fullWidth
+                        required
+                        variant="outlined"
+                        label="Цена"
+                        error={getFieldError('price')}
+                    />
 
-                        {buyoutUser ? (
-                            <TextField
-                                xs={12} sm={8} md={7} lg={7}
-                                type="text"
-                                value={buyoutUser.name}
-                                className={classes.textField}
-                                fullWidth
+                    <Grid item >
+                        <FormControl variant="standard" error={Boolean(getFieldError('priceCurrency'))} >
+                            <InputLabel id="demo-controlled-open-select-label">Валюта</InputLabel>
+                            <Select
+                                labelId="demo-controlled-open-select-label"
+                                id="demo-controlled-open-select"
+                                value={packageRegister.priceCurrency}
+                                name="priceCurrency"
                                 required
-                                variant="outlined"
-                                label="Заказчик"
-                            />
-                        ):(
-                            <Autocomplete
-                                onChange={(event, newValue) => {
-                                    setValue(newValue);
-                                }}
-                                inputValue={inputValue}
-                                onInputChange={(event, newInputValue) => {
-                                    setInputValue(newInputValue);
-                                }}
-                                name={'user'}
-                                disablePortal
-                                id="combo-box-demo"
-                                options={users}
-                                getOptionLabel={(option)=>(option.name+' '+option.email)}
-                                renderInput={(params) => <TextField {...params} label="Заказчик" />}
-                            />
-                        )}
-                    </Grid>
-                )}
+                                onChange={inputChangeHandler}
+                            >
 
-                <Grid item xs={12} sm={8} md={7} lg={7}>{
-                    packageRegister.country &&
-                    packageRegister.amount &&
-                    packageRegister.price &&
-                    packageRegister.trackNumber &&
-                    packageRegister.title ? (
-                        <ButtonWithProgress
-                            loading={loading}
-                            disabled={loading}
-                            type="submit"
-                            variant="contained">
-                            Оформить
-                        </ButtonWithProgress>
+                                <MenuItem value={'USD'}><AttachMoneyIcon/>Доллар</MenuItem>
+                                <MenuItem value={'TRY'}><CurrencyLiraIcon/>Лира</MenuItem>
+                                <MenuItem value={'CNY'}><CurrencyYuanIcon/>Юань</MenuItem>
+                            </Select>
+                            <FormHelperText error={true}>{error?.errors?.['priceCurrency']?.message}</FormHelperText>
+                        </FormControl>
+                    </Grid>
+                </Grid>
+
+            {user?.role === 'admin' && (
+                <Grid item xs={12} sm={8} md={7} lg={7}>
+
+                    {buyoutUser ? (
+                        <TextField
+                            xs={12} sm={8} md={7} lg={7}
+                            type="text"
+                            value={buyoutUser.name}
+                            className={classes.textField}
+                            fullWidth
+                            required
+                            variant="outlined"
+                            label="Заказчик"
+                        />
                     ) : (
-                        <ButtonWithProgress
-                            loading={loading}
-                            disabled={true}
-                            type="submit"
-                            variant="contained">
-                            Оформить
-                        </ButtonWithProgress>
+                        <Autocomplete
+                            onChange={(event, newValue) => {
+                                setValue(newValue);
+                            }}
+                            inputValue={inputValue}
+                            onInputChange={(event, newInputValue) => {
+                                setInputValue(newInputValue);
+                            }}
+                            name={'user'}
+                            disablePortal
+                            id="combo-box-demo"
+                            options={users}
+                            getOptionLabel={(option) => (option.name + ' ' + option.email)}
+                            renderInput={(params) => <TextField {...params} label="Заказчик"/>}
+                        />
                     )}
                 </Grid>
+            )}
+
+            <Grid item xs={12} sm={8} md={7} lg={7}>{
+                packageRegister.country &&
+                packageRegister.amount &&
+                packageRegister.price &&
+                packageRegister.trackNumber &&
+                packageRegister.title ? (
+                    <ButtonWithProgress
+                        loading={loading}
+                        disabled={loading}
+                        type="submit"
+                        variant="contained">
+                        Оформить
+                    </ButtonWithProgress>
+                ) : (
+                    <ButtonWithProgress
+                        loading={loading}
+                        disabled={true}
+                        type="submit"
+                        variant="contained">
+                        Оформить
+                    </ButtonWithProgress>
+                )}
             </Grid>
-        </Container>
-    );
+            </Grid>
+</Container>
+)
+    ;
 };
 
 export default PackageRegister;
