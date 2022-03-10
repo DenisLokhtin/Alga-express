@@ -52,7 +52,6 @@ export function* getOneBuyoutSagas({payload:id}) {
 
 export function* addBuyoutSaga({payload}) {
     try {
-        console.log(payload)
         yield axiosApi.post( '/buyouts', payload);
         yield put(addBuyoutSuccess());
        History.push(listBuyouts);
