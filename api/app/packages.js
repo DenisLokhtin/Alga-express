@@ -130,7 +130,6 @@ router.post('/', auth, packageValidate, permit('admin', 'superAdmin', 'user'), a
             currency: req.body.currency,
         }
 
-
         const notFoundTrackNumber = await NotFoundTrackNumber.findOne({notFoundTrackNumber: packageData.trackNumber});
 
         if (notFoundTrackNumber) {
@@ -144,8 +143,6 @@ router.post('/', auth, packageValidate, permit('admin', 'superAdmin', 'user'), a
         } else {
             const newPackage = new Package(packageData);
             await newPackage.save();
-
-            console.log(newPackage);
             return res.send(newPackage);
         }
 
@@ -217,9 +214,12 @@ router.put('/', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req,
 
 router.put('/packageDelivery', auth, permit('user'), async (req, res) => {
     try {
+        const onePackage = await Package.find({trackNumber: req.body.trackNumber});
+
+
         const updatedPackage = await Package.findOneAndUpdate({trackNumber: req.body.trackNumber}, {
-            delivery: true,
-        },);
+            delivery: !onePackage[0].delivery,
+        });
 
         res.send(updatedPackage);
 
@@ -252,8 +252,6 @@ router.put('/:id', auth, permit('admin', 'warehouseman', 'superAdmin', 'user'), 
 
         if (result.success) {
             const debitAmount = (result.success.cargoPrice) * currency.usd;
-            console.log(result.success.cargoPrice);
-            console.log(debitAmount);
             if (result.success.cargoPrice) {
                 const permitData = {
                     debit: packageFind._id,
@@ -274,7 +272,6 @@ router.put('/:id', auth, permit('admin', 'warehouseman', 'superAdmin', 'user'), 
 
         res.send(result.success);
     } catch (e) {
-        console.log(e.message);
         res.status(400).send(e);
     }
 });

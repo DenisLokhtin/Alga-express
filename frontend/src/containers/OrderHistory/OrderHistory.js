@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {getOrdersHistoryRequest} from "../../store/actions/packageRegisterActions";
+import {changeDeliveryStatusRequest, getOrdersHistoryRequest} from "../../store/actions/packageRegisterActions";
 import {countries, statuses} from "../../dataLocalization";
 import TableComponent from "../../components/TableComponent/TableComponent";
 import {Button, Container} from "@mui/material";
@@ -9,6 +9,8 @@ import {Link} from "react-router-dom";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import CurrencyLiraIcon from "@mui/icons-material/CurrencyLira";
 import CurrencyYenIcon from "@mui/icons-material/CurrencyYen";
+import Checkbox from "@mui/material/Checkbox";
+import {deleteDeliveryRequest} from "../../store/actions/deliveryAction";
 
 const OrderHistory = () => {
     const [open, setOpen] = useState(false);
@@ -21,7 +23,6 @@ const OrderHistory = () => {
         title: "package 3",
         trackNumber: "DnS5myCQv6H4H1_4YCtPM",
     });
-    const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const loading = useSelector(state => state.package.getOrdersLoading);
     const dispatch = useDispatch();
@@ -108,36 +109,24 @@ const OrderHistory = () => {
             field: 'delivery',
             headerName: 'Доставка',
             flex: 1,
-            minWidth: 200,
+            minWidth: 75,
             headerAlign: 'center',
             align: 'center',
             renderCell: (params) => {
                 const onClick = (e) => {
                     e.stopPropagation();
-                    setCurrentModal({...params.row});
+                    if (e.target.checked) {
+                        setOpen(true);
+                        setCurrentModal({...params.row});
+                    } else {
+                        dispatch(changeDeliveryStatusRequest({...params.row}));
+                        dispatch(deleteDeliveryRequest({...params.row}));
+                        dispatch(getOrdersHistoryRequest({page, limit: pageLimit}));
+                    }
                 };
-                if (!params.row.delivery) {
-                    return (
-                        <div onClick={onClick}>
-                            <button onClick={handleOpen}
-                                    style={{
-                                        color: 'rgba(0,0,0,.85)',
-                                        border: 'none',
-                                        cursor: 'pointer',
-                                        background: 'none',
-                                        textDecoration: 'underline'
-                                    }}>
-                                Заказать доставку
-                            </button>
-                        </div>
-                    );
-                } else {
-                    return (
-                        <div>
-                            Доставка оформлена
-                        </div>
-                    )
-                }
+                return (
+                    <Checkbox checked={params.row.delivery} onChange={(e) => onClick(e)}/>
+                );
             }
         },
         {
@@ -210,7 +199,8 @@ const OrderHistory = () => {
     return (
         <Container ref={messagesEndRef} style={{display: 'flex', height: '550px', width: '100%', marginTop: '5em'}}>
             <DeliveryModal title={currentModal.title} track={currentModal.trackNumber} status={currentModal.status}
-                           country={currentModal.country} open={open} close={handleClose}/>
+                           country={currentModal.country} open={open} page={page} pageLimit={pageLimit}
+                           close={handleClose}/>
             <TableComponent
                 rows={myRows}
                 columns={

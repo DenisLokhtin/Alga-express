@@ -95,14 +95,13 @@ const run = async () => {
         },
     );
 
-
     await Buyout.create(
         {
             description: 'Zara kid dress',
             user: user,
             status: "NEW",
             image: 'fixtures/zara_dress.png',
-            url:'https://www.zara.com/ww/en/textured-floral-dress-p01247405.html?v1=161209856&v2=2021154',
+            url: 'https://www.zara.com/ww/en/textured-floral-dress-p01247405.html?v1=161209856&v2=2021154',
             country: 'USA',
             datetime: '2022-05-15',
         },
@@ -111,7 +110,7 @@ const run = async () => {
             user: user,
             status: "NEW",
             image: 'fixtures/amazon_vitamin.png',
-            url:'https://www.amazon.com/Natural-Apple-Cider-Vinegar-Gummies/dp/B07VQN6Y88?ref_=Oct_d_odotd_d_3_5c86e41b&pd_rd_w=jMHbI&pf_rd_p=a10c66f2-5465-4d26-ac0f-6b448ca4162d&pf_rd_r=NC7EBFRPNG8GVB6HAV58&pd_rd_r=684afbb3-05e4-4fdb-b1ed-2460f255726b&pd_rd_wg=N8D7N',
+            url: 'https://www.amazon.com/Natural-Apple-Cider-Vinegar-Gummies/dp/B07VQN6Y88?ref_=Oct_d_odotd_d_3_5c86e41b&pd_rd_w=jMHbI&pf_rd_p=a10c66f2-5465-4d26-ac0f-6b448ca4162d&pf_rd_r=NC7EBFRPNG8GVB6HAV58&pd_rd_r=684afbb3-05e4-4fdb-b1ed-2460f255726b&pd_rd_wg=N8D7N',
             country: 'USA',
             datetime: '2022-05-15',
         },
