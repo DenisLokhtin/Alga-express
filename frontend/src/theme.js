@@ -42,8 +42,6 @@ const theme = createTheme({
         MuiAvatar: {
             defaultProps: {
                 style: {
-                    // margin: 5,
-                    // backgroundColor: 'grey',
                 }
             }
         }

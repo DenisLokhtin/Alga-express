@@ -41,17 +41,6 @@ const Buyout = () => {
         country:"",
     });
 
-    // useEffect(()=>{
-    //         oneBuyout && setBuyout(prevState => ({
-    //             ...prevState,
-    //             description: oneBuyout.description,
-    //             image: oneBuyout.image,
-    //             url: oneBuyout.url,
-    //             country:oneBuyout.country,
-    //         }))
-    // },[oneBuyout.description,oneBuyout.url, oneBuyout.image, oneBuyout.country])
-
-    console.log(buyout);
 
     const submitFormHandler = e => {
         e.preventDefault();

@@ -18,7 +18,9 @@ import './Register.css'
 import 'react-phone-input-2/lib/bootstrap.css'
 import {rulesCompany, userLogin} from "../../paths";
 import theme from "../../theme";
-import {FormControl, InputLabel, MenuItem, Select} from "@mui/material";
+import {FormControl, InputAdornment, InputLabel, MenuItem, Select} from "@mui/material";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 const useStyles = makeStyles(theme => ({
     form: {
@@ -45,6 +47,9 @@ const Register = ({userData}) => {
     });
 
     const [checkbox, setCheckbox] = useState(userData?.role === 'superAdmin');
+
+    const [isFirstPasswordVisible, setIsFirstPasswordVisible] = useState(false);
+    const [isSecondPasswordVisible, setIsSecondPasswordVisible] = useState(false);
 
     const messagesEndRef = useRef(null);
 
@@ -177,7 +182,19 @@ const Register = ({userData}) => {
                     <FormElement
                         xs={12} sm={8} md={7} lg={7}
                         required
-                        type="password"
+                        type={isFirstPasswordVisible ? 'text' : 'password'}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    {isFirstPasswordVisible ? (
+                                        <VisibilityIcon
+                                            onClick={() => setIsFirstPasswordVisible(!isFirstPasswordVisible)}/>
+                                    ) : (
+                                        <VisibilityOffIcon onClick={() => setIsFirstPasswordVisible(!isFirstPasswordVisible)}/>
+                                    )}
+                                </InputAdornment>
+                            )
+                        }}
                         autoComplete="new-password"
                         label="Пароль"
                         name="password"
@@ -188,15 +205,25 @@ const Register = ({userData}) => {
                     <FormElement
                         xs={12} sm={8} md={7} lg={7}
                         required
-                        type="password"
+                        type={isSecondPasswordVisible ? 'text' : 'password'}
                         autoComplete="new-password"
                         label="Повторите пароль"
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    {isSecondPasswordVisible ? (
+                                        <VisibilityIcon onClick={() => setIsSecondPasswordVisible(!isSecondPasswordVisible)}/>
+                                    ) : (
+                                        <VisibilityOffIcon onClick={() => setIsSecondPasswordVisible(!isSecondPasswordVisible)}/>
+                                    )}
+                                </InputAdornment>
+                            )
+                        }}
                         name="confirmPassword"
                         value={user.confirmPassword}
                         onChange={inputChangeHandler}
                         error={getFieldError('password')}
                     />
-
                     {userData?.role === 'superAdmin' ? null : (
                         <>
                             <Grid item xs={12} sm={8} md={7} lg={7} sx={{mt: '1.5em'}}>

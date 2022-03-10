@@ -20,6 +20,7 @@ const tariffs = require('./app/tariffs');
 const currencies = require('./app/currencies');
 const delivery = require('./app/delivery');
 const carousels = require('./app/carousel');
+const players = require('./app/player');
 
 const app = express();
 app.use(express.json());
@@ -43,6 +44,7 @@ app.use('/tariffs', tariffs);
 app.use('/currencies', currencies);
 app.use('/delivery', delivery);
 app.use('/carousels', carousels);
+app.use('/players', players);
 
 const run = async () => {
     await mongoose.connect(config.db.url);

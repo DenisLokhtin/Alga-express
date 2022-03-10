@@ -45,7 +45,7 @@ function* packageRegisterSagas({payload: packageData}) {
     }
 }
 
-function* packageGetByIdSagas({payload: id}) {
+function* getPackageById({payload: id}) {
     try {
         const {data} = yield axiosApi.get(`/packages/${id}`);
         yield put(getPackageByIdSuccess(data));
@@ -54,11 +54,12 @@ function* packageGetByIdSagas({payload: id}) {
     }
 }
 
-function* packageChangeSagas({payload}) {
+function* packageChangeSagas({payload: packageData}) {
     try {
-        yield axiosApi.put(`/packages/${payload._id}`, payload);
+        yield axiosApi.put(`/packages/${packageData.packageId}`, packageData.editPackage);
         yield put(changePackageSuccess());
         toast.success('Ваш заказ был успешно отредактирован');
+        History.push('/package/history')
     } catch (e) {
         yield put(changePackageFailure(e.response.data));
     }
@@ -165,7 +166,7 @@ export function* fetchNewPackagesSaga() {
 const packageSagas = [
     takeEvery(createPackageRequest, packageRegisterSagas),
     takeEvery(changePackageRequest, packageChangeSagas),
-    takeEvery(getPackageByIdRequest, packageGetByIdSagas),
+    takeEvery(getPackageByIdRequest, getPackageById),
     takeEvery(fetchPackageAdminRequest, adminPackageEditSaga),
     takeEvery(editAdminPackageRequest, packageEditAdminSagas),
     takeEvery(getOrdersHistoryRequest, getOrdersHistorySagas),

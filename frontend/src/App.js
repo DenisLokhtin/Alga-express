@@ -12,7 +12,6 @@ import News from "./containers/News/News";
 import MarketSites from "./containers/MarketSites/MarketSites";
 import SingleNews from "./containers/SingleNews/SingleNews";
 import HomePage from "./containers/HomePage/HomePage";
-import EditPackage from "./containers/EditPackage/EditPackage";
 import FAQ from "./containers/FAQ/FAQ";
 import EditNews from "./containers/EditNews/EditNews";
 import AdminEditPackagePage from "./containers/AdminEditPackagePage/AdminEditPackagePage";
@@ -30,6 +29,7 @@ import {
     addCarousel,
     addFlightAdmin,
     addPaymentHandler,
+    addPlayer,
     addUserPayment,
     addWareHouseAddress,
     adminPagePath,
@@ -40,6 +40,7 @@ import {
     editPackageAdmin,
     editPackageUser,
     editPages,
+    editPlayer,
     editTariffGroup,
     editUserProfile,
     editWareHouseAddress,
@@ -90,8 +91,11 @@ import ProtectedRoutesForWarehouseman
     from "./components/ProtectedRoutes/ProtoectedRoutesForWarehouseman/ProtectedRoutesForWarehouseman";
 import ProtectedRoutesForSuperAdmin
     from "./components/ProtectedRoutes/ProtectedRoutesForSuperAdmin/ProtectedRoutesForSuperAdmin";
+import AddPlayerAdmin from "./components/AddPlayerAdmin/AddPlayerAdmin";
+import EditPlayerAdmin from "./components/EditPlayerAdmin/EditPlayerAdmin";
 import AddCarouselAdmin from "./components/AddCarouselAdmin/AddCarouselAdmin";
 import EditCarouselAdmin from "./components/EditCarouselAdmin/EditCarouselAdmin";
+import UserEditPackage from "./containers/UserEditPackage/UserEditPackage";
 
 const App = () => {
     return (
@@ -105,7 +109,7 @@ const App = () => {
                         <Route path={newPackageRegister} element={<PackageRegister/>}/>
                         <Route path={editUserProfile} element={<UserProfileEdit/>}/>
                         <Route path={sitesCompany} element={<MarketSites/>}/>
-                        <Route path={editPackageUser} element={<EditPackage/>}/>
+                        <Route path={editPackageUser} element={<UserEditPackage/>}/>
                         <Route path={packageInfoId} element={<SpecificPackage/>}/>
                         <Route path={orderBuyouts} element={<OrderBuyout/>}/>
                         <Route path={listBuyouts} element={<BuyoutList/>}/>
@@ -128,6 +132,8 @@ const App = () => {
                         <Route path={addCarousel} element={<AddCarouselAdmin/>}/>
                         <Route path={editCarousel} element={<EditCarouselAdmin/>}/>
                         <Route path={editWareHouseAddress} element={<EditWareHouseAdmin/>}/>
+                        <Route path={addPlayer} element={<AddPlayerAdmin/>}/>
+                        <Route path={editPlayer} element={<EditPlayerAdmin/>}/>
                     </Route>
                     {/* Routes for warehouseman and SuperAdmin*/}
                     {/*Приватные роуты можно сделать одним компонентом потом фикс*/}

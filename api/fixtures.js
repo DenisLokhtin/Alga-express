@@ -14,6 +14,7 @@ const WareHouse = require("./models/WareHouse");
 const Currency = require("./models/Currency");
 const Buyout = require("./models/Buyout");
 const Carousel = require("./models/Carousel");
+const Player = require("./models/Player");
 
 const run = async () => {
     await mongoose.connect(config.db.url, config.db.options);
@@ -95,14 +96,13 @@ const run = async () => {
         },
     );
 
-
     await Buyout.create(
         {
             description: 'Zara kid dress',
             user: user,
             status: "NEW",
             image: 'fixtures/zara_dress.png',
-            url:'https://www.zara.com/ww/en/textured-floral-dress-p01247405.html?v1=161209856&v2=2021154',
+            url: 'https://www.zara.com/ww/en/textured-floral-dress-p01247405.html?v1=161209856&v2=2021154',
             country: 'USA',
             datetime: '2022-05-15',
         },
@@ -111,7 +111,7 @@ const run = async () => {
             user: user,
             status: "NEW",
             image: 'fixtures/amazon_vitamin.png',
-            url:'https://www.amazon.com/Natural-Apple-Cider-Vinegar-Gummies/dp/B07VQN6Y88?ref_=Oct_d_odotd_d_3_5c86e41b&pd_rd_w=jMHbI&pf_rd_p=a10c66f2-5465-4d26-ac0f-6b448ca4162d&pf_rd_r=NC7EBFRPNG8GVB6HAV58&pd_rd_r=684afbb3-05e4-4fdb-b1ed-2460f255726b&pd_rd_wg=N8D7N',
+            url: 'https://www.amazon.com/Natural-Apple-Cider-Vinegar-Gummies/dp/B07VQN6Y88?ref_=Oct_d_odotd_d_3_5c86e41b&pd_rd_w=jMHbI&pf_rd_p=a10c66f2-5465-4d26-ac0f-6b448ca4162d&pf_rd_r=NC7EBFRPNG8GVB6HAV58&pd_rd_r=684afbb3-05e4-4fdb-b1ed-2460f255726b&pd_rd_wg=N8D7N',
             country: 'USA',
             datetime: '2022-05-15',
         },
@@ -154,6 +154,7 @@ const run = async () => {
     await Package.create(
         {
             trackNumber: nanoid(),
+            currency: 'usd',
             title: 'package 1',
             amount: 1,
             price: 2345,
@@ -168,6 +169,7 @@ const run = async () => {
         {
             trackNumber: nanoid(),
             title: 'package 2',
+            currency: 'try',
             amount: 1,
             price: 443,
             flight: flight1,
@@ -181,6 +183,7 @@ const run = async () => {
         {
             trackNumber: nanoid(),
             title: 'package 3',
+            currency: 'cny',
             amount: 1,
             price: 7564,
             flight: flight1,
@@ -195,6 +198,7 @@ const run = async () => {
             trackNumber: nanoid(),
             title: 'package 4',
             amount: 1,
+            currency: 'usd',
             price: 678,
             flight: flight2,
             country: 'chinaGround',
@@ -207,6 +211,7 @@ const run = async () => {
         {
             trackNumber: nanoid(),
             title: 'package 5',
+            currency: 'try',
             amount: 1,
             price: 345,
             flight: flight2,
@@ -318,6 +323,12 @@ const run = async () => {
         {
             info: 'Название к четвертой картинке',
             picture: 'fixtures/04.jpeg',
+        },
+    );
+
+    await Player.create(
+        {
+            urlYoutube: 'https://www.youtube.com/watch?v=sfd2xj9xtN0',
         },
     );
 
