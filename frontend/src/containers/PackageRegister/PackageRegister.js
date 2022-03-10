@@ -20,9 +20,9 @@ import theme from "../../theme";
 import FormElement from "../../components/UI/Form/FormElement";
 import {fetchUsersRequest} from "../../store/actions/usersActions";
 import {editBuyoutStatusRequest} from "../../store/actions/buyoutActions";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import CurrencyLiraIcon from "@mui/icons-material/CurrencyLira";
-import CurrencyYuanIcon from "@mui/icons-material/CurrencyYuan";
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import CurrencyLiraIcon from '@mui/icons-material/CurrencyLira';
+import CurrencyYenIcon from '@mui/icons-material/CurrencyYen';
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -40,12 +40,6 @@ const useStyles = makeStyles(() => ({
     checkboxContainer: {
         marginTop: '50px',
     },
-    item: {
-        width: '40px',
-    },
-    item2: {
-        width: '70%',
-    },
 }));
 
 theme.typography.h4 = {
@@ -56,8 +50,6 @@ theme.typography.h4 = {
     [theme.breakpoints.up('md')]: {
         fontSize: '2rem',
     },
-
-
 };
 
 const PackageRegister = () => {
@@ -71,9 +63,8 @@ const PackageRegister = () => {
     const data = useLocation();
     const buyoutUser = data?.state?.userProps;
 
-
     useEffect(() => {
-        if (user?.role !== 'user') {
+        if(user?.role !== 'user'){
             dispatch(fetchUsersRequest());
         }
     }, [dispatch, user]);
@@ -85,7 +76,7 @@ const PackageRegister = () => {
         amount: '',
         price: '',
         country: '',
-        priceCurrency: '',
+        currency: '',
     });
 
 
@@ -114,15 +105,15 @@ const PackageRegister = () => {
 
     const submitFormHandler = e => {
         e.preventDefault();
-        if (user?.role === 'admin') {
-            if (buyoutUser) {
-                dispatch(createPackageRequest({...packageRegister, userId: buyoutUser.id, navigate}));
+        if(user?.role === 'admin'){
+            if(buyoutUser){
+                dispatch(createPackageRequest({...packageRegister,userId:buyoutUser.id, navigate}));
                 dispatch(editBuyoutStatusRequest(buyoutUser.buyoutId));
             } else {
-                dispatch(createPackageRequest({...packageRegister, userId: value?._id, navigate}));
+                dispatch(createPackageRequest({...packageRegister,userId:value?._id, navigate}));
             }
-        } else {
-            dispatch(createPackageRequest({...packageRegister, ...user, navigate}));
+        } else{
+            dispatch(createPackageRequest({...packageRegister,...user, navigate}));
         }
     };
 
@@ -143,7 +134,7 @@ const PackageRegister = () => {
         <Container
             ref={messagesEndRef}
             component="section"
-            maxWidth="md"
+            maxWidth="sm"
             className={classes.container}>
             <Grid item>
                 <Typography
@@ -160,7 +151,7 @@ const PackageRegister = () => {
                 noValidate
                 spacing={5}
             >
-                <Grid item xs={12} sm={8} md={7} lg={7}>
+                <Grid item xs={12} sm={8} md={7} lg={9}>
                     <FormControl variant="outlined" fullWidth error={Boolean(getFieldError('country'))}>
                         <InputLabel id="demo-controlled-open-select-label">Страна</InputLabel>
                         <Select
@@ -182,7 +173,7 @@ const PackageRegister = () => {
                     </FormControl>
                 </Grid>
                 <FormElement
-                    xs={12} sm={8} md={7} lg={7}
+                    xs={12} sm={8} md={7} lg={9}
                     name="trackNumber"
                     value={packageRegister.trackNumber}
                     required
@@ -193,7 +184,7 @@ const PackageRegister = () => {
                     error={getFieldError('trackNumber')}
                 />
                 <FormElement
-                    xs={12} sm={8} md={7} lg={7}
+                    xs={12} sm={8} md={7} lg={9}
                     name="title"
                     value={packageRegister.title}
                     onChange={inputChangeHandler}
@@ -203,115 +194,120 @@ const PackageRegister = () => {
                     label="Название"
                     error={getFieldError('title')}
                 />
-                <FormElement
-                    xs={12} sm={8} md={7} lg={7}
-                    name="amount"
-                    type="number"
-                    value={packageRegister.amount}
-                    onChange={inputChangeHandler}
-                    fullWidth
-                    required
-                    variant="outlined"
-                    label="Количество"
-                    error={getFieldError('amount')}
-                />
-                <Grid container item xs={12} sm={8} md={7} lg={7}>
                     <FormElement
-                        xs={12} sm={8} md={7} lg={7}
+                        xs={12} sm={8} md={7} lg={9}
+                        name="amount"
+                        type="number"
+                        value={packageRegister.amount}
+                        onChange={inputChangeHandler}
+                        // fullWidth
+                        required
+                        variant="outlined"
+                        label="Количество"
+                        error={getFieldError('amount')}
+                    />
+                    <FormElement
+                        xs={12} sm={8} md={7} lg={4.5}
                         name="price"
                         type="number"
                         value={packageRegister.price}
                         onChange={inputChangeHandler}
-                        className={classes.item2}
-                        fullWidth
+                        className={classes.textField}
+                        // fullWidth
                         required
                         variant="outlined"
                         label="Цена"
                         error={getFieldError('price')}
                     />
-
-                    <Grid item >
-                        <FormControl variant="standard" error={Boolean(getFieldError('priceCurrency'))} >
+                    <Grid item xs={12} sm={8} md={7} lg={4.5}>
+                        <FormControl variant="outlined" fullWidth error={Boolean(getFieldError('currency'))}>
                             <InputLabel id="demo-controlled-open-select-label">Валюта</InputLabel>
                             <Select
                                 labelId="demo-controlled-open-select-label"
                                 id="demo-controlled-open-select"
-                                value={packageRegister.priceCurrency}
-                                name="priceCurrency"
+                                value={packageRegister.currency}
+                                label="Выберите валюту"
+                                name="currency"
                                 required
                                 onChange={inputChangeHandler}
                             >
-
-                                <MenuItem value={'USD'}><AttachMoneyIcon/>Доллар</MenuItem>
-                                <MenuItem value={'TRY'}><CurrencyLiraIcon/>Лира</MenuItem>
-                                <MenuItem value={'CNY'}><CurrencyYuanIcon/>Юань</MenuItem>
+                                <MenuItem value={'usd'}>
+                                    Доллар
+                                    <AttachMoneyIcon/>
+                                </MenuItem>
+                                <MenuItem value={'try'}>
+                                    Турецкая лира
+                                    <CurrencyLiraIcon/>
+                                </MenuItem>
+                                <MenuItem value={'cny'}>
+                                    Юань
+                                    <CurrencyYenIcon/>
+                                </MenuItem>
                             </Select>
-                            <FormHelperText error={true}>{error?.errors?.['priceCurrency']?.message}</FormHelperText>
+                            <FormHelperText error={true}>{error?.errors?.['currency']?.message}</FormHelperText>
                         </FormControl>
                     </Grid>
-                </Grid>
+                {user?.role === 'admin' && (
+                    <Grid item xs={12} sm={8} md={7} lg={7}>
 
-            {user?.role === 'admin' && (
-                <Grid item xs={12} sm={8} md={7} lg={7}>
+                        {buyoutUser ? (
+                            <TextField
+                                xs={12} sm={8} md={7} lg={7}
+                                type="text"
+                                value={buyoutUser.name}
+                                className={classes.textField}
+                                fullWidth
+                                required
+                                variant="outlined"
+                                label="Заказчик"
+                            />
+                        ):(
+                            <Autocomplete
+                                onChange={(event, newValue) => {
+                                    setValue(newValue);
+                                }}
+                                inputValue={inputValue}
+                                onInputChange={(event, newInputValue) => {
+                                    setInputValue(newInputValue);
+                                }}
+                                name={'user'}
+                                disablePortal
+                                id="combo-box-demo"
+                                options={users}
+                                getOptionLabel={(option)=>(option.name+' '+option.email)}
+                                renderInput={(params) => <TextField {...params} label="Заказчик" />}
+                            />
+                        )}
+                    </Grid>
+                )}
 
-                    {buyoutUser ? (
-                        <TextField
-                            xs={12} sm={8} md={7} lg={7}
-                            type="text"
-                            value={buyoutUser.name}
-                            className={classes.textField}
-                            fullWidth
-                            required
-                            variant="outlined"
-                            label="Заказчик"
-                        />
+                <Grid item xs={12} sm={8} md={7} lg={7}>{
+                    packageRegister.country &&
+                    packageRegister.amount &&
+                    packageRegister.price &&
+                    packageRegister.trackNumber &&
+                    packageRegister.currency &&
+                    packageRegister.title ? (
+                        <ButtonWithProgress
+                            loading={loading}
+                            disabled={loading}
+                            type="submit"
+                            variant="contained">
+                            Оформить
+                        </ButtonWithProgress>
                     ) : (
-                        <Autocomplete
-                            onChange={(event, newValue) => {
-                                setValue(newValue);
-                            }}
-                            inputValue={inputValue}
-                            onInputChange={(event, newInputValue) => {
-                                setInputValue(newInputValue);
-                            }}
-                            name={'user'}
-                            disablePortal
-                            id="combo-box-demo"
-                            options={users}
-                            getOptionLabel={(option) => (option.name + ' ' + option.email)}
-                            renderInput={(params) => <TextField {...params} label="Заказчик"/>}
-                        />
+                        <ButtonWithProgress
+                            loading={loading}
+                            disabled={true}
+                            type="submit"
+                            variant="contained">
+                            Оформить
+                        </ButtonWithProgress>
                     )}
                 </Grid>
-            )}
-
-            <Grid item xs={12} sm={8} md={7} lg={7}>{
-                packageRegister.country &&
-                packageRegister.amount &&
-                packageRegister.price &&
-                packageRegister.trackNumber &&
-                packageRegister.title ? (
-                    <ButtonWithProgress
-                        loading={loading}
-                        disabled={loading}
-                        type="submit"
-                        variant="contained">
-                        Оформить
-                    </ButtonWithProgress>
-                ) : (
-                    <ButtonWithProgress
-                        loading={loading}
-                        disabled={true}
-                        type="submit"
-                        variant="contained">
-                        Оформить
-                    </ButtonWithProgress>
-                )}
             </Grid>
-            </Grid>
-</Container>
-)
-    ;
+        </Container>
+    );
 };
 
 export default PackageRegister;

@@ -1,15 +1,13 @@
 import * as React from 'react';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {useDispatch} from "react-redux";
 import {postDeliveryRequest} from "../../store/actions/deliveryAction";
 import {changeDeliveryStatusRequest, getOrdersHistoryRequest} from "../../store/actions/packageRegisterActions";
-import {useEffect} from "react";
 
 const styleModal = {
     position: 'absolute',

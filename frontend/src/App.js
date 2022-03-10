@@ -12,7 +12,6 @@ import News from "./containers/News/News";
 import MarketSites from "./containers/MarketSites/MarketSites";
 import SingleNews from "./containers/SingleNews/SingleNews";
 import HomePage from "./containers/HomePage/HomePage";
-import EditPackage from "./containers/EditPackage/EditPackage";
 import FAQ from "./containers/FAQ/FAQ";
 import EditNews from "./containers/EditNews/EditNews";
 import AdminEditPackagePage from "./containers/AdminEditPackagePage/AdminEditPackagePage";
@@ -92,6 +91,7 @@ import ProtectedRoutesForSuperAdmin
     from "./components/ProtectedRoutes/ProtectedRoutesForSuperAdmin/ProtectedRoutesForSuperAdmin";
 import AddCarouselAdmin from "./components/AddCarouselAdmin/AddCarouselAdmin";
 import EditCarouselAdmin from "./components/EditCarouselAdmin/EditCarouselAdmin";
+import UserEditPackage from "./containers/UserEditPackage/UserEditPackage";
 
 const App = () => {
     return (
@@ -105,7 +105,7 @@ const App = () => {
                         <Route path={newPackageRegister} element={<PackageRegister/>}/>
                         <Route path={editUserProfile} element={<UserProfileEdit/>}/>
                         <Route path={sitesCompany} element={<MarketSites/>}/>
-                        <Route path={editPackageUser} element={<EditPackage/>}/>
+                        <Route path={editPackageUser} element={<UserEditPackage/>}/>
                         <Route path={packageInfoId} element={<SpecificPackage/>}/>
                         <Route path={orderBuyouts} element={<OrderBuyout/>}/>
                         <Route path={listBuyouts} element={<BuyoutList/>}/>
