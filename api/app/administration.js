@@ -5,6 +5,7 @@ const Payment = require("../models/Payment");
 const PaymentMove = require("../models/PaymentMove");
 const User = require("../models/User");
 const TariffGroup = require("../models/TariffGroup");
+const filterBuyouts = require("../middleware/filter");
 
 const router = express.Router();
 
@@ -25,9 +26,11 @@ router.get('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
 
     req.query.id ? query.id = req.query.id : null;
 
+    const findFilter = filterBuyouts(query, 'payments');
+
     try {
-        const size = await Payment.find({status: false});
-        const response = await Payment.find({status: false})
+        const size = await Payment.find(findFilter);
+        const response = await Payment.find(findFilter)
             .populate('user', 'name')
             .select('image description date user')
             .limit(limit)
