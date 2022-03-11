@@ -16,6 +16,7 @@ import dayjs from "dayjs";
 import {fetchPaymentRequest} from "../../store/actions/paymentActions";
 import {apiURL} from "../../config";
 import SwitchElement from "../../components/UI/SwitchElement/SwitchElement";
+import ImageModal from "../../components/UI/ImageModal/ImageModal";
 
 function a11yProps(index) {
     return {
@@ -28,6 +29,9 @@ const AdminPage = () => {
     const dispatch = useDispatch();
     const messagesEndRef = useRef(null);
     const [value, setValue] = useState(0);
+
+    const [openImg, setOpenImg] = useState(false);
+    const [img, setImg] = useState(null);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -208,7 +212,10 @@ const AdminPage = () => {
                             setPaymentsSelectionModel(newSelectionModel);
                         }}
                         loading={paymentsLoading}
-                        onRowClick={(e) => {console.log(e)}}
+                        onRowClick={(e) => {
+                            setImg(e.row);
+                            setOpenImg(true);
+                        }}
                         toolbarElements={
                             <SwitchElement
                                 checked={paymentsHistory}
@@ -216,6 +223,8 @@ const AdminPage = () => {
                             />
                         }
                     />
+
+                    <ImageModal open={openImg} onClose={() => setOpenImg(false)} data={img}/>
                 </TabPanelComponent>
 
                 <TabPanelComponent value={value} index={3}>
