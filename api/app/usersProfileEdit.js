@@ -71,7 +71,10 @@ const storage = multer.diskStorage({
             if (str.length > 0) {
                 const firstIndex = str[str.length - 1].image.indexOf('/', 8);
                 const secondIndex = str[str.length - 1].image.indexOf('_', 8);
-                index = parseInt(str[str.length - 1].image.substr(firstIndex + 1, (secondIndex - firstIndex) - 1)) + 1;
+                const i = parseInt(str[str.length - 1].image.substr(firstIndex + 1, (secondIndex - firstIndex) - 1));
+                if (!isNaN(i)) {
+                    index = i + 1;
+                }
             }
             cb(null, file.fieldname + '/' + index + '_' + dayjs(new Date()).format('DDMMYYYY') + '_' + req.user._id + path.extname(file.originalname))
         }
@@ -108,7 +111,6 @@ router.get('/payment', auth, async (req, res) => {
 });
 
 router.get('/:id', auth, async (req, res) => {
-    console.log('In back: ', req.params.id);
     try {
         const user = await User.findById(req.params.id)
             .select('email name passport phone avatar');
@@ -122,7 +124,6 @@ router.get('/:id', auth, async (req, res) => {
         }
         res.status(403).send({error: 'Доступ запрещен'});
     } catch (e) {
-        console.log(e);
         res.status(500).send(e);
     }
 });
@@ -191,8 +192,6 @@ router.post('/payment', auth, upload.single('payment'), async (req, res) => {
         }
 
         paymentData.user = req.user._id;
-
-        console.log(paymentData);
 
         const payment = new Payment(paymentData);
         await payment.save();
