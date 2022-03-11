@@ -18,7 +18,7 @@ import {
     addPaymentHandler,
     addUserPayment,
     adminPagePath,
-    cargoCreateUser,
+    cargoCreateUser, editInformation,
     editPages,
     editUserProfile,
     listBuyouts,
@@ -66,6 +66,7 @@ const superAdminSettings = [
     {url: editPages, title: 'Редактировать страницы', icon: <EditIcon/>},
     {url: addPaymentHandler, title: 'Пополнение баланса пользователя', icon: <PaidIcon/>},
     {url: processingTrackNumbersAdmin, title: 'Смена статуса посылок', icon: <EditIcon/>},
+    {url: editInformation, title: 'Редактировать информацию', icon: <EditIcon/>},
 ];
 
 const warehousemanSetting = [
@@ -82,6 +83,7 @@ const adminSettings = [
     {url: addPaymentHandler, title: 'Пополнение баланса пользователя', icon: <PaidIcon/>},
     {url: listBuyouts, title: 'Список заказов', icon: <FactCheckIcon/>},
     {url: processingTrackNumbersAdmin, title: 'Смена статуса посылок', icon: <EditIcon/>},
+    {url: editInformation, title: 'Редактировать информацию', icon: <EditIcon/>},
 ];
 const UserMenu = ({user}) => {
     const dispatch = useDispatch();

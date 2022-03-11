@@ -19,6 +19,7 @@ import currenciesSlice from "./slices/currenciesSlice";
 import deliverySlice from "./slices/deliverySlice";
 import carouselsSlice from "./slices/carouselSlice";
 import playerSlice from "./slices/playerSlice";
+import informationSlice from "./slices/informationSlice";
 
 const rootReducer = combineReducers({
     'users': usersSlice.reducer,
@@ -35,7 +36,8 @@ const rootReducer = combineReducers({
     'currencies': currenciesSlice.reducer,
     'delivery': deliverySlice.reducer,
     'carousels': carouselsSlice.reducer,
-    'players': playerSlice.reducer
+    'players': playerSlice.reducer,
+    'information': informationSlice.reducer,
 });
 
 const persistedState = loadFromLocalStorage();

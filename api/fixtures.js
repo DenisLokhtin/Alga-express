@@ -15,10 +15,10 @@ const Currency = require("./models/Currency");
 const Buyout = require("./models/Buyout");
 const Carousel = require("./models/Carousel");
 const Player = require("./models/Player");
+const Information = require("./models/Information");
 
 const run = async () => {
     await mongoose.connect(config.db.url, config.db.options);
-    console.log('fixtures');
 
     const collections = await mongoose.connection.db.listCollections().toArray();
 
@@ -37,7 +37,30 @@ const run = async () => {
 
     await Currency.create({
         usd: 86
-    })
+    });
+
+    await Information.create(
+        {
+            name: 'schedule',
+            text: '<div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"><p class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"><strong>График работы:</strong></p><ul><li>Пн: 11:00-18:00</li><li>Вт: 11:00-18:00</li><li>Ср: 11:00-18:00</li><li>Чт: Выходной</li><li>Пт: 11:00-18:00</li><li>Сб: 10:00-18:00</li><li>Вс: 11:00-15:00</li></ul></div>',
+        },
+        {
+            name: 'officeAdress',
+            text: '<p><b>Бишкек</b></p>' +
+                '<p>Юнусалиева, 142</p>',
+        },
+        {
+            name: 'warehouseAddresses',
+            text: '<p class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"><strong>Склад в Турции</strong></p> <div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Sehir: Istanbul</div><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Adress: Langa hisari cad 46 (Alga Express Kargo)</div><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Ilce: Fatih</div><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Mahallesi: Katipkasim</div><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Post kod: 34130</div><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Tel: 05550206083</div><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Yenikapi: laleli</div><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Ad: Ваше имя</div><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Soyad: Фамилия</div></div>' +
+                '<p class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"><strong>Склад в США</strong></p> <div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"><p class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Безналоговый штат (по поводу заказа электроники: мобильных телефонов, смарт часов, ноутбуков обращайтесь к менеджеру)</p><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Получатель: *Имя Фамилия* латиницей</div><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Адресная строка 1: *41B Germay Drive*</div><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Адресная строка 2: *ALGA-KG1* указывать обязательно!</div><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Город: *Wilmington*</div><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Штат: *DE (Delaware)*</div><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Почтовый код: *19804*</div><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Телефон: *+1 (302) 669-1014*</div></div>' +
+                '<p class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"><strong>Склад в Китае на Авиа доставку в городе Гуанчжоу</strong></p> <div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">收件人：大龙</div><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">电话：19927599273</div><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">广东省 广州市 南沙区 南沙街道 广兴路二十五号五楼502室F16395-(ALGA ID клиента)</div><p>Склад принимает посылки с 9:00 до 18:00 вечера.</p><p>Воскресенье не рабочий день.</p></div>',
+        },
+        {
+            name: 'contacts',
+            text: '<p class="MuiTypography-root MuiTypography-body1 css-nwh2cx-MuiTypography-root">Тел.: 0 774 769 434 (Выкуп)</p>' +
+                '<p class="MuiTypography-root MuiTypography-body1 css-nwh2cx-MuiTypography-root">️0 702 465 333 (Склад)</p>',
+        },
+    );
 
     const [user] = await User.create(
         {
@@ -131,7 +154,8 @@ const run = async () => {
         },
         {
             country: 'Склад в США',
-            info: '<p class=\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\"><strong>Безналоговый штат </strong><em>(по поводу заказа электроники: мобильных телефонов, смарт часов, ноутбуков обращайтесь к менеджеру)</em></p><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Получатель</strong>: <em>*Имя Фамилия* латиницей</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Адресная строка 1</strong>: <em>*41B Germay Drive*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Адресная строка 2</strong>: <em>*ALGA-KG1* указывать обязательно!</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Город</strong>: <em>*Wilmington*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Штат</strong>: <em>*DE (Delaware)*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Почтовый код</strong>: <em>*19804*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Телефон</strong>: <em>*+1 (302) 669-1014*</em></div>'},
+            info: '<p class=\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\"><strong>Безналоговый штат </strong><em>(по поводу заказа электроники: мобильных телефонов, смарт часов, ноутбуков обращайтесь к менеджеру)</em></p><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Получатель</strong>: <em>*Имя Фамилия* латиницей</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Адресная строка 1</strong>: <em>*41B Germay Drive*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Адресная строка 2</strong>: <em>*ALGA-KG1* указывать обязательно!</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Город</strong>: <em>*Wilmington*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Штат</strong>: <em>*DE (Delaware)*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Почтовый код</strong>: <em>*19804*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Телефон</strong>: <em>*+1 (302) 669-1014*</em></div>'
+        },
     );
 
     const [flight1, flight2] = await Flight.create(

@@ -22,7 +22,6 @@ export function* pagesSagas({payload: nameURL}) {
 
 function* pagesEditSaga({payload}) {
     try {
-        console.log(payload);
         const response = yield axiosApi.put(`/pages/${payload.page}`, {text: payload.text});
         yield put(changePagesSuccess(response.data));
         toast.success('Страница отредактирована!');
