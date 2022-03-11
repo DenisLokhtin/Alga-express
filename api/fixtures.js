@@ -14,6 +14,7 @@ const WareHouse = require("./models/WareHouse");
 const Currency = require("./models/Currency");
 const Buyout = require("./models/Buyout");
 const Carousel = require("./models/Carousel");
+const Player = require("./models/Player");
 
 const run = async () => {
     await mongoose.connect(config.db.url, config.db.options);
@@ -153,6 +154,7 @@ const run = async () => {
     await Package.create(
         {
             trackNumber: nanoid(),
+            currency: 'usd',
             title: 'package 1',
             amount: 1,
             price: 2345,
@@ -167,6 +169,7 @@ const run = async () => {
         {
             trackNumber: nanoid(),
             title: 'package 2',
+            currency: 'try',
             amount: 1,
             price: 443,
             flight: flight1,
@@ -180,6 +183,7 @@ const run = async () => {
         {
             trackNumber: nanoid(),
             title: 'package 3',
+            currency: 'cny',
             amount: 1,
             price: 7564,
             flight: flight1,
@@ -194,6 +198,7 @@ const run = async () => {
             trackNumber: nanoid(),
             title: 'package 4',
             amount: 1,
+            currency: 'usd',
             price: 678,
             flight: flight2,
             country: 'chinaGround',
@@ -206,6 +211,7 @@ const run = async () => {
         {
             trackNumber: nanoid(),
             title: 'package 5',
+            currency: 'try',
             amount: 1,
             price: 345,
             flight: flight2,
@@ -317,6 +323,12 @@ const run = async () => {
         {
             info: 'Название к четвертой картинке',
             picture: 'fixtures/04.jpeg',
+        },
+    );
+
+    await Player.create(
+        {
+            urlYoutube: 'https://www.youtube.com/watch?v=sfd2xj9xtN0',
         },
     );
 

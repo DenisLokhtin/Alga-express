@@ -4,11 +4,9 @@ import {useNavigate, useParams} from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {makeStyles} from "@mui/styles";
-import {changeCarouselsRequest, fetchOneCarouselsRequest} from "../../store/actions/carouselActions";
+import {changePlayerRequest, fetchOnePlayerRequest} from "../../store/actions/playerActions";
 import FormElement from "../UI/Form/FormElement";
-import FileInput from "../UI/FileInput/FileInput";
 import Container from "@mui/material/Container";
-import {apiURL} from "../../config";
 
 const useStyles = makeStyles(theme => ({
     submit: {
@@ -31,44 +29,37 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const EditCarouselAdmin = () => {
+const EditPlayerAdmin = () => {
     const navigate = useNavigate();
-    const oneCarousel = useSelector(state => state.carousels.oneCarousel);
+    const onePlayer = useSelector(state => state.players.onePlayer);
     const classes = useStyles();
-    const [singleCarousel, setSingleCarousel] = useState({
-        info: '',
-        picture: '',
+    const [singlePlayer, setSinglePlayer] = useState({
+        urlYoutube: '',
     });
     const dispatch = useDispatch();
     const params = useParams();
-    const loading = useSelector(state => state.carousels.carouselsLoading);
-    const error = useSelector(state => state.carousels.carouselsError);
+    const loading = useSelector(state => state.players.singleLoading);
+    const error = useSelector(state => state.players.playerError);
 
     useEffect(() => {
-        dispatch(fetchOneCarouselsRequest(params.id));
+        dispatch(fetchOnePlayerRequest(params.id));
 
-    }, [dispatch, params.id, oneCarousel.info]);
+    }, [dispatch, params.id, onePlayer.urlYoutube]);
 
     useMemo(() => {
-        oneCarousel && setSingleCarousel({
-            info: oneCarousel.info,
-            picture: oneCarousel.picture,
+        setSinglePlayer({
+            urlYoutube: onePlayer.urlYoutube,
         });
-    }, [oneCarousel]);
+    }, [onePlayer]);
 
-    const changeCarousel = (e) => {
+    const changePlayer = (e) => {
         e.preventDefault();
-        const formData = new FormData();
-        Object.keys(singleCarousel).forEach(key => {
-            formData.append(key, singleCarousel[key]);
-        });
-        dispatch(changeCarouselsRequest({formData, carouselId: params.id, navigate}));
+        dispatch(changePlayerRequest({singlePlayer, playerId: params.id, navigate}));
     };
 
     const onInputTextareaChange = e => {
         const {name, value} = e.target;
-        console.log(name, value);
-        setSingleCarousel(prev => ({
+        setSinglePlayer(prev => ({
             ...prev,
             [name]: value
         }));
@@ -82,28 +73,19 @@ const EditCarouselAdmin = () => {
         }
     };
 
-    const fileChangeHandler = async (e) => {
-        const name = e.target.name;
-        const file = e.target.files[0];
-        if (name === 'picture') {
-            setImagePreload(URL.createObjectURL(e.target.files[0]));
-        }
-        setSingleCarousel(prevState => {
-            return {...prevState, [name]: file};
-        });
-    };
-
-    const [imagePreload, setImagePreload] = useState(null);
     return (
         <div>
             <Container
                 component="section"
                 maxWidth="md"
                 className={classes.container}>
-                <h2>Редактирование изображения для слайдера</h2>
+                <h3>Изменить ссылку на видео из Youtube</h3>
+                <Grid item xs={12} sm={8} md={7} lg={7}>
+                </Grid>
+                <hr/>
                 <Grid
                     component="form"
-                    onSubmit={changeCarousel}
+                    onSubmit={changePlayer}
                     justifyContent="center"
                     container
                     noValidate
@@ -111,31 +93,14 @@ const EditCarouselAdmin = () => {
                 >
                     <Grid item xs={12}>
                         <FormElement
-                            label={singleCarousel.info ? "" : "Заголовок изображения"}
+                            label={singlePlayer.urlYoutube ? "" : "Ссылка с youtube"}
                             required
-                            name="info"
-                            value={singleCarousel.info || ''}
+                            name="urlYoutube"
+                            value={singlePlayer.urlYoutube || ''}
                             onChange={onInputTextareaChange}
                             error={getFieldError('info')}
                         />
                     </Grid>
-                    <Grid item xs={12}>
-                        {imagePreload ?
-                            <img src={imagePreload} alt="preview imagePreload"/> :
-                            <img src={apiURL + '/' + singleCarousel.picture} alt={singleCarousel.info}/>
-                        }
-                    </Grid>
-
-                    <Grid item xs={12}>
-                        <FileInput
-                            required
-                            label="Изменить картинку"
-                            type
-                            name="picture"
-                            onChange={fileChangeHandler}
-                        />
-                    </Grid>
-
                     <Grid item xs={3} sm={8} md={3} lg={7}
                           className={classes.submit}>
                         <ButtonWithProgress
@@ -155,4 +120,4 @@ const EditCarouselAdmin = () => {
     );
 };
 
-export default EditCarouselAdmin;
+export default EditPlayerAdmin;

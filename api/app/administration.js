@@ -10,6 +10,7 @@ const TariffGroup = require("../models/TariffGroup");
 const router = express.Router();
 
 router.get('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
+    const query = {};
     let page = 0;
     let limit = 10;
 
@@ -20,6 +21,11 @@ router.get('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
     if (req.query.limit) {
         limit = req.query.limit;
     }
+
+    req.query.history ? query.history = req.query.history : null;
+
+    req.query.id ? query.id = req.query.id : null;
+
     try {
         const size = await Payment.find({status: false});
         const response = await Payment.find({status: false})
@@ -42,7 +48,6 @@ router.get('/tariff', auth, permit('admin', 'superAdmin'), async (req, res) => {
         res.status(500).send({error: e});
     }
 });
-
 
 router.post('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
     let pay = Number(req.body.pay).toFixed(2);
@@ -68,7 +73,6 @@ router.post('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
                 const paySave = new PaymentMove(permitData);
                 await paySave.save();
 
-                // sendMail('test@gmail.com', 'test', 'test body');
                 await User.findByIdAndUpdate(userPayment, {balance: userPayment.balance + pay});
 
                 return res.status(200).send({status: true});

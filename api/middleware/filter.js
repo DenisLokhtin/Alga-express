@@ -1,4 +1,22 @@
-const checkHistory = (data, user_id) => {
+const checkHistoryBuyouts = (data, user_id) => {
+    const filterData = {};
+
+    if ((data.role === 'admin') || (data.role === 'user')) {
+        filterData.deleted = false;
+    }
+
+    if (user_id) filterData.user = user_id;
+
+    if (data.history) {
+        filterData.status = 'ORDERED';
+    } else {
+        filterData.status = {$ne: 'ORDERED'};
+    }
+
+    return filterData;
+}
+
+const checkHistoryPackages = (data, user_id) => {
     const filterData = {
         deleted: {$ne: true},
         status: {$ne: 'ERASED'}
@@ -15,7 +33,7 @@ const checkHistory = (data, user_id) => {
     } else {
 
         if (filterData.status) {
-            filterData.status = {$in: ['NEW', 'REGISTERED', 'ON_WAREHOUSE', 'ON_WAY', 'PROCESSED', 'DELIVERED']};
+            filterData.status = {$in: ['NEW', 'REGISTERED', 'ON_WAREHOUSE', 'ON_WAY', 'DELIVERED']};
         }
 
     }
@@ -23,24 +41,52 @@ const checkHistory = (data, user_id) => {
     return filterData;
 };
 
-const filter = (inputDate) => {
-    if (inputDate.role === 'user') return  checkHistory(inputDate, inputDate.user_id);
+const checkHistoryPayments = (data, user_id) => {
+    const filterData = {};
 
-    if (inputDate.role === 'admin') {
+    if (user_id) {
+        filterData.user = user_id
+    }
 
-        if (inputDate.id) {
-            return  checkHistory(inputDate, inputDate.id);
+    data.history ? filterData.status = true : filterData.status = false;
+
+    return filterData
+}
+
+
+const filter = (inputData, type) => {
+    if ((inputData.role === 'admin') || (inputData.role === 'superAdmin')) {
+        if (inputData.id) {
+            if (type === 'packages') {
+                return checkHistoryPackages(inputData, inputData.id);
+            } else if (type === 'buyouts') {
+                return checkHistoryBuyouts(inputData, inputData.id);
+            } else if (type === 'payments') {
+                return checkHistoryPayments(inputData, inputData.id);
+            }
         } else {
-            return  checkHistory(inputDate);
+            if (type === 'packages') {
+                return checkHistoryPackages(inputData);
+            } else if (type === 'buyouts') {
+                return checkHistoryBuyouts(inputData);
+            } else if (type === 'payments') {
+                return checkHistoryPayments(inputData);
+            }
+
         }
     }
 
-    if (inputDate.role === 'warehouseman')
-        if (inputDate.id) {
-            return  checkHistory(inputDate, inputDate.id);
-        } else {
-            return  checkHistory(inputDate);
+    if (inputData.role === 'user') {
+        if (type === 'packages') {
+            return checkHistoryPackages(inputData, inputData.id);
+        } else if (type === 'buyouts') {
+            return checkHistoryBuyouts(inputData, inputData.id);
+        } else if (type === 'payments') {
+            return checkHistoryPayments(inputData, inputData.id);
         }
+
+    }
+
 };
 
 module.exports = filter;
