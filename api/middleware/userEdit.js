@@ -19,9 +19,11 @@ const userEdit = (user, packageOrder, updateData) => {
         updateData.width ||
         updateData.length ||
         updateData.height ||
-        updateData.urlPackage) {
+        updateData.urlPackage ||
+        updateData.currency) {
 
         packageOrder.trackNumber = updateData.trackNumber || packageOrder.trackNumber;
+        packageOrder.currency = updateData.currency || packageOrder.currency;
         packageOrder.title = updateData.title || packageOrder.title;
         packageOrder.amount = updateData.amount || packageOrder.amount;
         packageOrder.price = updateData.price || packageOrder.price;
