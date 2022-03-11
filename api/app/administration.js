@@ -7,6 +7,7 @@ const User = require("../models/User");
 const TariffGroup = require("../models/TariffGroup");
 const sendMail = require('../middleware/sendMail');
 const {balanceText} = require('./email-texts');
+const filterBuyouts = require("../middleware/filter");
 
 const router = express.Router();
 
@@ -27,9 +28,11 @@ router.get('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
 
     req.query.id ? query.id = req.query.id : null;
 
+    const findFilter = filterBuyouts(query, 'payments');
+
     try {
-        const size = await Payment.find({status: false});
-        const response = await Payment.find({status: false})
+        const size = await Payment.find(findFilter);
+        const response = await Payment.find(findFilter)
             .populate('user', 'name')
             .select('image description date user')
             .limit(limit)
@@ -172,6 +175,7 @@ router.put('/:id', auth, permit('admin', 'superAdmin'), async (req, res) => {
         const userPayment = await Payment.findById(userPaymentMove.userPayment)
             .populate('user', 'name');
         const user = await User.findById(userPayment.user._id);
+
 
         if (pay > 0) {
             const permitData = {
