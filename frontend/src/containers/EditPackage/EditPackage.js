@@ -7,6 +7,9 @@ import {useDispatch, useSelector} from "react-redux";
 import {changePackageRequest} from "../../store/actions/packageRegisterActions";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
 import FormElement from "../../components/UI/Form/FormElement";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import CurrencyLiraIcon from "@mui/icons-material/CurrencyLira";
+import CurrencyYenIcon from "@mui/icons-material/CurrencyYen";
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -54,12 +57,14 @@ const EditPackage = ({packageData, params}) => {
     const error = useSelector(state => state.package.changePackageError);
     const loading = useSelector(state => state.package.editUserPackageLoading);
 
+
     const [editPackage, setEditPackage] = useState({
         trackNumber: packageData.trackNumber,
         title: packageData.title,
         amount: packageData.amount,
         price: packageData.price,
         country: packageData.country,
+        currency: packageData.currency,
     });
 
     const inputChangeHandler = event => {
@@ -94,7 +99,7 @@ const EditPackage = ({packageData, params}) => {
             <Container
                 ref={messagesEndRef}
                 component="section"
-                maxWidth="md"
+                maxWidth="sm"
                 className={classes.container}>
                 <Grid item>
                     <Typography
@@ -111,7 +116,7 @@ const EditPackage = ({packageData, params}) => {
                     noValidate
                     spacing={5}
                 >
-                    <Grid item xs={12} sm={8} md={7} lg={7}>
+                    <Grid item xs={12} sm={8} md={7} lg={9}>
                         <FormControl variant="outlined" fullWidth error={Boolean(getFieldError('country'))}>
                             <InputLabel id="demo-controlled-open-select-label">Страна</InputLabel>
                             <Select
@@ -137,7 +142,7 @@ const EditPackage = ({packageData, params}) => {
                     </Grid>
 
                     <FormElement
-                        xs={12} sm={8} md={7} lg={7}
+                        xs={12} sm={8} md={7} lg={9}
                         name="trackNumber"
                         value={editPackage.trackNumber}
                         required
@@ -148,7 +153,7 @@ const EditPackage = ({packageData, params}) => {
                     />
 
                     <FormElement
-                        xs={12} sm={8} md={7} lg={7}
+                        xs={12} sm={8} md={7} lg={9}
                         name="title"
                         value={editPackage.title}
                         onChange={inputChangeHandler}
@@ -159,7 +164,7 @@ const EditPackage = ({packageData, params}) => {
                     />
 
                     <FormElement
-                        xs={12} sm={8} md={7} lg={7}
+                        xs={12} sm={8} md={7} lg={9}
                         name="amount"
                         type="number"
                         value={editPackage.amount}
@@ -171,7 +176,7 @@ const EditPackage = ({packageData, params}) => {
                     />
 
                     <FormElement
-                        xs={12} sm={8} md={7} lg={7}
+                        xs={12} sm={8} md={7} lg={4.5}
                         name="price"
                         type="number"
                         fullWidth
@@ -181,6 +186,35 @@ const EditPackage = ({packageData, params}) => {
                         label="Цена"
                         error={getFieldError('price')}
                     />
+
+                    <Grid item xs={12} sm={8} md={7} lg={4.5}>
+                        <FormControl variant="outlined" fullWidth error={Boolean(getFieldError('currency'))}>
+                            <InputLabel id="demo-controlled-open-select-label">Валюта</InputLabel>
+                            <Select
+                                labelId="demo-controlled-open-select-label"
+                                id="demo-controlled-open-select"
+                                value={editPackage.currency}
+                                label="Выберите валюту"
+                                name="currency"
+                                required
+                                onChange={inputChangeHandler}
+                            >
+                                <MenuItem value={'usd'}>
+                                    Доллар
+                                    <AttachMoneyIcon/>
+                                </MenuItem>
+                                <MenuItem value={'try'}>
+                                    Турецкая лира
+                                    <CurrencyLiraIcon/>
+                                </MenuItem>
+                                <MenuItem value={'cny'}>
+                                    Юань
+                                    <CurrencyYenIcon/>
+                                </MenuItem>
+                            </Select>
+                            <FormHelperText error={true}>{error?.errors?.['currency']?.message}</FormHelperText>
+                        </FormControl>
+                    </Grid>
 
                     <Grid item xs={12} sm={8} md={7} lg={7}
                           className={classes.packageBtnContainer}>

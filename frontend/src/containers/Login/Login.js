@@ -12,9 +12,11 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import Alert from '@mui/material/Alert';
-import {AlertTitle} from "@mui/material";
+import {AlertTitle, InputAdornment} from "@mui/material";
 import {forgotPassword, newUserRegister} from "../../paths";
 import theme from "../../theme";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 const useStyles = makeStyles(theme => ({
     form: {
@@ -40,6 +42,8 @@ const Login = () => {
         email: '',
         password: ''
     });
+
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
     const messagesEndRef = useRef(null);
 
@@ -105,7 +109,19 @@ const Login = () => {
                     />
 
                     <FormElement
-                        type="password"
+                        type={isPasswordVisible ? "text" : "password"}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    {isPasswordVisible ? (
+                                        <VisibilityIcon
+                                            onClick={() => setIsPasswordVisible(!isPasswordVisible)}/>
+                                    ) : (
+                                        <VisibilityOffIcon onClick={() => setIsPasswordVisible(!isPasswordVisible)}/>
+                                    )}
+                                </InputAdornment>
+                            )
+                        }}
                         autoComplete="current-password"
                         label="Пароль"
                         name="password"

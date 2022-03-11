@@ -5,6 +5,8 @@ const {nanoid} = require('nanoid');
 const config = require('../config');
 const News = require('../models/News');
 const dayjs = require("dayjs");
+// const sendMail = require('../middleware/sendMail');
+// const {describeAll} = require("npm/lib/utils/config");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -45,6 +47,11 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', upload.single('image'), async (req, res) => {
   try {
+    // const users = await User.find({role: 'user'});
+    // users.map(user => {
+    //        sendMail(user.email, 'Alga-express: Новость', null, newsData.description);
+    // })
+
     const newsData = {
       title: req.body.title,
       description: req.body.description,
@@ -56,6 +63,7 @@ router.post('/', upload.single('image'), async (req, res) => {
     }
 
     const news = new News(newsData);
+
 
     await news.save();
     res.send(news);

@@ -51,6 +51,14 @@ const OrderHistory = () => {
             align: 'center'
         },
         {
+            field: 'title',
+            headerName: 'Заголовок',
+            flex: 1,
+            minWidth: 200,
+            headerAlign: 'center',
+            align: 'center',
+        },
+        {
             field: 'country',
             headerName: 'Страна',
             flex: 1,
@@ -67,10 +75,10 @@ const OrderHistory = () => {
             align: 'center',
         },
         {
-            field: 'title',
-            headerName: 'Заголовок',
+            field: 'amount',
+            headerName: 'Количество',
             flex: 1,
-            minWidth: 200,
+            minWidth: 150,
             headerAlign: 'center',
             align: 'center',
         },
@@ -78,7 +86,7 @@ const OrderHistory = () => {
             field: 'price',
             headerName: 'Цена товара',
             flex: 1,
-            minWidth: 150,
+            minWidth: 140,
             headerAlign: 'center',
             align: 'center',
             renderCell: (params => {
@@ -109,7 +117,7 @@ const OrderHistory = () => {
             field: 'delivery',
             headerName: 'Доставка',
             flex: 1,
-            minWidth: 75,
+            minWidth: 90,
             headerAlign: 'center',
             align: 'center',
             renderCell: (params) => {
@@ -133,7 +141,7 @@ const OrderHistory = () => {
             field: 'edit',
             headerName: 'Редактирование',
             flex: 1,
-            minWidth: 155,
+            minWidth: 150,
             headerAlign: 'center',
             align: 'center',
             renderCell: (params) => {
@@ -163,6 +171,7 @@ const OrderHistory = () => {
             status: statuses[order.status],
             delivery: order.delivery,
             edit: 'Редактировать',
+            amount: order.amount,
             price: order.price,
         }
     });
@@ -197,7 +206,7 @@ const OrderHistory = () => {
     }, [page, dispatch, pageLimit, messagesEndRef]);
 
     return (
-        <Container ref={messagesEndRef} style={{display: 'flex', height: '550px', width: '100%', marginTop: '5em'}}>
+        <Container maxWidth="xl" ref={messagesEndRef} style={{display: 'flex', height: '550px', width: '100%', marginTop: '5em'}}>
             <DeliveryModal title={currentModal.title} track={currentModal.trackNumber} status={currentModal.status}
                            country={currentModal.country} open={open} page={page} pageLimit={pageLimit}
                            close={handleClose}/>
