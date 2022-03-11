@@ -87,7 +87,7 @@ router.get('/list', auth, permit('admin', 'user', 'superAdmin'), async (req, res
     query.role = req.user.role;
     query.user_id = req.user._id;
 
-    const findFilter = filterBuyouts(query);
+    const findFilter = filterBuyouts(query, 'buyouts');
 
     try {
         const size = await Buyout.find(findFilter);
