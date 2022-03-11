@@ -6,7 +6,7 @@ const auth = require("../middleware/auth");
 const {nanoid} = require("nanoid");
 const sendMail = require('../middleware/sendMail');
 const bcrypt = require("bcrypt");
-const emailDistribution = require("./email-texts");
+const emailDistribution = require("../email-texts");
 
 
 const SALT_WORK_FACTOR = 10;

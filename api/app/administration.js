@@ -6,7 +6,7 @@ const PaymentMove = require("../models/PaymentMove");
 const User = require("../models/User");
 const TariffGroup = require("../models/TariffGroup");
 const sendMail = require('../middleware/sendMail');
-const {balanceText} = require('./email-texts');
+const {balanceText} = require('../email-texts');
 const filterBuyouts = require("../middleware/filter");
 
 const router = express.Router();
