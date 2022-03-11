@@ -6,8 +6,7 @@ import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import FormElement from "../UI/Form/FormElement";
 import {useNavigate} from "react-router-dom";
 import theme from "../../theme";
-import FileInput from "../UI/FileInput/FileInput";
-import {addCarouselsRequest} from "../../store/actions/carouselActions";
+import {addPlayerRequest} from "../../store/actions/playerActions";
 
 const useStyles = makeStyles(theme => ({
     submit: {
@@ -26,27 +25,24 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const AddCarouselAdmin = () => {
+const AddPlayerAdmin = () => {
     const navigate = useNavigate();
     const classes = useStyles();
     const dispatch = useDispatch();
-    const error = useSelector(state => state.carousels.carouselsError);
-    const loading = useSelector(state => state.carousels.carouselsLoading);
-    const [carousel, setCarousel] = useState({
-        info: '',
-        picture: null,
+    const loading = useSelector(state => state.players.addLoading);
+    const error = useSelector(state => state.players.addError);
+
+    const [player, setPlayer] = useState({
+        urlYoutube: '',
     });
+
     const submitFormHandler = e => {
         e.preventDefault();
-
-        const formData = new FormData();
-        Object.keys(carousel).forEach(key => {
-            formData.append(key, carousel[key]);
-        });
-        dispatch(addCarouselsRequest({formData, navigate}));
-        setCarousel({
-            info: "",
-            picture: null,
+        const playerData = {};
+        playerData.urlYoutube = player.urlYoutube;
+        dispatch(addPlayerRequest({playerData, navigate}));
+        setPlayer({
+            urlYoutube: '',
         })
     };
 
@@ -60,20 +56,10 @@ const AddCarouselAdmin = () => {
 
     const onInputTextareaChange = e => {
         const {name, value} = e.target;
-        setCarousel(prev => ({
+        setPlayer(prev => ({
             ...prev,
             [name]: value
         }));
-    };
-
-    const fileChangeHandler = async (e) => {
-        const name = e.target.name;
-        const file = e.target.files[0]
-        // const image = await resizeFile(file);
-        // const newFile = dataURIToBlob(image);
-        setCarousel(prevState => {
-            return {...prevState, [name]: file};
-        });
     };
 
     return (
@@ -90,27 +76,15 @@ const AddCarouselAdmin = () => {
                 onSubmit={submitFormHandler}
                 noValidate
             >
-                <h3 style={theme.title}>Добавить изображение на слайдер</h3>
-                <Grid item xs={12}>
-                    <FormElement
-                        label="Заголовок изображения"
-                        required
-                        name="info"
-                        value={carousel.info}
-                        onChange={onInputTextareaChange}
-                        error={getFieldError('info')}
-                    />
-                </Grid>
-
-                <Grid item xs>
-                    <FileInput
-                        required
-                        label="Добавить картинку"
-                        type
-                        name="picture"
-                        onChange={fileChangeHandler}
-                    />
-                </Grid>
+                <h3 style={theme.title}>Добавить видео</h3>
+                <FormElement
+                    required
+                    label="Видео ссылка с youtube"
+                    name="urlYoutube"
+                    value={player.urlYoutube}
+                    onChange={onInputTextareaChange}
+                    error={getFieldError('urlYoutube')}
+                />
 
                 <Grid item xs={12}>
                     <ButtonWithProgress
@@ -129,4 +103,4 @@ const AddCarouselAdmin = () => {
     );
 };
 
-export default AddCarouselAdmin;
+export default AddPlayerAdmin;

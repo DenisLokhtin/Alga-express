@@ -43,6 +43,10 @@ export const resetPassword = '/secret/reset-password';
 export const addCarousel = '/alga-express/carousel/add';
 export const editCarousel = '/alga-express/carousel/edit/:id';
 export const editingSingleCarousel = '/alga-express/carousel/edit/';
+export const addPlayer = '/alga-express/player/add';
+export const editPlayer = '/alga-express/player/edit/:id';
+export const editingSinglePlayer = '/alga-express/player/edit/';
+
 
 
 

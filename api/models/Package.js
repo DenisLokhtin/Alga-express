@@ -43,6 +43,10 @@ const PackageSchema = new mongoose.Schema({
         required: 'Поле Цена обязательное',
         min: [0, 'Цена не может быть меньше нуля'],
     },
+    priceCurrency:{
+        type: String,
+        enum: ['USD', 'TRY', 'CNY'],
+    },
     flight: {
         type: mongoose.Types.ObjectId,
         ref: 'Flight'

@@ -32,12 +32,10 @@ const AddWareHouseAdmin = () => {
     const dispatch = useDispatch();
     const loading = useSelector(state => state.wareHouses.addLoading);
     const error = useSelector(state => state.wareHouses.addError);
-
     const [wareHouse, setWareHouse] = useState({
         country: '',
         info: '',
     });
-
     const submitFormHandler = e => {
         e.preventDefault();
         const formData = new FormData();
@@ -117,15 +115,7 @@ const AddWareHouseAdmin = () => {
                         onEditorChange={handleEditorChange}
                     />
                 </Grid>
-                {/*<br/>*/}
-                {/*<FormElement*/}
-                {/*    label="Сведения о складе"*/}
-                {/*    required*/}
-                {/*    name="info"*/}
-                {/*    value={wareHouse.info}*/}
-                {/*    onChange={onInputTextareaChange}*/}
-                {/*    error={getFieldError('info')}*/}
-                {/*/>*/}
+
                 <Grid item xs={12}>
                     <ButtonWithProgress
                         type="submit"

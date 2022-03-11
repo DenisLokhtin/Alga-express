@@ -18,19 +18,15 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const EditWareHouseAdmin = () => {
-
     const navigate = useNavigate();
     const oneWareHouse = useSelector(state => state.wareHouses.oneWareHouse);
     const classes = useStyles();
-
     const [singleWareHouse, setSingleWareHouse] = useState({
         country: '',
         info: '',
     });
-
     const dispatch = useDispatch();
     const params = useParams();
-
     const loading = useSelector(state => state.wareHouses.singleLoading);
 
     useEffect(() => {
@@ -55,8 +51,6 @@ const EditWareHouseAdmin = () => {
             return {...prevState, info: content}
         });
     };
-
-
     return (
         <div>
             <h3>{oneWareHouse.country}</h3>

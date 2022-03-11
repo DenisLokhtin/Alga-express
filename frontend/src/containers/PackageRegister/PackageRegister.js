@@ -80,7 +80,6 @@ const PackageRegister = () => {
     });
 
 
-    console.log(packageRegister);
     const [value, setValue] = React.useState({});
     const [inputValue, setInputValue] = React.useState('');
 
@@ -131,8 +130,6 @@ const PackageRegister = () => {
         };
     }, [dispatch, messagesEndRef]);
 
-
-    console.log(error);
     return (
         <Container
             ref={messagesEndRef}
@@ -167,8 +164,10 @@ const PackageRegister = () => {
                             onChange={inputChangeHandler}
                         >
                             <MenuItem value={'usa'}>Америка</MenuItem>
-                            <MenuItem value={'turkey'}>Турция</MenuItem>
+                            <MenuItem value={'turkey'}>Турция (Авия доставка)</MenuItem>
+                            <MenuItem value={'turkeyGround'}>Турция (Наземная доставка)</MenuItem>
                             <MenuItem value={'china'}>Китай (Авия доставка)</MenuItem>
+                            <MenuItem value={'chinaGround'}>Китай (Наземная доставка)</MenuItem>
                         </Select>
                         <FormHelperText error={true}>{error?.errors?.['country']?.message}</FormHelperText>
                     </FormControl>
