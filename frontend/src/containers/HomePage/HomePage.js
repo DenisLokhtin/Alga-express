@@ -12,6 +12,8 @@ import Container from "@mui/material/Container";
 import theme from "../../theme";
 import NewsPanel from "../../components/NewsPanel/NewsPanel";
 import Carousel from "../../components/Carousel/Carousel";
+import {fetchAllInformationRequest} from "../../store/actions/informationActions";
+import {useDispatch} from "react-redux";
 
 const useStyles = makeStyles({
     block: {
@@ -37,14 +39,16 @@ const useStyles = makeStyles({
 const HomePage = () => {
     const classes = useStyles();
     const messagesEndRef = useRef(null);
+    const dispatch = useDispatch();
 
     useEffect(() => {
+        dispatch(fetchAllInformationRequest());
         if (!!messagesEndRef.current) {
             messagesEndRef.current.scrollIntoView({
                 behavior: 'smooth'
             }, 200);
         }
-    }, [messagesEndRef]);
+    }, [messagesEndRef, dispatch]);
 
     return (
         <Grid ref={messagesEndRef} container flexDirection="column" spacing={2}>
