@@ -5,7 +5,8 @@ const Payment = require("../models/Payment");
 const PaymentMove = require("../models/PaymentMove");
 const User = require("../models/User");
 const TariffGroup = require("../models/TariffGroup");
-
+const sendMail = require('../middleware/sendMail');
+const {balanceText} = require('./email-texts');
 
 const router = express.Router();
 
@@ -55,7 +56,7 @@ router.post('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
 
     try {
         const checkPayment = await Payment.findById(req.body.id)
-            .populate('user', 'name');
+            .populate('user', 'name email');
         const userPayment = await User.findById(checkPayment.user._id);
         if (checkPayment) {
             const confirm = await Payment.findByIdAndUpdate(req.body.id, {status: true, amount: pay});
@@ -74,6 +75,12 @@ router.post('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
                 await paySave.save();
 
                 await User.findByIdAndUpdate(userPayment, {balance: userPayment.balance + pay});
+
+                const user = await User.findById(checkPayment.user._id);
+
+                sendMail(user.email, 'Alga-express: Баланс пополнен', null, balanceText(pay, user.balance, user.name));
+
+                sendMail()
 
                 return res.status(200).send({status: true});
             } else {
