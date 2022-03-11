@@ -57,7 +57,7 @@ router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) =>
 
         const packages = await Package.find(findFilter)
             .populate({path: 'flight user', select: 'name number description depart_date arrived_date'})
-            .select('title trackNumber country cargoNumber status description price currency delivery')
+            .select('title trackNumber country cargoNumber status description price currency delivery amount')
             .sort(query.sort)
             .limit(limit)
             .skip(page * limit);
@@ -92,7 +92,6 @@ router.get('/:id', auth, permit('admin', 'warehouseman', 'user', 'superAdmin'), 
     } catch (e) {
         res.status(400).send(e);
     }
-
 });
 
 router.post('/', auth, packageValidate, permit('admin', 'superAdmin', 'user'), async (req, res) => {
@@ -216,7 +215,6 @@ router.put('/packageDelivery', auth, permit('user'), async (req, res) => {
     try {
         const onePackage = await Package.find({trackNumber: req.body.trackNumber});
 
-
         const updatedPackage = await Package.findOneAndUpdate({trackNumber: req.body.trackNumber}, {
             delivery: !onePackage[0].delivery,
         });
@@ -231,9 +229,11 @@ router.put('/packageDelivery', auth, permit('user'), async (req, res) => {
 
 router.put('/:id', auth, permit('admin', 'warehouseman', 'superAdmin', 'user'), async (req, res) => {
     let result = {};
+
     try {
         const packageFind = await Package.findById(req.params.id)
         const userDebit = await User.findById(packageFind.user._id);
+
         const currency = await Currency.findOne({});
         const prices = userDebit.tariff;
 
@@ -265,7 +265,9 @@ router.put('/:id', auth, permit('admin', 'warehouseman', 'superAdmin', 'user'), 
                 await User.findByIdAndUpdate(packageFind.user._id, {balance: userDebit.balance - debitAmount});
 
             }
-            await result.success.save({validateBeforeSave: false});
+
+           result.success.$ignore('trackNumber');
+            await result.success.save();
             return res.status(result.code).send(result.success);
         }
 
