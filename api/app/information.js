@@ -5,6 +5,16 @@ const express = require("express");
 
 const router = express.Router();
 
+router.get('/:name', async (req, res) => {
+    try {
+        const information = await Information.find({name: req.params.name});
+        res.send(information);
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(400);
+    }
+});
+
 router.get('/', async (req, res) => {
     try {
         const information = await Information.find({});

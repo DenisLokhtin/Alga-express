@@ -1,8 +1,11 @@
 import React, {useEffect, useRef} from 'react';
 import Container from "@mui/material/Container";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchPagesRequest} from "../../store/actions/pagesAction";
 import {makeStyles} from "@mui/styles";
+import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import {fetchAllInformationRequest} from "../../store/actions/informationActions";
 
 const useStyles = makeStyles(() => ({
     map: {
@@ -35,9 +38,9 @@ const useStyles = makeStyles(() => ({
 
 const Contacts = () => {
     const dispatch = useDispatch();
-    const page = useSelector(state => state.pages.page);
     const classes = useStyles();
     const messagesEndRef = useRef(null);
+    const information = useSelector(state => state.information.allInformation);
 
     useEffect(() => {
         if (!!messagesEndRef.current) {
@@ -45,8 +48,16 @@ const Contacts = () => {
                 behavior: 'smooth'
             }, 250);
         }
-        dispatch(fetchPagesRequest('contacts'));
+        dispatch(fetchAllInformationRequest());
     }, [messagesEndRef, dispatch]);
+
+    const print = (number) => {
+        if (information[0]) {
+            return (
+                <div className="post__content" dangerouslySetInnerHTML={{__html: information[number].text}}/>
+            )
+        }
+    };
 
     return (
         <Container style={{'textAlign': 'center'}} component='div' ref={messagesEndRef}>
@@ -56,7 +67,47 @@ const Contacts = () => {
                 'textAlign': 'left'
             }}
                        component='div'>
-                <div className="post__content" dangerouslySetInnerHTML={{__html: page.text}}/>
+
+                <div className={classes.paper}>
+                    <Typography component="h1" variant="h3">
+                        Контакты
+                    </Typography>
+                </div>
+                <Grid style={{'marginBottom': '15px'}} component='div'>
+                    <Typography component="div">
+                        {print(1)}
+                        {print(3)}
+                        <Typography>
+                            <Link href="https://api.whatsapp.com/send?phone=996774769434" component="a">WhatsApp</Link>
+                        </Typography>
+                        <Typography>
+                            <Link href="https://www.instagram.com/alga_express/" component="a">Instagram</Link>
+                        </Typography>
+                        {print(0)}
+                        {print(2)}
+                        <Typography style={{'fontWeight': 'Bold', 'marginTop': '10px'}}>
+                            Информация
+                        </Typography>
+                        <Typography component="div">
+                            <Typography style={{'margin': '5px 0 5px 0'}}>
+                                От вас требуется фото вашего паспорта с обеих сторон для растаможки, email.
+                                Прошу Вас обратить внимание на адрес 41 "B" не пропустите, при сохранении адреса на
+                                сайтах
+                                сохраняйте тот, который вы ввели вручную, а не тот который предлагает сайт). После
+                                оформления заказа на наш склад, как только вам выдадут трек-код, отправьте мне в
+                                обязательном порядке следующую информацию трек-код, вид посылки, цены, магазин.
+                                <b> Это для регистрации, иначе ваша посылка не вылетит!</b>
+                            </Typography>
+                            <Typography style={{'margin': '5px 0 5px 0'}} component='div'>
+                                <Typography>
+                                    Сроки: 5-7 дней с момента вылета груза. Отправка каждые 10-12 дней.
+                                </Typography>
+                                Округление от 0,1 до 0,5 - как 0,5, выше всё по факту.
+                            </Typography>
+                        </Typography>
+
+                    </Typography>
+                </Grid>
 
                 <iframe
                     className={classes.map}

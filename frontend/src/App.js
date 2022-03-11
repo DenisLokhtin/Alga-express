@@ -36,7 +36,7 @@ import {
     cargoCreateUser,
     contactsCompany,
     editBuyout,
-    editCarousel,
+    editCarousel, editInformation,
     editPackageAdmin,
     editPackageUser,
     editPages,
@@ -96,6 +96,7 @@ import EditPlayerAdmin from "./components/EditPlayerAdmin/EditPlayerAdmin";
 import AddCarouselAdmin from "./components/AddCarouselAdmin/AddCarouselAdmin";
 import EditCarouselAdmin from "./components/EditCarouselAdmin/EditCarouselAdmin";
 import UserEditPackage from "./containers/UserEditPackage/UserEditPackage";
+import EditInformation from "./components/EditInformation/EditInformation";
 
 const App = () => {
     return (
@@ -134,6 +135,7 @@ const App = () => {
                         <Route path={editWareHouseAddress} element={<EditWareHouseAdmin/>}/>
                         <Route path={addPlayer} element={<AddPlayerAdmin/>}/>
                         <Route path={editPlayer} element={<EditPlayerAdmin/>}/>
+                        <Route path={editInformation} element={<EditInformation/>}/>
                     </Route>
                     {/* Routes for warehouseman and SuperAdmin*/}
                     {/*Приватные роуты можно сделать одним компонентом потом фикс*/}
