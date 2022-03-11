@@ -11,17 +11,18 @@ const transporter = nodemailer.createTransport({
 });
 
 
-const mailData = (sendTo, subject, text) => {
+const mailData = (sendTo, subject, text, html) => {
     return {
         from: "timetotestmail@gmail.com",
         to: sendTo,
         subject: subject,
         text: text,
+        html: html
     }
 };
 
-const sendMail = (sendTo, subject, text) => {
-    transporter.sendMail(mailData(sendTo, subject, text), function (err, info) {
+const sendMail = (sendTo, subject, text, html) => {
+    transporter.sendMail(mailData(sendTo, subject, text, html), function (err, info) {
         if (err) {
             console.log(err);
             return;
