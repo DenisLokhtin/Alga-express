@@ -2,7 +2,7 @@ const { I } = inject();
 
 Given('я зашёл на страницу {string}', (page) => {
     I.amOnPage('/' + page);
-    I.wait(3);
+    I.wait(3)
 });
 
 Given('я ввожу данные:', (table) => {
