@@ -19,7 +19,7 @@ When('нажимаю на кнопку {string}', (button) => {
     I.wait(3);
 });
 
-Then('я ввожу данные:', (table) => {
+Given('я ввожу данные:', (table) => {
     table.rows.forEach(row => {
         const name = row.cells[0].value;
         const value = row.cells[1].value;
@@ -33,5 +33,6 @@ Then('я кликаю на инпут для карусели', () => {
 })
 
 Then('загружаю картинку для карусели', () => {
-    I.attachFile('//div//input[@type="file"]', './files/carousel.jpg');
+    I.attachFile('form input[name=picture]', './files/carousel.jpg');
+    I.wait(3);
 })
