@@ -16,7 +16,10 @@ import pagesSlice from "./slices/pagesSlice";
 import requisitesSlice from "./slices/requisitesSlice";
 import tariffSlice from "./slices/tariffSlice";
 import currenciesSlice from "./slices/currenciesSlice";
+import deliverySlice from "./slices/deliverySlice";
 import carouselsSlice from "./slices/carouselSlice";
+import playerSlice from "./slices/playerSlice";
+import informationSlice from "./slices/informationSlice";
 
 const rootReducer = combineReducers({
     'users': usersSlice.reducer,
@@ -31,7 +34,10 @@ const rootReducer = combineReducers({
     'requisites': requisitesSlice.reducer,
     'tariffs':tariffSlice.reducer,
     'currencies': currenciesSlice.reducer,
+    'delivery': deliverySlice.reducer,
     'carousels': carouselsSlice.reducer,
+    'players': playerSlice.reducer,
+    'information': informationSlice.reducer,
 });
 
 const persistedState = loadFromLocalStorage();
@@ -70,7 +76,6 @@ axiosApi.interceptors.response.use(res => res, e => {
     if (!e.response) {
         e.response = {data: {global: 'No internet'}};
     }
-
     throw e;
 });
 

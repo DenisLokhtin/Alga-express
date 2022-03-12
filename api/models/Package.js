@@ -16,6 +16,14 @@ const PackageSchema = new mongoose.Schema({
             message: 'Этот Трек-номер уже есть в базе!',
         },
     },
+
+    currency: {
+        type: String,
+        trim: true,
+        required: 'Поле Валюта обязательное',
+        enum: ['usd', 'try', 'cny']
+    },
+
     title: {
         type: String,
         trim: true,
@@ -34,6 +42,10 @@ const PackageSchema = new mongoose.Schema({
         type: Number,
         required: 'Поле Цена обязательное',
         min: [0, 'Цена не может быть меньше нуля'],
+    },
+    priceCurrency:{
+        type: String,
+        enum: ['USD', 'TRY', 'CNY'],
     },
     flight: {
         type: mongoose.Types.ObjectId,
@@ -102,13 +114,23 @@ const PackageSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
+    delivery: {
+        type: Boolean,
+        default: false
+    }
 });
 
 PackageSchema.pre('save',  function (next) {
     const packages = this;
+    let numberPackage = '';
     Package.find({}, function (error, pack) {
         if (error) throw error;
-        packages.cargoNumber = pack.length + 1;
+        numberPackage = String(pack.length + 1);
+        const loop = 6 - numberPackage.length;
+        for (let i = 0; i < loop; i++){
+            numberPackage = 0 + numberPackage;
+        }
+        packages.cargoNumber = numberPackage;
         next();
     })
 });

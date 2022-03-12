@@ -32,19 +32,15 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const EditCarouselAdmin = () => {
-
     const navigate = useNavigate();
     const oneCarousel = useSelector(state => state.carousels.oneCarousel);
     const classes = useStyles();
-
     const [singleCarousel, setSingleCarousel] = useState({
         info: '',
         picture: '',
     });
-
     const dispatch = useDispatch();
     const params = useParams();
-
     const loading = useSelector(state => state.carousels.carouselsLoading);
     const error = useSelector(state => state.carousels.carouselsError);
 
@@ -98,17 +94,13 @@ const EditCarouselAdmin = () => {
     };
 
     const [imagePreload, setImagePreload] = useState(null);
-
     return (
         <div>
-
             <Container
                 component="section"
                 maxWidth="md"
                 className={classes.container}>
-
                 <h2>Редактирование изображения для слайдера</h2>
-
                 <Grid
                     component="form"
                     onSubmit={changeCarousel}
@@ -117,24 +109,21 @@ const EditCarouselAdmin = () => {
                     noValidate
                     spacing={5}
                 >
-
                     <Grid item xs={12}>
                         <FormElement
                             label={singleCarousel.info ? "" : "Заголовок изображения"}
                             required
                             name="info"
-                            value={singleCarousel.info}
+                            value={singleCarousel.info || ''}
                             onChange={onInputTextareaChange}
                             error={getFieldError('info')}
                         />
                     </Grid>
                     <Grid item xs={12}>
-
                         {imagePreload ?
                             <img src={imagePreload} alt="preview imagePreload"/> :
                             <img src={apiURL + '/' + singleCarousel.picture} alt={singleCarousel.info}/>
                         }
-
                     </Grid>
 
                     <Grid item xs={12}>
@@ -145,7 +134,6 @@ const EditCarouselAdmin = () => {
                             name="picture"
                             onChange={fileChangeHandler}
                         />
-
                     </Grid>
 
                     <Grid item xs={3} sm={8} md={3} lg={7}

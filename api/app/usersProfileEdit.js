@@ -14,13 +14,13 @@ const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         let newDir = `${config.uploadPath}`;
 
-        if(file.fieldname === 'avatar') {
+        if (file.fieldname === 'avatar') {
             newDir = newDir + '/avatar';
         }
-        if(file.fieldname === 'passport') {
+        if (file.fieldname === 'passport') {
             newDir = newDir + '/passport';
         }
-        if(file.fieldname === 'payment') {
+        if (file.fieldname === 'payment') {
             newDir = newDir + '/payment';
         }
 
@@ -33,28 +33,36 @@ const storage = multer.diskStorage({
         cb(null, config.uploadPath);
     },
     filename: async (req, file, cb) => {
+        let user_id = '';
 
+        if (req.user.role === 'admin') {
+            user_id = req.params.id;
+        } else {
+            user_id = req.user._id;
+        }
         if (file.fieldname === 'avatar') {
-            cb(null, file.fieldname + '/' + req.user._id + path.extname(file.originalname))
+            cb(null, file.fieldname + '/' + user_id + path.extname(file.originalname))
         }
 
         if (file.fieldname === 'passport') {
             let index = 0;
             let passport = null;
             try {
-                passport = await User.findById(req.params.id);
+                console.log('pass id:', user_id);
+                passport = await User.findById(user_id);
             } catch (e) {
                 console.log(e);
             }
+            console.log('passport: ', passport);
 
             if (passport.passport.length > 0) {
                 const str = passport.passport[(req.user.passport.length) - 1].image;
-                const firstIndex = str.indexOf('/', 0);
-                const secondIndex = str.indexOf('_', 0);
+                const firstIndex = str.indexOf('/', 10);
+                const secondIndex = str.indexOf('_', 10);
                 index = parseInt(str.substr(firstIndex + 1, (secondIndex - firstIndex) - 1)) + 1;
             }
             for (const key in req.files['passport']) {
-                cb(null, file.fieldname + index + '_' + dayjs(new Date()).format('DDMMYYYY') + '_' + req.user._id + path.extname(file.originalname))
+                cb(null, file.fieldname + '/' + index + '_' + dayjs(new Date()).format('DDMMYYYY') + '_' + user_id + path.extname(file.originalname))
                 index++;
             }
         }
@@ -69,11 +77,14 @@ const storage = multer.diskStorage({
             }
 
             if (str.length > 0) {
-                const firstIndex = str[str.length - 1].image.indexOf('/', 0);
-                const secondIndex = str[str.length - 1].image.indexOf('_', 0);
-                index = parseInt(str[str.length - 1].image.substr(firstIndex + 1, (secondIndex - firstIndex) - 1)) + 1;
+                const firstIndex = str[str.length - 1].image.indexOf('/', 8);
+                const secondIndex = str[str.length - 1].image.indexOf('_', 8);
+                const i = parseInt(str[str.length - 1].image.substr(firstIndex + 1, (secondIndex - firstIndex) - 1));
+                if (!isNaN(i)) {
+                    index = i + 1;
+                }
             }
-            cb(null, file.fieldname + index + '_' + dayjs(new Date()).format('DDMMYYYY') + '_' + req.user._id + path.extname(file.originalname))
+            cb(null, file.fieldname + '/' + index + '_' + dayjs(new Date()).format('DDMMYYYY') + '_' + user_id + path.extname(file.originalname))
         }
     }
 });
@@ -103,12 +114,11 @@ router.get('/payment', auth, async (req, res) => {
 
         res.send({totalElements: size.length, data: response});
     } catch (e) {
-        res.status(400).send({error:e});
+        res.status(400).send({error: e});
     }
 });
 
 router.get('/:id', auth, async (req, res) => {
-    console.log('In back: ', req.params.id);
     try {
         const user = await User.findById(req.params.id)
             .select('email name passport phone avatar');
@@ -122,7 +132,6 @@ router.get('/:id', auth, async (req, res) => {
         }
         res.status(403).send({error: 'Доступ запрещен'});
     } catch (e) {
-        console.log(e);
         res.status(500).send(e);
     }
 });
@@ -145,26 +154,25 @@ router.put('/:id', auth, upload.fields([
                 userData.passport = user.passport;
                 if (key === 'passport') {
                     Object.keys(req.files['passport']).map(keys => {
-                        console.log(req.files.passport[keys].filename);
-                        const pathname = req.files['passport'][keys].filename;
+                        const pathname = 'uploads/' + req.files['passport'][keys].filename;
                         userData.passport.push({image: pathname});
                     });
 
                 } else {
                     if (key === 'avatar') {
-                        userData.avatar = req.files['avatar'][0].filename;
+                        userData.avatar = 'uploads/' + req.files['avatar'][0].filename;
                     }
-
-                    userData.name = req.body.name || user.name;
-                    userData.email = req.body.email || user.email;
-                    if (req.body.phone) {
-                        userData.phone = JSON.parse(req.body.phone);
-                    }
-
                 }
             }
 
+            userData.name = req.body.name || user.name;
+            userData.email = req.body.email || user.email;
+            if (req.body.phone) {
+                userData.phone = JSON.parse(req.body.phone);
+            }
+
             if ((req.user.role === 'admin') || (req.user._id.toString() === user._id.toString())) {
+                await User.findByIdAndUpdate(req.params.id, userData);
                 const user = await User.findByIdAndUpdate(req.params.id, userData)
                     .select('token role name balance phone avatar passport email');
                 return res.status(200).send(user);
@@ -173,7 +181,7 @@ router.put('/:id', auth, upload.fields([
             res.status(403).send({error: 'Доступ запрещен'});
         } catch (e) {
             console.log(e);
-            res.status(400).send({error:e});
+            res.status(400).send({error: e});
 
         }
     });
@@ -187,19 +195,17 @@ router.post('/payment', auth, upload.single('payment'), async (req, res) => {
         }
 
         if (req.file) {
-            paymentData.image = req.file.filename;
+            paymentData.image = 'uploads/' + req.file.filename;
         }
 
         paymentData.user = req.user._id;
-
-        console.log(paymentData);
 
         const payment = new Payment(paymentData);
         await payment.save();
 
         res.send('payment');
     } catch (e) {
-        res.status(400).send({error:e});
+        res.status(400).send({error: e});
     }
 });
 

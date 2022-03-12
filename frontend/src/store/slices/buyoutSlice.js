@@ -21,7 +21,8 @@ const buyoutSlice = createSlice({
             state.fetchLoading = true;
         },
         fetchBuyoutsSuccess(state, {payload: buyouts}) {
-            state.buyouts = buyouts;
+            state.buyouts = buyouts.data;
+            state.totalPage = buyouts.total;
             state.fetchLoading = false;
         },
         fetchBuyoutsFailure(state) {
@@ -86,10 +87,10 @@ const buyoutSlice = createSlice({
         fetchBuyoutsList(state){
             state.fetchLoading = true;
         },
-        fetchBuyoutsListSuccess(state, action){
+        fetchBuyoutsListSuccess(state, {payload}){
             state.fetchLoading = false;
-            state.totalPage = action.payload.totalPage;
-            state.buyouts = action.payload.data;
+            state.buyouts = payload.data;
+            state.totalPage = payload.totalElements;
         },
         fetchBuyoutsListFailure(state, action){
             state.fetchLoading = false;

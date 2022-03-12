@@ -8,7 +8,7 @@ const UpdateDates = ({children}) => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.users.user);
     const paymentCount = useSelector(state => state.payments.payment);
-    const buyouts = useSelector(state => state.buyouts.buyouts);
+    const buyouts = useSelector(state => state.buyouts.totalPage);
     const [totalCounts, setTotalCounts] = useState(0);
     const [nowCounts, setNowCounts] = useState(0);
 
@@ -21,7 +21,7 @@ const UpdateDates = ({children}) => {
 
     useEffect(() => {
         if (user && user.role === 'admin' && paymentCount) {
-            const total = paymentCount.totalElements + buyouts.total;
+            const total = paymentCount.totalElements + buyouts;
             setNowCounts(total);
 
             if (nowCounts > totalCounts) {
@@ -37,7 +37,6 @@ const UpdateDates = ({children}) => {
         buyouts,
         user,
     ]);
-
 
     return (
         <>

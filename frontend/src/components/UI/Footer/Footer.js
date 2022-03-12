@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {makeStyles} from "@mui/styles";
 import Grid from "@mui/material/Grid";
 import {
@@ -10,12 +10,13 @@ import {
     rulesCompany,
     sitesCompany
 } from "../../../paths";
-import {Box, Typography} from "@mui/material";
+import {Box} from "@mui/material";
 import {Link} from "react-router-dom";
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import theme from "../../../theme";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchAllInformationRequest} from "../../../store/actions/informationActions";
 
 const pages = [
     {title: "Новости", url: newsCompany},
@@ -39,10 +40,27 @@ const useStyles = makeStyles({
               margin: '10px 0 0 15px',
         },
     }
-})
+});
 
 const Footer = () => {
     const classes = useStyles();
+    const dispatch = useDispatch();
+    const information = useSelector(state => state.information.allInformation);
+
+    useEffect(() => {
+        dispatch(fetchAllInformationRequest());
+    },[dispatch]);
+
+    const print = () => {
+      if (information[0]) {
+        return  (
+            <div>
+                <div className="post__content" dangerouslySetInnerHTML={{__html: information[1].text}}/>
+                <div className="post__content" dangerouslySetInnerHTML={{__html: information[3].text}}/>
+            </div>
+        )
+      }
+    };
 
     return (
         <footer style={theme.footer}>
@@ -59,19 +77,9 @@ const Footer = () => {
 
                 <Grid item xs={12} md={6} lg={4}>
                     <Box style={theme.address}>
-                        <Typography variant="h6" sx={{display: "flex"}}>
-                            <LocationOnIcon/> Бишкек
-                        </Typography>
-                        <Typography>
-                            Юнусалиева, 142
-                        </Typography>
 
-                        <Typography>
-                            Тел.: 0 774 769 434 (Выкуп)
-                        </Typography>
-                        <Typography>
-                            ️0 702 465 333 (Склад)
-                        </Typography>
+                        {print()}
+
                         <Box className={classes.netLinks}>
                             <a href="https://www.instagram.com/alga_express/" target="_blank" rel="noreferrer">
                                 <InstagramIcon sx={{color: "white"}}/>

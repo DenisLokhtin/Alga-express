@@ -23,7 +23,6 @@ const Carousel = () => {
     };
 
     const user = useSelector((state => state.users.user));
-
     const dispatch = useDispatch();
     const loading = useSelector(state => state.carousels.carouselsLoading);
     const carousels = useSelector(state => state.carousels.carousels);

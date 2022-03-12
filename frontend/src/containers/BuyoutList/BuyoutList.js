@@ -30,7 +30,8 @@ const BuyoutList = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const user = useSelector(state => state.users.user);
-    const buyouts = useSelector(state => state.buyouts.buyouts.data);
+    const buyouts = useSelector(state => state.buyouts.buyouts);
+
 
     const messagesEndRef = useRef(null);
 

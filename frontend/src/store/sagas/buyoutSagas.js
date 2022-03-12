@@ -24,6 +24,9 @@ import {
     fetchSingleBuyoutRequest,
     fetchSingleBuyoutSuccess
 } from "../actions/buyoutActions";
+import {listBuyouts} from "../../paths";
+import History from "../../History";
+
 
 
 export function* getBuyoutSagas() {
@@ -47,12 +50,11 @@ export function* getOneBuyoutSagas({payload:id}) {
 }
 
 
-export function* addBuyoutSaga({payload: data}) {
+export function* addBuyoutSaga({payload}) {
     try {
-        yield axiosApi.post( '/buyouts', data);
+        yield axiosApi.post( '/buyouts', payload);
         yield put(addBuyoutSuccess());
-        // yield put(fetchBuyoutsRequest());
-        // data.navigate('/');
+       History.push(listBuyouts);
         toast.success('Новый заказ выкупа добавлен!');
 
     } catch (error) {

@@ -34,7 +34,7 @@ const imagePassport = new mongoose.Schema({
 const UserSchema = new mongoose.Schema({
     email: {
         type: String,
-        required: true,
+        required: 'Это поле является обязательным',
         unique: true,
         trim: true,
         lowercase: true,
@@ -49,7 +49,7 @@ const UserSchema = new mongoose.Schema({
         trim: true,
         validate: {
             validator: function (value) {
-                if (value.length < 8) return false
+                if (value.length < 8) return false;
             },
             message: 'Пароль не должен быть меньше чем 8 символов',
         }
@@ -57,11 +57,6 @@ const UserSchema = new mongoose.Schema({
     resetCode:{
         type: String,
         trim: true,
-        expireAt: {
-            type: Date,
-            default: Date.now,
-            index: { expires: '1m' },
-        },
     },
     token: {
         type: String,
@@ -78,7 +73,13 @@ const UserSchema = new mongoose.Schema({
     name: {
         type: String,
         trim: true,
-        required: true,
+        required: 'Это поле является обязательным',
+        validate: {
+            validator: value => {
+                return !/\d/.test(value);
+            },
+            message: 'Нельзя указывать числовые значения',
+        }
     },
     avatar: {
         type: String,
@@ -125,7 +126,6 @@ const UserSchema = new mongoose.Schema({
     notification: Boolean,
 });
 
-// UserSchema.index( { "resetCode": 1 }, { expireAfterSeconds: 30 } );
 
 UserSchema.pre('save', async function (next) {
     if (!this.isModified('password')) return next();

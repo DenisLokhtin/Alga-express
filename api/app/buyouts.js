@@ -10,6 +10,7 @@ const User = require("../models/User");
 const PaymentMove = require("../models/PaymentMove");
 const fs = require("fs");
 const Currency = require("../models/Currency");
+const filterBuyouts = require('../middleware/filter');
 
 const newDir = `${config.uploadPath}/buyouts`;
 
@@ -77,19 +78,27 @@ router.get('/list', auth, permit('admin', 'user', 'superAdmin'), async (req, res
     if (req.query.id) query.id = req.query.id;
     if (req.query.history) query.history = req.query.history;
 
+    if (req.query.sort) {
+        query.sort = {[req.query.sort]: 1};
+    } else {
+        query.sort = {datetime: 1};
+    }
+
     query.role = req.user.role;
     query.user_id = req.user._id;
 
-    try {
-        const size = await Buyout.find();
+    const findFilter = filterBuyouts(query, 'buyouts');
 
-        const buyouts = await Buyout.find(query)
+    try {
+        const size = await Buyout.find(findFilter);
+
+        const buyouts = await Buyout.find(findFilter)
             .populate('user', 'name')
-            .sort({date: 1})
+            .sort(query.sort)
             .limit(limit)
             .skip(page * limit);
 
-        res.send({totalPage: size.length, data: buyouts});
+        res.send({totalElements: size.length, data: buyouts});
     } catch (e) {
         res.status(500).send(e);
     }

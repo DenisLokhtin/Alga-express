@@ -1,25 +1,15 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import Grid from "@mui/material/Grid";
-import {
-    Container,
-    FormControl,
-    FormHelperText,
-    InputLabel,
-    MenuItem,
-    Select,
-    TextField,
-    Typography
-} from "@mui/material";
+import {Container, FormControl, FormHelperText, InputLabel, MenuItem, Select, Typography} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {useDispatch, useSelector} from "react-redux";
-import {
-    changePackageRequest,
-    clearTextFieldsErrors,
-    getPackageByIdRequest
-} from "../../store/actions/packageRegisterActions";
+import {changePackageRequest} from "../../store/actions/packageRegisterActions";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
-import {useNavigate, useParams} from "react-router-dom";
+import FormElement from "../../components/UI/Form/FormElement";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import CurrencyLiraIcon from "@mui/icons-material/CurrencyLira";
+import CurrencyYenIcon from "@mui/icons-material/CurrencyYen";
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -61,26 +51,20 @@ theme.typography.h4 = {
     },
 };
 
-const EditPackage = () => {
+const EditPackage = ({packageData, params}) => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const params = useParams();
-    const navigate = useNavigate();
     const error = useSelector(state => state.package.changePackageError);
-    const loading = useSelector(state => state.package.createPackageRequest);
-    const onePackage = useSelector(state => state.package.onePackage);
+    const loading = useSelector(state => state.package.editUserPackageLoading);
 
 
-    const [packageRegister, setPackageRegister] = useState({
-        trackNumber: '',
-        title: '',
-        amount: '',
-        price: '',
-        country: '',
-        width: '',
-        height: '',
-        length: '',
-        urlPackage: '',
+    const [editPackage, setEditPackage] = useState({
+        trackNumber: packageData.trackNumber,
+        title: packageData.title,
+        amount: packageData.amount,
+        price: packageData.price,
+        country: packageData.country,
+        currency: packageData.currency,
     });
 
     const inputChangeHandler = event => {
@@ -89,13 +73,12 @@ const EditPackage = () => {
         if (name === 'amount' || name === 'price' || name === 'width' || name === 'length' || name === 'height') {
             if (event.target.value < 0) {
                 value = 0;
-                setPackageRegister(prevState => ({...prevState, [name]: value}));
+                setEditPackage(prevState => ({...prevState, [name]: value}));
             }
         }
 
-        setPackageRegister(prevState => ({...prevState, [name]: value}));
+        setEditPackage(prevState => ({...prevState, [name]: value}));
     };
-
 
     const getFieldError = fieldName => {
         try {
@@ -106,37 +89,9 @@ const EditPackage = () => {
     };
 
     const messagesEndRef = useRef(null);
-
-    useEffect(() => {
-        if (!!messagesEndRef.current) {
-            messagesEndRef.current.scrollIntoView({
-                behavior: 'smooth'
-            }, 250);
-        }
-        dispatch(getPackageByIdRequest(params.id));
-        onePackage && setPackageRegister(prevState => ({
-            ...prevState,
-            trackNumber: onePackage.trackNumber,
-            title: onePackage.title,
-            amount: onePackage.amount,
-            price: onePackage.price,
-            country: onePackage.country,
-            width: onePackage.width,
-            height: onePackage.height,
-            length: onePackage.length,
-            urlPackage: onePackage.urlPackage,
-        }));
-        return () => {
-            dispatch(clearTextFieldsErrors());
-        };
-    }, [dispatch, onePackage, params.id, onePackage.trackNumber, onePackage.title, onePackage.amount, onePackage.price,
-        onePackage.country, onePackage.width, onePackage.height, onePackage.length, onePackage.urlPackage, messagesEndRef
-    ]);
-
-
     const changePackage = (e) => {
         e.preventDefault();
-        dispatch(changePackageRequest({packageRegister, packageId: params.id, navigate}));
+        dispatch(changePackageRequest({editPackage, packageId: params.id}));
     };
 
     return (
@@ -144,7 +99,7 @@ const EditPackage = () => {
             <Container
                 ref={messagesEndRef}
                 component="section"
-                maxWidth="md"
+                maxWidth="sm"
                 className={classes.container}>
                 <Grid item>
                     <Typography
@@ -161,130 +116,104 @@ const EditPackage = () => {
                     noValidate
                     spacing={5}
                 >
-
-                    <Grid item xs={12} sm={8} md={7} lg={7}>
-                        <FormControl variant="standard" fullWidth error={Boolean(getFieldError('country'))}>
+                    <Grid item xs={12} sm={8} md={7} lg={9}>
+                        <FormControl variant="outlined" fullWidth error={Boolean(getFieldError('country'))}>
                             <InputLabel id="demo-controlled-open-select-label">Страна</InputLabel>
                             <Select
                                 labelId="demo-controlled-open-select-label"
                                 id="demo-controlled-open-select"
-                                value={packageRegister.country || ''}
+                                value={editPackage.country}
                                 label="Страна"
                                 name="country"
                                 required
                                 onChange={inputChangeHandler}
                             >
-                                <MenuItem value={'USA'}>USA</MenuItem>
-                                <MenuItem value={'Turkey'}>Turkey</MenuItem>
-                                <MenuItem value={'China'}>China</MenuItem>
+                                <MenuItem value={'usa'}>USA</MenuItem>
+                                <MenuItem value={'turkey'}>Turkey</MenuItem>
+                                {editPackage.country === 'china' ? (
+                                    <MenuItem value={'china'}>China</MenuItem>
+                                ) : (
+                                    <MenuItem value={'chinaGround'}>China</MenuItem>
+                                )}
+
                             </Select>
                             <FormHelperText error={true}>{error?.errors?.['country']?.message}</FormHelperText>
                         </FormControl>
                     </Grid>
-                    <Grid item xs={12} sm={8} md={7} lg={7}>
-                        <TextField
-                            name="trackNumber"
-                            value={packageRegister.trackNumber || ''}
-                            required
-                            fullWidth
-                            onChange={inputChangeHandler}
-                            variant="standard"
-                            label="Трек-номер"
-                            error={Boolean(getFieldError('trackNumber'))}
-                            helperText={getFieldError('trackNumber')}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={8} md={7} lg={7}>
-                        <TextField
-                            name="title"
-                            value={packageRegister.title || ''}
-                            onChange={inputChangeHandler}
-                            required
-                            fullWidth
-                            variant="standard"
-                            label="Название"
-                            error={Boolean(getFieldError('title'))}
-                            helperText={getFieldError('title')}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={8} md={7} lg={7}>
-                        <TextField
-                            name="amount"
-                            type="number"
-                            value={packageRegister.amount || ''}
-                            onChange={inputChangeHandler}
-                            fullWidth
-                            required
-                            variant="standard"
-                            label="Количество"
-                            error={Boolean(getFieldError('amount'))}
-                            helperText={getFieldError('amount')}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={8} md={7} lg={7}>
-                        <TextField
-                            name="price"
-                            type="number"
-                            value={packageRegister.price || ''}
-                            onChange={inputChangeHandler}
-                            fullWidth
-                            required
-                            variant="standard"
-                            label="Цена"
-                            error={Boolean(getFieldError('price'))}
-                            helperText={getFieldError('price')}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={8} md={7} lg={7}>
-                        <TextField
-                            name="urlPackage"
-                            value={packageRegister.urlPackage || ''}
-                            onChange={inputChangeHandler}
-                            fullWidth
-                            variant="standard"
-                            label="URL"
-                            error={Boolean(getFieldError('urlPackage'))}
-                            helperText={getFieldError('urlPackage')}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={8} md={7} lg={7}>
-                        <TextField
-                            name="width"
-                            type="number"
-                            value={packageRegister.width || ''}
-                            onChange={inputChangeHandler}
-                            fullWidth
-                            variant="standard"
-                            label="Ширина"
-                            error={Boolean(getFieldError('width'))}
-                            helperText={getFieldError('width')}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={8} md={7} lg={7}>
-                        <TextField
-                            name="height"
-                            type="number"
-                            value={packageRegister.height || ''}
-                            onChange={inputChangeHandler}
-                            fullWidth
-                            variant="standard"
-                            label="Высота"
-                            error={Boolean(getFieldError('height'))}
-                            helperText={getFieldError('height')}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={8} md={7} lg={7}>
-                        <TextField
-                            name="length"
-                            type="number"
-                            value={packageRegister.length || ''}
-                            onChange={inputChangeHandler}
-                            fullWidth
-                            variant="standard"
-                            label="Длина"
-                            error={Boolean(getFieldError('length'))}
-                            helperText={getFieldError('length')}
-                        />
+
+                    <FormElement
+                        xs={12} sm={8} md={7} lg={9}
+                        name="trackNumber"
+                        value={editPackage.trackNumber}
+                        required
+                        fullWidth
+                        onChange={inputChangeHandler}
+                        label="Трек-номер"
+                        error={getFieldError('trackNumber')}
+                    />
+
+                    <FormElement
+                        xs={12} sm={8} md={7} lg={9}
+                        name="title"
+                        value={editPackage.title}
+                        onChange={inputChangeHandler}
+                        required
+                        fullWidth
+                        label="Название"
+                        error={getFieldError('title')}
+                    />
+
+                    <FormElement
+                        xs={12} sm={8} md={7} lg={9}
+                        name="amount"
+                        type="number"
+                        value={editPackage.amount}
+                        onChange={inputChangeHandler}
+                        fullWidth
+                        required
+                        label="Количество"
+                        error={getFieldError('amount')}
+                    />
+
+                    <FormElement
+                        xs={12} sm={8} md={7} lg={4.5}
+                        name="price"
+                        type="number"
+                        fullWidth
+                        value={editPackage.price}
+                        onChange={inputChangeHandler}
+                        required
+                        label="Цена"
+                        error={getFieldError('price')}
+                    />
+
+                    <Grid item xs={12} sm={8} md={7} lg={4.5}>
+                        <FormControl variant="outlined" fullWidth error={Boolean(getFieldError('currency'))}>
+                            <InputLabel id="demo-controlled-open-select-label">Валюта</InputLabel>
+                            <Select
+                                labelId="demo-controlled-open-select-label"
+                                id="demo-controlled-open-select"
+                                value={editPackage.currency}
+                                label="Выберите валюту"
+                                name="currency"
+                                required
+                                onChange={inputChangeHandler}
+                            >
+                                <MenuItem value={'usd'}>
+                                    Доллар
+                                    <AttachMoneyIcon/>
+                                </MenuItem>
+                                <MenuItem value={'try'}>
+                                    Турецкая лира
+                                    <CurrencyLiraIcon/>
+                                </MenuItem>
+                                <MenuItem value={'cny'}>
+                                    Юань
+                                    <CurrencyYenIcon/>
+                                </MenuItem>
+                            </Select>
+                            <FormHelperText error={true}>{error?.errors?.['currency']?.message}</FormHelperText>
+                        </FormControl>
                     </Grid>
 
                     <Grid item xs={12} sm={8} md={7} lg={7}

@@ -14,10 +14,11 @@ const WareHouse = require("./models/WareHouse");
 const Currency = require("./models/Currency");
 const Buyout = require("./models/Buyout");
 const Carousel = require("./models/Carousel");
+const Player = require("./models/Player");
+const Information = require("./models/Information");
 
 const run = async () => {
     await mongoose.connect(config.db.url, config.db.options);
-    console.log('fixtures');
 
     const collections = await mongoose.connection.db.listCollections().toArray();
 
@@ -36,7 +37,30 @@ const run = async () => {
 
     await Currency.create({
         usd: 86
-    })
+    });
+
+    await Information.create(
+        {
+            name: 'schedule',
+            text: '<div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"><p class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"><strong>График работы:</strong></p><ul><li>Пн: 11:00-18:00</li><li>Вт: 11:00-18:00</li><li>Ср: 11:00-18:00</li><li>Чт: Выходной</li><li>Пт: 11:00-18:00</li><li>Сб: 10:00-18:00</li><li>Вс: 11:00-15:00</li></ul></div>',
+        },
+        {
+            name: 'officeAdress',
+            text: '<p><b>Бишкек</b></p>' +
+                '<p>Юнусалиева, 142</p>',
+        },
+        {
+            name: 'warehouseAddresses',
+            text: '<p class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"><strong>Склад в Турции</strong></p> <div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Sehir: Istanbul</div><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Adress: Langa hisari cad 46 (Alga Express Kargo)</div><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Ilce: Fatih</div><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Mahallesi: Katipkasim</div><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Post kod: 34130</div><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Tel: 05550206083</div><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Yenikapi: laleli</div><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Ad: Ваше имя</div><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Soyad: Фамилия</div></div>' +
+                '<p class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"><strong>Склад в США</strong></p> <div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"><p class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Безналоговый штат (по поводу заказа электроники: мобильных телефонов, смарт часов, ноутбуков обращайтесь к менеджеру)</p><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Получатель: *Имя Фамилия* латиницей</div><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Адресная строка 1: *41B Germay Drive*</div><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Адресная строка 2: *ALGA-KG1* указывать обязательно!</div><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Город: *Wilmington*</div><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Штат: *DE (Delaware)*</div><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Почтовый код: *19804*</div><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">Телефон: *+1 (302) 669-1014*</div></div>' +
+                '<p class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"><strong>Склад в Китае на Авиа доставку в городе Гуанчжоу</strong></p> <div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">收件人：大龙</div><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">电话：19927599273</div><div class="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root">广东省 广州市 南沙区 南沙街道 广兴路二十五号五楼502室F16395-(ALGA ID клиента)</div><p>Склад принимает посылки с 9:00 до 18:00 вечера.</p><p>Воскресенье не рабочий день.</p></div>',
+        },
+        {
+            name: 'contacts',
+            text: '<p class="MuiTypography-root MuiTypography-body1 css-nwh2cx-MuiTypography-root">Тел.: 0 774 769 434 (Выкуп)</p>' +
+                '<p class="MuiTypography-root MuiTypography-body1 css-nwh2cx-MuiTypography-root">️0 702 465 333 (Склад)</p>',
+        },
+    );
 
     const [user] = await User.create(
         {
@@ -95,14 +119,13 @@ const run = async () => {
         },
     );
 
-
     await Buyout.create(
         {
             description: 'Zara kid dress',
             user: user,
             status: "NEW",
             image: 'fixtures/zara_dress.png',
-            url:'https://www.zara.com/ww/en/textured-floral-dress-p01247405.html?v1=161209856&v2=2021154',
+            url: 'https://www.zara.com/ww/en/textured-floral-dress-p01247405.html?v1=161209856&v2=2021154',
             country: 'USA',
             datetime: '2022-05-15',
         },
@@ -111,7 +134,7 @@ const run = async () => {
             user: user,
             status: "NEW",
             image: 'fixtures/amazon_vitamin.png',
-            url:'https://www.amazon.com/Natural-Apple-Cider-Vinegar-Gummies/dp/B07VQN6Y88?ref_=Oct_d_odotd_d_3_5c86e41b&pd_rd_w=jMHbI&pf_rd_p=a10c66f2-5465-4d26-ac0f-6b448ca4162d&pf_rd_r=NC7EBFRPNG8GVB6HAV58&pd_rd_r=684afbb3-05e4-4fdb-b1ed-2460f255726b&pd_rd_wg=N8D7N',
+            url: 'https://www.amazon.com/Natural-Apple-Cider-Vinegar-Gummies/dp/B07VQN6Y88?ref_=Oct_d_odotd_d_3_5c86e41b&pd_rd_w=jMHbI&pf_rd_p=a10c66f2-5465-4d26-ac0f-6b448ca4162d&pf_rd_r=NC7EBFRPNG8GVB6HAV58&pd_rd_r=684afbb3-05e4-4fdb-b1ed-2460f255726b&pd_rd_wg=N8D7N',
             country: 'USA',
             datetime: '2022-05-15',
         },
@@ -131,7 +154,8 @@ const run = async () => {
         },
         {
             country: 'Склад в США',
-            info: '<p class=\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\"><strong>Безналоговый штат </strong><em>(по поводу заказа электроники: мобильных телефонов, смарт часов, ноутбуков обращайтесь к менеджеру)</em></p><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Получатель</strong>: <em>*Имя Фамилия* латиницей</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Адресная строка 1</strong>: <em>*41B Germay Drive*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Адресная строка 2</strong>: <em>*ALGA-KG1* указывать обязательно!</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Город</strong>: <em>*Wilmington*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Штат</strong>: <em>*DE (Delaware)*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Почтовый код</strong>: <em>*19804*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Телефон</strong>: <em>*+1 (302) 669-1014*</em></div>'},
+            info: '<p class=\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\"><strong>Безналоговый штат </strong><em>(по поводу заказа электроники: мобильных телефонов, смарт часов, ноутбуков обращайтесь к менеджеру)</em></p><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Получатель</strong>: <em>*Имя Фамилия* латиницей</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Адресная строка 1</strong>: <em>*41B Germay Drive*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Адресная строка 2</strong>: <em>*ALGA-KG1* указывать обязательно!</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Город</strong>: <em>*Wilmington*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Штат</strong>: <em>*DE (Delaware)*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Почтовый код</strong>: <em>*19804*</em></div><div class=\\\"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root\\\"><strong>Телефон</strong>: <em>*+1 (302) 669-1014*</em></div>'
+        },
     );
 
     const [flight1, flight2] = await Flight.create(
@@ -154,6 +178,7 @@ const run = async () => {
     await Package.create(
         {
             trackNumber: nanoid(),
+            currency: 'usd',
             title: 'package 1',
             amount: 1,
             price: 2345,
@@ -161,7 +186,6 @@ const run = async () => {
             country: 'usa',
             status: 'DONE',
             user: user,
-            cargoNumber: '1',
             description: 'description 1',
             cargoNumber: '000001',
             urlPackage: 'https://www.amazon.com/Kindle-Now-with-Built-in-Front-Light/dp/B07DPMXZZ7/ref=sr_1_1_sspa?keywords=Kindle+E-readers&pd_rd_r=04e07f5b-9cf9-4620-81fc-3b2dc7acb927&pd_rd_w=zKeef&pd_rd_wg=arLd4&pf_rd_p=b9deb6fa-f7f0-4f9b-bfa0-824f28f79589&pf_rd_r=QEHM1VE018FEWSWN0VE0&qid=1643634774&sr=8-1-spons&psc=1&spLa=ZW5jcnlwdGVkUXVhbGlmaWVyPUFMVTU2VFhQRTM5NjcmZW5jcnlwdGVkSWQ9QTAzOTMzMjk0RFBURVpKV0tPOTgmZW5jcnlwdGVkQWRJZD1BMDIxNjkzOFVBVE9CWDQ5RTUzSiZ3aWRnZXROYW1lPXNwX2F0ZiZhY3Rpb249Y2xpY2tSZWRpcmVjdCZkb05vdExvZ0NsaWNrPXRydWU=',
@@ -169,13 +193,13 @@ const run = async () => {
         {
             trackNumber: nanoid(),
             title: 'package 2',
+            currency: 'try',
             amount: 1,
             price: 443,
             flight: flight1,
             country: 'turkey',
             user: user,
             status: 'ERASED',
-            cargoNumber: '2',
             description: 'description 2',
             cargoNumber: '000002',
             urlPackage: 'https://www.amazon.com/Stuffed-Cushion-Collectible-Christmas-Birthday/dp/B09NW4L1BW/ref=sr_1_2?keywords=toys&pd_rd_r=8d8fe069-f701-4575-99e0-fa9735c23583&pd_rd_w=U5ydA&pd_rd_wg=doX2q&pf_rd_p=779cadfb-bc4d-465d-931f-0b68c1ba5cd5&pf_rd_r=0WN5KS5HN5P88EG8PCAR&qid=1643635527&sr=8-2',
@@ -183,13 +207,13 @@ const run = async () => {
         {
             trackNumber: nanoid(),
             title: 'package 3',
+            currency: 'cny',
             amount: 1,
             price: 7564,
             flight: flight1,
             country: 'china',
             status: 'ON_WAY',
             user: user,
-            cargoNumber: '3',
             description: 'description 3',
             cargoNumber: '000003',
             urlPackage: 'https://www.amazon.com/Wowok-Money-Spary-Movies-Party/dp/B094D6SCL3/ref=sr_1_10?keywords=toys&pd_rd_r=8d8fe069-f701-4575-99e0-fa9735c23583&pd_rd_w=U5ydA&pd_rd_wg=doX2q&pf_rd_p=779cadfb-bc4d-465d-931f-0b68c1ba5cd5&pf_rd_r=0WN5KS5HN5P88EG8PCAR&qid=1643635567&sr=8-10'
@@ -198,12 +222,12 @@ const run = async () => {
             trackNumber: nanoid(),
             title: 'package 4',
             amount: 1,
+            currency: 'usd',
             price: 678,
             flight: flight2,
             country: 'chinaGround',
             status: 'PROCESSED',
             user: user,
-            cargoNumber: '4',
             description: 'description 4',
             cargoNumber: '000004',
             urlPackage: 'https://www.amazon.com/JLE-Display-Apples-iPhone-Graphite/dp/B09QK7YJCZ/ref=sr_1_12?keywords=toys&pd_rd_r=8d8fe069-f701-4575-99e0-fa9735c23583&pd_rd_w=U5ydA&pd_rd_wg=doX2q&pf_rd_p=779cadfb-bc4d-465d-931f-0b68c1ba5cd5&pf_rd_r=0WN5KS5HN5P88EG8PCAR&qid=1643635567&sr=8-12',
@@ -211,13 +235,13 @@ const run = async () => {
         {
             trackNumber: nanoid(),
             title: 'package 5',
+            currency: 'try',
             amount: 1,
             price: 345,
             flight: flight2,
             country: 'usa',
             status: 'DELIVERED',
             user: user,
-            cargoNumber: '5',
             description: 'description 5',
             cargoNumber: '000005',
             urlPackage: 'https://www.amazon.com/Kindle-Now-with-Built-in-Front-Light/dp/B07DPMXZZ7/ref=sr_1_1_sspa?keywords=Kindle+E-readers&pd_rd_r=04e07f5b-9cf9-4620-81fc-3b2dc7acb927&pd_rd_w=zKeef&pd_rd_wg=arLd4&pf_rd_p=b9deb6fa-f7f0-4f9b-bfa0-824f28f79589&pf_rd_r=QEHM1VE018FEWSWN0VE0&qid=1643634774&sr=8-1-spons&psc=1&spLa=ZW5jcnlwdGVkUXVhbGlmaWVyPUFMVTU2VFhQRTM5NjcmZW5jcnlwdGVkSWQ9QTAzOTMzMjk0RFBURVpKV0tPOTgmZW5jcnlwdGVkQWRJZD1BMDIxNjkzOFVBVE9CWDQ5RTUzSiZ3aWRnZXROYW1lPXNwX2F0ZiZhY3Rpb249Y2xpY2tSZWRpcmVjdCZkb05vdExvZ0NsaWNrPXRydWU=',
@@ -323,6 +347,12 @@ const run = async () => {
         {
             info: 'Название к четвертой картинке',
             picture: 'fixtures/04.jpeg',
+        },
+    );
+
+    await Player.create(
+        {
+            urlYoutube: 'https://www.youtube.com/watch?v=sfd2xj9xtN0',
         },
     );
 

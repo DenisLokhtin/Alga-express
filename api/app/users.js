@@ -4,8 +4,10 @@ const TariffGroup = require("../models/TariffGroup");
 const permit = require("../middleware/permit");
 const auth = require("../middleware/auth");
 const {nanoid} = require("nanoid");
-const nodemailer = require('nodemailer');
+const sendMail = require('../middleware/sendMail');
 const bcrypt = require("bcrypt");
+const emailDistribution = require("../email-texts");
+
 
 const SALT_WORK_FACTOR = 10;
 const router = express.Router();
@@ -105,40 +107,23 @@ router.post('/sessions', async (req, res) => {
 router.post('/forgot', async (req, res) => {
     try {
         const user = await User.findOne({email: req.body.email});
-        if (!user) {
-            return res.status(404).send({message: 'Такая почта не найдена'})
-        }
+
+        if (!user) return res.status(404).send({message: 'Такая почта не найдена'});
+
         const resetCode = nanoid(8);
         await User.findOneAndUpdate({email: user.email}, {resetCode});
+        sendMail(user.email,'Сброс пароля', null,emailDistribution.passwordReset(resetCode))
+        res.send({message: "Код сброса пароля отправлен на почту!"})
 
+        const userToBeUpdated = await User.findOne({resetCode: resetCode});
 
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: 'lbrtakun@gmail.com',
-                pass: 'attractor19'
+        const deleteResetCode = async ()=>{
+            if(userToBeUpdated){
+                await User.findByIdAndUpdate(userToBeUpdated._id,{resetCode: ''});
             }
-        });
+        }
 
-        const mailOptions = {
-            from: 'lbrtakun@gmail.com',
-            to: user.email,
-            subject: 'Сброс пароля',
-            html: `<p>Вы запросили сброс пароля на сайте alga-express</p>
-                    <p>Код для сброса пароля: <b>${resetCode}</b></p>
-                    <p>
-                      <a href="http://localhost:3000/secret/reset-password">Перейдите по ссылке</a>
-                      </p>`
-
-        };
-
-        await transporter.sendMail(mailOptions, function (error) {
-            if (error) {
-                return res.send({message: "Ошибка отправки"})
-            } else {
-                res.send({message: 'Код для сброса пароля был отправлен на ' + user.email});
-            }
-        });
+        setTimeout(deleteResetCode,300000);
 
     } catch (e) {
         res.status(500).send(e);
