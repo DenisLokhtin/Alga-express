@@ -1,16 +1,5 @@
 import * as React from 'react';
-import {useState} from 'react';
-import {
-    Accordion,
-    AccordionDetails,
-    AccordionSummary,
-    Box,
-    ListItemIcon,
-    ListItemText,
-    MenuItem,
-    MenuList,
-    Typography
-} from "@mui/material";
+import {Box, ListItemIcon, ListItemText, MenuItem, MenuList} from "@mui/material";
 import {Link} from "react-router-dom";
 import logo from "../../../assets/images/logo.svg";
 import {useSelector} from "react-redux";
@@ -34,7 +23,6 @@ import {
     sitesCompany,
     wareHouseCompany
 } from "../../../paths";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import theme from "../../../theme";
 
 
@@ -51,11 +39,11 @@ const pages = [
 
 const AppSidebar = () => {
     const user = useSelector(state => state.users.user);
-    const [expanded, setExpanded] = useState(false);
+    // const [expanded, setExpanded] = useState(false);
 
-    const handleChange = (panel) => (event, isExpanded) => {
-        setExpanded(isExpanded ? panel : false);
-    };
+    // const handleChange = (panel) => (event, isExpanded) => {
+    //     setExpanded(isExpanded ? panel : false);
+    // };
 
     const scroll = () => {
         window.focus();
