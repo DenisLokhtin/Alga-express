@@ -94,21 +94,6 @@ const AppSidebar = () => {
                         </MenuItem>
                     ))}
                 </MenuList>
-
-                <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-                    <AccordionSummary
-                        expandIcon={<ExpandMoreIcon/>}
-                        aria-controls="panel1bh-content"
-                        id="panel1bh-header"
-                    >
-                        <Typography sx={{width: '100%', flexShrink: 0}}>
-
-                        </Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-
-                    </AccordionDetails>
-                </Accordion>
             </Box>
 
             <Box style={theme.user}>
