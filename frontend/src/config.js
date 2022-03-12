@@ -6,5 +6,5 @@ if (process.env.REACT_APP_ENV ==='test') {
 }
 
 if (process.env.NODE_ENV === 'production') {
-    apiURL = 'https://82.196.14.146/api';
+    apiURL = 'https://alga-express.ddns.net/api';
 }
