@@ -12,7 +12,7 @@ import {
     Typography
 } from "@mui/material";
 import {Link} from "react-router-dom";
-import logo from "../../../assets/logo.svg";
+import logo from "../../../assets/images/logo.svg";
 import {useSelector} from "react-redux";
 import Anonymous from "../Toolbar/Menu/Anonymous";
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';

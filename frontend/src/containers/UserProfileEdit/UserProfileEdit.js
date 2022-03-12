@@ -34,7 +34,7 @@ import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWit
 import PhoneInput from "react-phone-input-2";
 import ru from 'react-phone-input-2/lang/ru.json'
 import Avatar from "@mui/material/Avatar";
-import noImage from '../../assets/no_avatar.png';
+import noImage from '../../assets/images/no_avatar.png';
 import {apiURL} from "../../config";
 import FileInput from "../../components/UI/FileInput/FileInput";
 import Autocomplete from '@mui/material/Autocomplete';
