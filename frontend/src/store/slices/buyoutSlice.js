@@ -22,6 +22,7 @@ const buyoutSlice = createSlice({
         },
         fetchBuyoutsSuccess(state, {payload: buyouts}) {
             state.buyouts = buyouts.data;
+            state.totalPage = buyouts.total;
             state.fetchLoading = false;
         },
         fetchBuyoutsFailure(state) {
@@ -89,7 +90,7 @@ const buyoutSlice = createSlice({
         fetchBuyoutsListSuccess(state, {payload}){
             state.fetchLoading = false;
             state.buyouts = payload.data;
-            state.totalPage = payload.totalPage;
+            state.totalPage = payload.totalElements;
         },
         fetchBuyoutsListFailure(state, action){
             state.fetchLoading = false;

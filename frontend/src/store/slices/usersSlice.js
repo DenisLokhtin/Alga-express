@@ -61,7 +61,6 @@ const usersSlice = createSlice({
         userDateSuccess(state, action) {
             state.loadUserDate = false;
             state.userDate = action.payload;
-
         },
         userDateFailure(state, action) {
             state.loadUserDate = false;
@@ -72,7 +71,8 @@ const usersSlice = createSlice({
         },
         editUserDataSuccess(state, action) {
             state.loadUserDate = false;
-            state.user.name = action.payload.name;
+            state.userDate = action.payload;
+
         },
         editUserDataFailure(state, action) {
             state.loadUserDate = false;
@@ -157,25 +157,26 @@ const usersSlice = createSlice({
             state.forgotLoading = false;
             state.forgotError = action.payload;
         },
-        switchNotificationRequest(state) {
-        },
-        switchNotificationSuccess(state, action) {
-            state.notification = action.payload.notification;
-        },
-        switchNotificationFailure(state, action) {
-
-        },
-        changeNotificationRequest(state) {
-
-        },
-        changeNotificationSuccess(state, action) {
-            console.log(action.payload);
-            state.notification = action.payload;
-
-        },
-        changeNotificationFailure(state, action) {
-
-        },
+        // switchNotificationRequest(state) {
+        //
+        // },
+        // switchNotificationSuccess(state, action) {
+        //     state.notification = action.payload.notification;
+        // },
+        // switchNotificationFailure(state, action) {
+        //
+        // },
+        // changeNotificationRequest(state) {
+        //
+        // },
+        // changeNotificationSuccess(state, action) {
+        //     console.log(action.payload);
+        //     state.notification = action.payload;
+        //
+        // },
+        // changeNotificationFailure(state, action) {
+        //
+        // },
 
         logout(state) {
             state.user = null;
