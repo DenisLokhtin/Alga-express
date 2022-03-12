@@ -157,26 +157,6 @@ const usersSlice = createSlice({
             state.forgotLoading = false;
             state.forgotError = action.payload;
         },
-        // switchNotificationRequest(state) {
-        //
-        // },
-        // switchNotificationSuccess(state, action) {
-        //     state.notification = action.payload.notification;
-        // },
-        // switchNotificationFailure(state, action) {
-        //
-        // },
-        // changeNotificationRequest(state) {
-        //
-        // },
-        // changeNotificationSuccess(state, action) {
-        //     console.log(action.payload);
-        //     state.notification = action.payload;
-        //
-        // },
-        // changeNotificationFailure(state, action) {
-        //
-        // },
 
         logout(state) {
             state.user = null;

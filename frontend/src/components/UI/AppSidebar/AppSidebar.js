@@ -12,7 +12,7 @@ import {
     Typography
 } from "@mui/material";
 import {Link} from "react-router-dom";
-import logo from "../../../assets/logo.svg";
+import logo from "../../../assets/images/logo.svg";
 import {useSelector} from "react-redux";
 import Anonymous from "../Toolbar/Menu/Anonymous";
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
@@ -94,21 +94,6 @@ const AppSidebar = () => {
                         </MenuItem>
                     ))}
                 </MenuList>
-
-                <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-                    <AccordionSummary
-                        expandIcon={<ExpandMoreIcon/>}
-                        aria-controls="panel1bh-content"
-                        id="panel1bh-header"
-                    >
-                        <Typography sx={{width: '100%', flexShrink: 0}}>
-
-                        </Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-
-                    </AccordionDetails>
-                </Accordion>
             </Box>
 
             <Box style={theme.user}>
