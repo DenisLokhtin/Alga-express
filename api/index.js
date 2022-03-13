@@ -55,39 +55,27 @@ bot.start((ctx) => {
 Для дальнейшей работы необходимо ввести свой номер телефона указанный на сайте \n /help - полный список команд`)
 });
 bot.help((ctx) => ctx.reply(help.commands));
-bot.command('enter_number', async (msg) => {
-    try {
-        await msg.replyWithHTML('<b>Номер Телефона</b>', Markup.inlineKeyboard(
-            [
-                Markup.button.callback('Принять', 'btn_1')
-            ]))
-    } catch (e) {
-        console.error(e);
-    }
-});
-bot.action('btn_1', async (ctx) => {
-    try {
-        await ctx.answerCbQuery();
-        await ctx.replyWithHTML('Прием кнопки', {disable_web_page_preview: true});
-    } catch (e) {
-        console.error(e);
-    }
-});
 bot.on('text', async (ctx) => {
     ctx.reply('Проверка');
     const idChat = ctx.message.from.id;
-    console.log(idChat);
-    // const text = ctx.message.text;
-    const text = '66 55 11';
-    // const number = text.slice(1, text.length);
-    const userTelegramId = await User.findOne({'phone.number': {$regex: text}});
-    if (userTelegramId) {
-        if (!userTelegramId.idChat) {
-            userTelegramId.idChat = idChat;
-            await userTelegramId.save({validateBeforeSave: false});
-        }
+    const chatHave = await User.findOne({idChat: idChat});
+    if (chatHave) {
+        await bot.telegram.sendMessage(idChat, 'Ваш чат имеется в базе данных рассылки, спасибо.');
     } else {
-        await bot.telegram.sendMessage(ctx.message.from.id, 'Номер телефона в базе не найден');
+        const text = ctx.message.text;
+        if ((text.length < 9) || (isNaN(Number(text)))) {
+            await bot.telegram.sendMessage(idChat, 'Номер телефона указан не полностью, введите в виде 555444333');
+        } else {
+            const userTelegramId = await User.findOne({'phone.number': {$regex: text}});
+            if (userTelegramId) {
+                if (!userTelegramId.idChat) {
+                    userTelegramId.idChat = idChat;
+                    await userTelegramId.save({validateBeforeSave: false});
+                }
+            } else {
+                await bot.telegram.sendMessage(ctx.message.from.id, 'Номер телефона в базе не найден');
+            }
+        }
     }
 
 });
