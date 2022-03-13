@@ -6,6 +6,7 @@ import FileInput from "../UI/FileInput/FileInput";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {makeStyles} from "@mui/styles";
 import {addBuyoutRequest, clearBuyoutsError} from "../../store/actions/buyoutActions";
+import theme from "../../theme";
 
 
 const useStyles = makeStyles(theme => ({
@@ -23,9 +24,6 @@ const useStyles = makeStyles(theme => ({
             width: '50%',
         },
     },
-    title: {
-        textAlign: "center",
-    }
 }));
 
 
@@ -41,21 +39,7 @@ const Buyout = () => {
         image: null,
         url: "",
         country:"",
-        price: '',
-        commission:'',
-        value:'',
     });
-
-    // useEffect(()=>{
-    //         oneBuyout && setBuyout(prevState => ({
-    //             ...prevState,
-    //             description: oneBuyout.description,
-    //             image: oneBuyout.image,
-    //             url: oneBuyout.url,
-    //             country:oneBuyout.country,
-    //         }))
-    // },[oneBuyout.description,oneBuyout.url, oneBuyout.image, oneBuyout.country])
-
 
 
     const submitFormHandler = e => {
@@ -71,9 +55,6 @@ const Buyout = () => {
             image: null,
             url: "",
             country: "",
-            price:'',
-            commission: '',
-            value:'',
         })
     };
 
@@ -122,24 +103,26 @@ const Buyout = () => {
                 onSubmit={submitFormHandler}
                 noValidate
             >
-                <h3 className={classes.title}>Заказать выкуп</h3>
-                <FormControl variant="standard" fullWidth error={Boolean(getFieldError('country'))}>
-                    <InputLabel id="demo-controlled-open-select-label">Страна</InputLabel>
-                    <Select
-                        labelId="demo-controlled-open-select-label"
-                        id="demo-controlled-open-select"
-                        value={buyout.country }
-                        label="Из какой страны выкупить"
-                        name="country"
-                        required
-                        onChange={inputChangeHandler}
-                    >
-                        <MenuItem value={'USA'}>Америка</MenuItem>
-                        <MenuItem value={'Turkey'}>Турция</MenuItem>
-                        <MenuItem value={'China'}>Китай</MenuItem>
-                    </Select>
-                    <FormHelperText error={true}>{error?.errors?.['country']?.message}</FormHelperText>
-                </FormControl>
+                <h3 style={theme.title}>Заказать выкуп</h3>
+               <Grid item xs={12} sm={8} md={7} lg={7}>
+                   <FormControl variant="outlined" fullWidth error={Boolean(getFieldError('country'))}>
+                       <InputLabel id="demo-controlled-open-select-label">Страна</InputLabel>
+                       <Select
+                           labelId="demo-controlled-open-select-label"
+                           id="demo-controlled-open-select"
+                           value={buyout.country}
+                           label="Из какой страны выкупить"
+                           name="country"
+                           required
+                           onChange={inputChangeHandler}
+                       >
+                           <MenuItem value={'USA'}>Америка</MenuItem>
+                           <MenuItem value={'Turkey'}>Турция</MenuItem>
+                           <MenuItem value={'China'}>Китай</MenuItem>
+                       </Select>
+                       <FormHelperText error={true}>{error?.errors?.['country']?.message}</FormHelperText>
+                   </FormControl>
+               </Grid>
                 <FormElement
                     required
                     label="Описание товара (размер, цвет и тд.)"

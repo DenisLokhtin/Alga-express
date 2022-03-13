@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 
-const name = 'flight'
+const name = 'flight';
 
 const flightSlice = createSlice({
     name,

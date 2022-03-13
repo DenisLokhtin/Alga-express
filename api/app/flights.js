@@ -3,11 +3,10 @@ const auth = require('../middleware/auth');
 const permit = require('../middleware/permit');
 const Flight = require('../models/Flight');
 const Package = require('../models/Package');
-const sendMail = require('../middleware/sendMail');
 
 const router = express.Router();
 
-router.post('/', auth, permit('admin'),async (req, res) => {
+router.post('/', auth, permit('admin', 'superAdmin'),async (req, res) => {
     try {
         const flightData = {
             number: req.body.number,
@@ -25,7 +24,7 @@ router.post('/', auth, permit('admin'),async (req, res) => {
     }
 });
 
-router.put('/:id',  auth, permit('admin'), async (req, res) => {
+router.put('/:id',  auth, permit('admin', 'superAdmin'), async (req, res) => {
     try {
         const oldFlight = await Flight.findById(req.params.id);
 
@@ -79,7 +78,7 @@ router.put('/:id',  auth, permit('admin'), async (req, res) => {
     }
 });
 
-router.get('/', auth, permit('admin'),async (req, res) => {
+router.get('/', auth, permit('admin', 'superAdmin'),async (req, res) => {
     let page = 0;
     let limit = 10;
     let status = null;
@@ -110,7 +109,7 @@ router.get('/', auth, permit('admin'),async (req, res) => {
     }
 });
 
-router.get('/:id', auth, permit('admin'), async (req, res) => {
+router.get('/:id', auth, permit('admin', 'superAdmin'), async (req, res) => {
     try {
         const flight = await Flight.findById(req.params.id);
 

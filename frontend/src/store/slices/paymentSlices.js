@@ -1,7 +1,10 @@
 import {createSlice} from "@reduxjs/toolkit";
 
 const initialState = {
-    payment: null,
+    payment: {
+        totalElements: 0,
+        data: [],
+    },
     fetchLoading: false,
     errorPayment: null,
     status: false,
@@ -17,7 +20,9 @@ const paymentSlice = createSlice({
         },
         fetchPaymentSuccess(state, action) {
             state.fetchLoading = false;
-            state.payment = action.payload;
+            state.payment.totalElements = action.payload.totalElements;
+            state.payment.data = action.payload.data;
+            state.errorPayment = null;
         },
         fetchPaymentFailure(state, action) {
             state.fetchLoading = false;
@@ -26,9 +31,9 @@ const paymentSlice = createSlice({
         paymentAcceptedRequest(state) {
             state.fetchLoading = true;
         },
-        paymentAcceptedSuccess(state, action) {
+        paymentAcceptedSuccess(state) {
             state.fetchLoading = true;
-            state.status = !state.status
+            state.status = !state.status;
         },
         paymentAcceptedFailure(state, action) {
             state.fetchLoading = true;
@@ -37,20 +42,20 @@ const paymentSlice = createSlice({
         addPaymentAdminRequest(state) {
             state.fetchLoading = true;
         },
-        addPaymentAdminSuccess(state, action) {
+        addPaymentAdminSuccess(state) {
             state.fetchLoading = false;
         },
-        addPaymentAdminFailure(state, action) {
+        addPaymentAdminFailure(state) {
             state.fetchLoading = false;
         },
-        fetchTariffGroupRequest(state, action) {
+        fetchTariffGroupRequest(state) {
             state.fetchLoading = true
         },
         fetchTariffGroupSuccess(state, action) {
             state.fetchLoading = false
             state.tariff = action.payload;
         },
-        fetchTariffGroupFailure(state, action) {
+        fetchTariffGroupFailure(state) {
             state.fetchLoading = false
         },
     }

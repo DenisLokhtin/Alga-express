@@ -4,7 +4,7 @@ const cors = require('cors');
 const news = require('./app/news');
 const mongoose = require('mongoose');
 const exitHook = require('async-exit-hook');
-const {Telegraf, Markup} = require('telegraf')
+const {Telegraf} = require('telegraf')
 const users = require('./app/users');
 const userEdit = require('./app/usersProfileEdit');
 const market = require('./app/market');
@@ -28,6 +28,11 @@ if (token === undefined) {
 }
 
 const bot = new Telegraf(token);
+const currencies = require('./app/currencies');
+const delivery = require('./app/delivery');
+const carousels = require('./app/carousel');
+const players = require('./app/player');
+const information = require('./app/information');
 
 const app = express();
 require('express-ws')(app);
@@ -49,6 +54,11 @@ app.use('/warehouses', wareHouses);
 app.use('/pages', pages);
 app.use('/requisites', requisites);
 app.use('/tariffs', tariffs);
+app.use('/currencies', currencies);
+app.use('/delivery', delivery);
+app.use('/carousels', carousels);
+app.use('/players', players);
+app.use('/information', information);
 
 bot.start((ctx) => {
     ctx.reply(`Здравствуйте ${ctx.message.from.first_name ? ctx.message.from.first_name : ''}! 

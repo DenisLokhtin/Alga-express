@@ -3,14 +3,24 @@ import {
     addUserPaymentFailure,
     addUserPaymentRequest,
     addUserPaymentSuccess,
+    changePasswordFailure,
+    changePasswordRequest,
+    changePasswordSuccess,
     editPassportFailure,
     editPassportRequest,
     editPassportSuccess,
     editUserDataFailure,
     editUserDataRequest,
-    editUserDataSuccess, fetchUserPaymentFailure,
-    fetchUserPaymentRequest, fetchUserPaymentSuccess, fetchUsersFailure,
-    fetchUsersRequest, fetchUsersSuccess,
+    editUserDataSuccess,
+    fetchUserPaymentFailure,
+    fetchUserPaymentRequest,
+    fetchUserPaymentSuccess,
+    fetchUsersFailure,
+    fetchUsersRequest,
+    fetchUsersSuccess,
+    forgotPasswordFailure,
+    forgotPasswordRequest,
+    forgotPasswordSuccess,
     loginUser,
     loginUserFailure,
     loginUserSuccess,
@@ -18,19 +28,44 @@ import {
     registerUser,
     registerUserFailure,
     registerUserSuccess,
+    resetPasswordFailure,
+    resetPasswordRequest,
+    resetPasswordSuccess,
     userDateFailure,
     userDateRequest,
     userDateSuccess,
 } from "../actions/usersActions";
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
+import History from '../../History';
+import {userLogin} from "../../paths";
 
-export function* registerUserSaga({payload: userData}) {
+export function* registerUserSaga({payload}) {
     try {
+        const userData = {
+            email: payload.email,
+            name: payload.name,
+            password: payload.password,
+            phone: payload.phone,
+            role: payload.role || 'user',
+            creator: payload?.userData?.role || null,
+            confirmPassword: payload.confirmPassword,
+        };
+
         const response = yield axiosApi.post('/users', userData);
-        userData.navigate('/');
-        yield put(registerUserSuccess(response.data));
-        toast.success('Вы зарегистрированы');
+        if (response.data.creator === 'superAdmin') {
+            if (payload?.role === 'admin') {
+                toast.success('Вы успешно создали администратора');
+                yield put(registerUserSuccess());
+            } else if (payload?.role === 'warehouseman') {
+                toast.success('Вы успешно создали складовщика');
+                yield put(registerUserSuccess());
+            }
+        } else {
+            yield put(registerUserSuccess(response.data));
+            History.push('/');
+            toast.success('Вы зарегистрированы');
+        }
     } catch (e) {
         toast.error(e.response.data.global);
         yield put(registerUserFailure(e.response.data));
@@ -71,7 +106,6 @@ export function* editUserSaga({payload}) {
 }
 
 export function* editPassportSaga({payload}) {
-    console.log(payload);
     try {
         const response = yield  axiosApi.put('/userEdit/' + payload.id, payload.data);
         yield put(editPassportSuccess(response.data));
@@ -94,7 +128,6 @@ export function* userPaymentSaga({payload}) {
 }
 
 export function* fetchUserPaymentSaga({payload}) {
-    console.log('payload', payload);
     const page = payload.page;
     const limit = payload.limit;
 
@@ -115,6 +148,42 @@ export function* fetchUserSaga() {
         toast.error(e.response.data.error);
         yield put(fetchUsersFailure(e.response.data.error));
 
+    }
+}
+
+
+export function* resetPasswordSaga({payload: user}) {
+    try {
+        const response = yield axiosApi.post('/users/reset', user);
+        user.navigate(userLogin, true);
+        yield put(resetPasswordSuccess());
+        toast.success(response.data?.message);
+    } catch (e) {
+        yield put(resetPasswordFailure(e.response.data));
+    }
+}
+
+
+export function* changePasswordSaga({payload: user}) {
+    try {
+        const response = yield axiosApi.post('/users/change', user);
+        user.navigate('/', true);
+        yield put(changePasswordSuccess());
+        toast.success(response.data?.message);
+    } catch (e) {
+        yield put(changePasswordFailure(e.response.data));
+    }
+}
+
+
+export function* forgotPasswordSaga({payload: user}) {
+    try {
+        const response = yield axiosApi.post('/users/forgot', user);
+        user.navigate('/', true);
+        yield put(forgotPasswordSuccess());
+        toast.success(response.data?.message);
+    } catch (e) {
+        yield put(forgotPasswordFailure(e.response.data));
     }
 }
 
@@ -140,6 +209,10 @@ const usersSaga = [
     takeEvery(addUserPaymentRequest, userPaymentSaga),
     takeEvery(fetchUserPaymentRequest, fetchUserPaymentSaga),
     takeEvery(fetchUsersRequest, fetchUserSaga),
+    takeEvery(resetPasswordRequest, resetPasswordSaga),
+    takeEvery(changePasswordRequest, changePasswordSaga),
+    takeEvery(forgotPasswordRequest, forgotPasswordSaga),
+
 ];
 
 export default usersSaga;

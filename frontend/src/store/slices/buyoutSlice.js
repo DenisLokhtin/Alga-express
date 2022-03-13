@@ -3,12 +3,14 @@ import {createSlice} from "@reduxjs/toolkit";
 const name = 'buyout'
 const initialState = {
     buyouts: [],
-    singleBuyout:{},
+    totalPage: 0,
+    singleBuyout: null,
     fetchLoading: false,
     createLoading: false,
     createError: null,
     deleteLoading: false,
     deleteError:null,
+    fetchError: null
 }
 
 const buyoutSlice = createSlice({
@@ -19,7 +21,8 @@ const buyoutSlice = createSlice({
             state.fetchLoading = true;
         },
         fetchBuyoutsSuccess(state, {payload: buyouts}) {
-            state.buyouts = buyouts;
+            state.buyouts = buyouts.data;
+            state.totalPage = buyouts.total;
             state.fetchLoading = false;
         },
         fetchBuyoutsFailure(state) {
@@ -70,7 +73,29 @@ const buyoutSlice = createSlice({
         editBuyoutFailure(state,action){
             state.createLoading =false;
             state.createError = action.payload;
-        }
+        },
+        editBuyoutStatusRequest(state){
+            state.createLoading = true;
+        },
+        editBuyoutStatusSuccess(state){
+            state.createLoading = false;
+        },
+        editBuyoutStatusFailure(state,action){
+            state.createLoading =false;
+            state.createError = action.payload;
+        },
+        fetchBuyoutsList(state){
+            state.fetchLoading = true;
+        },
+        fetchBuyoutsListSuccess(state, {payload}){
+            state.fetchLoading = false;
+            state.buyouts = payload.data;
+            state.totalPage = payload.totalElements;
+        },
+        fetchBuyoutsListFailure(state, action){
+            state.fetchLoading = false;
+            state.fetchError = action.payload;
+        },
     }
 });
 

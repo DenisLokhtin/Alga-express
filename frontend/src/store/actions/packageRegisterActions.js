@@ -1,6 +1,9 @@
 import packageSlice from "../slices/packageRegisterSlice";
 
 export const {
+    fetchNewPackages,
+    fetchNewPackagesSuccess,
+    fetchNewPackagesFailure,
     createPackageRequest,
     createPackageSuccess,
     createPackageFailure,
@@ -19,15 +22,15 @@ export const {
     clearTextFieldsErrors,
     editAdminPackageRequest,
     editAdminPackageSuccess,
-    editAdminPackageFailure,
     fetchPackageAdminRequest,
     fetchPackageAdminSuccess,
     fetchPackageAdminFailure,
     changeStatusesRequest,
     changeStatusesSuccess,
     changeStatusesError,
-    changeStatusRequest,
-    changeStatusSuccess,
-    changeStatusError,
+    changeDeliveryStatusRequest,
+    changeDeliveryStatusSuccess,
+    changeDeliveryStatusError,
     clearAdminErrors,
+    clearPackage,
 } = packageSlice.actions;

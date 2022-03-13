@@ -12,8 +12,8 @@
       | name                            | user user user      |
       | //form//div//input[@type='tel'] | 550555555           |
       | email                           | test_user@gmail.com |
-      | password                        | 123456              |
-      | password_2                      | 123456              |
+      | password                        | 12345678            |
+      | confirmPassword                 | 12345678            |
     И нажимаю на чекбокс
     И нажимаю на кнопку "зарегистрироваться"
     Затем я вижу текст "Вы зарегистрированы"
@@ -23,6 +23,6 @@
     Допустим я зашёл на страницу "user/login"
     Если я ввожу данные:
       | email    | user@gmail.com |
-      | password | 123            |
+      | password | 12345678       |
     И нажимаю на кнопку "войти"
     То я вижу текст "Вы авторизированы!"

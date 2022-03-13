@@ -3,11 +3,12 @@ import FormElement from "../../components/UI/Form/FormElement";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
 import FileInput from "../../components/UI/FileInput/FileInput";
 import {useDispatch, useSelector} from "react-redux";
-import {Container, Grid} from "@mui/material";
+import {Grid} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import {addNewsRequest} from "../../store/actions/newsActions";
 import {Editor} from "@tinymce/tinymce-react";
 import Resizer from "react-image-file-resizer";
+import theme from "../../theme";
 
 const useStyles = makeStyles(theme => ({
     submit: {
@@ -24,9 +25,6 @@ const useStyles = makeStyles(theme => ({
             width: '50%',
         },
     },
-    title: {
-        textAlign: "center",
-    }
 }));
 
 const AddNewsAdmin = () => {
@@ -113,16 +111,15 @@ const AddNewsAdmin = () => {
     };
 
     const handleEditorChange = (content) => {
-        console.log(content);
         setNews(prevState => {
             return {...prevState, description: content}
         });
     };
 
     return (
-        <Container
-            component="section"
-            maxWidth="md"
+        <div
+            // component="section"
+            // maxWidth="md"
             className={classes.container}>
             <Grid
                 container
@@ -133,7 +130,7 @@ const AddNewsAdmin = () => {
                 onSubmit={submitFormHandler}
                 noValidate
             >
-                <h3 className={classes.title}>Добавить новость</h3>
+                <h3 style={theme.title}>Добавить новость</h3>
                 <FormElement
                     required
                     label="Название"
@@ -189,7 +186,7 @@ const AddNewsAdmin = () => {
 
                 </Grid>
             </Grid>
-        </Container>
+        </div>
     );
 };
 

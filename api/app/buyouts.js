@@ -9,11 +9,13 @@ const permit = require("../middleware/permit");
 const User = require("../models/User");
 const PaymentMove = require("../models/PaymentMove");
 const fs = require("fs");
+const Currency = require("../models/Currency");
+const filterBuyouts = require('../middleware/filter');
 
+const newDir = `${config.uploadPath}/buyouts`;
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const newDir = `${config.uploadPath}/buyouts`;
         const existFile = fs.existsSync(newDir);
 
         if (!existFile) {
@@ -22,8 +24,17 @@ const storage = multer.diskStorage({
 
         cb(null, config.uploadPath);
     },
-    filename: (req, file, cb) => {
-        cb(null, nanoid() + path.extname(file.originalname));
+    filename: async(req, file, cb) => {
+        let pathFile = 'buyouts/' + nanoid() + path.extname(file.originalname);
+        //Проверяю на наличие файла в базе
+        const image = await Buyout.findById(req.params.id);
+        //Если найдена запись, то мы передаем такое же имя файла
+        if (image && image.image){
+
+            pathFile = image.image.slice(8, image.image.length);
+        }
+        // Записываем фоный файл, под старым названием
+        cb(null, pathFile);
     }
 });
 
@@ -31,14 +42,14 @@ const upload = multer({storage});
 
 const router = express.Router();
 
-router.get('/', auth, permit('admin', 'user'), async (req, res) => {
+router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) => {
     try {
 
         if (req.user.role === 'user') {
-            const selfBuyouts = await Buyout.find({user: req.user._id}).populate('user', 'name ');
+            const selfBuyouts = await Buyout.find({user: req.user._id}).populate('user', 'name email ');
             res.send({data: selfBuyouts});
         } else {
-            const buyouts = await Buyout.find({deleted: {$ne: true}}).populate('user', 'name');
+            const buyouts = await Buyout.find({$and: [{deleted: {$ne: true}}]}).populate('user', 'name email');
             res.send({total: buyouts.length, data: buyouts});
         }
 
@@ -47,7 +58,53 @@ router.get('/', auth, permit('admin', 'user'), async (req, res) => {
     }
 });
 
-router.get('/:id', auth, permit('admin', 'user'), async (req, res) => {
+router.get('/list', auth, permit('admin', 'user', 'superAdmin'), async (req, res) => {
+    const query = {};
+
+    if (Number.isInteger(req.query.page))
+        return res.status(403).send({error: 'Не корректные данные запроса'});
+
+    let page = 0;
+    let limit = 20;
+
+    if (req.query.page) {
+        page = Number(req.query.page);
+    }
+
+    if (req.query.limit) {
+        limit = Number(req.query.limit);
+    }
+
+    if (req.query.id) query.id = req.query.id;
+    if (req.query.history) query.history = req.query.history;
+
+    if (req.query.sort) {
+        query.sort = {[req.query.sort]: 1};
+    } else {
+        query.sort = {datetime: 1};
+    }
+
+    query.role = req.user.role;
+    query.user_id = req.user._id;
+
+    const findFilter = filterBuyouts(query, 'buyouts');
+
+    try {
+        const size = await Buyout.find(findFilter);
+
+        const buyouts = await Buyout.find(findFilter)
+            .populate('user', 'name')
+            .sort(query.sort)
+            .limit(limit)
+            .skip(page * limit);
+
+        res.send({totalElements: size.length, data: buyouts});
+    } catch (e) {
+        res.status(500).send(e);
+    }
+});
+
+router.get('/:id', auth, permit('admin', 'user', 'superAdmin'), async (req, res) => {
     try {
 
         if (req.user.role === 'user') {
@@ -75,7 +132,7 @@ router.post('/', auth, upload.single('image'), async (req, res) => {
         };
 
         if (req.file) {
-            buyoutData.image = 'uploads/buyouts' + req.file.filename;
+            buyoutData.image = 'uploads/' + req.file.filename;
         }
 
         const buyout = new Buyout(buyoutData);
@@ -87,7 +144,7 @@ router.post('/', auth, upload.single('image'), async (req, res) => {
     }
 });
 
-router.delete('/:id', auth, permit('admin'), async (req, res) => {
+router.delete('/:id', auth, permit('admin', 'superAdmin'), async (req, res) => {
     try {
         const buyout = await Buyout.findById(req.params.id);
 
@@ -106,21 +163,27 @@ router.delete('/:id', auth, permit('admin'), async (req, res) => {
 router.put('/:id', auth, upload.single('image'), permit('admin', 'user'), async (req, res) => {
     const price = Number(req.body.price);
     const commission = Number(req.body.commission);
+    const value = req.body.value;
+    console.log('body: ', req.body);
+    console.log('price: ', typeof (price), price);
+    console.log('commission: ', typeof (commission), commission);
     try {
         if (req.user.role === 'admin') {
             const updatedPrice = await Buyout.findById(req.params.id);
             const user = await User.findById(updatedPrice.user);
-
+            const currency = await Currency.findOne();
             //поверка на наличие изменения цены доставки, если цена изменилась тогда выполняется
             //создание новой записи в paymentMove и списывается средства с баланса пользователя.
             //согласно комиссии пользователя.
             //Еще нужно добавить курс вылюты.
-            if (req.body.price !== updatedPrice.price) {
+            if ((price !== updatedPrice.price) || (commission !== updatedPrice.commission) || (value !== updatedPrice.value)) {
                 updatedPrice.price = price;
                 updatedPrice.commission = commission;
-                const totalPrice = (price + price * (commission / 100)).toFixed(2);
-                updatedPrice.totalPrice = totalPrice;
-                updatedPrice.status = 'ORDERED';
+                updatedPrice.value = value;
+                const currencyCorrect = Number(currency[value.toLowerCase()]);
+                const totalPrice = ((price * (commission / 100) + price) * currencyCorrect).toFixed(2);
+                updatedPrice.totalPrice = Number(totalPrice);
+                updatedPrice.status = 'ACCEPTED';
                 await updatedPrice.save();
 
                 await User.findByIdAndUpdate(updatedPrice.user, {balance: user.balance - totalPrice})
@@ -137,7 +200,7 @@ router.put('/:id', auth, upload.single('image'), permit('admin', 'user'), async 
             }
 
             res.send(updatedPrice);
-        //
+
         } else if (req.user.role === 'user') {
             const newObj = {
                 description: req.body.description,
@@ -152,9 +215,7 @@ router.put('/:id', auth, upload.single('image'), permit('admin', 'user'), async 
                 new: true,
                 runValidators: true
             });
-
             res.send(updatedBuyout);
-
         }
 
     } catch (error) {
@@ -162,6 +223,22 @@ router.put('/:id', auth, upload.single('image'), permit('admin', 'user'), async 
         console.log(error);
     }
 });
+
+router.put('/change/:id',auth, permit('admin'),async (req,res)=>{
+    try {
+        console.log(req.params.id)
+        const buyout = await Buyout.findById(req.params.id);
+
+        if (Object.keys(buyout).length === 0) {
+            return res.status(404).send({error: `Выкуп с ID=${req.params.id} не найден.`});
+        } else {
+            await Buyout.findByIdAndUpdate(req.params.id,{status: 'ORDERED'});
+            return res.send({message: `Выкуп успешно заказан.`})
+        }
+    } catch (error) {
+        res.status(404).send(error);
+    }
+})
 
 
 module.exports = router;

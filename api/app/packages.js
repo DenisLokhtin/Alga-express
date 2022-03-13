@@ -1,6 +1,6 @@
 const express = require("express");
 const Package = require('../models/Package');
-const filter = require("../middleware/filter");
+const filterPackage = require("../middleware/filter");
 const auth = require("../middleware/auth");
 const permit = require("../middleware/permit");
 const userEdit = require("../middleware/userEdit");
@@ -8,28 +8,35 @@ const adminEdit = require("../middleware/adminEdit");
 const NotFoundTrackNumber = require('../models/NotFoundTrackNumber');
 const PaymentMove = require("../models/PaymentMove");
 const User = require("../models/User");
+const Currency = require('../models/Currency');
 const packageValidate = require("../middleware/packageValidate");
 
 const router = express.Router();
 
-router.get('/', auth, permit('admin', 'warehouseman', 'user'), async (req, res) => {
+router.get('/newPackages', auth, permit('admin', 'warehouseman', 'user', 'superAdmin'), async (req, res) => {
+    try {
+        const packages = await Package.find({status: 'REGISTERED'}).select('title cargoNumber amount price country');
+        res.send(packages);
+    } catch (e) {
+        res.status(500).send(e);
+    }
+});
+
+router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) => {
     const query = {};
 
     if (Number.isInteger(req.query.page))
         return res.status(403).send({error: 'Не корректные данные запроса'});
 
-    let page = null;
-    let limit = null;
+    let page = 0;
+    let limit = 20;
 
     if (req.query.page) {
         page = Number(req.query.page);
-    } else {
-        page = 0
     }
+
     if (req.query.limit) {
         limit = Number(req.query.limit);
-    } else {
-        limit = 20;
     }
 
     if (req.query.id) query.id = req.query.id;
@@ -37,7 +44,7 @@ router.get('/', auth, permit('admin', 'warehouseman', 'user'), async (req, res) 
     if (req.query.sort) {
         query.sort = {[req.query.sort]: 1};
     } else {
-        query.sort = 'date';
+        query.sort = {date: 1};
     }
 
     query.role = req.user.role;
@@ -45,12 +52,12 @@ router.get('/', auth, permit('admin', 'warehouseman', 'user'), async (req, res) 
     let findFilter = {};
 
     try {
-        findFilter = filter(query);
+        findFilter = filterPackage(query, 'packages');
         const size = await Package.find(findFilter);
 
         const packages = await Package.find(findFilter)
             .populate({path: 'flight user', select: 'name number description depart_date arrived_date'})
-            .select('title trackNumber country cargoNumber status description')
+            .select('title trackNumber country cargoNumber status description price currency delivery amount')
             .sort(query.sort)
             .limit(limit)
             .skip(page * limit);
@@ -61,23 +68,23 @@ router.get('/', auth, permit('admin', 'warehouseman', 'user'), async (req, res) 
     }
 });
 
-router.get('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req, res) => {
+router.get('/:id', auth, permit('admin', 'warehouseman', 'user', 'superAdmin'), async (req, res) => {
     try {
 
         if (req.user.role === 'user') {
             const packageFind = await Package.findById(req.params.id)
                 .populate({path: 'flight user', select: 'name number description depart_date arrived_date'})
-                .select('trackNumber title amount price country status date cargoNumber urlPackage');
+                .select('trackNumber title amount price country status date cargoNumber currency urlPackage delivery');
             if (packageFind.user._id.toString() === req.user._id.toString()) {
                 return res.send(packageFind);
             }
         }
 
-        if ((req.user.role === 'admin') || (req.user.role === 'warehouseman')) {
+        if ((req.user.role === 'admin') || (req.user.role === 'superAdmin')) {
             const packageFind = await Package.findById(req.params.id)
                 .populate({path: 'flight user', select: 'name number description depart_date arrived_date'})
                 .select('trackNumber title amount price country status ' +
-                    'date cargoNumber width length height cargoWeight cargoPrice urlPackage');
+                    'date cargoNumber width length height cargoWeight cargoPrice urlPackage delivery');
             return res.send(packageFind);
         }
 
@@ -85,19 +92,39 @@ router.get('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req, re
     } catch (e) {
         res.status(400).send(e);
     }
-
 });
 
-router.post('/', auth, packageValidate, permit('admin', 'warehouseman', 'user'), async (req, res) => {
+router.post('/', auth, packageValidate, permit('admin', 'superAdmin', 'user'), async (req, res) => {
+
+    let price = req.body.price;
+
+    if (req.body.price.indexOf(',') === 0) {
+        price = req.body.price;
+    } else if (req.body.price.indexOf(',') > 0) {
+        price = req.body.price.replace(/,/g, '.');
+    }
+
     try {
+
         const packageData = {
             country: req.body.country,
             title: req.body.title,
             trackNumber: req.body.trackNumber,
             amount: req.body.amount,
-            price: req.body.price,
-            user: req.user._id
+            price: price,
+            user: req.user._id,
+            currency: req.body.currency,
         };
+
+        const packageAdmin = {
+            country: req.body.country,
+            title: req.body.title,
+            trackNumber: req.body.trackNumber,
+            amount: req.body.amount,
+            price: price,
+            user: req.body.userId,
+            currency: req.body.currency,
+        }
 
         const notFoundTrackNumber = await NotFoundTrackNumber.findOne({notFoundTrackNumber: packageData.trackNumber});
 
@@ -105,17 +132,26 @@ router.post('/', auth, packageValidate, permit('admin', 'warehouseman', 'user'),
             packageData.status = notFoundTrackNumber.status;
         }
 
-        const newPackage = new Package(packageData);
-
-        await newPackage.save();
-        res.send(newPackage);
+        if (req.user.role === 'admin') {
+            const newPackage = new Package(packageAdmin);
+            await newPackage.save();
+            return res.send(newPackage);
+        } else {
+            const newPackage = new Package(packageData);
+            await newPackage.save();
+            return res.send(newPackage);
+        }
 
     } catch (error) {
+        console.log(error.message);
+        if (error.errors?.price?.name === 'CastError') {
+            error.errors.price.message = 'Введите корректные данные!';
+        }
         res.status(400).send(error);
     }
 });
 
-router.put('/', auth, permit('admin', 'warehouseman'),async (req, res) => {
+router.put('/', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req, res) => {
     const notFoundTrackNumbers = [];
 
     const separatedBySpaces = req.body.trackNumbers.split(' ');
@@ -161,6 +197,9 @@ router.put('/', auth, permit('admin', 'warehouseman'),async (req, res) => {
             }
         }
 
+        const packages = await Package.find({status: 'DELIVERED'});
+        console.log(packages);
+
         if (notFoundTrackNumbers.length > 0) {
             res.status(404).send(notFoundTrackNumbers);
         } else {
@@ -172,54 +211,30 @@ router.put('/', auth, permit('admin', 'warehouseman'),async (req, res) => {
     }
 });
 
-
-router.put('/single', auth, permit('admin', 'warehouseman'),async (req, res) => {
-    const notFoundTrackNumbers = [];
+router.put('/packageDelivery', auth, permit('user'), async (req, res) => {
     try {
-        if (req.body.trackNumber.length === 0) {
-            return res.status(400).send({
-                errors: {
-                    trackNumber: {message: "Введите трек-номер"},
-                },
-            });
-        }
+        const onePackage = await Package.find({trackNumber: req.body.trackNumber});
 
-            const updatedStatus = await Package.findOneAndUpdate(
-                {trackNumber: req.body.trackNumber},
-                {status: req.body.status},
-                {new: true, runValidators: true});
+        const updatedPackage = await Package.findOneAndUpdate({trackNumber: req.body.trackNumber}, {
+            delivery: !onePackage[0].delivery,
+        });
 
-        if (!updatedStatus) {
-            const notFoundTrackNumberData = {
-                notFoundTrackNumber: req.body.trackNumber,
-                status: req.body.status,
-            };
-
-            const notFoundTrackNumber = new NotFoundTrackNumber(notFoundTrackNumberData);
-
-            await notFoundTrackNumber.save();
-
-            notFoundTrackNumbers.push({trackNumber: req.body.trackNumber});
-        }
-
-        if (notFoundTrackNumbers.length > 0) {
-            res.status(404).send(notFoundTrackNumbers);
-        } else {
-            res.send({message: 'Статус трек-номера был успешно изменен'});
-        }
+        res.send(updatedPackage);
 
     } catch (error) {
-        res.sendStatus(500)
+        console.log(error);
+        res.status(400).send(error);
     }
 });
 
-
-router.put('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req, res) => {
+router.put('/:id', auth, permit('admin', 'warehouseman', 'superAdmin', 'user'), async (req, res) => {
     let result = {};
-    console.log('token', req.user._id);
+
     try {
         const packageFind = await Package.findById(req.params.id)
         const userDebit = await User.findById(packageFind.user._id);
+
+        const currency = await Currency.findOne({});
         const prices = userDebit.tariff;
 
         if (req.user.role === 'user')
@@ -235,10 +250,11 @@ router.put('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req, re
             return res.status(result.code).send({message: result.message});
 
         if (result.success) {
+            const debitAmount = (result.success.cargoPrice) * currency.usd;
             if (result.success.cargoPrice) {
                 const permitData = {
                     debit: packageFind._id,
-                    debit_amount: result.success.cargoPrice,
+                    debit_amount: debitAmount,
                     permitPayment: req.user._id,
                     lastBalance: packageFind.user.balance,
                     status: 'DEBIT',
@@ -246,9 +262,11 @@ router.put('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req, re
 
                 const paySave = new PaymentMove(permitData);
                 await paySave.save();
-                await User.findByIdAndUpdate(packageFind.user._id, {balance: userDebit.balance - result.success.cargoPrice});
+                await User.findByIdAndUpdate(packageFind.user._id, {balance: userDebit.balance - debitAmount});
 
             }
+
+           result.success.$ignore('trackNumber');
             await result.success.save();
             return res.status(result.code).send(result.success);
         }
@@ -259,7 +277,7 @@ router.put('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req, re
     }
 });
 
-router.delete('/:id', auth, permit('admin', 'warehouseman', 'user'), async (req, res) => {
+router.delete('/:id', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req, res) => {
     try {
         const erasePackage = await Package.findById(req.params.id);
 

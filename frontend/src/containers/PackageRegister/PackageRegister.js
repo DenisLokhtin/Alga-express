@@ -1,21 +1,32 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {clearTextFieldsErrors, createPackageRequest} from "../../store/actions/packageRegisterActions";
-import {Container, FormControl, FormHelperText, Grid, InputLabel, MenuItem, Select, Typography} from "@mui/material";
+import {
+    Autocomplete,
+    Container,
+    FormControl,
+    FormHelperText,
+    Grid,
+    InputLabel,
+    MenuItem,
+    Select,
+    TextField,
+    Typography,
+} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
 import {useLocation, useNavigate} from "react-router-dom";
 import theme from "../../theme";
 import FormElement from "../../components/UI/Form/FormElement";
+import {fetchUsersRequest} from "../../store/actions/usersActions";
+import {editBuyoutStatusRequest} from "../../store/actions/buyoutActions";
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import CurrencyLiraIcon from '@mui/icons-material/CurrencyLira';
+import CurrencyYenIcon from '@mui/icons-material/CurrencyYen';
 
 const useStyles = makeStyles(() => ({
     container: {
         marginTop: '50px',
-    },
-
-    packageBtnContainer: {
-        textAlign: 'center',
-        margin: '50px',
     },
 
     packageMainTitle: {
@@ -45,13 +56,18 @@ const PackageRegister = () => {
     const classes = useStyles();
     const navigate = useNavigate();
     const user = useSelector(state => state.users.user);
+    const users = useSelector(state => state.users.users);
     const loading = useSelector(state => state.package.createPackageRequest);
     const dispatch = useDispatch();
     const error = useSelector(state => state.package.createPackageError);
     const data = useLocation();
+    const buyoutUser = data?.state?.userProps;
 
-    console.log('register', data.state)
-    // приходят данные пользователя который заказал выкуп
+    useEffect(() => {
+        if(user?.role !== 'user'){
+            dispatch(fetchUsersRequest());
+        }
+    }, [dispatch, user]);
 
 
     const [packageRegister, setPackageRegister] = useState({
@@ -60,7 +76,12 @@ const PackageRegister = () => {
         amount: '',
         price: '',
         country: '',
+        currency: '',
     });
+
+
+    const [value, setValue] = React.useState({});
+    const [inputValue, setInputValue] = React.useState('');
 
     const inputChangeHandler = e => {
         let {name, value} = e.target;
@@ -71,7 +92,6 @@ const PackageRegister = () => {
                 setPackageRegister(prevState => ({...prevState, [name]: value}));
             }
         }
-
         setPackageRegister(prevState => ({...prevState, [name]: value}));
     };
 
@@ -85,19 +105,36 @@ const PackageRegister = () => {
 
     const submitFormHandler = e => {
         e.preventDefault();
-        dispatch(createPackageRequest({...packageRegister, ...user, navigate}));
+        if(user?.role === 'admin'){
+            if(buyoutUser){
+                dispatch(createPackageRequest({...packageRegister,userId:buyoutUser.id, navigate}));
+                dispatch(editBuyoutStatusRequest(buyoutUser.buyoutId));
+            } else {
+                dispatch(createPackageRequest({...packageRegister,userId:value?._id, navigate}));
+            }
+        } else{
+            dispatch(createPackageRequest({...packageRegister,...user, navigate}));
+        }
     };
 
+    const messagesEndRef = useRef(null);
+
     useEffect(() => {
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 200);
+        }
         return () => {
             dispatch(clearTextFieldsErrors());
         };
-    }, [dispatch]);
+    }, [dispatch, messagesEndRef]);
 
     return (
         <Container
+            ref={messagesEndRef}
             component="section"
-            maxWidth="md"
+            maxWidth="sm"
             className={classes.container}>
             <Grid item>
                 <Typography
@@ -114,8 +151,8 @@ const PackageRegister = () => {
                 noValidate
                 spacing={5}
             >
-                <Grid item xs={12} sm={8} md={7} lg={7}>
-                    <FormControl variant="standard" fullWidth error={Boolean(getFieldError('country'))}>
+                <Grid item xs={12} sm={8} md={7} lg={9}>
+                    <FormControl variant="outlined" fullWidth error={Boolean(getFieldError('country'))}>
                         <InputLabel id="demo-controlled-open-select-label">Страна</InputLabel>
                         <Select
                             labelId="demo-controlled-open-select-label"
@@ -126,90 +163,147 @@ const PackageRegister = () => {
                             required
                             onChange={inputChangeHandler}
                         >
-                            <MenuItem value={'USA'}>Америка</MenuItem>
-                            <MenuItem value={'Turkey'}>Турция</MenuItem>
-                            <MenuItem value={'China'}>Китай (Авия доставка)</MenuItem>
+                            <MenuItem value={'usa'}>Америка</MenuItem>
+                            <MenuItem value={'turkey'}>Турция (Авия доставка)</MenuItem>
+                            <MenuItem value={'turkeyGround'}>Турция (Наземная доставка)</MenuItem>
+                            <MenuItem value={'china'}>Китай (Авия доставка)</MenuItem>
+                            <MenuItem value={'chinaGround'}>Китай (Наземная доставка)</MenuItem>
                         </Select>
                         <FormHelperText error={true}>{error?.errors?.['country']?.message}</FormHelperText>
                     </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={8} md={7} lg={7}>
+                <FormElement
+                    xs={12} sm={8} md={7} lg={9}
+                    name="trackNumber"
+                    value={packageRegister.trackNumber}
+                    required
+                    fullWidth
+                    onChange={inputChangeHandler}
+                    variant="outlined"
+                    label="Трек-номер"
+                    error={getFieldError('trackNumber')}
+                />
+                <FormElement
+                    xs={12} sm={8} md={7} lg={9}
+                    name="title"
+                    value={packageRegister.title}
+                    onChange={inputChangeHandler}
+                    required
+                    fullWidth
+                    variant="outlined"
+                    label="Название"
+                    error={getFieldError('title')}
+                />
                     <FormElement
-                        name="trackNumber"
-                        value={packageRegister.trackNumber}
-                        required
-                        fullWidth
-                        onChange={inputChangeHandler}
-                        variant="outlined"
-                        label="Трек-номер"
-                        error={getFieldError('trackNumber')}
-                    />
-                </Grid>
-                <Grid item xs={12} sm={8} md={7} lg={7}>
-                    <FormElement
-                        name="title"
-                        value={packageRegister.title}
-                        onChange={inputChangeHandler}
-                        required
-                        fullWidth
-                        variant="outlined"
-                        label="Название"
-                        error={getFieldError('title')}
-                    />
-                </Grid>
-                <Grid item xs={12} sm={8} md={7} lg={7}>
-                    <FormElement
+                        xs={12} sm={8} md={7} lg={9}
                         name="amount"
                         type="number"
                         value={packageRegister.amount}
                         onChange={inputChangeHandler}
-                        fullWidth
+                        // fullWidth
                         required
                         variant="outlined"
                         label="Количество"
                         error={getFieldError('amount')}
                     />
-                </Grid>
-                <Grid item xs={12} sm={8} md={7} lg={7}>
                     <FormElement
+                        xs={12} sm={8} md={7} lg={4.5}
                         name="price"
                         type="number"
                         value={packageRegister.price}
                         onChange={inputChangeHandler}
                         className={classes.textField}
-                        fullWidth
+                        // fullWidth
                         required
                         variant="outlined"
                         label="Цена"
                         error={getFieldError('price')}
                     />
-                </Grid>
-                <Grid container
-                      justifyContent="center"
-                      alignItems="center"
-                      className={classes.packageBtnContainer}>
-                    {
-                        packageRegister.country &&
-                        packageRegister.amount &&
-                        packageRegister.price &&
-                        packageRegister.trackNumber &&
-                        packageRegister.title ? (
-                            <ButtonWithProgress
-                                loading={loading}
-                                disabled={loading}
-                                type="submit"
-                                variant="contained">
-                                Оформить
-                            </ButtonWithProgress>
-                        ) : (
-                            <ButtonWithProgress
-                                loading={loading}
-                                disabled={true}
-                                type="submit"
-                                variant="contained">
-                                Оформить
-                            </ButtonWithProgress>
+                    <Grid item xs={12} sm={8} md={7} lg={4.5}>
+                        <FormControl variant="outlined" fullWidth error={Boolean(getFieldError('currency'))}>
+                            <InputLabel id="demo-controlled-open-select-label">Валюта</InputLabel>
+                            <Select
+                                labelId="demo-controlled-open-select-label"
+                                id="demo-controlled-open-select"
+                                value={packageRegister.currency}
+                                label="Выберите валюту"
+                                name="currency"
+                                required
+                                onChange={inputChangeHandler}
+                            >
+                                <MenuItem value={'usd'}>
+                                    Доллар
+                                    <AttachMoneyIcon/>
+                                </MenuItem>
+                                <MenuItem value={'try'}>
+                                    Турецкая лира
+                                    <CurrencyLiraIcon/>
+                                </MenuItem>
+                                <MenuItem value={'cny'}>
+                                    Юань
+                                    <CurrencyYenIcon/>
+                                </MenuItem>
+                            </Select>
+                            <FormHelperText error={true}>{error?.errors?.['currency']?.message}</FormHelperText>
+                        </FormControl>
+                    </Grid>
+                {user?.role === 'admin' && (
+                    <Grid item xs={12} sm={8} md={7} lg={7}>
+
+                        {buyoutUser ? (
+                            <TextField
+                                xs={12} sm={8} md={7} lg={7}
+                                type="text"
+                                value={buyoutUser.name}
+                                className={classes.textField}
+                                fullWidth
+                                required
+                                variant="outlined"
+                                label="Заказчик"
+                            />
+                        ):(
+                            <Autocomplete
+                                onChange={(event, newValue) => {
+                                    setValue(newValue);
+                                }}
+                                inputValue={inputValue}
+                                onInputChange={(event, newInputValue) => {
+                                    setInputValue(newInputValue);
+                                }}
+                                name={'user'}
+                                disablePortal
+                                id="combo-box-demo"
+                                options={users}
+                                getOptionLabel={(option)=>(option.name+' '+option.email)}
+                                renderInput={(params) => <TextField {...params} label="Заказчик" />}
+                            />
                         )}
+                    </Grid>
+                )}
+
+                <Grid item xs={12} sm={8} md={7} lg={7}>{
+                    packageRegister.country &&
+                    packageRegister.amount &&
+                    packageRegister.price &&
+                    packageRegister.trackNumber &&
+                    packageRegister.currency &&
+                    packageRegister.title ? (
+                        <ButtonWithProgress
+                            loading={loading}
+                            disabled={loading}
+                            type="submit"
+                            variant="contained">
+                            Оформить
+                        </ButtonWithProgress>
+                    ) : (
+                        <ButtonWithProgress
+                            loading={loading}
+                            disabled={true}
+                            type="submit"
+                            variant="contained">
+                            Оформить
+                        </ButtonWithProgress>
+                    )}
                 </Grid>
             </Grid>
         </Container>

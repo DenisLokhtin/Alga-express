@@ -1,46 +1,51 @@
-import {takeEvery, put} from 'redux-saga/effects';
+import {put, takeEvery} from 'redux-saga/effects';
 import {
+    changeDeliveryStatusError,
+    changeDeliveryStatusRequest,
+    changeDeliveryStatusSuccess,
     changePackageFailure,
     changePackageRequest,
     changePackageSuccess,
+    changeStatusesError,
+    changeStatusesRequest,
+    changeStatusesSuccess,
     createPackageFailure,
     createPackageRequest,
+    createPackageSuccess,
     editAdminPackageRequest,
     editAdminPackageSuccess,
+    fetchNewPackages,
+    fetchNewPackagesFailure,
+    fetchNewPackagesSuccess,
     fetchPackageAdminFailure,
     fetchPackageAdminRequest,
     fetchPackageAdminSuccess,
-    getPackageByIdFailure,
-    getPackageByIdRequest,
-    getPackageByIdSuccess,
-    createPackageSuccess,
     getOrderByIdError,
     getOrderByIdRequest,
     getOrderByIdSuccess,
     getOrdersHistoryError,
     getOrdersHistoryRequest,
     getOrdersHistorySuccess,
-    changeStatusesError,
-    changeStatusesSuccess,
-    changeStatusesRequest,
-    changeStatusSuccess,
-    changeStatusError, changeStatusRequest,
+    getPackageByIdFailure,
+    getPackageByIdRequest,
+    getPackageByIdSuccess,
 } from "../actions/packageRegisterActions";
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
+import History from '../../History';
 
 function* packageRegisterSagas({payload: packageData}) {
     try {
         yield axiosApi.post('/packages', packageData);
         yield put(createPackageSuccess());
-        packageData.navigate('/');
+        History.push('/');
         toast.success('Ваш заказ был успешно создан');
     } catch (e) {
         yield put(createPackageFailure(e.response.data));
     }
 }
 
-function* packageGetByIdSagas({payload: id}) {
+function* getPackageById({payload: id}) {
     try {
         const {data} = yield axiosApi.get(`/packages/${id}`);
         yield put(getPackageByIdSuccess(data));
@@ -49,11 +54,12 @@ function* packageGetByIdSagas({payload: id}) {
     }
 }
 
-function* packageChangeSagas({payload}) {
+function* packageChangeSagas({payload: packageData}) {
     try {
-        yield axiosApi.put(`/packages/${payload._id}`, payload);
+        yield axiosApi.put(`/packages/${packageData.packageId}`, packageData.editPackage);
         yield put(changePackageSuccess());
         toast.success('Ваш заказ был успешно отредактирован');
+        History.push('/package/history')
     } catch (e) {
         yield put(changePackageFailure(e.response.data));
     }
@@ -70,8 +76,6 @@ function* adminPackageEditSaga({payload: id}) {
 
 function* packageEditAdminSagas({payload}) {
     try {
-        console.log('in saga id', payload.id);
-        console.log('in saga data', payload.obj);
         yield axiosApi.put(`/packages/` + payload.id, payload.obj);
         yield put(editAdminPackageSuccess());
         toast.success('Заказ был успешно отредактирован');
@@ -82,7 +86,13 @@ function* packageEditAdminSagas({payload}) {
 
 function* getOrdersHistorySagas({payload: pageData}) {
     try {
-        const response = yield axiosApi.get(`/packages?page=${pageData.page}&limit=${pageData.limit}`);
+        let response;
+        if (pageData.history) {
+            response = yield axiosApi.get(`/packages?page=${pageData.page}&limit=${pageData.limit}&history=${true}`);
+        } else {
+            response = yield axiosApi.get(`/packages?page=${pageData.page}&limit=${pageData.limit}`);
+
+        }
         yield put(getOrdersHistorySuccess(response.data));
     } catch (error) {
         yield put(getOrdersHistoryError(error.response.statusText || error.message));
@@ -106,13 +116,12 @@ function* getOrderById({payload: orderId}) {
 
 function* changeStatuses({payload: packageData}) {
     try {
-        const response = yield axiosApi.put('/packages/single', packageData);
+        const response = yield axiosApi.put('/packages', packageData);
         yield put(changeStatusesSuccess());
-
         if (!response.data.length) {
             toast.success(response.data.message);
+            History.push('/')
         }
-
     } catch (error) {
         if (error.response.data && error.response.data.length > 0) {
             toast.error('Некоторые трек-номера не были найдены в базе', {
@@ -123,39 +132,48 @@ function* changeStatuses({payload: packageData}) {
     }
 }
 
-
-function* changeSingleStatus({payload: packageData}) {
+function* changeDeliveryStatus({payload: data}) {
     try {
-        const response = yield axiosApi.put('/packages', packageData);
-        yield put(changeStatusSuccess());
-
-        if (!response.data.length) {
-            toast.success(response.data.message);
-        }
-
+        yield axiosApi.put('/packages/packageDelivery', data);
+        yield put(changeDeliveryStatusSuccess());
+        toast.success('Статус доставки изменён');
     } catch (error) {
-        if (error.response.data && error.response.data.length > 0) {
-            toast.error('Некоторые трек-номера не были найдены в базе', {
-                autoClose: 5000,
-            });
-        }
-        yield put(changeStatusError(error.response.data));
+        toast.error('не удалось сменить статус доставки');
+        yield put(changeDeliveryStatusError(error.response.data));
     }
 }
 
 
+// export function* fetchNewPackagesSaga() {
+//     try {
+//         const {data} = yield axiosApi.get('/packages/newPackages');
+//         yield put(fetchNewPackagesSuccess(data));
+//     } catch (e) {
+//         yield put(fetchNewPackagesFailure(e));
+//     }
+// }
 
+
+export function* fetchNewPackagesSaga() {
+    try {
+        const {data} = yield axiosApi.get('/packages/newPackages');
+        yield put(fetchNewPackagesSuccess(data));
+    } catch (e) {
+        yield put(fetchNewPackagesFailure(e));
+    }
+}
 
 const packageSagas = [
     takeEvery(createPackageRequest, packageRegisterSagas),
     takeEvery(changePackageRequest, packageChangeSagas),
-    takeEvery(getPackageByIdRequest, packageGetByIdSagas),
+    takeEvery(getPackageByIdRequest, getPackageById),
     takeEvery(fetchPackageAdminRequest, adminPackageEditSaga),
     takeEvery(editAdminPackageRequest, packageEditAdminSagas),
     takeEvery(getOrdersHistoryRequest, getOrdersHistorySagas),
     takeEvery(getOrderByIdRequest, getOrderById),
     takeEvery(changeStatusesRequest, changeStatuses),
-    takeEvery(changeStatusRequest, changeSingleStatus),
+    takeEvery(fetchNewPackages, fetchNewPackagesSaga),
+    takeEvery(changeDeliveryStatusRequest, changeDeliveryStatus),
 ];
 
 export default packageSagas;

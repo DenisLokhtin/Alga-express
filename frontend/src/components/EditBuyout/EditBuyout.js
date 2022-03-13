@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {clearBuyoutsError, editBuyoutRequest, fetchSingleBuyoutRequest} from "../../store/actions/buyoutActions";
 import {useParams} from "react-router-dom";
@@ -10,6 +10,7 @@ import CurrencyLiraIcon from '@mui/icons-material/CurrencyLira';
 import CurrencyYuanIcon from '@mui/icons-material/CurrencyYuan';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import {makeStyles} from "@mui/styles";
+import theme from "../../theme";
 
 
 const useStyles = makeStyles(theme => ({
@@ -26,9 +27,6 @@ const useStyles = makeStyles(theme => ({
         [theme.breakpoints.up('md')]: {
             width: '50%',
         },
-    },
-    title: {
-        textAlign: "center",
     },
     item:{
         width: '30%',
@@ -53,27 +51,23 @@ const EditBuyout = () => {
         commission: '',
         value: '',
     });
-    console.log(buyout)
-
-    // const [show, setShow] = useState(false);
 
     useEffect(() => {
         dispatch(fetchSingleBuyoutRequest(id));
-        if (oneBuyout)
-            setBuyout(prevState => ({
-                ...prevState,
-                description: oneBuyout?.description,
-                image: oneBuyout?.image,
-                url: oneBuyout?.url,
-                country: oneBuyout?.country,
-                price: oneBuyout?.price,
-                commission: oneBuyout?.commission,
-                value: oneBuyout?.value,
-            }))
+    }, [dispatch, id]);
 
-    }, [dispatch, id, oneBuyout && oneBuyout.description
-    ]);
-
+    useMemo(() => {
+        oneBuyout && setBuyout(prevState => ({
+            ...prevState,
+            description: oneBuyout.description,
+            image: oneBuyout.image,
+            url: oneBuyout.url,
+            country: oneBuyout.country,
+            price: oneBuyout.price || '',
+            commission: oneBuyout.commission,
+            value: oneBuyout.value || '',
+        }));
+    }, [oneBuyout]);
 
     const inputChangeHandler = e => {
         const name = e.target.name;
@@ -150,7 +144,7 @@ const EditBuyout = () => {
                 onSubmit={submitFormHandler}
                 noValidate
             >
-                <h3 className={classes.title}>Заказать выкуп</h3>
+                <h3 style={theme.title}>Заказать выкуп</h3>
                 <FormControl variant="standard" fullWidth error={Boolean(getFieldError('country'))}>
                     <InputLabel id="demo-controlled-open-select-label">Страна</InputLabel>
                     <Select
@@ -174,7 +168,7 @@ const EditBuyout = () => {
                     required
                     label="Описание товара (размер, цвет и тд.)"
                     name="description"
-                    value={buyout?.description}
+                    value={buyout.description}
                     onChange={inputChangeHandler}
                     error={getFieldError('description')}
                 />
@@ -183,7 +177,7 @@ const EditBuyout = () => {
                     required
                     label="Ссылка"
                     name="url"
-                    value={buyout?.url}
+                    value={buyout.url}
                     onChange={inputChangeHandler}
                     error={getFieldError('url')}
 
@@ -200,7 +194,7 @@ const EditBuyout = () => {
                         helperText={getFieldError('image')}
                     />
                 </Grid>
-                {user?.role === 'admin' && (
+                {(user?.role === 'admin' || user?.role === 'superAdmin') && (
                     <Grid container direction={"row"} spacing={2} justifyContent={"space-between"}>
                         <Grid item className={classes.item}>
                             <FormElement
@@ -208,7 +202,7 @@ const EditBuyout = () => {
                                 required
                                 label="Цена за выкуп"
                                 name="price"
-                                value={buyout?.price}
+                                value={buyout.price}
                                 onChange={inputChangeHandler}
                                 error={getFieldError('price')}
                             />
@@ -219,7 +213,7 @@ const EditBuyout = () => {
                                 required
                                 label="Комиссия"
                                 name="commission"
-                                value={buyout?.commission}
+                                value={buyout.commission}
                                 onChange={inputChangeHandler}
                                 error={getFieldError('commission')}
                             />
@@ -230,12 +224,15 @@ const EditBuyout = () => {
                             <Select
                                 labelId="demo-controlled-open-select-label"
                                 id="demo-controlled-open-select"
-                                value={buyout?.value}
+                                value={buyout.value}
                                 label="Валюта"
                                 name="value"
                                 required
                                 onChange={inputChangeHandler}
                             >
+                                <MenuItem defaultValue="">
+                                    <em>None</em>
+                                </MenuItem>
                                 <MenuItem value={'USD'}><AttachMoneyIcon/>Доллар</MenuItem>
                                 <MenuItem value={'TRY'}><CurrencyLiraIcon/>Лира</MenuItem>
                                 <MenuItem value={'CNY'}><CurrencyYuanIcon/>Юань</MenuItem>

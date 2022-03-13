@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {fetchPaymentRequest, paymentAcceptedRequest} from "../../store/actions/paymentActions";
 import {Grid, Paper, TableCell, TablePagination} from "@mui/material";
@@ -45,8 +45,14 @@ const AdminPaymentsProcessing = () => {
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [permitPayment, setPermitPayment] = useState([]);
     const [input, setInput] = useState(false);
+    const messagesEndRef = useRef(null);
 
     useEffect(() => {
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 200);
+        }
         dispatch(fetchPaymentRequest({page: page, limit: rowsPerPage}));
         return () => {
             setInput(false);
@@ -55,11 +61,12 @@ const AdminPaymentsProcessing = () => {
         page,
         rowsPerPage,
         updatePermit,
+        messagesEndRef
     ]);
 
     useEffect(() => {
         setPermitPayment([]);
-        paymentData && paymentData.data.forEach(payment => {
+        paymentData.data.forEach(payment => {
             setPermitPayment(prevState => [
                 ...prevState,
                 {
@@ -72,9 +79,7 @@ const AdminPaymentsProcessing = () => {
         return () => {
             setInput(true);
         }
-    }, [
-        paymentData && paymentData.data,
-    ]);
+    }, [paymentData.data]);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -107,9 +112,11 @@ const AdminPaymentsProcessing = () => {
 
     return (input &&
         <Container
+            ref={messagesEndRef}
             component="section"
             maxWidth="md"
             className={classes.container}
+            style={{textAlign: 'center'}}
         >
             <Grid
                 container
@@ -141,7 +148,7 @@ const AdminPaymentsProcessing = () => {
                                             {key.description}
                                         </TableCell>
                                         <TableCell align="right">
-                                            <img src={apiURL + '/uploads/' + key.image} width={200}/>
+                                            <img src={apiURL + '/' + key.image} width={200} alt='test'/>
                                         </TableCell>
                                         <TableCell align="right">
                                             {key && key.status ? (<p>Принят</p>) : (<p>В обработке</p>)}

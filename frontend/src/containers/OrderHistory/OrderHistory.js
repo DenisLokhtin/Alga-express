@@ -1,207 +1,165 @@
-import React, {useEffect, useState} from 'react';
-import {Box, Container, LinearProgress, Typography} from "@mui/material";
+import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {getOrdersHistoryRequest} from "../../store/actions/packageRegisterActions";
-import {
-    DataGrid,
-    GridOverlay,
-    GridToolbarContainer,
-    GridToolbarDensitySelector,
-    ruRU
-} from "@mui/x-data-grid";
-import {styled} from "@mui/material/styles";
-import theme from "../../theme";
+import {changeDeliveryStatusRequest, getOrdersHistoryRequest} from "../../store/actions/packageRegisterActions";
 import {countries, statuses} from "../../dataLocalization";
-
-function CustomToolbar() {
-    return (
-        <GridToolbarContainer>
-            <GridToolbarDensitySelector/>
-        </GridToolbarContainer>
-    );
-}
-
-function CustomLoadingOverlay() {
-    return (
-        <GridOverlay>
-            <div style={{position: 'absolute', top: 0, width: '100%'}}>
-                <LinearProgress/>
-            </div>
-        </GridOverlay>
-    );
-}
-
-function customCheckbox(theme) {
-    return {
-        '& .MuiCheckbox-root svg': {
-            width: 16,
-            height: 16,
-            backgroundColor: 'transparent',
-            border: `1px solid ${
-                theme.palette.mode === 'light' ? '#d9d9d9' : 'rgb(67, 67, 67)'
-            }`,
-            borderRadius: 2,
-        },
-        '& .MuiCheckbox-root svg path': {
-            display: 'none',
-        },
-        '& .MuiCheckbox-root.Mui-checked:not(.MuiCheckbox-indeterminate) svg': {
-            backgroundColor: '#1890ff',
-            borderColor: '#1890ff',
-        },
-        '& .MuiCheckbox-root.Mui-checked .MuiIconButton-label:after': {
-            position: 'absolute',
-            display: 'table',
-            border: '2px solid #fff',
-            borderTop: 0,
-            borderLeft: 0,
-            transform: 'rotate(45deg) translate(-50%,-50%)',
-            opacity: 1,
-            transition: 'all .2s cubic-bezier(.12,.4,.29,1.46) .1s',
-            content: '""',
-            top: '50%',
-            left: '39%',
-            width: 5.71428571,
-            height: 9.14285714,
-        },
-        '& .MuiCheckbox-root.MuiCheckbox-indeterminate .MuiIconButton-label:after': {
-            width: 8,
-            height: 8,
-            backgroundColor: '#1890ff',
-            transform: 'none',
-            top: '39%',
-            border: 0,
-        },
-    };
-}
-
-const StyledGridOverlay = styled(GridOverlay)(({theme}) => ({
-    flexDirection: 'column',
-    '& .ant-empty-img-1': {
-        fill: theme.palette.mode === 'light' ? '#aeb8c2' : '#262626',
-    },
-    '& .ant-empty-img-2': {
-        fill: theme.palette.mode === 'light' ? '#f5f5f7' : '#595959',
-    },
-    '& .ant-empty-img-3': {
-        fill: theme.palette.mode === 'light' ? '#dce0e6' : '#434343',
-    },
-    '& .ant-empty-img-4': {
-        fill: theme.palette.mode === 'light' ? '#fff' : '#1c1c1c',
-    },
-    '& .ant-empty-img-5': {
-        fillOpacity: theme.palette.mode === 'light' ? '0.8' : '0.08',
-        fill: theme.palette.mode === 'light' ? '#f5f5f5' : '#fff',
-    },
-}));
-
-theme.typography.h3 = {
-    fontSize: '1.2rem',
-    '@media (min-width:600px)': {
-        fontSize: '1.5rem',
-    },
-    [theme.breakpoints.up('md')]: {
-        fontSize: '1.4rem',
-    },
-};
-
-function CustomNoRowsOverlay() {
-    return (
-        <StyledGridOverlay>
-            <Box sx={{mt: 3, mb: 3}}>
-                <Typography variant="h3">
-                    У вас ещё нет посылок
-                </Typography>
-            </Box>
-        </StyledGridOverlay>
-    );
-}
-
-const StyledDataGrid = styled(DataGrid)(({theme}) => ({
-    boxShadow: 'rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset',
-    padding: '5px',
-    color:
-        theme.palette.mode === 'light' ? 'rgba(0,0,0,.85)' : 'rgba(255,255,255,0.85)',
-    WebkitFontSmoothing: 'auto',
-    letterSpacing: 'normal',
-    '& .MuiDataGrid-columnsContainer': {
-        backgroundColor: theme.palette.mode === 'light' ? '#fafafa' : '#1d1d1d',
-    },
-    '& .MuiDataGrid-iconSeparator': {
-        display: 'none',
-    },
-    '& .MuiDataGrid-columnHeader, .MuiDataGrid-cell': {
-        borderRight: `4px solid ${
-            theme.palette.mode === 'light' ? '#f0f0f0' : '#303030'
-        }`,
-    },
-    '& .MuiDataGrid-columnsContainer, .MuiDataGrid-cell': {
-        borderBottom: `4px solid ${
-            theme.palette.mode === 'light' ? '#f0f0f0' : '#303030'
-        }`,
-    },
-    '& .MuiDataGrid-cell': {
-        color:
-            theme.palette.mode === 'light' ? 'rgba(0,0,0,.85)' : 'rgba(255,255,255,0.65)',
-    },
-    '& .MuiPaginationItem-root': {
-        borderRadius: 0,
-    },
-    ...customCheckbox(theme),
-}));
-
-const columns = [
-    {
-        field: 'cargoNumber',
-        headerName: 'Карго-номер',
-        minWidth: 220,
-        maxWidth: 400,
-        headerAlign: 'center',
-        align: 'center'
-    },
-    {
-        field: 'trackNumber',
-        headerName: 'Трек-номер',
-        minWidth: 230,
-        maxWidth: 400,
-        headerAlign: 'center',
-        align: 'center'
-    },
-    {
-        field: 'country',
-        headerName: 'Страна',
-        minWidth: 220,
-        maxWidth: 400,
-        headerAlign: 'center',
-        align: 'center',
-    },
-    {
-        field: 'status',
-        headerName: 'Статус',
-        minWidth: 200,
-        maxWidth: 400,
-        headerAlign: 'center',
-        align: 'center',
-    },
-    {
-        field: 'title',
-        headerName: 'Заголовок',
-        minWidth: 220,
-        maxWidth: 400,
-        headerAlign: 'center',
-        align: 'center',
-    },
-];
+import TableComponent from "../../components/TableComponent/TableComponent";
+import {Button, Container} from "@mui/material";
+import DeliveryModal from "../../components/DeliveryModal/DeliveryModal";
+import {Link} from "react-router-dom";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import CurrencyLiraIcon from "@mui/icons-material/CurrencyLira";
+import CurrencyYenIcon from "@mui/icons-material/CurrencyYen";
+import Checkbox from "@mui/material/Checkbox";
+import {deleteDeliveryRequest} from "../../store/actions/deliveryAction";
 
 const OrderHistory = () => {
+    const [open, setOpen] = useState(false);
+    const [currentModal, setCurrentModal] = useState({
+        cargoNumber: "1",
+        country: "Китай-Авия",
+        delivery: "false",
+        id: "6220b025363a1780b6f28293",
+        status: "В пути",
+        title: "package 3",
+        trackNumber: "DnS5myCQv6H4H1_4YCtPM",
+    });
+    const handleClose = () => setOpen(false);
     const loading = useSelector(state => state.package.getOrdersLoading);
     const dispatch = useDispatch();
     const orders = useSelector(state => state.package.orders);
     const totalRow = useSelector(state => state.package.totalPage);
     const [page, setPage] = React.useState(0);
-    const [pageLimit, setPageLimit] = useState(5);
+    const [pageLimit, setPageLimit] = useState(20);
     const [selectionModel, setSelectionModel] = React.useState([]);
     const prevSelectionModel = React.useRef(selectionModel);
+
+    const columns = [
+        {
+            field: 'cargoNumber',
+            headerName: 'Карго-номер',
+            flex: 1,
+            minWidth: 150,
+            headerAlign: 'center',
+            align: 'center',
+        },
+        {
+            field: 'trackNumber',
+            headerName: 'Трек-номер',
+            flex: 1,
+            minWidth: 195,
+            headerAlign: 'center',
+            align: 'center'
+        },
+        {
+            field: 'title',
+            headerName: 'Заголовок',
+            flex: 1,
+            minWidth: 200,
+            headerAlign: 'center',
+            align: 'center',
+        },
+        {
+            field: 'country',
+            headerName: 'Страна',
+            flex: 1,
+            minWidth: 200,
+            headerAlign: 'center',
+            align: 'center',
+        },
+        {
+            field: 'status',
+            headerName: 'Статус',
+            flex: 1,
+            minWidth: 100,
+            headerAlign: 'center',
+            align: 'center',
+        },
+        {
+            field: 'amount',
+            headerName: 'Количество',
+            flex: 1,
+            minWidth: 150,
+            headerAlign: 'center',
+            align: 'center',
+        },
+        {
+            field: 'price',
+            headerName: 'Цена товара',
+            flex: 1,
+            minWidth: 140,
+            headerAlign: 'center',
+            align: 'center',
+            renderCell: (params => {
+                const order = orders.find(order => order._id === params.id);
+
+                if (order.currency === 'usd') {
+                    return (
+                        <div style={{display: 'flex', alignItems: 'center'}}>
+                            {order.price} <AttachMoneyIcon/>
+                        </div>
+                    )
+                } else if (order.currency === 'cny') {
+                    return (
+                        <div style={{display: 'flex', alignItems: 'center'}}>
+                            {order.price} <CurrencyYenIcon/>
+                        </div>
+                    )
+                } else if (order.currency === 'try') {
+                    return (
+                        <div style={{display: 'flex', alignItems: 'center'}}>
+                            {order.price} <CurrencyLiraIcon/>
+                        </div>
+                    )
+                }
+            })
+        },
+        {
+            field: 'delivery',
+            headerName: 'Доставка',
+            flex: 1,
+            minWidth: 90,
+            headerAlign: 'center',
+            align: 'center',
+            renderCell: (params) => {
+                const onClick = (e) => {
+                    e.stopPropagation();
+                    if (e.target.checked) {
+                        setOpen(true);
+                        setCurrentModal({...params.row});
+                    } else {
+                        dispatch(changeDeliveryStatusRequest({...params.row}));
+                        dispatch(deleteDeliveryRequest({...params.row}));
+                        dispatch(getOrdersHistoryRequest({page, limit: pageLimit}));
+                    }
+                };
+                return (
+                    <Checkbox checked={params.row.delivery} onChange={(e) => onClick(e)}/>
+                );
+            }
+        },
+        {
+            field: 'edit',
+            headerName: 'Редактирование',
+            flex: 1,
+            minWidth: 150,
+            headerAlign: 'center',
+            align: 'center',
+            renderCell: (params) => {
+                return (
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        style={{marginLeft: 16}}
+                        disabled={params.row.status !== 'Оформлен'}
+                    >
+                        <Link to={`/user/package/edit/${params.id}`}
+                              style={{textDecoration: 'none', color: 'inherit'}}>Редактировать</Link>
+                    </Button>
+                )
+            }
+        },
+    ];
 
     const myRows = orders.map(order => {
         return {
@@ -211,11 +169,23 @@ const OrderHistory = () => {
             title: order.title,
             country: countries[order.country],
             status: statuses[order.status],
+            delivery: order.delivery,
+            edit: 'Редактировать',
+            amount: order.amount,
+            price: order.price,
         }
     });
 
+    const messagesEndRef = useRef(null);
+
     useEffect(() => {
         let active = true;
+
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 200);
+        }
 
         dispatch(getOrdersHistoryRequest({page, limit: pageLimit}));
 
@@ -225,55 +195,47 @@ const OrderHistory = () => {
                 return;
             }
 
-            setTimeout(() => {
-                setSelectionModel(prevSelectionModel.current);
-            });
+            setSelectionModel(prevSelectionModel.current);
 
         })();
 
         return () => {
             active = false;
         };
-    }, [page, dispatch, pageLimit]);
 
-    console.log(orders);
+    }, [page, dispatch, pageLimit, messagesEndRef]);
 
     return (
-        <Container style={{display: 'flex', width: '100%', marginTop: '5em'}}>
-                <StyledDataGrid
-                    rows={myRows}
-                    columns={
-                        [...columns,
-                            {field: 'trackNumber', sortable: false},
-                            {field: 'cargoNumber', sortable: false},
-                            {field: 'country', sortable: false},
-                            {field: 'status', sortable: false},
-                            {field: 'title', sortable: false},
-                        ]}
-                    pagination
-                    checkboxSelection
-                    pageSize={pageLimit}
-                    autoHeight
-                    rowsPerPageOptions={[5, 10, 20]}
-                    rowCount={totalRow}
-                    paginationMode="server"
-                    onPageSizeChange={newRowsLimit => setPageLimit(newRowsLimit)}
-                    onPageChange={(newPage) => {
-                        prevSelectionModel.current = selectionModel;
-                        setPage(newPage);
-                    }}
-                    onSelectionModelChange={(newSelectionModel) => {
-                        setSelectionModel(newSelectionModel);
-                    }}
-                    selectionModel={selectionModel}
-                    localeText={ruRU.components.MuiDataGrid.defaultProps.localeText}
-                    loading={loading}
-                    components={{
-                        Toolbar: CustomToolbar,
-                        LoadingOverlay: CustomLoadingOverlay,
-                        NoRowsOverlay: CustomNoRowsOverlay,
-                    }}
-                />
+        <Container maxWidth="xl" ref={messagesEndRef} style={{display: 'flex', height: '550px', width: '100%', marginTop: '5em'}}>
+            <DeliveryModal title={currentModal.title} track={currentModal.trackNumber} status={currentModal.status}
+                           country={currentModal.country} open={open} page={page} pageLimit={pageLimit}
+                           close={handleClose}/>
+            <TableComponent
+                rows={myRows}
+                columns={
+                    [...columns,
+                        {field: 'trackNumber', sortable: false},
+                        {field: 'cargoNumber', sortable: false},
+                        {field: 'country', sortable: false},
+                        {field: 'status', sortable: false},
+                        {field: 'title', sortable: false},
+                        {field: 'delivery', sortable: false},
+                    ]}
+                pagination
+                pageSize={pageLimit}
+                rowCount={totalRow}
+                onPageSizeChange={newRowsLimit => setPageLimit(newRowsLimit)}
+                onPageChange={(newPage) => {
+                    prevSelectionModel.current = selectionModel;
+                    setPage(newPage);
+                }}
+                onSelectionModelChange={(newSelectionModel) => {
+                    setSelectionModel(newSelectionModel);
+                }}
+                selectionModel={selectionModel}
+                rowHeight={70}
+                loading={loading}
+            />
         </Container>
     );
 };

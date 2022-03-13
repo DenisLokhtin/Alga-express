@@ -10,11 +10,12 @@ const AddPaymentAdmin = () => {
     const dispatch = useDispatch();
     const users = useSelector(state => state.users.users);
     const loading = useSelector(state => state.users.loadUserDate);
+    const error = useSelector(state => state.payments.errorPayment);
+
     const [payment, setPayment] = useState({
         id: '',
         price: '',
     });
-
 
     useEffect(() => {
         dispatch(fetchUsersRequest());
@@ -34,12 +35,19 @@ const AddPaymentAdmin = () => {
 
     };
 
+    const getFieldError = fieldName => {
+        try {
+            return error.errors[fieldName].message;
+        } catch (e) {
+            return undefined;
+        }
+    };
+
     const submitFormHandler = e => {
         e.preventDefault();
         dispatch(addPaymentAdminRequest(payment));
     };
 
-    console.log(users);
     return (
         <>
             <Grid
@@ -71,7 +79,7 @@ const AddPaymentAdmin = () => {
                         onChange={inputChangeHandler}
                         variant="outlined"
                         label="Сумма оплаты"
-                        // error={getFieldError('trackNumber')}
+                        error={getFieldError('price')}
                     />
                 </Grid>
                 <Grid container item

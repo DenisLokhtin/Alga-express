@@ -4,12 +4,15 @@ const permit = require("../middleware/permit");
 const Payment = require("../models/Payment");
 const PaymentMove = require("../models/PaymentMove");
 const User = require("../models/User");
-const sendMail = require("../middleware/sendMail");
 const TariffGroup = require("../models/TariffGroup");
+const sendMail = require('../middleware/sendMail');
+const {balanceText} = require('../email-texts');
+const filterBuyouts = require("../middleware/filter");
 
 const router = express.Router();
 
-router.get('/', auth, permit('admin'), async (req, res) => {
+router.get('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
+    const query = {};
     let page = 0;
     let limit = 10;
 
@@ -20,9 +23,16 @@ router.get('/', auth, permit('admin'), async (req, res) => {
     if (req.query.limit) {
         limit = req.query.limit;
     }
+
+    req.query.history ? query.history = req.query.history : null;
+
+    req.query.id ? query.id = req.query.id : null;
+
+    const findFilter = filterBuyouts(query, 'payments');
+
     try {
-        const size = await Payment.find({status: false});
-        const response = await Payment.find({status: false})
+        const size = await Payment.find(findFilter);
+        const response = await Payment.find(findFilter)
             .populate('user', 'name')
             .select('image description date user')
             .limit(limit)
@@ -34,7 +44,7 @@ router.get('/', auth, permit('admin'), async (req, res) => {
     }
 });
 
-router.get('/tariff', auth, permit('admin'), async (req, res) => {
+router.get('/tariff', auth, permit('admin', 'superAdmin'), async (req, res) => {
     try {
         const tariff = await TariffGroup.findOne();
         res.send(tariff);
@@ -43,14 +53,13 @@ router.get('/tariff', auth, permit('admin'), async (req, res) => {
     }
 });
 
-
-router.post('/', auth, permit('admin'), async (req, res) => {
+router.post('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
     let pay = Number(req.body.pay).toFixed(2);
     pay = Number(pay);
 
     try {
         const checkPayment = await Payment.findById(req.body.id)
-            .populate('user', 'name');
+            .populate('user', 'name email');
         const userPayment = await User.findById(checkPayment.user._id);
         if (checkPayment) {
             const confirm = await Payment.findByIdAndUpdate(req.body.id, {status: true, amount: pay});
@@ -68,8 +77,13 @@ router.post('/', auth, permit('admin'), async (req, res) => {
                 const paySave = new PaymentMove(permitData);
                 await paySave.save();
 
-                // sendMail('test@gmail.com', 'test', 'test body');
                 await User.findByIdAndUpdate(userPayment, {balance: userPayment.balance + pay});
+
+                const user = await User.findById(checkPayment.user._id);
+
+                sendMail(user.email, 'Alga-express: Баланс пополнен', null, balanceText(pay, user.balance, user.name));
+
+                sendMail()
 
                 return res.status(200).send({status: true});
             } else {
@@ -83,14 +97,51 @@ router.post('/', auth, permit('admin'), async (req, res) => {
     } catch (e) {
         console.error(e);
         res.status(400).send({error: e});
-
-
     }
 });
 
-router.post('/cash', auth, permit('admin'), async (req, res) => {
-    let price = Number(req.body.price).toFixed(2);
+router.post('/cash', auth, permit('admin', 'superAdmin'), async (req, res) => {
+    let serializedPrice = req.body.price;
+
+    if (serializedPrice.includes(',') && serializedPrice.includes('.')) {
+        return res.status(400).send({
+            errors: {price: {message: 'Введите корректную сумму оплаты'}},
+        });
+    }
+
+    const dotMatching = req.body.price.match(/[.]/g) || [];
+
+    if (dotMatching.length > 1) {
+        return res.status(400).send({
+            errors: {price: {message: 'Введите корректную сумму оплаты'}},
+        });
+    }
+
+    if (/[a-zA-Z]/.test(serializedPrice)) {
+        return res.status(400).send({
+            errors: {price: {message: 'Введите корректную сумму оплаты'}},
+        });
+    }
+
+    if (serializedPrice.includes(' ')) {
+        return res.status(400).send({
+            errors: {price: {message: 'Введите сумму без пробелов'}},
+        });
+    }
+
+    const commaMatching = req.body.price.match(/,/g) || [];
+
+    if (serializedPrice.indexOf(',') === 0 || serializedPrice.indexOf('.') === 0 || commaMatching.length > 1) {
+        return res.status(400).send({
+            errors: {price: {message: 'Введите корректную сумму оплаты'}},
+        });
+    } else if (req.body.price.indexOf(',') > 0) {
+        serializedPrice = req.body.price.replace(/,/g, '.');
+    }
+
+    let price = Number(serializedPrice).toFixed(2);
     price = Number(price);
+
     try {
         const user = await User.findById(req.body.id);
         const payment = {
@@ -105,14 +156,14 @@ router.post('/cash', auth, permit('admin'), async (req, res) => {
         const paySave = new PaymentMove(payment);
         await paySave.save();
 
-       res.send('Оплата прошла успешно');
-   } catch (e) {
-       res.status(500).send(e);
+        res.send('Оплата прошла успешно');
+    } catch (e) {
+        res.status(500).send(e);
         console.log(e);
-   }
+    }
 });
 
-router.put('/:id', auth, permit('admin'), async (req, res) => {
+router.put('/:id', auth, permit('admin', 'superAdmin'), async (req, res) => {
     const payId = req.params.id;
     let pay = 0;
     if (req.body.pay) {
@@ -123,7 +174,7 @@ router.put('/:id', auth, permit('admin'), async (req, res) => {
             .populate({path: 'userPayment', select: 'user'});
         const userPayment = await Payment.findById(userPaymentMove.userPayment)
             .populate('user', 'name');
-        const user = await User.findById(userPayment.user);
+        const user = await User.findById(userPayment.user._id);
 
 
         if (pay > 0) {

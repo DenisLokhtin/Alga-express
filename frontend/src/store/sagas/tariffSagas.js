@@ -4,11 +4,11 @@ import {toast} from "react-toastify";
 import {
     changeTariffFailure,
     changeTariffRequest,
-    changeTariffSuccess, fetchTariffsFailure,
+    changeTariffSuccess,
+    fetchTariffsFailure,
     fetchTariffsRequest,
     fetchTariffsSuccess
 } from "../actions/tariffActions";
-import {fetchMarketFailure} from "../actions/marketActions";
 
 export function* getTariffsSagas() {
     try {
@@ -16,12 +16,11 @@ export function* getTariffsSagas() {
         yield put(fetchTariffsSuccess(response.data));
     } catch (e) {
         toast.error('Не удалось загрузить тарифы');
-        yield put(fetchTariffsFailure(e.response.data));
+        yield put(fetchTariffsFailure(e.response));
     }
 }
 
 export function* putTariffsSagas({payload}) {
-    console.log(payload);
     try {
         const response = yield axiosApi.put('/tariffs', payload);
         console.log(response.data)

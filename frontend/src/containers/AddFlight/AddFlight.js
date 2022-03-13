@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import FormElement from "../../components/UI/Form/FormElement";
@@ -9,20 +9,13 @@ import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWit
 import {useNavigate} from "react-router-dom";
 import FlightIcon from '@mui/icons-material/Flight';
 import Avatar from "@mui/material/Avatar";
+import theme from "../../theme";
 
 const useStyles = makeStyles(theme => ({
-    paper: {
-        marginTop: theme.spacing(8),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
     btn: {
         margin: theme.spacing(3, 0, 2),
     },
     avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.primary.main,
         width: '56px',
         height: '56px'
     }
@@ -39,11 +32,18 @@ const AddFlight = () => {
         number: ""
     });
 
+    const messagesEndRef = useRef(null);
+
     useEffect(() => {
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 250);
+        }
         return () => {
             dispatch(clearFlightsError());
         }
-    }, [dispatch]);
+    }, [dispatch, messagesEndRef]);
 
     const onChangeHandler = (e) => {
         const {name, value} = e.target;
@@ -51,12 +51,12 @@ const AddFlight = () => {
             ...prevState,
             [name]: value
         }));
-    }
+    };
 
     const sendData = (e) => {
         e.preventDefault();
         dispatch(postFlightRequest({flightNumber, navigate}));
-    }
+    };
 
 
     const getFieldError = fieldName => {
@@ -70,8 +70,8 @@ const AddFlight = () => {
     };
 
     return (
-        <Container component="section" maxWidth="xs">
-            <div className={classes.paper}>
+        <Container ref={messagesEndRef} style={{justifyContent: "center"}} component="section" maxWidth="xs">
+            <div style={theme.paper}>
                 <Avatar className={classes.avatar}>
                     <FlightIcon fontSize='large'/>
                 </Avatar>

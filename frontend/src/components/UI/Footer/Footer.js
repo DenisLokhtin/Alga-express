@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {makeStyles} from "@mui/styles";
 import Grid from "@mui/material/Grid";
 import {
@@ -10,11 +10,13 @@ import {
     rulesCompany,
     sitesCompany
 } from "../../../paths";
-import {Box, IconButton, Typography} from "@mui/material";
+import {Box} from "@mui/material";
 import {Link} from "react-router-dom";
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import theme from "../../../theme";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchAllInformationRequest} from "../../../store/actions/informationActions";
 
 const pages = [
     {title: "Новости", url: newsCompany},
@@ -27,42 +29,46 @@ const pages = [
 ];
 
 const useStyles = makeStyles({
-    footer: {
-        padding: "15px",
-        background: "darkgray",
-        color: "#F5F5F7",
-        minHeight: "30%"
-    },
-    pages: {
-        display: "flex",
-        flexDirection: "column",
-        padding: "10px 0"
-    },
     link: {
         color: "white",
         textDecoration: "none"
     },
-    address: {
-        display: "flex",
-        flexDirection: "column",
-        padding: "10px 0",
-        alignItems: "flex-end"
-    },
     netLinks: {
-        display: "flex"
+        display: "flex",
+        alignItems: "center",
+        "& > a" : {
+              margin: '10px 0 0 15px',
+        },
     }
-})
+});
 
 const Footer = () => {
     const classes = useStyles();
+    const dispatch = useDispatch();
+    const information = useSelector(state => state.information.allInformation);
+
+    useEffect(() => {
+        dispatch(fetchAllInformationRequest());
+    },[dispatch]);
+
+    const print = () => {
+      if (information[0]) {
+        return  (
+            <div>
+                <div className="post__content" dangerouslySetInnerHTML={{__html: information[1].text}}/>
+                <div className="post__content" dangerouslySetInnerHTML={{__html: information[3].text}}/>
+            </div>
+        )
+      }
+    };
 
     return (
-        <footer className={classes.footer}>
+        <footer style={theme.footer}>
             <Grid container sx={{flexWrap: "wrap"}}>
                 <Grid item xs={12} md={6} lg={4}>
-                    <Box className={classes.pages}>
+                    <Box style={theme.pages}>
                         {pages.map(item => (
-                            <Link key={item.url} to={item.url} className={classes.link}>
+                            <Link key={item.url} to={item.url} className={classes.link} style={{display: "block"}}>
                                 {item.title}
                             </Link>
                         ))}
@@ -70,28 +76,17 @@ const Footer = () => {
                 </Grid>
 
                 <Grid item xs={12} md={6} lg={4}>
-                    <Box className={classes.address}>
-                        <Typography variant="h6" sx={{display: "flex"}}>
-                            <LocationOnIcon/> Бишкек
-                        </Typography>
-                        <Typography>
-                            Юнусалиева, 142
-                        </Typography>
+                    <Box style={theme.address}>
 
-                        <Typography>
-                            Тел.: 0 774 769 434 (Выкуп)
-                        </Typography>
-                        <Typography>
-                            ️0 702 465 333 (Склад)
-                        </Typography>
+                        {print()}
+
                         <Box className={classes.netLinks}>
-                            <IconButton component={Link} to="https://www.instagram.com/alga_express/">
+                            <a href="https://www.instagram.com/alga_express/" target="_blank" rel="noreferrer">
                                 <InstagramIcon sx={{color: "white"}}/>
-                            </IconButton>
-
-                            <IconButton component={Link} to="https://api.whatsapp.com/send?phone=996774769434">
+                            </a>
+                            <a href="https://api.whatsapp.com/send?phone=996774769434" target="_blank" rel="noreferrer">
                                 <WhatsAppIcon sx={{color: "white"}}/>
-                            </IconButton>
+                            </a>
                         </Box>
                     </Box>
                 </Grid>

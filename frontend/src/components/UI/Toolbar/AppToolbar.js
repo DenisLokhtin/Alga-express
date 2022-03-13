@@ -5,8 +5,7 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import BurgerMenu from "../BurgerMenu/BurgerMenu";
 import {Link} from "react-router-dom";
-import logo from '../../../assets/logo.svg';
-import {makeStyles} from "@mui/styles";
+import logo from '../../../assets/images/logo.svg';
 import UserMenu from "./Menu/UserMenu";
 import Anonymous from "./Menu/Anonymous";
 import {
@@ -19,8 +18,9 @@ import {
     rulesCompany,
     sitesCompany,
     wareHouseCompany
-
 } from "../../../paths";
+import theme from "../../../theme";
+
 
 const pages = [
     {url: rulesCompany, title: 'правила'},
@@ -34,7 +34,7 @@ const pages = [
 ];
 
 function HideOnScroll(props) {
-    const { children, window } = props;
+    const {children, window} = props;
     const trigger = useScrollTrigger({
         target: window ? window() : undefined,
     });
@@ -46,23 +46,11 @@ function HideOnScroll(props) {
     );
 }
 
-const toolbar  = {
+const toolbar = {
     display: {xs: "block", md: "none"},
 }
 
-const useStyles = makeStyles({
-    logo: {
-        color: '#F5F5F7',
-        textDecoration: 'none',
-        fontWeight: 'bold',
-        fontSize: '22px',
-        display: 'flex',
-        alignItems: 'center'
-    }
-})
-
 const AppToolbar = (props) => {
-    const classes = useStyles();
     const user = useSelector(state => state.users.user);
 
     return (
@@ -71,12 +59,12 @@ const AppToolbar = (props) => {
                 <AppBar sx={{background: 'grey'}}>
                     <Container maxWidth="xl">
                         <Toolbar disableGutters>
-                            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+                            <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}>
                                 <BurgerMenu pages={pages}/>
                             </Box>
 
-                            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-                                <Link to={root} className={classes.logo} >
+                            <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}>
+                                <Link to={root} style={theme.logo}>
                                     <img src={logo} alt="logo" style={{width: "40px"}}/>
                                     <Typography
                                         variant="h6"
@@ -89,7 +77,7 @@ const AppToolbar = (props) => {
                                 </Link>
                             </Box>
 
-                            <Box sx={{ flexGrow: 0 }}>
+                            <Box sx={{flexGrow: 0}}>
                                 {user ?
                                     <UserMenu
                                         user={user}

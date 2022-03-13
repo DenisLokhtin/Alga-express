@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Container from "@mui/material/Container";
 import {useDispatch, useSelector} from "react-redux";
 import {getFlightsRequest} from "../../store/actions/flightActions";
@@ -30,14 +30,21 @@ const FlightsList = () => {
         setExpanded(isExpanded ? panel : false);
     };
 
+    const messagesEndRef = useRef(null);
+
     useEffect(() => {
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 200);
+        }
         if (expanded === 'panel1') return dispatch(getFlightsRequest({page: page, limit: rowsPerPage, status: 'ACTIVE'}));
         if (expanded === 'panel2') return dispatch(getFlightsRequest({page: page, limit: rowsPerPage, status: 'DONE'}));
-    }, [dispatch, page, expanded, rowsPerPage, update]);
+    }, [dispatch, page, expanded, rowsPerPage, update, messagesEndRef]);
 
 
     return (
-        <Container>
+        <Container ref={messagesEndRef} style={{textAlign: 'center'}}>
             <h1>Рейсы</h1>
             <Grid container flexDirection='column' spacing={4}>
                 <Grid item>

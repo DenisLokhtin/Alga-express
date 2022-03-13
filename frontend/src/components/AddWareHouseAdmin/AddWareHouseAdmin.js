@@ -7,6 +7,7 @@ import {addWareHouseRequest} from "../../store/actions/wareHouseActions";
 import FormElement from "../UI/Form/FormElement";
 import {useNavigate} from "react-router-dom";
 import {Editor} from "@tinymce/tinymce-react";
+import theme from "../../theme";
 
 const useStyles = makeStyles(theme => ({
     submit: {
@@ -23,9 +24,6 @@ const useStyles = makeStyles(theme => ({
             width: '50%',
         },
     },
-    title: {
-        textAlign: "center",
-    }
 }));
 
 const AddWareHouseAdmin = () => {
@@ -34,12 +32,10 @@ const AddWareHouseAdmin = () => {
     const dispatch = useDispatch();
     const loading = useSelector(state => state.wareHouses.addLoading);
     const error = useSelector(state => state.wareHouses.addError);
-
     const [wareHouse, setWareHouse] = useState({
         country: '',
         info: '',
     });
-
     const submitFormHandler = e => {
         e.preventDefault();
         const formData = new FormData();
@@ -91,7 +87,7 @@ const AddWareHouseAdmin = () => {
                 onSubmit={submitFormHandler}
                 noValidate
             >
-                <h3 className={classes.title}>Добавить склад</h3>
+                <h3 style={theme.title}>Добавить склад</h3>
                 <FormElement
                     required
                     label="Страна"
@@ -119,15 +115,7 @@ const AddWareHouseAdmin = () => {
                         onEditorChange={handleEditorChange}
                     />
                 </Grid>
-                {/*<br/>*/}
-                {/*<FormElement*/}
-                {/*    label="Сведения о складе"*/}
-                {/*    required*/}
-                {/*    name="info"*/}
-                {/*    value={wareHouse.info}*/}
-                {/*    onChange={onInputTextareaChange}*/}
-                {/*    error={getFieldError('info')}*/}
-                {/*/>*/}
+
                 <Grid item xs={12}>
                     <ButtonWithProgress
                         type="submit"

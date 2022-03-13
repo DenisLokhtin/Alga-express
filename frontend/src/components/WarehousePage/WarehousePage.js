@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Box, Grid, Tab} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import {TabContext, TabList, TabPanel} from "@mui/lab";
@@ -8,6 +8,7 @@ import {Link} from "react-router-dom";
 import {addWareHouseAddress, editingSingleWareHouse} from "../../paths";
 import {deleteWareHouseRequest, fetchWareHouseRequest} from "../../store/actions/wareHouseActions";
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import Player from "../Player/Player";
 
 const useStyles = makeStyles(theme => ({
     submit: {
@@ -22,31 +23,48 @@ const useStyles = makeStyles(theme => ({
 const WarehousePage = () => {
     const dispatch = useDispatch();
     const wareHouses = useSelector(state => state.wareHouses.wareHouse);
+    const messagesEndRef = useRef(null);
+
     useEffect(() => {
+        if (!!messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({
+                behavior: 'smooth'
+            }, 200);
+        }
         dispatch(fetchWareHouseRequest());
-    }, [dispatch]);
+    }, [dispatch, messagesEndRef]);
 
     const user = useSelector(state => state.users.user);
     const loading = useSelector(state => state.wareHouses.createLoading);
     const classes = useStyles();
     const [value, setValue] = React.useState("0");
-
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
-
     const deleteWareHouse = (id) => {
         dispatch(deleteWareHouseRequest(id));
         setValue("0");
     };
-
-    console.log(wareHouses)
-
     const content = wareHouses[value]?.info.split('\n').filter(info => info !== '').map(info => ({info}));
 
     return (
-        <Box sx={{width: '100%', typography: 'body1'}} className={classes.tableContainer}>
+        <Box ref={messagesEndRef} sx={{width: '100%', typography: 'body1'}} className={classes.tableContainer}>
             {user && user.role === 'admin' ?
+                <Grid item xs={5}>
+                    <ButtonWithProgress
+                        type="submit"
+                        variant="contained"
+                        color="error"
+                        className={classes.submit}
+                        loading={loading}
+                        disabled={loading}
+                        component={Link}
+                        to={addWareHouseAddress}
+                    >
+                        <AddBoxIcon/> Добавить новую страну
+                    </ButtonWithProgress>
+                </Grid> : ''}
+            {user && user.role === 'superAdmin' ?
                 <Grid item xs={5}>
                     <ButtonWithProgress
                         type="submit"
@@ -111,9 +129,42 @@ const WarehousePage = () => {
                                     </ButtonWithProgress>
                                 </Grid>
                             </Grid> : ''}
+                        {user && user.role === 'superAdmin' ?
+                            <Grid container>
+                                <Grid item xs={3}>
+                                    <ButtonWithProgress
+                                        type="submit"
+                                        fullWidth
+                                        variant="contained"
+                                        color="success"
+                                        className={classes.submit}
+                                        loading={loading}
+                                        disabled={loading}
+                                        component={Link}
+                                        to={editingSingleWareHouse + warehouse._id}
+                                    >
+                                        Редактировать
+                                    </ButtonWithProgress>
+                                </Grid>
+                                <Grid item xs={3}>
+                                    <ButtonWithProgress
+                                        type="submit"
+                                        fullWidth
+                                        variant="contained"
+                                        color="inherit"
+                                        className={classes.submit}
+                                        loading={loading}
+                                        disabled={loading}
+                                        onClick={() => deleteWareHouse(warehouse._id)}
+                                    >
+                                        Удалить страну
+                                    </ButtonWithProgress>
+                                </Grid>
+                            </Grid> : null}
                     </TabPanel>
                 ))}
             </TabContext>
+            <Player/>
         </Box>
     );
 };

@@ -17,14 +17,17 @@ import {
     addFlightAdmin,
     addPaymentHandler,
     addUserPayment,
-    editingSingleTrackNumber,
+    adminPagePath,
+    cargoCreateUser, editInformation,
     editPages,
+    editUserProfile,
     listBuyouts,
     listFlightAdmin,
     listPaymentsAdmin,
     newPackageRegister,
     orderBuyouts,
-    packageHistory, packageInfo,
+    packageHistory,
+    packageInfo,
     processingTrackNumbersAdmin,
     userPaymentsList
 } from "../../../../paths";
@@ -36,7 +39,7 @@ import PaidIcon from '@mui/icons-material/Paid';
 import InfoIcon from '@mui/icons-material/Info';
 
 const userSettings = [
-    {url: '', title: 'Личный кабинет', icon: <ManageAccountsIcon/>},
+    {url: editUserProfile, title: 'Личный кабинет', icon: <ManageAccountsIcon/>},
     {url: packageHistory, title: 'История заказов', icon: <HistoryIcon/>},
     {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon/>},
     {url: orderBuyouts, title: 'Заказать выкуп', icon: <ShoppingCartIcon/>},
@@ -46,25 +49,49 @@ const userSettings = [
     {url: packageInfo, title: 'Информация доставки', icon: <InfoIcon/>},
 ];
 
+const superAdminSettings = [
+    {url: editUserProfile, title: 'Личный кабинет', icon: <ManageAccountsIcon/>},
+    {url: packageHistory, title: 'История всех заказов', icon: <HistoryIcon/>},
+    {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon/>},
+    {url: cargoCreateUser, title: 'Создать пользователя', icon: <AddIcon/>},
+    {url: orderBuyouts, title: 'Заказать выкуп', icon: <ShoppingCartIcon/>},
+    {url: listBuyouts, title: 'Список заказов', icon: <FactCheckIcon/>},
+    {url: addUserPayment, title: 'Пополнить баланс', icon: <PaidIcon/>},
+    {url: userPaymentsList, title: 'История пополнения', icon: <HistoryIcon/>},
+    {url: packageInfo, title: 'Информация доставки', icon: <InfoIcon/>},
+    {url: adminPagePath, title: 'Администратор', icon: <ManageAccountsIcon/>},
+    {url: listFlightAdmin, title: 'Рейсы', icon: <FlightIcon/>},
+    {url: addFlightAdmin, title: 'Добавить рейс', icon: <AddIcon/>},
+    {url: listPaymentsAdmin, title: 'Список пополнений', icon: <FactCheckIcon/>},
+    {url: editPages, title: 'Редактировать страницы', icon: <EditIcon/>},
+    {url: addPaymentHandler, title: 'Пополнение баланса пользователя', icon: <PaidIcon/>},
+    {url: processingTrackNumbersAdmin, title: 'Смена статуса посылок', icon: <EditIcon/>},
+    {url: editInformation, title: 'Редактировать информацию', icon: <EditIcon/>},
+];
+
+const warehousemanSetting = [
+    {url: processingTrackNumbersAdmin, title: 'Смена статуса посылок', icon: <EditIcon/>},
+];
+
 const adminSettings = [
+    {url: adminPagePath, title: 'Администратор', icon: <ManageAccountsIcon/>},
+    {url: packageHistory, title: 'История всех заказов', icon: <HistoryIcon/>},
     {url: listFlightAdmin, title: 'Рейсы', icon: <FlightIcon/>},
     {url: addFlightAdmin, title: 'Добавить рейс', icon: <AddIcon/>},
     {url: listPaymentsAdmin, title: 'Список пополнений', icon: <FactCheckIcon/>},
     {url: editPages, title: 'Редактировать страницы', icon: <EditIcon/>},
     {url: addPaymentHandler, title: 'Пополнение баланса пользователя', icon: <PaidIcon/>},
     {url: listBuyouts, title: 'Список заказов', icon: <FactCheckIcon/>},
-    {url: editingSingleTrackNumber, title: 'Смена статуса одной посылки', icon: <EditIcon/>},
     {url: processingTrackNumbersAdmin, title: 'Смена статуса посылок', icon: <EditIcon/>},
+    {url: editInformation, title: 'Редактировать информацию', icon: <EditIcon/>},
 ];
-
 const UserMenu = ({user}) => {
     const dispatch = useDispatch();
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const navigate = useNavigate();
-
-    const payments = useSelector(state => state.payments.payment);
     const users = useSelector(state => state.users.user);
+    const total = useSelector(state => state.users.total);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -90,10 +117,11 @@ const UserMenu = ({user}) => {
                     component={Link}
                     to={listPaymentsAdmin}
                 >
-                    <Badge badgeContent={payments && payments.totalElements} color="error">
+                    <Badge badgeContent={total} color="error">
                         <NotificationsIcon/>
                     </Badge>
                 </IconButton>}
+
             </Grid>
 
             <Grid item>
@@ -142,6 +170,7 @@ const UserMenu = ({user}) => {
                     <Divider/>
 
                     {user.role === 'admin' && adminSettings.map(setting => (
+
                         <MenuItem
                             key={setting.title}
                             component={Link}
@@ -153,7 +182,30 @@ const UserMenu = ({user}) => {
                             <Typography textAlign="center">{setting.title}</Typography>
                         </MenuItem>
                     ))}
-
+                    {user.role === 'superAdmin' && superAdminSettings.map(setting => (
+                        <MenuItem
+                            key={setting.title}
+                            component={Link}
+                            to={setting.url}
+                        >
+                            <ListItemIcon>
+                                {setting.icon}
+                            </ListItemIcon>
+                            <Typography textAlign="center">{setting.title}</Typography>
+                        </MenuItem>
+                    ))}
+                    {user.role === 'warehouseman' && warehousemanSetting.map(setting => (
+                        <MenuItem
+                            key={setting.title}
+                            component={Link}
+                            to={setting.url}
+                        >
+                            <ListItemIcon>
+                                {setting.icon}
+                            </ListItemIcon>
+                            <Typography textAlign="center">{setting.title}</Typography>
+                        </MenuItem>
+                    ))}
                     {user.role === 'user' &&
                         <div>
                             {userSettings.map((setting) => (
