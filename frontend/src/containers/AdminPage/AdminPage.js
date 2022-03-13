@@ -16,7 +16,7 @@ import dayjs from "dayjs";
 import {fetchPaymentRequest} from "../../store/actions/paymentActions";
 import {apiURL} from "../../config";
 import SwitchElement from "../../components/UI/SwitchElement/SwitchElement";
-import ImageModal from "../../components/UI/ImageModal/ImageModal";
+// import ImageModal from "../../components/UI/ImageModal/ImageModal";
 
 function a11yProps(index) {
     return {
@@ -30,8 +30,12 @@ const AdminPage = () => {
     const messagesEndRef = useRef(null);
     const [value, setValue] = useState(0);
 
-    const [openImg, setOpenImg] = useState(false);
-    const [img, setImg] = useState(null);
+    const [
+        // openImg,
+        setOpenImg] = useState(false);
+    const [
+        // img,
+        setImg] = useState(null);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -118,15 +122,26 @@ const AdminPage = () => {
         if (packagesHistory) {
             dispatch(getOrdersHistoryRequest({page: packagesPage, limit: packagesPageLimit, history: true}));
         }
+
+        if (buyoutsHistory) {
+            dispatch(fetchBuyoutsList({page: buyoutsPage, limit: buyoutsPageLimit, history: true}));
+        }
+
+        if (paymentsHistory) {
+            dispatch(fetchPaymentRequest({page: paymentsPage, limit: paymentsPageLimit, history: true}));
+        }
+
     }, [dispatch,
         messagesEndRef,
         packagesPage,
         packagesPageLimit,
         buyoutsPage,
         buyoutsPageLimit,
+        buyoutsHistory,
         paymentsPage,
         paymentsPageLimit,
-        packagesHistory
+        packagesHistory,
+        paymentsHistory
     ]);
 
     return (
@@ -224,7 +239,7 @@ const AdminPage = () => {
                         }
                     />
 
-                    <ImageModal open={openImg} onClose={() => setOpenImg(false)} data={img}/>
+                    {/*<ImageModal open={openImg} onClose={() => setOpenImg(false)} data={img}/>*/}
                 </TabPanelComponent>
 
                 <TabPanelComponent value={value} index={3}>

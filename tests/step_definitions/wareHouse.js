@@ -17,7 +17,6 @@ Given('я ввожу данные:', (table) => {
 
 When('нажимаю на кнопку {string}', (button) => {
     I.click(button);
-    I.wait(3);
 });
 
 Then('я вижу текст {string}', (text) => {
