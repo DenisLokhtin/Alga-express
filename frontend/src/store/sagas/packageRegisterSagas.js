@@ -85,13 +85,25 @@ function* packageEditAdminSagas({payload}) {
 }
 
 function* getOrdersHistorySagas({payload: pageData}) {
-    try {
-        let response;
-        if (pageData.history) {
-            response = yield axiosApi.get(`/packages?page=${pageData.page}&limit=${pageData.limit}&history=${true}`);
-        } else {
-            response = yield axiosApi.get(`/packages?page=${pageData.page}&limit=${pageData.limit}`);
+    let response;
+    const page = pageData.page;
+    const limit = pageData.limit;
+    const id = pageData.id;
+    const history = pageData.history;
 
+    try {
+        if (id) {
+            if (history) {
+                response = yield axiosApi.get(`/packages?page=${page}&limit=${limit}&history=${true}&id=${id}`);
+            } else {
+                response = yield axiosApi.get(`/packages?page=${page}&limit=${limit}&id=${id}`);
+            }
+        } else {
+            if (history) {
+                response = yield axiosApi.get(`/packages?page=${page}&limit=${limit}&history=${true}`);
+            } else {
+                response = yield axiosApi.get(`/packages?page=${page}&limit=${limit}`);
+            }
         }
         yield put(getOrdersHistorySuccess(response.data));
     } catch (error) {
