@@ -16,7 +16,7 @@ import dayjs from "dayjs";
 import {fetchPaymentRequest} from "../../store/actions/paymentActions";
 import {apiURL} from "../../config";
 import SwitchElement from "../../components/UI/SwitchElement/SwitchElement";
-import ImageModal from "../../components/UI/ImageModal/ImageModal";
+// import ImageModal from "../../components/UI/ImageModal/ImageModal";
 
 function a11yProps(index) {
     return {
@@ -30,8 +30,12 @@ const AdminPage = () => {
     const messagesEndRef = useRef(null);
     const [value, setValue] = useState(0);
 
-    const [openImg, setOpenImg] = useState(false);
-    const [img, setImg] = useState(null);
+    const [
+        // openImg,
+        setOpenImg] = useState(false);
+    const [
+        // img,
+        setImg] = useState(null);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
