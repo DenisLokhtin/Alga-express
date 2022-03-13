@@ -118,15 +118,26 @@ const AdminPage = () => {
         if (packagesHistory) {
             dispatch(getOrdersHistoryRequest({page: packagesPage, limit: packagesPageLimit, history: true}));
         }
+
+        if (buyoutsHistory) {
+            dispatch(fetchBuyoutsList({page: buyoutsPage, limit: buyoutsPageLimit, history: true}));
+        }
+
+        if (paymentsHistory) {
+            dispatch(fetchPaymentRequest({page: paymentsPage, limit: paymentsPageLimit, history: true}));
+        }
+
     }, [dispatch,
         messagesEndRef,
         packagesPage,
         packagesPageLimit,
         buyoutsPage,
         buyoutsPageLimit,
+        buyoutsHistory,
         paymentsPage,
         paymentsPageLimit,
-        packagesHistory
+        packagesHistory,
+        paymentsHistory
     ]);
 
     return (
@@ -224,7 +235,7 @@ const AdminPage = () => {
                         }
                     />
 
-                    <ImageModal open={openImg} onClose={() => setOpenImg(false)} data={img}/>
+                    {/*<ImageModal open={openImg} onClose={() => setOpenImg(false)} data={img}/>*/}
                 </TabPanelComponent>
 
                 <TabPanelComponent value={value} index={3}>
