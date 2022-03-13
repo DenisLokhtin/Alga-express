@@ -37,6 +37,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PaidIcon from '@mui/icons-material/Paid';
 import InfoIcon from '@mui/icons-material/Info';
+import {apiURL} from "../../../../config";
 
 const userSettings = [
     {url: editUserProfile, title: 'Личный кабинет', icon: <ManageAccountsIcon/>},
@@ -156,7 +157,7 @@ const UserMenu = ({user}) => {
                     }}
                 >
                     <Box sx={{padding: "6px 16px", display: "flex", alignItems: "center", alignContent: "start"}}>
-                        <Avatar src={user?.avatar}/>
+                        <Avatar src={apiURL + '/' + user?.avatar}/>
                         <Box marginLeft={2}>
                             <Typography>
                                 {user.name}
