@@ -14,9 +14,8 @@ Given('я ввожу данные:', (table) => {
     });
 });
 
-When('нажимаю на кнопку {string}', (button) => {
-    I.click(button);
-    I.wait(3);
+When('нажимаю на кнопку удалить изображение в карусели {string}', (button) => {
+    I.click('//*[@id="root"]/div[4]/div/div/div[2]/div/div/div/div/div/div/div/div[4]/div/div/button');
 });
 
 Given('я ввожу данные:', (table) => {
@@ -34,5 +33,8 @@ Then('я кликаю на инпут для карусели', () => {
 
 Then('загружаю картинку для карусели', () => {
     I.attachFile('form input[name=picture]', './files/carousel.jpg');
-    I.wait(3);
+})
+
+Then(`я нажимаю на ссылку редактирования изображения {string}`, () => {
+    I.click('//*[@id="root"]/div[4]/div/div/div[2]/div/div/div/div/div/div/div/div[2]/div/div/div/a')
 })
