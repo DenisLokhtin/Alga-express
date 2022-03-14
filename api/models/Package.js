@@ -120,14 +120,20 @@ const PackageSchema = new mongoose.Schema({
     }
 });
 
-// PackageSchema.pre('save',  function (next) {
-//     const packages = this;
-//     Package.find({}, function (error, pack) {
-//         if (error) throw error;
-//         packages.cargoNumber = pack.length + 1;
-//         next();
-//     })
-// });
+PackageSchema.pre('save',  function (next) {
+    const packages = this;
+    let numberPackage = '';
+    Package.find({}, function (error, pack) {
+        if (error) throw error;
+        numberPackage = String(pack.length + 1);
+        const loop = 6 - numberPackage.length;
+        for (let i = 0; i < loop; i++){
+            numberPackage = 0 + numberPackage;
+        }
+        packages.cargoNumber = numberPackage;
+        next();
+    })
+});
 
 PackageSchema.plugin(idValidator);
 

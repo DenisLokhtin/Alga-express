@@ -98,7 +98,7 @@ router.get('/list', auth, permit('admin', 'user', 'superAdmin'), async (req, res
             .limit(limit)
             .skip(page * limit);
 
-        res.send({totalPage: size.length, data: buyouts});
+        res.send({totalElements: size.length, data: buyouts});
     } catch (e) {
         res.status(500).send(e);
     }

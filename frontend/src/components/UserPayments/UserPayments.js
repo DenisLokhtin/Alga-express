@@ -113,7 +113,6 @@ const UserPayments = () => {
     const [selectionModel, setSelectionModel] = useState([]);
     const prevSelectionModel = useRef(selectionModel);
 
-    console.log(paymentData);
     const rows = paymentData && paymentData.data.map(payment => {
         return {
             id: payment._id,

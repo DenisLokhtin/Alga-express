@@ -37,6 +37,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PaidIcon from '@mui/icons-material/Paid';
 import InfoIcon from '@mui/icons-material/Info';
+import {apiURL} from "../../../../config";
 
 const userSettings = [
     {url: editUserProfile, title: 'Личный кабинет', icon: <ManageAccountsIcon/>},
@@ -74,6 +75,7 @@ const warehousemanSetting = [
 ];
 
 const adminSettings = [
+    {url: editUserProfile, title: 'Личный кабинет пользователей', icon: <ManageAccountsIcon/>},
     {url: adminPagePath, title: 'Администратор', icon: <ManageAccountsIcon/>},
     {url: packageHistory, title: 'История всех заказов', icon: <HistoryIcon/>},
     {url: listFlightAdmin, title: 'Рейсы', icon: <FlightIcon/>},
@@ -156,7 +158,7 @@ const UserMenu = ({user}) => {
                     }}
                 >
                     <Box sx={{padding: "6px 16px", display: "flex", alignItems: "center", alignContent: "start"}}>
-                        <Avatar src={user?.avatar}/>
+                        <Avatar src={apiURL + '/' + user?.avatar}/>
                         <Box marginLeft={2}>
                             <Typography>
                                 {user.name}

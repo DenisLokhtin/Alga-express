@@ -30,12 +30,11 @@ import {
     fetchUsersRequest,
     userDateRequest
 } from "../../store/actions/usersActions";
-import {useParams} from "react-router-dom";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
 import PhoneInput from "react-phone-input-2";
 import ru from 'react-phone-input-2/lang/ru.json'
 import Avatar from "@mui/material/Avatar";
-import noImage from '../../assets/no_avatar.png';
+import noImage from '../../assets/images/no_avatar.png';
 import {apiURL} from "../../config";
 import FileInput from "../../components/UI/FileInput/FileInput";
 import Autocomplete from '@mui/material/Autocomplete';
@@ -107,7 +106,6 @@ function ExpandMoreIcon() {
 const UserProfileEdit = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const {id} = useParams();
     const loading = useSelector(state => state.users.loadUserDate);
     const error = useSelector(state => state.users.userError);
     const userData = useSelector(state => state.users.userDate);
@@ -127,7 +125,6 @@ const UserProfileEdit = () => {
     ]);
     const [passport, setPassport] = useState([]);
     const [disabled, setDisabled] = useState(false);
-    const [refresh, setRefresh] = useState(true);
     const [expanded, setExpanded] = useState('panel1');
     const [value, setValue] = useState(null);
     const [inputValue, setInputValue] = useState('');
@@ -167,7 +164,7 @@ const UserProfileEdit = () => {
         return () => {
             dispatch(clearError());
         };
-    }, [dispatch, id, messagesEndRef]);
+    }, [dispatch, messagesEndRef]);
 
     useMemo(() => {
         userData && setDataUser({
@@ -254,29 +251,39 @@ const UserProfileEdit = () => {
 
     const submitFormProfileHandler = e => {
         e.preventDefault();
+        let id = null;
         dataUser.phone = JSON.stringify(phone);
 
         const formData = new FormData();
 
         Object.keys(dataUser).forEach(key => {
-
             formData.append(key, dataUser[key]);
         });
+
+        if (user.role === 'admin') {
+            id = value._id;
+        } else if (user.role === 'user') {
+            id = user._id;
+        }
+
         dispatch(editUserDataRequest({id, data: formData}));
-        setRefresh(!refresh);
     };
 
     const submitFormPassportHandler = e => {
         e.preventDefault();
-
+        let id = null;
         const formData = new FormData();
 
         passport.forEach(key => {
             formData.append(`passport`, key);
         });
 
+        if (user.role === 'admin') {
+            id = value._id;
+        } else if (user.role === 'user') {
+            id = user._id
+        }
         dispatch(editPassportRequest({id, data: formData}));
-        setRefresh(!refresh);
     };
 
     if (dataUser.avatar) {
@@ -332,9 +339,9 @@ const UserProfileEdit = () => {
                             name={users}
                             id="usersSelected"
                             options={users}
-                            getOptionLabel={(option)=>(option.name + ' ' + option.email)}
-                            sx={{ width: 300 }}
-                            renderInput={(params) => <TextField {...params} label="Пользователи" />}
+                            getOptionLabel={(option) => (option.name + ' ' + option.email)}
+                            sx={{width: 300}}
+                            renderInput={(params) => <TextField {...params} label="Пользователи"/>}
                         />
                     </Grid>) : null}
                     <AccordionDetails>
@@ -406,7 +413,7 @@ const UserProfileEdit = () => {
                                                     name="number"
                                                     value={phone.number}
                                                     className={classes.phoneField}
-                                                    onChange={e => inputChangePhoneHandler(id, 'number', e)}
+                                                    onChange={value => inputChangePhoneHandler(id, 'number', value)}
                                                     error={getFieldError('phone')}
                                                 />
                                             </Grid>
@@ -513,7 +520,7 @@ const UserProfileEdit = () => {
                         >
                             <Grid
                                 component="form"
-                                onSubmit={submitFormPassportHandler}
+                                onSubmit={e => submitFormPassportHandler(e, user._id)}
                                 justifyContent="center"
                                 container
                                 noValidate

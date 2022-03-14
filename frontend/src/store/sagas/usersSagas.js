@@ -3,9 +3,6 @@ import {
     addUserPaymentFailure,
     addUserPaymentRequest,
     addUserPaymentSuccess,
-    changeNotificationFailure,
-    changeNotificationRequest,
-    changeNotificationSuccess,
     changePasswordFailure,
     changePasswordRequest,
     changePasswordSuccess,
@@ -34,9 +31,6 @@ import {
     resetPasswordFailure,
     resetPasswordRequest,
     resetPasswordSuccess,
-    switchNotificationFailure,
-    switchNotificationRequest,
-    switchNotificationSuccess,
     userDateFailure,
     userDateRequest,
     userDateSuccess,
@@ -112,7 +106,6 @@ export function* editUserSaga({payload}) {
 }
 
 export function* editPassportSaga({payload}) {
-    console.log(payload);
     try {
         const response = yield  axiosApi.put('/userEdit/' + payload.id, payload.data);
         yield put(editPassportSuccess(response.data));
@@ -194,24 +187,6 @@ export function* forgotPasswordSaga({payload: user}) {
     }
 }
 
-export function* switchNotificationSaga() {
-    try {
-        const response = yield axiosApi.get('/users/notification');
-        yield put(switchNotificationSuccess(response.data));
-    } catch (e) {
-        yield put(switchNotificationFailure(e.response.data));
-    }
-}
-
-export function* changeNotificationSaga(payload) {
-    try {
-        const response = yield axiosApi.put('/users/notification', payload);
-        yield put(changeNotificationSuccess(response.data));
-    } catch (e) {
-        yield put(changeNotificationFailure(e.response.data));
-    }
-}
-
 export function* logoutUserSaga() {
     try {
         yield axiosApi.delete('/users/sessions');
@@ -237,8 +212,6 @@ const usersSaga = [
     takeEvery(resetPasswordRequest, resetPasswordSaga),
     takeEvery(changePasswordRequest, changePasswordSaga),
     takeEvery(forgotPasswordRequest, forgotPasswordSaga),
-    takeEvery(switchNotificationRequest, switchNotificationSaga),
-    takeEvery(changeNotificationRequest, changeNotificationSaga),
 
 ];
 
