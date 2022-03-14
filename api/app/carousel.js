@@ -25,17 +25,6 @@ const storage = multer.diskStorage({
     },
     filename: async (req, file, cb) => {
         let pathFile = 'carousel/' + nanoid() + path.extname(file.originalname);
-
-        const image = await Carousel.findById(req.params.id);
-
-        if (image) {
-            if (image.picture.includes('fixtures')) {
-                fs.unlinkSync(rootPath + '/public/fixtures' + image.picture.slice(8, image.picture.length));
-            } else {
-                fs.unlinkSync(rootPath + '/public/uploads/' + image.picture.slice(8, image.picture.length));
-            }
-        }
-
         cb(null, pathFile);
     }
 });

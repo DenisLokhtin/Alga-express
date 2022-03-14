@@ -14,8 +14,9 @@ Given('я ввожу данные:', (table) => {
     });
 });
 
-When('нажимаю на кнопку удалить изображение в карусели {string}', (button) => {
-    I.click('//*[@id="root"]/div[4]/div/div/div[2]/div/div/div/div/div/div/div/div[4]/div/div/button');
+When('нажимаю на кнопку удалить изображение в карусели {string}', () => {
+    I.wait(3);
+    I.click(`(//div//h3[contains(text(),'Новость для проверки добавления карусели')]/following-sibling::button[text()='Удалить изображение'])[2]`);
 });
 
 Given('я ввожу данные:', (table) => {
@@ -35,6 +36,11 @@ Then('загружаю картинку для карусели', () => {
     I.attachFile('form input[name=picture]', './files/carousel.jpg');
 })
 
+Then('загружаю картинку для редактирования карусели', () => {
+    I.attachFile('form input[name=picture]', './files/carousel-edit.jpg');
+})
+
 Then(`я нажимаю на ссылку редактирования изображения {string}`, () => {
-    I.click('//*[@id="root"]/div[4]/div/div/div[2]/div/div/div/div/div/div/div/div[2]/div/div/div/a')
+    I.wait(3)
+    I.click(`(//div//h3[text()='Новость для проверки добавления карусели']/following-sibling::div//a[text()='Редактировать изображение'])[2]`);
 })
