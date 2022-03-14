@@ -290,7 +290,7 @@ router.delete('/:id', auth, permit('admin', 'warehouseman', 'superAdmin'), async
             return res.status(403).send({error: 'Доступ запрещен'});
 
         if (req.user.role === 'admin')
-            erasePackage.delete = true;
+            erasePackage.deleted = true;
 
         if (req.user.role === 'user')
             erasePackage.status = 'ERASED';
