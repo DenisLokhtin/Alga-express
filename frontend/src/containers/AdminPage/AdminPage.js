@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Container} from "@mui/material";
+import {Container, IconButton} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchCurrencies} from "../../store/actions/currenciesActions";
 import CurrenciesCard from "../../components/CurrenciesCard/CurrenciesCard";
@@ -16,6 +16,9 @@ import dayjs from "dayjs";
 import {fetchPaymentRequest} from "../../store/actions/paymentActions";
 import {apiURL} from "../../config";
 import SwitchElement from "../../components/UI/SwitchElement/SwitchElement";
+import ImageModal from "../../components/UI/ImageModal/ImageModal";
+import ImageIcon from "@mui/icons-material/Image";
+
 // import ImageModal from "../../components/UI/ImageModal/ImageModal";
 
 function a11yProps(index) {
@@ -29,18 +32,8 @@ const AdminPage = () => {
     const dispatch = useDispatch();
     const messagesEndRef = useRef(null);
     const [value, setValue] = useState(0);
-
-    const [
-        // openImg,
-        setOpenImg] = useState(false);
-    const [
-        // img,
-        setImg] = useState(null);
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
-
+    const [openImg, setOpenImg] = useState(false);
+    const [img, setImg] = useState(null);
     const currencies = useSelector(state => state.currencies.currencies);
 
     const buyouts = useSelector(state => state.buyouts.buyouts);
@@ -69,6 +62,10 @@ const AdminPage = () => {
     const [paymentsPageLimit, setPaymentsPageLimit] = useState(10);
     const [paymentsSelectionModel, setPaymentsSelectionModel] = useState([]);
     const paymentsPrevSelection = useRef(paymentsSelectionModel);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
 
     const packagesRows = packages.map(order => {
         return {
@@ -148,7 +145,12 @@ const AdminPage = () => {
         <Container ref={messagesEndRef}>
             <Box sx={{ width: '100%' }}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                    <Tabs
+                        value={value}
+                        onChange={handleChange}
+                        variant="scrollable"
+                        scrollButtons="auto"
+                    >
                         <Tab label="Посылки" {...a11yProps(0)} />
                         <Tab label="Выкупы" {...a11yProps(1)} />
                         <Tab label="Пополнения" {...a11yProps(3)} />
@@ -213,7 +215,30 @@ const AdminPage = () => {
                 <TabPanelComponent value={value} index={2}>
                     <TableComponent
                         rows={paymentsRows}
-                        columns={paymentsColumns}
+                        columns={[
+                            {
+                                field: 'image',
+                                renderCell: (params => (
+                                        <IconButton
+                                            onClick={() => {
+                                                setOpenImg(true);
+                                                setImg(params.row);
+                                            }}
+                                            sx={{cursor: 'pointer'}}
+                                        >
+                                            <ImageIcon sx={{fontSize: "48px"}}/>
+                                        </IconButton>
+                                    )
+                                ),
+                                headerName: 'Квитанция',
+                                flex: 1,
+                                minWidth: 150,
+                                headerAlign: 'center',
+                                align: 'center',
+                            },
+                            ...paymentsColumns,
+
+                        ]}
                         pageSize={paymentsPageLimit}
                         rowCount={paymentsTotalRow}
                         rowHeight={150}
@@ -239,7 +264,7 @@ const AdminPage = () => {
                         }
                     />
 
-                    {/*<ImageModal open={openImg} onClose={() => setOpenImg(false)} data={img}/>*/}
+                    <ImageModal open={openImg} onClose={() => setOpenImg(false)} data={img}/>
                 </TabPanelComponent>
 
                 <TabPanelComponent value={value} index={3}>

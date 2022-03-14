@@ -134,17 +134,6 @@ export const paymentsColumns = [
         align: 'center',
     },
     {
-        field: 'image',
-        renderCell: (params => (
-            <img src={params.value} alt={params.value}/>
-        )),
-        headerName: 'Квитанция',
-        flex: 1,
-        minWidth: 150,
-        headerAlign: 'center',
-        align: 'center',
-    },
-    {
         field: 'user',
         headerName: 'Пользователь',
         flex: 1,

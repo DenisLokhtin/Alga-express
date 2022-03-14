@@ -1,23 +1,10 @@
 import React, {useEffect, useRef} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {fetchTariffsRequest} from "../../store/actions/tariffActions";
-import {Grid} from "@mui/material";
-import {makeStyles} from "@mui/styles";
-
-
-
-const useStyles = makeStyles(()=> ({
-    box:{
-        width: "40%",
-        padding: '15px',
-        border: "3px solid #ddd2d2"
-    }
-}));
-
+import {Grid, List, ListItem, ListItemText} from "@mui/material";
 
 const TariffsPage = () => {
     const dispatch = useDispatch();
-    const classes = useStyles();
     const tariff = useSelector(state => state.tariffs.tariffs);
     const user = useSelector(state => state.users.user);
     const messagesEndRef = useRef(null);
@@ -49,14 +36,32 @@ const TariffsPage = () => {
 
     return (
         <Grid ref={messagesEndRef}>
-            <h3>Ваш тариф</h3>
             {shownTariff.length !== 0 && shownTariff.map((t,i) => (
-                <Grid item key={i} className={classes.box}>
-                        <p>США <b>{t.usa} $</b></p>
-                        <p>Китай(авиа) <b>{t.china} $</b></p>
-                        <p>Китай <b>{t.chinaGround} $</b></p>
-                        <p>Турция <b>{t.turkey} $</b></p>
-                </Grid>
+                <List key={i} sx={{width: 150}}>
+                    <ListItem divider disablePadding>
+                        <ListItemText>
+                            США <b>{t.usa} $</b>
+                        </ListItemText>
+                    </ListItem>
+
+                    <ListItem divider disablePadding>
+                        <ListItemText>
+                            Китай(авиа) <b>{t.china} $</b>
+                        </ListItemText>
+                    </ListItem>
+
+                    <ListItem divider disablePadding>
+                        <ListItemText>
+                            Китай <b>{t.chinaGround} $</b>
+                        </ListItemText>
+                    </ListItem>
+
+                    <ListItem disablePadding>
+                        <ListItemText>
+                            Турция <b>{t.turkey} $</b>
+                        </ListItemText>
+                    </ListItem>
+                </List>
             ))}
         </Grid>
     );
