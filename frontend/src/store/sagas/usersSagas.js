@@ -38,7 +38,7 @@ import {
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
 import History from '../../History';
-import {userLogin} from "../../paths";
+import {userLogin, userPaymentsList} from "../../paths";
 
 export function* registerUserSaga({payload}) {
     try {
@@ -120,6 +120,7 @@ export function* userPaymentSaga({payload}) {
     try {
         const response = yield  axiosApi.post('/userEdit/payment/', payload);
         yield put(addUserPaymentSuccess(response.data));
+        History.push(userPaymentsList);
         toast.success('Оплата отправлена');
     } catch (e) {
         toast.error(e.response.data.error);

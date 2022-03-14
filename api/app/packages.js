@@ -10,6 +10,8 @@ const PaymentMove = require("../models/PaymentMove");
 const User = require("../models/User");
 const Currency = require('../models/Currency');
 const packageValidate = require("../middleware/packageValidate");
+// const sendMail = require("../middleware/sendMail");
+// const {balanceText} = require("../email-texts");
 
 const router = express.Router();
 
@@ -182,6 +184,9 @@ router.put('/', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req,
                 {trackNumber: key.trackNumber},
                 {status: key.status},
                 {new: true, runValidators: true});
+
+
+            // sendMail(user.email, 'Alga-express: Баланс пополнен', null, balanceText(pay, user.balance, user.name));
 
             if (!updatedStatuses) {
                 const notFoundTrackNumbersData = {
