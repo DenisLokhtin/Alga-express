@@ -7,11 +7,11 @@ const User = require("../models/User");
 const TariffGroup = require("../models/TariffGroup");
 const sendMail = require('../middleware/sendMail');
 const {balanceText} = require('../email-texts');
-const filterBuyouts = require("../middleware/filter");
+const filter = require("../middleware/filter");
 
 const router = express.Router();
 
-router.get('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
+router.get('/', auth, permit('user', 'admin', 'superAdmin'), async (req, res) => {
     const query = {};
     let page = 0;
     let limit = 10;
@@ -24,11 +24,19 @@ router.get('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
         limit = req.query.limit;
     }
 
+    if (req.user.role === 'user') {
+        query.role = 'user'
+        query.id = req.user.id;
+    } else {
+        query.role = req.user.role;
+        query.id = req.query.id;
+    }
     req.query.history ? query.history = req.query.history : null;
 
-    req.query.id ? query.id = req.query.id : null;
+    const findFilter = filter(query, 'payments');
 
-    const findFilter = filterBuyouts(query, 'payments');
+    console.log('query:', query);
+    console.log('find:', findFilter);
 
     try {
         const size = await Payment.find(findFilter);
