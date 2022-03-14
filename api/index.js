@@ -81,6 +81,7 @@ bot.on('text', async (ctx) => {
                 if (!userTelegramId.idChat) {
                     userTelegramId.idChat = idChat;
                     await userTelegramId.save({validateBeforeSave: false});
+                    await bot.telegram.sendMessage(idChat, 'Ваш номер был добавлен в базу');
                 }
             } else {
                 await bot.telegram.sendMessage(ctx.message.from.id, 'Номер телефона в базе не найден');
