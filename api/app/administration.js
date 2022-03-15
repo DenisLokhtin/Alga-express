@@ -91,8 +91,6 @@ router.post('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
 
                 sendMail(user.email, 'Alga-express: Баланс пополнен', null, balanceText(pay, user.balance, user.name));
 
-                sendMail()
-
                 return res.status(200).send({status: true});
             } else {
                 return res.status(406).send({error: 'Ошибка оплаты'});
@@ -163,6 +161,10 @@ router.post('/cash', auth, permit('admin', 'superAdmin'), async (req, res) => {
         await User.findByIdAndUpdate(req.body.id, {balance: newBalance.toFixed(2)});
         const paySave = new PaymentMove(payment);
         await paySave.save();
+        const updatedUser = await User.findById(req.body.id);
+
+        sendMail(updatedUser.email, 'Alga-express: Баланс пополнен', null, balanceText(price, updatedUser.balance, updatedUser.name));
+
 
         res.send('Оплата прошла успешно');
     } catch (e) {

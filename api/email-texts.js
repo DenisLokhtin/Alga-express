@@ -1,8 +1,8 @@
 class distributions {
-    passwordReset(code) {
+    passwordReset(code, user) {
         return (
             `<div>
-                <p>Здравствуйте!</p>
+                <p>Здравствуйте уважаемый(ая) ${user}!</p>
                 <p>Мы получили запрос о смене пароля к вашему  аккаунту.</p> 
                 <p>Код для сброса пароля: <b>${code}</b></p>
                 <p>Для изменения пароля, пожалуйста,  <a href="http://localhost:3000/secret/reset-password">Перейдите по ссылке</a></p>
@@ -15,7 +15,7 @@ class distributions {
     balanceText(balance, currentBalance, user) {
         return (
             `<div>
-                <p>Здравствуйте уважаемый ${user}!</p>
+                <p>Здравствуйте уважаемый(ая) ${user}!</p>
                 <p>Ваш баланс пополнен на <b>${balance}</b> сом.</p>
                 <p>Ваш текущий баланс составляет: <b>${currentBalance}</b> сом.</p>
                 <p>Подробную выписку можно посмотреть в вашем личном кабинете.</p>
@@ -24,10 +24,10 @@ class distributions {
         )}
 
 
-    packagesText(cargoNumber, packagesStatus) {
+    packagesText(cargoNumber, packagesStatus, user) {
         return (
             `<div>
-                <p>Здравствуйте!</p>
+                <p>Здравствуйте уважаемый(ая) ${user}!</p>
                 <p>Статус вашей посылки ${cargoNumber} изменен на ${packagesStatus}</p> 
                 <p>Стоимость доставки и ваш баланс вы можете проверить в вашем личном кабинете</p>
                 <p>С уважением Alga-express</p>
