@@ -10,6 +10,8 @@ const PaymentMove = require("../models/PaymentMove");
 const User = require("../models/User");
 const Currency = require('../models/Currency');
 const packageValidate = require("../middleware/packageValidate");
+const {packagesText} = require('../email-texts');
+const sendMail = require("../middleware/sendMail");
 // const sendMail = require("../middleware/sendMail");
 // const {balanceText} = require("../email-texts");
 
@@ -185,8 +187,9 @@ router.put('/', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req,
                 {status: key.status},
                 {new: true, runValidators: true});
 
+            const userEmail =  await updatedStatuses.populate('user','email')
 
-            // sendMail(user.email, 'Alga-express: Баланс пополнен', null, balanceText(pay, user.balance, user.name));
+            sendMail(userEmail.user.email, 'Alga-express: Баланс пополнен', null, packagesText(userEmail.trackNumber, userEmail.status));
 
             if (!updatedStatuses) {
                 const notFoundTrackNumbersData = {
@@ -202,8 +205,7 @@ router.put('/', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req,
             }
         }
 
-        const packages = await Package.find({status: 'DELIVERED'});
-        console.log(packages);
+       await Package.find({status: 'DELIVERED'});
 
         if (notFoundTrackNumbers.length > 0) {
             res.status(404).send(notFoundTrackNumbers);
@@ -212,6 +214,7 @@ router.put('/', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req,
         }
 
     } catch (error) {
+        console.log(error.message);
         res.sendStatus(500)
     }
 });

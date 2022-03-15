@@ -64,7 +64,7 @@ const run = async () => {
             name: "User",
             tariff: tariff.new,
             avatar: 'fixtures/avatar1.jpeg',
-            phone: {number: '786 67 78 99', type: 'PHONE'},
+            phone: {number: '786677899', type: 'PHONE'},
             passport: {image: 'fixtures/passport.jpg'}
         },
         {
