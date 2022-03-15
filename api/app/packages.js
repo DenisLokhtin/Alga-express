@@ -10,6 +10,8 @@ const PaymentMove = require("../models/PaymentMove");
 const User = require("../models/User");
 const Currency = require('../models/Currency');
 const packageValidate = require("../middleware/packageValidate");
+// const sendMail = require("../middleware/sendMail");
+// const {balanceText} = require("../email-texts");
 
 const router = express.Router();
 
@@ -183,6 +185,9 @@ router.put('/', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req,
                 {status: key.status},
                 {new: true, runValidators: true});
 
+
+            // sendMail(user.email, 'Alga-express: Баланс пополнен', null, balanceText(pay, user.balance, user.name));
+
             if (!updatedStatuses) {
                 const notFoundTrackNumbersData = {
                     notFoundTrackNumber: key.trackNumber,
@@ -285,7 +290,7 @@ router.delete('/:id', auth, permit('admin', 'warehouseman', 'superAdmin'), async
             return res.status(403).send({error: 'Доступ запрещен'});
 
         if (req.user.role === 'admin')
-            erasePackage.delete = true;
+            erasePackage.deleted = true;
 
         if (req.user.role === 'user')
             erasePackage.status = 'ERASED';
