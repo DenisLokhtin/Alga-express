@@ -28,12 +28,11 @@ const EditPages = () => {
     const dispatch = useDispatch();
     const classes = useStyles();
     const information = useSelector(state => state.information.allInformation);
-
-    const [data, setData] = useState({
-        information: "",
-        text: "",
+    const [data, setData] = useState('');
+    const [changedArr, setChangeArr] = useState({
+        information: '',
+        text: [],
     });
-
     const messagesEndRef = useRef(null);
 
     useEffect(() => {
@@ -42,53 +41,59 @@ const EditPages = () => {
                 behavior: 'smooth'
             }, 250);
         }
-    }, [messagesEndRef]);
+
+        let arr = information.filter(item => item.name === data);
+        if (arr.length !== 0) {
+            setChangeArr(prevState => {
+                return {...prevState, text: [...arr[0].text], information: data}
+            });
+        }
+    }, [messagesEndRef, information, data]);
 
     const submitFormHandler = e => {
         e.preventDefault();
-        dispatch(changeInformationRequest(data));
+        dispatch(changeInformationRequest(changedArr));
     };
 
     const inputChangeHandler = e => {
-        setData(prevState => {
-            return {...prevState, information: e.target.value};
-        });
+        setData(e.target.value);
     };
 
-    const handleEditorChange = (e) => {
-        setData(prevState => {
-            return {...prevState, text: e.target.value}
+    const handleEditorChange = (e, i) => {
+        const copyArr = [...changedArr.text];
+        copyArr[i] = e.target.value;
+        setChangeArr(prevState => {
+            return {...prevState, text: [...copyArr]};
         });
     };
 
     const printInputs = (name) => {
         const days = ['Пн:', 'Вт:', 'Ср:', 'Чт:', 'Пт:', 'Сб:', 'Вс:'];
 
-
         if (information.length !== 0 && name) {
-            let someArr = information.filter(item => item.name === name);
             if (name === 'schedule') {
                 return (
-                    someArr[0].text.map((item, index) => {
+                    changedArr.text.map((item, index) => {
                         return (
                             <FormElement
                                 type="text"
                                 key={index}
                                 label={days[index]}
                                 name="schedule"
-                                value={item}
+                                value={changedArr.text[index]}
                                 required={true}
-                                onChange={inputChangeHandler}
+                                onChange={(e) => handleEditorChange(e, index)}
                             />
                         )
                     })
                 )
             } else {
                 return (
-                    someArr[0].text.map((item, index) => {
+                    changedArr.text.map((item, index) => {
                         return (
                             <TextareaAutosize name="info" style={{height: '100px', marginLeft: '10px'}} id="info"
-                                              onChange={inputChangeHandler} value={item} key={index}/>
+                                              onChange={(e) => handleEditorChange(e, index)}
+                                              value={changedArr.text[index]} key={index}/>
                         )
                     })
                 )
@@ -139,7 +144,7 @@ const EditPages = () => {
                     container spacing={2} direction="column"
                     style={{'marginBottom': '15px', 'marginTop': '15px', 'marginLeft': '5px'}}
                 >
-                    {printInputs(data.information)}
+                    {printInputs(data)}
                 </Grid>
 
                 <Grid item xs={12}>
