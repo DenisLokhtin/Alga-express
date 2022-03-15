@@ -36,8 +36,8 @@ const useStyles = makeStyles({
     netLinks: {
         display: "flex",
         alignItems: "center",
-        "& > a" : {
-              margin: '10px 0 0 15px',
+        "& > a": {
+            margin: '10px 0 0 15px',
         },
     }
 });
@@ -49,17 +49,19 @@ const Footer = () => {
 
     useEffect(() => {
         dispatch(fetchAllInformationRequest());
-    },[dispatch]);
+    }, [dispatch]);
 
-    const print = () => {
-      if (information[0]) {
-        return  (
-            <div>
-                <div className="post__content" dangerouslySetInnerHTML={{__html: information[1].text}}/>
-                <div className="post__content" dangerouslySetInnerHTML={{__html: information[3].text}}/>
-            </div>
-        )
-      }
+    const print = (name) => {
+        if (information.length !== 0) {
+            let someArr = information.filter(item => item.name === name);
+            return (
+                someArr[0].text.map((item, index) => {
+                    return (
+                        <span style={{display: 'block'}} key={index}>{item}</span>
+                    )
+                })
+            )
+        }
     };
 
     return (
@@ -77,9 +79,8 @@ const Footer = () => {
 
                 <Grid item xs={12} md={6} lg={4}>
                     <Box style={theme.address}>
-
-                        {print()}
-
+                        {print('officeAdress')}
+                        {print('contacts')}
                         <Box className={classes.netLinks}>
                             <a href="https://www.instagram.com/alga_express/" target="_blank" rel="noreferrer">
                                 <InstagramIcon sx={{color: "white"}}/>

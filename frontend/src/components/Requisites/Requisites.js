@@ -332,7 +332,7 @@ export default function BasicTabs() {
                             onSubmit={submitFormHandler}
                             noValidate
                         >
-                            <h2 style={theme.title}>Отредактировать реквизиты</h2>
+                            <h2>Отредактировать реквизиты</h2>
 
                             <Grid item xs={12} sm={8} md={7} lg={7}>
                                 <FormControl variant="standard" fullWidth>
