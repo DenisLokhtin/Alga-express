@@ -7,6 +7,8 @@ import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import {fetchAllInformationRequest} from "../../store/actions/informationActions";
 import {fetchWareHouseRequest} from "../../store/actions/wareHouseActions";
+import InstagramIcon from "@mui/material/SvgIcon/SvgIcon";
+import {Box} from "@mui/material";
 
 const useStyles = makeStyles(() => ({
     map: {
@@ -119,10 +121,10 @@ const Contacts = () => {
                         </div>
 
                         <Typography>
-                            <Link href="https://api.whatsapp.com/send?phone=996774769434" component="a">WhatsApp</Link>
+                            <a href="https://www.instagram.com/alga_express/" target="_blank" rel="noreferrer">Instagram</a>
                         </Typography>
                         <Typography>
-                            <Link href="https://www.instagram.com/alga_express/" component="a">Instagram</Link>
+                            <a href="https://api.whatsapp.com/send?phone=996774769434" target="_blank" rel="noreferrer">Whatsapp</a>
                         </Typography>
                         <div>
                             {printWarehouses()}
