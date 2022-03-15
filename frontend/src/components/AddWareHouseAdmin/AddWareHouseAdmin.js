@@ -98,7 +98,7 @@ const AddWareHouseAdmin = () => {
                 />
                 <Grid item>
                     <Editor
-                        apiKey='rd2sys4x7q7uu8l0tvehv3sl6wisqzs1pp15gvq3jwssgvft'
+                        apiKey='jucp3aljkh783o2yj0379rihg44ldm2wgjxvz10pu9i9m7ja'
                         value={wareHouse.info || ''}
                         init={{
                             height: 600,

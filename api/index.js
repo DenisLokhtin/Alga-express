@@ -91,9 +91,9 @@ app.use('/information', information);
 //
 // });
 // bot.launch();
-
-process.once('SIGINT', () => bot.stop('SIGINT'));
-process.once('SIGTERM', () => bot.stop('SIGTERM'));
+//
+// process.once('SIGINT', () => bot.stop('SIGINT'));
+// process.once('SIGTERM', () => bot.stop('SIGTERM'));
 
 const run = async () => {
     await mongoose.connect(config.db.url);
