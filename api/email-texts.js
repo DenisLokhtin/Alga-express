@@ -23,6 +23,13 @@ class distributions {
             </div>`
         )}
 
+    balanceTextTelegram(balance, currentBalance, user) {
+        return `Здравствуйте уважаемый ${user}!
+                Ваш баланс пополнен на <b>${balance}</b> сом.
+                Ваш текущий баланс составляет: <i><b>${currentBalance}</b></i> сом.
+                Подробную выписку можно посмотреть в вашем личном кабинете.
+                С уважением Alga-express`
+        }
 
     packagesText(cargoNumber, packagesStatus, user) {
         return (
