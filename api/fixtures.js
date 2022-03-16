@@ -311,15 +311,15 @@ const run = async () => {
     await Requisites.create(
         {
             bank: 'Оптима',
-            requisites: '4169585344083059',
+            requisites: '<body id="tinymce" class="mce-content-body " data-id="tiny-react_89531283891647438057645" aria-label="Rich Text Area. Press ALT-0 for help." contenteditable="true" spellcheck="false"><p>номер карты: 4169585344083059</p><p>ФИО:&nbsp; Иван Иванович Иванов, IVAN IVANOVICH IVANOV</p></body>',
         },
         {
             bank: 'Элсом',
-            requisites: '0774769434',
+            requisites: '<body id="tinymce" class="mce-content-body " data-id="tiny-react_89531283891647438057645" aria-label="Rich Text Area. Press ALT-0 for help." contenteditable="true" spellcheck="false"><p>номер карты: 0774769434</p><p>ФИО:&nbsp; Иван Иванович Иванов, IVAN IVANOVICH IVANOV</p></body>',
         },
         {
             bank: 'М Банк',
-            requisites: '0774769434',
+            requisites: '<body id="tinymce" class="mce-content-body " data-id="tiny-react_89531283891647438057645" aria-label="Rich Text Area. Press ALT-0 for help." contenteditable="true" spellcheck="false"><p>номер карты: 0774769434</p><p>ФИО:&nbsp; Иван Иванович Иванов, IVAN IVANOVICH IVANOV</p></body>',
         },
     );
 

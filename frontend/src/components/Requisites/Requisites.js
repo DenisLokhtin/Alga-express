@@ -300,14 +300,14 @@ export default function BasicTabs() {
                     ))}
                 </Tabs>
                 {user && user.role === 'admin' && (
-                    <div>
+                    <div style={{textAlign: 'center'}}>
                         <Button sx={{display: 'inline', width: 100, border: '1px solid grey', margin: '10px'}}
                                 variant="text" onClick={handleOpen}>EDIT</Button>
                     </div>
                 )}
             </Box>
             {requisites.length !== 0 && requisites.map((item, index) => (
-                <TabPanel value={value} key={index} index={index}>
+                <TabPanel value={value} key={index} index={index} style={{textAlign: 'center'}}>
                     <span className="post__content" dangerouslySetInnerHTML={{__html: item.requisites}}/>
                 </TabPanel>
             ))}
