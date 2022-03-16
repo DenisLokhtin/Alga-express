@@ -8,6 +8,8 @@ import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {useDispatch} from "react-redux";
 import {postDeliveryRequest} from "../../store/actions/deliveryAction";
 import {changeDeliveryStatusRequest, getOrdersHistoryRequest} from "../../store/actions/packageRegisterActions";
+import {TextareaAutosize} from "@mui/material";
+
 
 const styleModal = {
     position: 'absolute',
@@ -71,8 +73,8 @@ const DeliveryModal = (props) => {
                         <Typography>Статус: {props.status}</Typography>
                         <Typography>Страна: {props.country}</Typography>
                         <Typography><b>Укажите адрес:</b></Typography>
-                        <textarea name="address" id="address" cols="80" rows="7" placeholder="Введите ваш адрес"
-                                  onChange={inputChangeHandler}/>
+                        <TextareaAutosize name="address" id="address" placeholder="Введите ваш адрес"
+                                          onChange={inputChangeHandler}/>
                         <Grid item xs={12} sm={8} md={7} lg={7}>
                             <ButtonWithProgress
                                 type="submit"

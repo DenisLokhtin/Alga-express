@@ -112,7 +112,7 @@ router.post('/forgot', async (req, res) => {
 
         const resetCode = nanoid(8);
         await User.findOneAndUpdate({email: user.email}, {resetCode});
-        sendMail(user.email,'Сброс пароля', null,emailDistribution.passwordReset(resetCode))
+        sendMail(user.email,'Сброс пароля', null,emailDistribution.passwordReset(resetCode, user.name))
         res.send({message: "Код сброса пароля отправлен на почту!"})
 
         const userToBeUpdated = await User.findOne({resetCode: resetCode});
