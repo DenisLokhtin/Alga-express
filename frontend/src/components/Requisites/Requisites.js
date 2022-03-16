@@ -208,7 +208,7 @@ export default function BasicTabs() {
 
                     <Grid item>
                         <Editor
-                            apiKey='rd2sys4x7q7uu8l0tvehv3sl6wisqzs1pp15gvq3jwssgvft'
+                            apiKey='jucp3aljkh783o2yj0379rihg44ldm2wgjxvz10pu9i9m7ja'
                             value={data.requisites}
                             init={{
                                 height: 400,
@@ -257,7 +257,7 @@ export default function BasicTabs() {
 
                     <Grid item>
                         <Editor
-                            apiKey='rd2sys4x7q7uu8l0tvehv3sl6wisqzs1pp15gvq3jwssgvft'
+                            apiKey='jucp3aljkh783o2yj0379rihg44ldm2wgjxvz10pu9i9m7ja'
                             value={data.requisites}
                             init={{
                                 height: 400,
@@ -300,14 +300,14 @@ export default function BasicTabs() {
                     ))}
                 </Tabs>
                 {user && user.role === 'admin' && (
-                    <div>
+                    <div style={{textAlign: 'center'}}>
                         <Button sx={{display: 'inline', width: 100, border: '1px solid grey', margin: '10px'}}
                                 variant="text" onClick={handleOpen}>EDIT</Button>
                     </div>
                 )}
             </Box>
             {requisites.length !== 0 && requisites.map((item, index) => (
-                <TabPanel value={value} key={index} index={index}>
+                <TabPanel value={value} key={index} index={index} style={{textAlign: 'center'}}>
                     <span className="post__content" dangerouslySetInnerHTML={{__html: item.requisites}}/>
                 </TabPanel>
             ))}
@@ -332,7 +332,7 @@ export default function BasicTabs() {
                             onSubmit={submitFormHandler}
                             noValidate
                         >
-                            <h2 style={theme.title}>Отредактировать реквизиты</h2>
+                            <h2>Отредактировать реквизиты</h2>
 
                             <Grid item xs={12} sm={8} md={7} lg={7}>
                                 <FormControl variant="standard" fullWidth>

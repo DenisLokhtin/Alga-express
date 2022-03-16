@@ -2,7 +2,7 @@ import React, {useEffect, useRef} from 'react';
 import Grid from "@mui/material/Grid";
 import {makeStyles} from "@mui/styles";
 import Pic from "../../assets/images/main-pic.jpeg";
-import {Card, CardMedia, List, ListItem, ListItemAvatar, ListItemText} from "@mui/material";
+import {List, ListItem, ListItemAvatar, ListItemText} from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import SpeedIcon from '@mui/icons-material/Speed';
@@ -14,6 +14,7 @@ import NewsPanel from "../../components/NewsPanel/NewsPanel";
 import Carousel from "../../components/Carousel/Carousel";
 import {fetchAllInformationRequest} from "../../store/actions/informationActions";
 import {useDispatch} from "react-redux";
+import MarketSites from "../MarketSites/MarketSites";
 
 const useStyles = makeStyles({
     block: {
@@ -112,34 +113,35 @@ const HomePage = () => {
                         <Container style={{textAlign: 'center'}}>
                             <h2 className={classes.title}>Выкуп для вас !</h2>
                             <div style={{display: "flex", justifyContent: "space-evenly", flexWrap: "wrap"}}>
-                                <Card sx={{width: "200px", marginBottom: "20px"}}>
-                                    <CardMedia
-                                        component="img"
-                                        image={"https://logowik.com/content/uploads/images/trendyolcom2977.jpg"}
-                                        height="100px"
-                                    />
-                                </Card>
-                                <Card sx={{width: "200px", marginBottom: "20px"}}>
-                                    <CardMedia
-                                        component="img"
-                                        image={"https://thumbs.dreamstime.com/b/amazon-logo-editorial-vector-illustration-market-136495269.jpg"}
-                                        height="100px"
-                                    />
-                                </Card>
-                                <Card sx={{width: "200px", marginBottom: "20px"}}>
-                                    <CardMedia
-                                        component="img"
-                                        image={"https://i1.wp.com/sportsfinding.com/wp-content/uploads/2020/02/nike-swoosh-wikipedia.jpg?fit=580%2C350&ssl=1&resize=1280%2C720"}
-                                        height="100px"
-                                    />
-                                </Card>
-                                <Card sx={{width: "200px", marginBottom: "20px"}}>
-                                    <CardMedia
-                                        component="img"
-                                        image={"https://assets.turbologo.com/blog/en/2019/07/19085123/The-Trefoil-adidas-logo-1.jpg"}
-                                        height="100px"
-                                    />
-                                </Card>
+                                <MarketSites/>
+                                {/*<Card sx={{width: "200px", marginBottom: "20px"}}>*/}
+                                {/*    <CardMedia*/}
+                                {/*        component="img"*/}
+                                {/*        image={"https://logowik.com/content/uploads/images/trendyolcom2977.jpg"}*/}
+                                {/*        height="100px"*/}
+                                {/*    />*/}
+                                {/*</Card>*/}
+                                {/*<Card sx={{width: "200px", marginBottom: "20px"}}>*/}
+                                {/*    <CardMedia*/}
+                                {/*        component="img"*/}
+                                {/*        image={"https://thumbs.dreamstime.com/b/amazon-logo-editorial-vector-illustration-market-136495269.jpg"}*/}
+                                {/*        height="100px"*/}
+                                {/*    />*/}
+                                {/*</Card>*/}
+                                {/*<Card sx={{width: "200px", marginBottom: "20px"}}>*/}
+                                {/*    <CardMedia*/}
+                                {/*        component="img"*/}
+                                {/*        image={"https://i1.wp.com/sportsfinding.com/wp-content/uploads/2020/02/nike-swoosh-wikipedia.jpg?fit=580%2C350&ssl=1&resize=1280%2C720"}*/}
+                                {/*        height="100px"*/}
+                                {/*    />*/}
+                                {/*</Card>*/}
+                                {/*<Card sx={{width: "200px", marginBottom: "20px"}}>*/}
+                                {/*    <CardMedia*/}
+                                {/*        component="img"*/}
+                                {/*        image={"https://assets.turbologo.com/blog/en/2019/07/19085123/The-Trefoil-adidas-logo-1.jpg"}*/}
+                                {/*        height="100px"*/}
+                                {/*    />*/}
+                                {/*</Card>*/}
                             </div>
                         </Container>
                     </Grid>

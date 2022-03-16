@@ -6,6 +6,9 @@ import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import {fetchAllInformationRequest} from "../../store/actions/informationActions";
+import {fetchWareHouseRequest} from "../../store/actions/wareHouseActions";
+import InstagramIcon from "@mui/material/SvgIcon/SvgIcon";
+import {Box} from "@mui/material";
 
 const useStyles = makeStyles(() => ({
     map: {
@@ -41,6 +44,7 @@ const Contacts = () => {
     const classes = useStyles();
     const messagesEndRef = useRef(null);
     const information = useSelector(state => state.information.allInformation);
+    const wareHouses = useSelector(state => state.wareHouses.wareHouse);
 
     useEffect(() => {
         if (!!messagesEndRef.current) {
@@ -49,12 +53,43 @@ const Contacts = () => {
             }, 250);
         }
         dispatch(fetchAllInformationRequest());
+        dispatch(fetchWareHouseRequest());
     }, [messagesEndRef, dispatch]);
 
-    const print = (number) => {
-        if (information[0]) {
+    const print = (name) => {
+        const days = ['Пн:', 'Вт:', 'Ср:', 'Чт:', 'Пт:', 'Сб:', 'Вс:'];
+
+        if (information.length !== 0) {
+            let someArr = information.filter(item => item.name === name);
+            if (name === 'schedule') {
+                return (
+                    someArr[0].text.map((item, index) => {
+                        return (
+                            <span style={{display: 'block'}} key={index}><strong>{days[index]}</strong> {item}</span>
+                        )
+                    })
+                )
+            } else {
+                return (
+                    someArr[0].text.map((item, index) => {
+                        return (
+                            <span style={{display: 'block'}} key={index}>{item}</span>
+                        )
+                    })
+                )
+            }
+        }
+    };
+
+    const printWarehouses = () => {
+        if (wareHouses.length !== 0) {
             return (
-                <div className="post__content" dangerouslySetInnerHTML={{__html: information[number].text}}/>
+                wareHouses.map((item, index) => (
+                    <div key={index} style={{'marginBottom': '15px'}}>
+                        <p><strong>{item.country}</strong></p>
+                        <div dangerouslySetInnerHTML={{__html: item.info}}/>
+                    </div>
+                ))
             )
         }
     };
@@ -75,16 +110,25 @@ const Contacts = () => {
                 </div>
                 <Grid style={{'marginBottom': '15px'}} component='div'>
                     <Typography component="div">
-                        {print(1)}
-                        {print(3)}
+                        <div style={{'marginBottom': '15px'}}>
+                            {print('officeAdress')}
+                        </div>
+                        <div style={{'marginBottom': '15px'}}>
+                            {print('schedule')}
+                        </div>
+                        <div style={{'marginBottom': '15px'}}>
+                            {print('contacts')}
+                        </div>
+
                         <Typography>
-                            <Link href="https://api.whatsapp.com/send?phone=996774769434" component="a">WhatsApp</Link>
+                            <a href="https://www.instagram.com/alga_express/" target="_blank" rel="noreferrer">Instagram</a>
                         </Typography>
                         <Typography>
-                            <Link href="https://www.instagram.com/alga_express/" component="a">Instagram</Link>
+                            <a href="https://api.whatsapp.com/send?phone=996774769434" target="_blank" rel="noreferrer">Whatsapp</a>
                         </Typography>
-                        {print(0)}
-                        {print(2)}
+                        <div>
+                            {printWarehouses()}
+                        </div>
                         <Typography style={{'fontWeight': 'Bold', 'marginTop': '10px'}}>
                             Информация
                         </Typography>
