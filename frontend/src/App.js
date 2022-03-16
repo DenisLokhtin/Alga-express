@@ -109,7 +109,6 @@ const App = () => {
                         <Route path={userPaymentsList} element={<UserPayments/>}/>
                         <Route path={newPackageRegister} element={<PackageRegister/>}/>
                         <Route path={editUserProfile} element={<UserProfileEdit/>}/>
-                        <Route path={sitesCompany} element={<MarketSites/>}/>
                         <Route path={editPackageUser} element={<UserEditPackage/>}/>
                         <Route path={packageInfoId} element={<SpecificPackage/>}/>
                         <Route path={orderBuyouts} element={<OrderBuyout/>}/>
@@ -163,6 +162,7 @@ const App = () => {
                     <Route path={userPage} element={<UserPage/>}/>
                     <Route path={forgotPassword} element={<ForgotPassword/>}/>
                     <Route path={resetPassword} element={<ResetPassword/>}/>
+                    <Route path={sitesCompany} element={<MarketSites/>}/>
                     <Route
                         path="*"
                         element={
