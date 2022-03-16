@@ -166,11 +166,10 @@ router.post('/cash', auth, permit('admin', 'superAdmin'), async (req, res) => {
         await paySave.save();
         const updatedUser = await User.findById(req.body.id);
 
-        sendMail(updatedUser.email,
+        await sendMail(updatedUser.email,
             'Alga-express: Баланс пополнен',
-            balanceTextTelegram(pay, user.balance, user.name),
+            balanceTextTelegram(price, updatedUser.balance, updatedUser.name),
             balanceText(price, updatedUser.balance, updatedUser.name));
-
 
         res.send('Оплата прошла успешно');
     } catch (e) {
