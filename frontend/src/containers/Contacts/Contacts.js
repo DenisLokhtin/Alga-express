@@ -3,12 +3,9 @@ import Container from "@mui/material/Container";
 import {useDispatch, useSelector} from "react-redux";
 import {makeStyles} from "@mui/styles";
 import Typography from "@mui/material/Typography";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import {fetchAllInformationRequest} from "../../store/actions/informationActions";
 import {fetchWareHouseRequest} from "../../store/actions/wareHouseActions";
-import InstagramIcon from "@mui/material/SvgIcon/SvgIcon";
-import {Box} from "@mui/material";
 
 const useStyles = makeStyles(() => ({
     map: {

@@ -50,6 +50,7 @@ const EditPages = () => {
     const submitFormHandler = e => {
         e.preventDefault();
         dispatch(changePagesRequest(data));
+        setData({page: "", text: ""});
     };
 
     const inputChangeHandler = e => {
@@ -93,6 +94,7 @@ const EditPages = () => {
                             id="demo-controlled-open-select"
                             defaultValue=''
                             label="Страница"
+                            value={data.page}
                             name="page"
                             required
                             onChange={inputChangeHandler}
