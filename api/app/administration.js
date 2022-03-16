@@ -6,10 +6,10 @@ const PaymentMove = require("../models/PaymentMove");
 const User = require("../models/User");
 const TariffGroup = require("../models/TariffGroup");
 const sendMail = require('../middleware/sendMail');
-const {balanceText} = require('../email-texts');
+const {balanceText, balanceTextTelegram} = require('../email-texts');
 const filter = require("../middleware/filter");
-
 const router = express.Router();
+
 
 router.get('/', auth, permit('user', 'admin', 'superAdmin'), async (req, res) => {
     const query = {};
@@ -89,9 +89,11 @@ router.post('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
 
                 const user = await User.findById(checkPayment.user._id);
 
-                sendMail(user.email, 'Alga-express: Баланс пополнен', null, balanceText(pay, user.balance, user.name));
-
-                sendMail()
+                await sendMail({email: user.email, telegram: user.idChat},
+                    'Alga-express: Баланс пополнен',
+                    // `Уважаемый ${user.name} Ваш балланс пополнен на сумму ${pay}`,
+                    balanceTextTelegram(pay, user.balance, user.name),
+                    balanceText(pay, user.balance, user.name));
 
                 return res.status(200).send({status: true});
             } else {
