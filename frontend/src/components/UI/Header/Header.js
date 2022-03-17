@@ -10,7 +10,7 @@ import {
     newUserRegister,
     rulesCompany,
     sitesCompany,
-    userLogin
+    userLogin, wareHouseCompany
 } from "../../../paths";
 import '../Header/Header.css';
 import {Slide, useScrollTrigger} from "@mui/material";
@@ -98,7 +98,7 @@ const Header = () => {
                                         </Link>
                                     </li>
                                     <li className="header__list-item" onClick={addClass}>
-                                        <Link className="menu__link hover" to={contactsCompany}>
+                                        <Link className="menu__link hover" to={wareHouseCompany}>
                                             Адреса складов
                                         </Link>
                                     </li>

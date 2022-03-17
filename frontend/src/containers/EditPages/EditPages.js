@@ -117,7 +117,6 @@ const EditPages = () => {
                             <MenuItem value={''}/>
                             <MenuItem value={'rules'}>Правила</MenuItem>
                             <MenuItem value={'about'}>О нас</MenuItem>
-                            <MenuItem value={'contacts'}>Контакты</MenuItem>
                             <MenuItem value={'how'}>Как это работает?</MenuItem>
                             <MenuItem value={'faq'}>FAQ</MenuItem>
                         </Select>

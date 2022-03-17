@@ -171,6 +171,7 @@ const AdminPaymentsProcessing = () => {
                                                         value={permitPayment[index].pay}
                                                         onChange={e => changePermitPayments(index, e.target.value)}
                                                         name='pay'
+                                                        InputProps={{ inputProps: {min: 1}}}
                                                     />
                                                 </Grid>
                                                 <Grid item>
@@ -181,7 +182,7 @@ const AdminPaymentsProcessing = () => {
                                                         color="primary"
                                                         className={classes.submit}
                                                         // loading={loading}
-                                                        // disabled={buttonDis}
+                                                        disabled={!(permitPayment[index].pay !== undefined && permitPayment[index].pay !== '')}
                                                     >
                                                         Принять оплату
                                                     </ButtonWithProgress>

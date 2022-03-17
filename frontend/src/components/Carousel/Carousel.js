@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -13,6 +13,7 @@ import {Grid} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import AppWindow from "../UI/AppWindow/AppWindow";
 
 const useStyles = makeStyles(theme => ({
     carouselTitle: {
@@ -94,6 +95,7 @@ const Carousel = () => {
     const dispatch = useDispatch();
     const loading = useSelector(state => state.carousels.carouselsLoading);
     const carousels = useSelector(state => state.carousels.carousels);
+    const [open, setOpen] = useState(false);
 
     useEffect(() => {
         dispatch(fetchCarouselsRequest());
@@ -101,6 +103,7 @@ const Carousel = () => {
 
     const deleteCarousel = (id) => {
         dispatch(deleteCarouselsRequest(id));
+        setOpen(false);
     };
 
     return (
@@ -108,6 +111,8 @@ const Carousel = () => {
             <Slider {...settings}>
                 {carousels && carousels.map(carousel => (
                     <Fragment key={carousel._id}>
+                        <AppWindow open={open} onClose={() => setOpen(false)}
+                                   confirm={() => deleteCarousel(carousel._id)}/>
                         <h3 className={classes.carouselTitle}>{carousel.info}</h3>
                         <img width="80%" style={{margin: '0 auto'}} src={apiURL + '/' + carousel.picture} alt={carousel.info}
                              className={classes.carouselImage}/>
@@ -157,7 +162,7 @@ const Carousel = () => {
                                         color="error"
                                         loading={loading}
                                         disabled={loading}
-                                        onClick={() => deleteCarousel(carousel._id)}
+                                        onClick={() => setOpen(true)}
                                     >
                                         Удалить изображение
                                     </ButtonWithProgress>
