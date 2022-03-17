@@ -18,8 +18,8 @@ const wareHouses = require('./app/wareHouses');
 const pages = require('./app/Pages');
 const requisites = require('./app/requisites');
 const tariffs = require('./app/tariffs');
-const help = require('./help_commands');
-const User = require("./models/User");
+// const help = require('./help_commands');
+// const User = require("./models/User");
 
 // const token = process.env.BOT_TOKEN
 //

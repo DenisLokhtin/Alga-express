@@ -103,9 +103,8 @@ const usersSlice = createSlice({
         addUserPaymentRequest(state) {
             state.loadUserDate = true;
         },
-        addUserPaymentSuccess(state, action) {
+        addUserPaymentSuccess(state) {
             state.loadUserDate = false;
-            state.payment = action.payload;
         },
         addUserPaymentFailure(state) {
             state.loadUserDate = false;
