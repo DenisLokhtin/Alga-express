@@ -2,7 +2,6 @@ import {put, takeEvery} from "redux-saga/effects";
 import {
     addUserPaymentFailure,
     addUserPaymentRequest,
-    addUserPaymentSuccess,
     changePasswordFailure,
     changePasswordRequest,
     changePasswordSuccess,
@@ -78,6 +77,7 @@ export function* loginUserSaga({payload: user}) {
         user.navigate('/', true);
         yield put(loginUserSuccess(response.data));
         toast.success('Вы авторизированы!');
+        History.push('/user/page');
     } catch (e) {
         toast.error(e.response.data.global);
         yield put(loginUserFailure(e.response.data));
@@ -118,8 +118,7 @@ export function* editPassportSaga({payload}) {
 
 export function* userPaymentSaga({payload}) {
     try {
-        const response = yield  axiosApi.post('/userEdit/payment/', payload);
-        yield put(addUserPaymentSuccess(response.data));
+        yield  axiosApi.post('/userEdit/payment/', payload);
         History.push(userPaymentsList);
         toast.success('Оплата отправлена');
     } catch (e) {

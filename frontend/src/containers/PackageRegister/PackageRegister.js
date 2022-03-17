@@ -16,24 +16,42 @@ import {
 import {makeStyles} from "@mui/styles";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
 import {useLocation, useNavigate} from "react-router-dom";
-import theme from "../../theme";
 import FormElement from "../../components/UI/Form/FormElement";
 import {fetchUsersRequest} from "../../store/actions/usersActions";
 import {editBuyoutStatusRequest} from "../../store/actions/buyoutActions";
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import CurrencyLiraIcon from '@mui/icons-material/CurrencyLira';
 import CurrencyYenIcon from '@mui/icons-material/CurrencyYen';
+import {createTheme} from "@mui/material/styles";
+
+const theme = createTheme({
+    breakpoints: {
+        values: {
+            sm: 768,
+        },
+    },
+});
 
 const useStyles = makeStyles(() => ({
+    breakpoints: {
+        values: {
+            sm: 768,
+        },
+    },
+
     container: {
-        marginTop: '50px',
+        paddingTop: '145px',
+        marginBottom: '30px',
+        [theme.breakpoints.down('sm')]: {
+            paddingTop: '90px',
+        },
     },
 
     packageMainTitle: {
         textAlign: 'center',
-        paddingBottom: '50px',
+        paddingBottom: '30px',
         '@media (max-width:600px)': {
-            padding: '10px',
+            padding: '15px',
         },
     },
 

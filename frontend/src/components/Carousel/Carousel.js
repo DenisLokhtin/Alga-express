@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -10,6 +10,73 @@ import {addCarousel, editingSingleCarousel} from "../../paths";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {Grid} from "@mui/material";
+import {makeStyles} from "@mui/styles";
+import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import AppWindow from "../UI/AppWindow/AppWindow";
+
+const useStyles = makeStyles(theme => ({
+    carouselTitle: {
+        textAlign: 'center',
+    },
+
+    carouselImage: {
+        paddingBottom: '10px',
+    },
+
+    carouselContainer: {
+        margin: '40px 0',
+        textAlign: 'center',
+    },
+
+    gridCenter: {
+        [theme.breakpoints.down('md')]: {
+            display: 'flex',
+        },
+        [theme.breakpoints.down('sm')]: {
+            margin: '0 auto',
+        },
+    },
+
+    mediaQueriesDeleteBtn: {
+        [theme.breakpoints.down('lg')]: {
+            fontSize: '12px',
+            padding: '8px 16px',
+            textAlign: 'center',
+        },
+        [theme.breakpoints.down('md')]: {
+            padding: '8px 37px',
+        },
+        [theme.breakpoints.down('sm')]: {
+            fontSize: '10px',
+        },
+    },
+
+    mediaQueriesAddBtn: {
+        [theme.breakpoints.down('lg')]: {
+            fontSize: '12px',
+            padding: '8px 16px',
+        },
+        [theme.breakpoints.down('md')]: {
+            padding: '8px 35px',
+            display: 'flex',
+            justifyContent: 'center',
+        },
+        [theme.breakpoints.down('sm')]: {
+            fontSize: '10px',
+        },
+    },
+
+    mediaQueriesEditBtn: {
+        [theme.breakpoints.down('lg')]: {
+            fontSize: '80px',
+            padding: '8px 20px',
+        },
+        [theme.breakpoints.down('sm')]: {
+            fontSize: '10px',
+        },
+    }
+}))
 
 const Carousel = () => {
     const settings = {
@@ -20,12 +87,15 @@ const Carousel = () => {
         slidesToScroll: 1,
         adaptiveHeight: true,
         autoplay: true,
+        arrows: false,
     };
 
+    const classes = useStyles();
     const user = useSelector((state => state.users.user));
     const dispatch = useDispatch();
     const loading = useSelector(state => state.carousels.carouselsLoading);
     const carousels = useSelector(state => state.carousels.carousels);
+    const [open, setOpen] = useState(false);
 
     useEffect(() => {
         dispatch(fetchCarouselsRequest());
@@ -33,72 +103,73 @@ const Carousel = () => {
 
     const deleteCarousel = (id) => {
         dispatch(deleteCarouselsRequest(id));
+        setOpen(false);
     };
 
     return (
-        <div>
-            {user && (user.role === 'superAdmin' || user.role === 'admin') && (
-                <ButtonWithProgress
-                    type="submit"
-                    variant="contained"
-                    color="error"
-                    loading={loading}
-                    disabled={loading}
-                    component={Link}
-                    to={addCarousel}
-                >
-                    <AddBoxIcon/> Добавить изображение
-                </ButtonWithProgress>
-            )}
+        <div className={classes.carouselContainer}>
             <Slider {...settings}>
                 {carousels && carousels.map(carousel => (
-                    <div key={carousel._id}>
-                        <h3>{carousel.info}</h3>
-                        <img width="100%" src={apiURL + '/' + carousel.picture} alt={carousel.info}/>
-                        {user && user.role === 'admin' && (
-                            <ButtonWithProgress
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                color="error"
-                                loading={loading}
-                                disabled={loading}
-                                onClick={() => deleteCarousel(carousel._id)}
-                            >
-                                Удалить изображение
-                            </ButtonWithProgress>
-                        )}
-                        {user && user.role === 'superAdmin' && (
-                            <ButtonWithProgress
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                color="error"
-                                loading={loading}
-                                disabled={loading}
-                                onClick={() => deleteCarousel(carousel._id)}
-                            >
-                                Удалить изображение
-                            </ButtonWithProgress>
-                        )}
-
+                    <Fragment key={carousel._id}>
+                        <AppWindow open={open} onClose={() => setOpen(false)}
+                                   confirm={() => deleteCarousel(carousel._id)}/>
+                        <h3 className={classes.carouselTitle}>{carousel.info}</h3>
+                        <img width="80%" style={{margin: '0 auto'}} src={apiURL + '/' + carousel.picture} alt={carousel.info}
+                             className={classes.carouselImage}/>
                         {user && (user.role === 'superAdmin' || user.role === 'admin') && (
-                            <Grid item xs={3}>
-                                <ButtonWithProgress
-                                    type="submit"
-                                    fullWidth
-                                    variant="contained"
-                                    color="success"
-                                    loading={loading}
-                                    disabled={loading}
-                                    component={Link}
-                                    to={editingSingleCarousel + carousel._id}
-                                >
-                                    Редактировать изображение
-                                </ButtonWithProgress>
+                            <Grid container justifyContent="space-between" spacing={2} className={classes.test}>
+                                <Grid item xs={12} sm={4} md={4} lg={4} className={classes.gridCenter}>
+                                    <ButtonWithProgress
+                                        type="submit"
+                                        startIcon={<AddBoxIcon/>}
+                                        variant="contained"
+                                        size={'medium'}
+                                        loading={loading}
+                                        disabled={loading}
+                                        className={classes.mediaQueriesAddBtn}
+                                        component={Link}
+                                        to={addCarousel}
+                                    >
+                                        Добавить изображение
+                                    </ButtonWithProgress>
+                                </Grid>
+                                <Grid item xs={12} sm={4} md={4} lg={4} className={classes.gridCenter}>
+                                    <ButtonWithProgress
+                                        type="submit"
+                                        size={'medium'}
+                                        startIcon={<ModeEditOutlinedIcon/>}
+                                        className={classes.mediaQueriesEditBtn}
+                                        fullWidth
+                                        sx={{padding: '6px 10px'}}
+                                        variant="contained"
+                                        color="success"
+                                        loading={loading}
+                                        disabled={loading}
+                                        component={Link}
+                                        to={editingSingleCarousel + carousel._id}
+                                    >
+                                        Редактировать изображение
+                                    </ButtonWithProgress>
+                                </Grid>
+                                <Grid item xs={12} sm={4} md={4} lg={4} className={classes.gridCenter}>
+                                    <ButtonWithProgress
+                                        type="submit"
+                                        startIcon={<DeleteOutlinedIcon/>}
+                                        className={classes.mediaQueriesDeleteBtn}
+                                        fullWidth
+                                        size={'medium'}
+                                        variant="contained"
+                                        color="error"
+                                        loading={loading}
+                                        disabled={loading}
+                                        onClick={() => setOpen(true)}
+                                    >
+                                        Удалить изображение
+                                    </ButtonWithProgress>
+                                </Grid>
                             </Grid>
                         )}
-                    </div>
+                    </Fragment>
                 ))}
             </Slider>
         </div>

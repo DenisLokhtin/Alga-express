@@ -24,10 +24,10 @@ const SingleNews = () => {
     return (
         <>
             {news && (
-                <Paper ref={messagesEndRef}>
+                <Paper ref={messagesEndRef} style={{paddingTop: '200px'}}>
                     <div>
                         <p>{news.title}</p>
-                        <div id='description' dangerouslySetInnerHTML={{__html: news.description}}></div>
+                        <div id='description' dangerouslySetInnerHTML={{__html: news.description}}/>
                     </div>
                     <div style={{display: "flex", justifyContent: "center"}}>
                         {/*<img style={{maxWidth: "500px", height: "100%"}} src={apiURL+'/'+news.image} alt={'news'}/>*/}

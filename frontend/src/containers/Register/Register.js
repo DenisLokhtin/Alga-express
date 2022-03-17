@@ -17,17 +17,48 @@ import ru from 'react-phone-input-2/lang/ru.json'
 import './Register.css'
 import 'react-phone-input-2/lib/bootstrap.css'
 import {rulesCompany, userLogin} from "../../paths";
-import theme from "../../theme";
 import {FormControl, InputAdornment, InputLabel, MenuItem, Select} from "@mui/material";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import {createTheme} from "@mui/material/styles";
 
-const useStyles = makeStyles(theme => ({
-    form: {
-        margin: theme.spacing(2),
+const theme = createTheme({
+    breakpoints: {
+        values: {
+            sm: 768,
+        },
     },
+});
+
+const useStyles = makeStyles(() => ({
+    breakpoints: {
+        values: {
+            sm: 768,
+        },
+    },
+
+    container: {
+        paddingTop: '170px',
+        marginBottom: '30px',
+        [theme.breakpoints.down('sm')]: {
+            paddingTop: '100px',
+        },
+    },
+
+    form: {
+        margin: '16px',
+    },
+
     submit: {
-        margin: theme.spacing(0, 0, 1),
+        marginBottom: '8px'
+    },
+
+    avatar: {
+      margin: '0 auto',
+    },
+
+    mainTitle: {
+        marginBottom: '100px',
     },
 }));
 
@@ -102,7 +133,7 @@ const Register = ({userData}) => {
     };
 
     return (
-        <Container ref={messagesEndRef} component="section" maxWidth="md">
+        <Container ref={messagesEndRef} className={classes.container} component="section" maxWidth="md">
             <div style={theme.paper}>
                 <Grid item sx={{mb: '1.3em'}}>
                     <Avatar className={classes.avatar}>
@@ -110,7 +141,7 @@ const Register = ({userData}) => {
                     </Avatar>
                 </Grid>
                 {userData?.role === 'superAdmin' ? (
-                    <Typography component="h1" variant="h6" align={'center'}>
+                    <Typography component="h1" variant="h6" align={'center'} sx={{marginBottom: '15px'}}>
                         Регистрация пользователей
                     </Typography>
                 ) : (

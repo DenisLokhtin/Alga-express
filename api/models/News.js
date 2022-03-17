@@ -1,22 +1,27 @@
 const mongoose = require('mongoose');
 
 const NewsSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: 'Название является обязательным полем',
-  },
-  description:{
-    type: String,
-  },
-  image: String,
-  datetime: {
-    type: String,
-    required: true,
-  },
-  deleted: {
-    type: Boolean,
-    default: false
-  }
+    title: {
+        type: String,
+        required: 'Название является обязательным полем',
+    },
+    description: {
+        type: String,
+    },
+    image: String,
+    datetime: {
+        type: String,
+        required: true,
+    },
+
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
+    deleted: {
+        type: Boolean,
+        default: false
+    }
 });
 
 

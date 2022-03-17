@@ -8,12 +8,30 @@ import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {makeStyles} from "@mui/styles";
 import {createTheme} from "@mui/material/styles";
 
+const theme = createTheme({
+    breakpoints: {
+        values: {
+            sm: 786,
+        },
+    },
+});
+
 
 const useStyles = makeStyles(() => ({
+    breakpoints: {
+        values: {
+            sm: 786,
+        },
+    },
+
     container: {
-        marginTop: '10px',
-        paddingBottom: '40px',
-        display: "flex"
+        display: "flex",
+        textAlign: 'center',
+        paddingTop: '160px',
+        marginBottom: '30px',
+        [theme.breakpoints.down('sm')]: {
+            paddingTop: '90px',
+        },
     },
 
     packageBtnContainer: {
@@ -32,41 +50,31 @@ const useStyles = makeStyles(() => ({
             marginBottom: '50px',
         },
     },
+
     phoneField: {
         '&:last-child': {
             marginBottom: '100px',
         },
     },
+
     submit: {
-        margin: theme.spacing(3, 0, 2),
+        margin: '24px 0 16px',
     },
+
     margin0: {
         margin: 0,
     },
+
     addButton: {
         position: "relative",
         bottom: '-35px',
     },
+
     padding: {
         padding: '15px',
         marginTop: '20px',
     }
-
-
 }));
-
-const theme = createTheme();
-
-theme.typography.h4 = {
-    fontSize: '1.3rem',
-    '@media (min-width:600px)': {
-        fontSize: '1.6rem',
-    },
-    [theme.breakpoints.up('md')]: {
-        fontSize: '2rem',
-    },
-};
-
 
 const UserPayment = () => {
     const classes = useStyles();

@@ -18,7 +18,8 @@ import {
     addPaymentHandler,
     addUserPayment,
     adminPagePath,
-    cargoCreateUser, editInformation,
+    cargoCreateUser,
+    editInformation,
     editPages,
     editUserProfile,
     listBuyouts,
@@ -28,7 +29,7 @@ import {
     orderBuyouts,
     packageHistory,
     packageInfo,
-    processingTrackNumbersAdmin,
+    processingTrackNumbersAdmin, userPage,
     userPaymentsList
 } from "../../../../paths";
 import Avatar from "@mui/material/Avatar";
@@ -37,10 +38,13 @@ import EditIcon from '@mui/icons-material/Edit';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PaidIcon from '@mui/icons-material/Paid';
 import InfoIcon from '@mui/icons-material/Info';
+import HomeIcon from '@mui/icons-material/Home';
+import {makeStyles} from "@mui/styles";
 import {apiURL} from "../../../../config";
 
 const userSettings = [
     {url: editUserProfile, title: 'Личный кабинет', icon: <ManageAccountsIcon/>},
+    {url: userPage, title: 'Моя страница', icon: <HomeIcon/>},
     {url: packageHistory, title: 'История заказов', icon: <HistoryIcon/>},
     {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon/>},
     {url: orderBuyouts, title: 'Заказать выкуп', icon: <ShoppingCartIcon/>},
@@ -87,7 +91,22 @@ const adminSettings = [
     {url: processingTrackNumbersAdmin, title: 'Смена статуса посылок', icon: <EditIcon/>},
     {url: editInformation, title: 'Редактировать информацию', icon: <EditIcon/>},
 ];
+
+const useStyles = makeStyles(theme => ({
+    test: {
+        zIndex: '2',
+        minWidth: '407px',
+        display: 'flex',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        [theme.breakpoints.down('sm')]: {
+            minWidth: '0',
+        },
+    },
+}));
+
 const UserMenu = ({user}) => {
+    const classes = useStyles();
     const dispatch = useDispatch();
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -110,7 +129,7 @@ const UserMenu = ({user}) => {
     };
 
     return (
-        <Grid container alignItems="center" justifyContent="space-evenly">
+        <Grid className={classes.test}>
             <Grid item>
             {users?.role === 'admin' &&
                 <IconButton
@@ -168,11 +187,8 @@ const UserMenu = ({user}) => {
                             </Typography>
                         </Box>
                     </Box>
-
                     <Divider/>
-
                     {user.role === 'admin' && adminSettings.map(setting => (
-
                         <MenuItem
                             key={setting.title}
                             component={Link}

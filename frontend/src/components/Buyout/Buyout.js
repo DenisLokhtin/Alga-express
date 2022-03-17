@@ -6,22 +6,35 @@ import FileInput from "../UI/FileInput/FileInput";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {makeStyles} from "@mui/styles";
 import {addBuyoutRequest, clearBuyoutsError} from "../../store/actions/buyoutActions";
-import theme from "../../theme";
+import {createTheme} from "@mui/material/styles";
 
-
-const useStyles = makeStyles(theme => ({
-    submit: {
-        margin: theme.spacing(3, 0, 2),
+const theme = createTheme({
+    breakpoints: {
+        values: {
+            sm: 768,
+        },
     },
+});
+
+const useStyles = makeStyles(() => ({
+    submit: {
+        margin: '24px 0 16px',
+    },
+
+    breakpoints: {
+        values: {
+            sm: 768,
+        },
+    },
+
     container: {
         width: "90%",
+        textAlign: 'center',
         margin: "0 auto",
-        marginTop: theme.spacing(2),
-        [theme.breakpoints.up('sm')]: {
-            width: '60%',
-        },
-        [theme.breakpoints.up('md')]: {
-            width: '50%',
+        paddingTop: '150px',
+        marginBottom: '30px',
+        [theme.breakpoints.down('sm')]: {
+            paddingTop: '100px',
         },
     },
 }));
@@ -33,14 +46,12 @@ const Buyout = () => {
     const loading = useSelector(state => state.buyouts.createLoading);
     const error = useSelector(state => state.buyouts.createError);
 
-
     const [buyout, setBuyout] = useState({
         description: "",
         image: null,
         url: "",
         country:"",
     });
-
 
     const submitFormHandler = e => {
         e.preventDefault();
@@ -57,7 +68,6 @@ const Buyout = () => {
             country: "",
         })
     };
-
 
     const inputChangeHandler = e => {
         const name = e.target.name;

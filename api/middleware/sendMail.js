@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
-const { Telegram } = require ('telegraf');
+// const { Telegram } = require ('telegraf');
 
-const telegramBot = new Telegram(process.env.BOT_TOKEN);
+// const telegramBot = new Telegram(process.env.BOT_TOKEN);
 
 const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
@@ -25,9 +25,9 @@ const mailData = (sendTo, subject, text, html) => {
 };
 
 const sendMail = async (sendTo, subject, text, html) => {
-    if (sendTo.telegram) {
-        await telegramBot.sendMessage(sendTo.telegram, text, {parse_mode: 'html'});
-    }
+    // if (sendTo.telegram) {
+    //     await telegramBot.sendMessage(sendTo.telegram, text, {parse_mode: 'html'});
+    // }
     transporter.sendMail(mailData(sendTo.email, subject, text, html), function (err, info) {
         if (err) {
             console.log(err);

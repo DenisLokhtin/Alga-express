@@ -5,8 +5,36 @@ import {fetchUsersRequest} from "../../store/actions/usersActions";
 import FormElement from "../UI/Form/FormElement";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {addPaymentAdminRequest} from "../../store/actions/paymentActions";
+import {createTheme} from "@mui/material/styles";
+import {makeStyles} from "@mui/styles";
+
+const theme = createTheme({
+    breakpoints: {
+        values: {
+            sm: 767,
+        },
+    },
+});
+
+const useStyles = makeStyles(() => ({
+    breakpoints: {
+        values: {
+            sm: 767,
+        },
+    },
+
+    container: {
+        textAlign: 'center',
+        paddingTop: '175px',
+        marginBottom: '30px',
+        [theme.breakpoints.down('sm')]: {
+            paddingTop: '120px',
+        },
+    }
+}));
 
 const AddPaymentAdmin = () => {
+    const classes = useStyles();
     const dispatch = useDispatch();
     const users = useSelector(state => state.users.users);
     const loading = useSelector(state => state.users.loadUserDate);
@@ -57,6 +85,7 @@ const AddPaymentAdmin = () => {
                 container
                 noValidate
                 spacing={5}
+                className={classes.container}
             >
                 <Grid item xs={12} sm={8} md={7} lg={7}>
                     <Autocomplete

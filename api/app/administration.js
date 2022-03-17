@@ -6,7 +6,7 @@ const PaymentMove = require("../models/PaymentMove");
 const User = require("../models/User");
 const TariffGroup = require("../models/TariffGroup");
 const sendMail = require('../middleware/sendMail');
-const {balanceText, balanceTextTelegram} = require('../email-texts');
+const {balanceText} = require('../email-texts');
 const filter = require("../middleware/filter");
 
 const router = express.Router();
@@ -91,7 +91,8 @@ router.post('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
 
                 await sendMail({email: user.email, telegram: user.idChat},
                     'Alga-express: Баланс пополнен',
-                    balanceTextTelegram(pay, user.balance, user.name),
+                    null,
+                    // balanceTextTelegram(pay, user.balance, user.name),
                     balanceText(pay, user.balance, user.name));
 
                 return res.status(200).send({status: true});
@@ -166,9 +167,10 @@ router.post('/cash', auth, permit('admin', 'superAdmin'), async (req, res) => {
         await paySave.save();
         const updatedUser = await User.findById(req.body.id);
 
-        await sendMail(updatedUser.email,
+        await sendMail({email: updatedUser.email},
             'Alga-express: Баланс пополнен',
-            balanceTextTelegram(price, updatedUser.balance, updatedUser.name),
+            null.
+            // balanceTextTelegram(price, updatedUser.balance, updatedUser.name),
             balanceText(price, updatedUser.balance, updatedUser.name));
 
         res.send('Оплата прошла успешно');
