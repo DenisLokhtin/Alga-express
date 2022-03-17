@@ -4,22 +4,37 @@ import {useDispatch, useSelector} from "react-redux";
 import {Container, FormControl, Grid, InputLabel, MenuItem, Select} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import {Editor} from "@tinymce/tinymce-react";
+import {createTheme} from "@mui/material/styles";
 import {changeInformationRequest, fetchInformationRequest} from "../../store/actions/informationActions";
-import theme from "../../theme";
 
-const useStyles = makeStyles(theme => ({
-    submit: {
-        margin: theme.spacing(3, 0, 2),
+const theme = createTheme({
+    breakpoints: {
+        values: {
+            sm: 767,
+        },
     },
+});
+
+const useStyles = makeStyles(() => ({
+    breakpoints: {
+        values: {
+            sm: 767,
+        },
+    },
+
     container: {
         width: "90%",
         margin: "0 auto",
-        marginTop: theme.spacing(2),
+        marginTop: '16px',
+        paddingTop: '170px',
         [theme.breakpoints.up('sm')]: {
             width: '60%',
         },
         [theme.breakpoints.up('md')]: {
             width: '50%',
+        },
+        [theme.breakpoints.down('sm')]: {
+            paddingTop: '90px',
         },
     },
 }));
@@ -132,7 +147,7 @@ const EditPages = () => {
                         fullWidth
                         variant="contained"
                         color="primary"
-                        className={classes.submit}
+                        sx={{marginBottom: '30px'}}
                     >
                         Изменить
                     </ButtonWithProgress>

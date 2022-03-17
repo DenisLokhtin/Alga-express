@@ -11,8 +11,47 @@ import CurrencyLiraIcon from "@mui/icons-material/CurrencyLira";
 import CurrencyYenIcon from "@mui/icons-material/CurrencyYen";
 import Checkbox from "@mui/material/Checkbox";
 import {deleteDeliveryRequest} from "../../store/actions/deliveryAction";
+import {createTheme} from "@mui/material/styles";
+import {makeStyles} from "@mui/styles";
+
+const theme = createTheme({
+    breakpoints: {
+        values: {
+            sm: 768,
+        },
+    },
+});
+
+const useStyles = makeStyles(() => ({
+    btn: {
+        margin: '24px 0 2px',
+    },
+    avatar: {
+        width: '56px',
+        height: '56px',
+        marginBottom: '15px',
+        margin: '0 auto',
+    },
+    breakpoints: {
+        values: {
+            sm: 768,
+        },
+    },
+
+    container: {
+        display: 'flex',
+        height: '550px',
+        width: '100%',
+        paddingTop: '12em',
+        marginBottom: '50px',
+        [theme.breakpoints.down('sm')]: {
+            paddingTop: '110px',
+        },
+    }
+}));
 
 const OrderHistory = () => {
+    const classes = useStyles();
     const [open, setOpen] = useState(false);
     const [currentModal, setCurrentModal] = useState({
         cargoNumber: "1",
@@ -206,9 +245,16 @@ const OrderHistory = () => {
     }, [page, dispatch, pageLimit, messagesEndRef]);
 
     return (
-        <Container maxWidth="xl" ref={messagesEndRef} style={{display: 'flex', height: '550px', width: '100%', marginTop: '5em'}}>
-            <DeliveryModal title={currentModal.title} track={currentModal.trackNumber} status={currentModal.status}
-                           country={currentModal.country} open={open} page={page} pageLimit={pageLimit}
+        <Container maxWidth="xl"
+                   ref={messagesEndRef}
+                   className={classes.container}
+        >
+            <DeliveryModal title={currentModal.title}
+                           track={currentModal.trackNumber}
+                           status={currentModal.status}
+                           country={currentModal.country}
+                           open={open} page={page}
+                           pageLimit={pageLimit}
                            close={handleClose}/>
             <TableComponent
                 rows={myRows}

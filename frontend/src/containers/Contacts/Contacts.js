@@ -42,12 +42,17 @@ const Contacts = () => {
     const messagesEndRef = useRef(null);
     const information = useSelector(state => state.information.allInformation);
 
+
     useEffect(() => {
-        if (!!messagesEndRef.current) {
-            messagesEndRef.current.scrollIntoView({
-                behavior: 'smooth'
-            }, 250);
-        }
+        window.scrollTo(0, 0);
+    }, []);
+
+    useEffect(() => {
+        // if (!!messagesEndRef.current) {
+        //     messagesEndRef.current.scrollIntoView({
+        //         behavior: 'smooth',
+        //     }, 250);
+        // }
         dispatch(fetchAllInformationRequest());
     }, [messagesEndRef, dispatch]);
 
@@ -60,7 +65,7 @@ const Contacts = () => {
     };
 
     return (
-        <Container style={{'textAlign': 'center'}} component='div' ref={messagesEndRef}>
+        <Container style={{'textAlign': 'center', paddingTop: '200px'}} component='div' ref={messagesEndRef}>
             <Container style={{
                 'borderRadius': '3px',
                 'margin': '10px 0 20px 0',

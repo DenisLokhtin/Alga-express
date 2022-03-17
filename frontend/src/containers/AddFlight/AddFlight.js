@@ -9,15 +9,38 @@ import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWit
 import {useNavigate} from "react-router-dom";
 import FlightIcon from '@mui/icons-material/Flight';
 import Avatar from "@mui/material/Avatar";
-import theme from "../../theme";
+import {createTheme} from "@mui/material/styles";
 
-const useStyles = makeStyles(theme => ({
+const theme = createTheme({
+    breakpoints: {
+        values: {
+            sm: 768,
+        },
+    },
+});
+
+const useStyles = makeStyles(() => ({
     btn: {
-        margin: theme.spacing(3, 0, 2),
+        margin: '24px 0 2px',
     },
     avatar: {
         width: '56px',
-        height: '56px'
+        height: '56px',
+        marginBottom: '15px',
+        margin: '0 auto',
+    },
+    breakpoints: {
+        values: {
+            sm: 768,
+        },
+    },
+
+    container: {
+        textAlign: 'center',
+        paddingTop: '180px',
+        [theme.breakpoints.down('sm')]: {
+            paddingTop: '110px',
+        },
     }
 }));
 
@@ -70,7 +93,7 @@ const AddFlight = () => {
     };
 
     return (
-        <Container ref={messagesEndRef} style={{justifyContent: "center"}} component="section" maxWidth="xs">
+        <Container ref={messagesEndRef} className={classes.container} component="section" maxWidth="xs">
             <div style={theme.paper}>
                 <Avatar className={classes.avatar}>
                     <FlightIcon fontSize='large'/>

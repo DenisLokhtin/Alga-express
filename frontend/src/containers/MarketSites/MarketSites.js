@@ -28,7 +28,7 @@ const MarketSites = () => {
             ref={messagesEndRef}
             component="section"
             maxWidth="md"
-            style={{textAlign: "center"}}>
+            style={{textAlign: "center", paddingTop: '160px'}}>
             <Grid container justifyContent={"center"} direction={"column"}>
                 <Typography variant={"h6"} textAlign={"center"}>
                     Где вы можете купить товар

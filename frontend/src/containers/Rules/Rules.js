@@ -19,7 +19,7 @@ const Rules = () => {
     }, [dispatch, messagesEndRef]);
 
     return (
-        <Container ref={messagesEndRef} component='div'>
+        <Container ref={messagesEndRef} component='div' style={{paddingTop: '150px'}}>
             <div className="post__content" dangerouslySetInnerHTML={{__html: page.text}}/>
         </Container>
     )
