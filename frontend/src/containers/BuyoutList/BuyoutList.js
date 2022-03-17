@@ -7,7 +7,15 @@ import {makeStyles} from "@mui/styles";
 import {apiURL} from "../../config";
 import {editBuyout, newPackageRegister} from "../../paths";
 import {Link} from "react-router-dom";
+import {createTheme} from "@mui/material/styles";
 
+const theme = createTheme({
+    breakpoints: {
+        values: {
+            sm: 767,
+        },
+    },
+});
 
 const useStyles = makeStyles({
     card: {
@@ -22,16 +30,29 @@ const useStyles = makeStyles({
         padding: "5px 15px",
         backgroundColor: "white",
         textDecoration: "none",
+    },
+
+    breakpoints: {
+        values: {
+            sm: 767,
+        },
+    },
+
+    container: {
+        textAlign: 'center',
+        paddingTop: '175px',
+        marginBottom: '30px',
+        [theme.breakpoints.down('sm')]: {
+            paddingTop: '115px',
+        },
     }
 });
-
 
 const BuyoutList = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const user = useSelector(state => state.users.user);
     const buyouts = useSelector(state => state.buyouts.buyouts);
-
 
     const messagesEndRef = useRef(null);
 
@@ -49,7 +70,7 @@ const BuyoutList = () => {
     }, [messagesEndRef, dispatch]);
 
     return (
-        <Container ref={messagesEndRef}>
+        <Container ref={messagesEndRef} className={classes.container}>
             <Grid container>
                 {buyouts && buyouts.map(b => (
                     <Grid item xs={8} sm={6} md={4} lg={3} key={b._id}>

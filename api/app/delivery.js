@@ -15,7 +15,7 @@ router.get('/', auth, permit('admin'), async (req, res) => {
     }
 });
 
-router.put('/', auth, permit('user'), async (req, res) => {
+router.put('/', auth, permit('user', 'admin', 'warehouseman', 'superAdmin'), async (req, res) => {
     try {
         const updatedDelivery = await Delivery.findOneAndUpdate({_id: req.params._id}, {
             completed: req.body.completed,
@@ -28,7 +28,7 @@ router.put('/', auth, permit('user'), async (req, res) => {
     }
 });
 
-router.post('/', auth, permit('user'), async (req, res) => {
+router.post('/', auth, permit('user', 'admin', 'warehouseman', 'superAdmin'), async (req, res) => {
     try {
         const deliveryData = {
             address: req.body.address,
@@ -47,7 +47,7 @@ router.post('/', auth, permit('user'), async (req, res) => {
     }
 });
 
-router.delete('/:trackNumber', auth, permit('user'), async (req, res) => {
+router.delete('/:trackNumber', auth, permit('user', 'admin', 'warehouseman', 'superAdmin'), async (req, res) => {
     try {
         await Delivery.findOneAndDelete({trackNumber: req.params.trackNumber});
         res.send('Удалено');

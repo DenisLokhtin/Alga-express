@@ -19,9 +19,9 @@ const HowItWorks = () => {
     }, [dispatch, messagesEndRef]);
 
     return (
-        <Container ref={messagesEndRef} component='div'>
-                <Requisites/>
-                <div className="post__content" dangerouslySetInnerHTML={{__html: page.text}}/>
+        <Container ref={messagesEndRef} component='div' style={{paddingTop: '150px'}}>
+            <Requisites/>
+            <div className="post__content" dangerouslySetInnerHTML={{__html: page.text}}/>
         </Container>
     )
 };

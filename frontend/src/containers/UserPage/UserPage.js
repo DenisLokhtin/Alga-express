@@ -19,6 +19,8 @@ import {fetchPaymentRequest} from "../../store/actions/paymentActions";
 import Typography from "@mui/material/Typography";
 import ImageModal from "../../components/UI/ImageModal/ImageModal";
 import ImageIcon from '@mui/icons-material/Image';
+import {createTheme} from "@mui/material/styles";
+import {makeStyles} from "@mui/styles";
 
 function a11yProps(index) {
     return {
@@ -27,7 +29,32 @@ function a11yProps(index) {
     };
 }
 
+const theme = createTheme({
+    breakpoints: {
+        values: {
+            sm: 767,
+        },
+    },
+});
+
+const useStyles = makeStyles(() => ({
+    breakpoints: {
+        values: {
+            sm: 767,
+        },
+    },
+    container: {
+        textAlign: 'center',
+        paddingTop: '140px',
+        marginBottom: '30px',
+        [theme.breakpoints.down('sm')]: {
+            paddingTop: '90px',
+        },
+    }
+}));
+
 const UserPage = () => {
+    const classes = useStyles();
     const dispatch = useDispatch();
     const messagesEndRef = useRef(null);
     const [value, setValue] = useState(0);
@@ -116,6 +143,8 @@ const UserPage = () => {
             }, 200);
         }
 
+        console.log('weqwe');
+
         dispatch(getOrdersHistoryRequest({page: packagesPage, limit: packagesPageLimit, id: userId}));
         dispatch(fetchBuyoutsList({page: buyoutsPage, limit: buyoutsPageLimit, id: userId}));
         dispatch(fetchPaymentRequest({page: paymentsPage, limit: paymentsPageLimit, id: userId}));
@@ -131,10 +160,14 @@ const UserPage = () => {
         if (paymentsHistory) {
             dispatch(fetchPaymentRequest({page: paymentsPage, limit: paymentsPageLimit, history: true, id: userId}));
         }
-    }, [messagesEndRef]);
+    }, [
+        messagesEndRef, dispatch, packagesPage, paymentsPage,
+        packagesPageLimit, userId, buyoutsPageLimit, paymentsPageLimit,
+        buyoutsHistory, buyoutsPage, packagesHistory, paymentsHistory
+    ]);
 
     return (
-        <Container ref={messagesEndRef}>
+        <Container ref={messagesEndRef} className={classes.container}>
             <h2>Мой портфель</h2>
 
             <Grid container justifyContent="space-between" spacing={2}>
