@@ -16,14 +16,40 @@ import TelegramIcon from '@mui/icons-material/Telegram';
 import PhoneIcon from '@mui/icons-material/Phone';
 import EmailIcon from '@mui/icons-material/Email';
 import {fetchAllInformationRequest} from "../../../store/actions/informationActions";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 const Footer = () => {
     const dispatch = useDispatch();
+    const information = useSelector(state => state.information.allInformation);
 
     useEffect(() => {
         dispatch(fetchAllInformationRequest());
     }, [dispatch]);
+
+    const print = (name) => {
+        const days = ['Пн:', 'Вт:', 'Ср:', 'Чт:', 'Пт:', 'Сб:', 'Вс:'];
+
+        if (information.length !== 0) {
+            let someArr = information.filter(item => item.name === name);
+            if (name === 'schedule') {
+                return (
+                    someArr[0].text.map((item, index) => {
+                        return (
+                            <span style={{display: 'block'}} key={index}><strong>{days[index]}</strong> {item}</span>
+                        )
+                    })
+                )
+            } else {
+                return (
+                    someArr[0].text.map((item, index) => {
+                        return (
+                            <span style={{display: 'block'}} key={index}>{item}</span>
+                        )
+                    })
+                )
+            }
+        }
+    };
 
     return (
         <footer className="footer">
@@ -68,24 +94,20 @@ const Footer = () => {
                         <ul className="ft-main-list">
                             <li className="ft-main-list__item">
                                 <PhoneIcon/>
-                                <a className="ft-main-list__link ft-main-list-contacts" href="tel:+996774769434">
-                                    0774769434
-                                </a>
+                                <span style={{marginLeft: '5px'}}>{print('contacts')}</span>
                             </li>
                             <li className="ft-main-list__item">
                                 <EmailIcon/>
-                                <a className="ft-main-list__link ft-main-list-contacts" href="mailto:algaexpresskargo@gmail.com">
+                                <a className="ft-main-list__link ft-main-list-contacts"
+                                   href="mailto:algaexpresskargo@gmail.com">
                                     algaexpresskargo@gmail.com
                                 </a>
                             </li>
                             <li className="ft-main-list__item">
-                                Ждём ваших звонков
+                                {print('officeAdress')}
                             </li>
-                            <li className="ft-main-list__item schedule">
-                               c 09:00 до 18:00
-                            </li>
-                            <li className="ft-main-list__item schedule">
-                               (вс, чт - выходной)
+                            <li>
+                                {print('schedule')}
                             </li>
                         </ul>
                     </div>
