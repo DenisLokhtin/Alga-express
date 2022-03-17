@@ -75,7 +75,10 @@ const PackageSchema = new mongoose.Schema({
         enum: ['REGISTERED', 'ON_WAREHOUSE', 'ON_WAY', 'PROCESSED','DELIVERED', 'DONE', 'ERASED'],
         default: 'REGISTERED',
     },
-    deleted: Boolean,
+    deleted: {
+        type: Boolean,
+        default: false,
+    },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',

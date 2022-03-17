@@ -50,6 +50,7 @@ const EditPages = () => {
     const submitFormHandler = e => {
         e.preventDefault();
         dispatch(changePagesRequest(data));
+        setData({page: "", text: ""});
     };
 
     const inputChangeHandler = e => {
@@ -93,6 +94,7 @@ const EditPages = () => {
                             id="demo-controlled-open-select"
                             defaultValue=''
                             label="Страница"
+                            value={data.page}
                             name="page"
                             required
                             onChange={inputChangeHandler}
@@ -109,7 +111,7 @@ const EditPages = () => {
 
                 <Grid item>
                     <Editor
-                        apiKey='rd2sys4x7q7uu8l0tvehv3sl6wisqzs1pp15gvq3jwssgvft'
+                        apiKey='jucp3aljkh783o2yj0379rihg44ldm2wgjxvz10pu9i9m7ja'
                         value={data.text}
                         init={{
                             height: 600,

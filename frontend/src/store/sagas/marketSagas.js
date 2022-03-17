@@ -39,7 +39,7 @@ export function* deleteMarketSaga({payload: id}) {
     try {
         yield axiosApi.delete('/market/'+id);
         yield put(deleteMarketSuccess(id));
-        toast.success('Deleted');
+        toast.success('Успешно удален!');
     } catch (error) {
         if (!error.response) {
             toast.error(error.message);

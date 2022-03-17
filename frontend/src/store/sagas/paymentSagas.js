@@ -12,6 +12,7 @@ import {
     paymentAcceptedSuccess,
 } from "../actions/paymentActions";
 import {toast} from "react-toastify";
+import History from "../../History";
 
 export function* fetchPaymentAdmin ({payload: paymentsData}){
     let response;
@@ -57,6 +58,7 @@ export function* addPaymentAdmin ({payload}){
         yield put (paymentAcceptedSuccess());
         yield put(fetchPaymentFailure());
         toast.success(payment.data);
+        History.push('/');
     } catch (e) {
         // toast.error(e.response.data.error);
         yield put (fetchPaymentFailure(e.response.data));
