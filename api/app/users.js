@@ -108,11 +108,13 @@ router.post('/forgot', async (req, res) => {
     try {
         const user = await User.findOne({email: req.body.email});
 
+        console.log(user)
+
         if (!user) return res.status(404).send({message: 'Такая почта не найдена'});
 
         const resetCode = nanoid(8);
         await User.findOneAndUpdate({email: user.email}, {resetCode});
-        sendMail(user.email,'Сброс пароля', null,emailDistribution.passwordReset(resetCode, user.name))
+       await sendMail({email: user.email}, 'Сброс пароля', null, emailDistribution.passwordReset(resetCode, user.name))
         res.send({message: "Код сброса пароля отправлен на почту!"})
 
         const userToBeUpdated = await User.findOne({resetCode: resetCode});
@@ -133,19 +135,24 @@ router.post('/forgot', async (req, res) => {
 
 router.post('/reset', async (req, res) => {
     try {
-        const user = await User.find({resetCode: req.body.secretCode});
+        let user = await User.findOne({resetCode: req.body.secretCode});
         if (!user) {
             console.log('error')
             return res.status(404).send({message: 'Неправильный код'})
         }
-        const newPassword = req.body.password;
+        user.password = req.body.password
 
-        const salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
-        const password2 = await bcrypt.hash(newPassword, salt);
+        user.$ignore('email');
+       await user.save()
+// const newPassword = req.body.password
+//
+//         const salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
+//         const password2 = await bcrypt.hash(newPassword, salt);
 
-        await User.findOneAndUpdate({resetCode: req.body.secretCode}, {password: password2});
+        // await User.findOneAndUpdate({resetCode: req.body.secretCode}, {password: password2});
         res.send({message: " Пароль успешно изменен"});
     } catch (e) {
+        console.log(e.message)
         res.status(500).send(e);
     }
 })

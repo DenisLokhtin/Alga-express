@@ -25,9 +25,10 @@ const mailData = (sendTo, subject, text, html) => {
 };
 
 const sendMail = async (sendTo, subject, text, html) => {
-    if (sendTo.telegram) {
-        await telegramBot.sendMessage(sendTo.telegram, text, {parse_mode: 'html'});
-    }
+    // if (sendTo.telegram) {
+    //     await telegramBot.sendMessage(sendTo.telegram, text, {parse_mode: 'html'});
+    // }
+    console.log(sendTo.email);
     transporter.sendMail(mailData(sendTo.email, subject, text, html), function (err, info) {
         if (err) {
             console.log(err);

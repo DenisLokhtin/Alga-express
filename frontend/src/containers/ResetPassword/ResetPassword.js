@@ -34,6 +34,7 @@ const ResetPassword = () => {
     const error = useSelector(state => state.users.resetError);
     const isUser = useSelector(state => state.users.user);
 
+    console.log(error);
 
     const [user, setUser] = useState({
         secretCode: '',
@@ -118,7 +119,7 @@ const ResetPassword = () => {
                 {
                     error &&
                     <Alert align="center" severity="error" className={classes.alert}>
-                        <AlertTitle>{error.message || error.global}</AlertTitle>
+                        <AlertTitle>{error?.errors?.password?.message || error?.message || error.global}</AlertTitle>
                     </Alert>
                 }
 
