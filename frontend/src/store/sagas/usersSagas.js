@@ -78,6 +78,7 @@ export function* loginUserSaga({payload: user}) {
         user.navigate('/', true);
         yield put(loginUserSuccess(response.data));
         toast.success('Вы авторизированы!');
+        History.push('/user/page');
     } catch (e) {
         toast.error(e.response.data.global);
         yield put(loginUserFailure(e.response.data));

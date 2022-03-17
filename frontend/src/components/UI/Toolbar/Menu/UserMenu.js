@@ -29,7 +29,7 @@ import {
     orderBuyouts,
     packageHistory,
     packageInfo,
-    processingTrackNumbersAdmin,
+    processingTrackNumbersAdmin, userPage,
     userPaymentsList
 } from "../../../../paths";
 import Avatar from "@mui/material/Avatar";
@@ -38,11 +38,13 @@ import EditIcon from '@mui/icons-material/Edit';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PaidIcon from '@mui/icons-material/Paid';
 import InfoIcon from '@mui/icons-material/Info';
+import HomeIcon from '@mui/icons-material/Home';
 import {makeStyles} from "@mui/styles";
 import {apiURL} from "../../../../config";
 
 const userSettings = [
     {url: editUserProfile, title: 'Личный кабинет', icon: <ManageAccountsIcon/>},
+    {url: userPage, title: 'Моя страница', icon: <HomeIcon/>},
     {url: packageHistory, title: 'История заказов', icon: <HistoryIcon/>},
     {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon/>},
     {url: orderBuyouts, title: 'Заказать выкуп', icon: <ShoppingCartIcon/>},
