@@ -9,7 +9,7 @@ const InformationSchema = new mongoose.Schema({
         trim: true,
     },
     text: {
-        type: String,
+        type: Array,
         required: true,
     },
 });

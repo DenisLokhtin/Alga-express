@@ -21,7 +21,7 @@ const styles = {
 
 const ImageModal = ({open, onClose, data}) => {
     return (
-        <Modal
+        data && <Modal
             aria-labelledby="transition-modal-title"
             aria-describedby="transition-modal-description"
             open={open}

@@ -9,8 +9,6 @@ import {
     sitesCompany
 } from "../../../paths";
 import {Link} from "react-router-dom";
-import {useDispatch} from "react-redux";
-import {fetchAllInformationRequest} from "../../../store/actions/informationActions";
 import './Footer.css';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';

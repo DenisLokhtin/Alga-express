@@ -45,7 +45,7 @@ const checkHistoryPayments = (data, user_id) => {
     const filterData = {};
 
     if (user_id) {
-        filterData.user = user_id
+        filterData.user = user_id;
     }
 
     data.history ? filterData.status = true : filterData.status = false;
@@ -77,6 +77,7 @@ const filter = (inputData, type) => {
     }
 
     if (inputData.role === 'user') {
+        console.log('input user', inputData);
         if (type === 'packages') {
             return checkHistoryPackages(inputData, inputData.id);
         } else if (type === 'buyouts') {

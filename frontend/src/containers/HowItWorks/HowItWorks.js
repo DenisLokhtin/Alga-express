@@ -2,6 +2,7 @@ import React, {useEffect, useRef} from 'react';
 import Container from "@mui/material/Container";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchPagesRequest} from "../../store/actions/pagesAction";
+import Requisites from "../../components/Requisites/Requisites";
 
 const HowItWorks = () => {
     const dispatch = useDispatch();
@@ -19,7 +20,8 @@ const HowItWorks = () => {
 
     return (
         <Container ref={messagesEndRef} component='div' style={{paddingTop: '150px'}}>
-                <div className="post__content" dangerouslySetInnerHTML={{__html: page.text}}/>
+            <Requisites/>
+            <div className="post__content" dangerouslySetInnerHTML={{__html: page.text}}/>
         </Container>
     )
 };

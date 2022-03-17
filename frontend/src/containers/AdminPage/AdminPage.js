@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Container} from "@mui/material";
+import {Container, IconButton} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchCurrencies} from "../../store/actions/currenciesActions";
 import CurrenciesCard from "../../components/CurrenciesCard/CurrenciesCard";
@@ -19,6 +19,9 @@ import SwitchElement from "../../components/UI/SwitchElement/SwitchElement";
 import ImageModal from "../../components/UI/ImageModal/ImageModal";
 import {createTheme} from "@mui/material/styles";
 import {makeStyles} from "@mui/styles";
+import ImageIcon from "@mui/icons-material/Image";
+
+// import ImageModal from "../../components/UI/ImageModal/ImageModal";
 
 function a11yProps(index) {
     return {
@@ -57,14 +60,8 @@ const AdminPage = () => {
     const dispatch = useDispatch();
     const messagesEndRef = useRef(null);
     const [value, setValue] = useState(0);
-
     const [openImg, setOpenImg] = useState(false);
     const [img, setImg] = useState(null);
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
-
     const currencies = useSelector(state => state.currencies.currencies);
 
     const buyouts = useSelector(state => state.buyouts.buyouts);
@@ -93,6 +90,10 @@ const AdminPage = () => {
     const [paymentsPageLimit, setPaymentsPageLimit] = useState(10);
     const [paymentsSelectionModel, setPaymentsSelectionModel] = useState([]);
     const paymentsPrevSelection = useRef(paymentsSelectionModel);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
 
     const packagesRows = packages.map(order => {
         return {
@@ -146,22 +147,38 @@ const AdminPage = () => {
         if (packagesHistory) {
             dispatch(getOrdersHistoryRequest({page: packagesPage, limit: packagesPageLimit, history: true}));
         }
+
+        if (buyoutsHistory) {
+            dispatch(fetchBuyoutsList({page: buyoutsPage, limit: buyoutsPageLimit, history: true}));
+        }
+
+        if (paymentsHistory) {
+            dispatch(fetchPaymentRequest({page: paymentsPage, limit: paymentsPageLimit, history: true}));
+        }
+
     }, [dispatch,
         messagesEndRef,
         packagesPage,
         packagesPageLimit,
         buyoutsPage,
         buyoutsPageLimit,
+        buyoutsHistory,
         paymentsPage,
         paymentsPageLimit,
-        packagesHistory
+        packagesHistory,
+        paymentsHistory
     ]);
 
     return (
         <Container ref={messagesEndRef} className={classes.container}>
             <Box sx={{ width: '100%'}}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                    <Tabs
+                        value={value}
+                        onChange={handleChange}
+                        variant="scrollable"
+                        scrollButtons="auto"
+                    >
                         <Tab label="Посылки" {...a11yProps(0)} />
                         <Tab label="Выкупы" {...a11yProps(1)} />
                         <Tab label="Пополнения" {...a11yProps(3)} />
@@ -226,7 +243,30 @@ const AdminPage = () => {
                 <TabPanelComponent value={value} index={2}>
                     <TableComponent
                         rows={paymentsRows}
-                        columns={paymentsColumns}
+                        columns={[
+                            {
+                                field: 'image',
+                                renderCell: (params => (
+                                        <IconButton
+                                            onClick={() => {
+                                                setOpenImg(true);
+                                                setImg(params.row);
+                                            }}
+                                            sx={{cursor: 'pointer'}}
+                                        >
+                                            <ImageIcon sx={{fontSize: "48px"}}/>
+                                        </IconButton>
+                                    )
+                                ),
+                                headerName: 'Квитанция',
+                                flex: 1,
+                                minWidth: 150,
+                                headerAlign: 'center',
+                                align: 'center',
+                            },
+                            ...paymentsColumns,
+
+                        ]}
                         pageSize={paymentsPageLimit}
                         rowCount={paymentsTotalRow}
                         rowHeight={150}

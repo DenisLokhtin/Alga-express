@@ -1,8 +1,10 @@
 import React, {useEffect, useRef, useState} from "react";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
 import {useDispatch, useSelector} from "react-redux";
-import {Container, FormControl, Grid, InputLabel, MenuItem, Select} from "@mui/material";
+import {Container, FormControl, Grid, InputLabel, MenuItem, Select, TextareaAutosize} from "@mui/material";
 import {makeStyles} from "@mui/styles";
+import theme from "../../theme";
+import FormElement from "../UI/Form/FormElement";
 import {Editor} from "@tinymce/tinymce-react";
 import {createTheme} from "@mui/material/styles";
 import {changeInformationRequest, fetchInformationRequest} from "../../store/actions/informationActions";
@@ -42,11 +44,11 @@ const useStyles = makeStyles(() => ({
 const EditPages = () => {
     const dispatch = useDispatch();
     const classes = useStyles();
-    const information = useSelector(state => state.information.information);
-
-    const [data, setData] = useState({
-        information: "",
-        text: "",
+    const information = useSelector(state => state.information.allInformation);
+    const [data, setData] = useState('');
+    const [changedArr, setChangeArr] = useState({
+        information: '',
+        text: [],
     });
 
     const messagesEndRef = useRef(null);
@@ -57,28 +59,64 @@ const EditPages = () => {
                 behavior: 'smooth'
             }, 250);
         }
-        if (!!information) {
-            setData({information: information.name, text: information.text});
+
+        let arr = information.filter(item => item.name === data);
+        if (arr.length !== 0) {
+            setChangeArr(prevState => {
+                return {...prevState, text: [...arr[0].text], information: data}
+            });
         }
-    }, [information, messagesEndRef]);
+    }, [messagesEndRef, information, data]);
 
     const submitFormHandler = e => {
         e.preventDefault();
-        dispatch(changeInformationRequest(data));
+        dispatch(changeInformationRequest(changedArr));
     };
 
     const inputChangeHandler = e => {
-        dispatch(fetchInformationRequest(e.target.value));
+        setData(e.target.value);
+    };
 
-        setData(prevState => {
-            return {...prevState, text: information.text};
+    const handleEditorChange = (e, i) => {
+        const copyArr = [...changedArr.text];
+        copyArr[i] = e.target.value;
+        setChangeArr(prevState => {
+            return {...prevState, text: [...copyArr]};
         });
     };
 
-    const handleEditorChange = (content) => {
-        setData(prevState => {
-            return {...prevState, text: content}
-        });
+    const printInputs = (name) => {
+        const days = ['Пн:', 'Вт:', 'Ср:', 'Чт:', 'Пт:', 'Сб:', 'Вс:'];
+
+        if (information.length !== 0 && name) {
+            if (name === 'schedule') {
+                return (
+                    changedArr.text.map((item, index) => {
+                        return (
+                            <FormElement
+                                type="text"
+                                key={index}
+                                label={days[index]}
+                                name="schedule"
+                                value={changedArr.text[index]}
+                                required={true}
+                                onChange={(e) => handleEditorChange(e, index)}
+                            />
+                        )
+                    })
+                )
+            } else {
+                return (
+                    changedArr.text.map((item, index) => {
+                        return (
+                            <TextareaAutosize name="info" style={{height: '100px', marginLeft: '10px'}} id="info"
+                                              onChange={(e) => handleEditorChange(e, index)}
+                                              value={changedArr.text[index]} key={index}/>
+                        )
+                    })
+                )
+            }
+        }
     };
 
     return (
@@ -115,30 +153,16 @@ const EditPages = () => {
                             <MenuItem value={''}/>
                             <MenuItem value={'schedule'}>График работы</MenuItem>
                             <MenuItem value={'officeAdress'}>Адрес офиса</MenuItem>
-                            <MenuItem value={'warehouseAddresses'}>Адреса Складов</MenuItem>
                             <MenuItem value={'contacts'}>Контакты</MenuItem>
                         </Select>
                     </FormControl>
                 </Grid>
 
-                <Grid item>
-                    <Editor
-                        apiKey='rd2sys4x7q7uu8l0tvehv3sl6wisqzs1pp15gvq3jwssgvft'
-                        value={data.text}
-                        init={{
-                            height: 600,
-                            menubar: false,
-                            plugins: [
-                                'advlist autolink lists link image',
-                                'charmap print preview anchor help',
-                                'searchreplace visualblocks code',
-                                'insertdatetime media table paste wordcount'
-                            ],
-                            toolbar:
-                                'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullinformation | forecolor backcolory | outdent indent'
-                        }}
-                        onEditorChange={handleEditorChange}
-                    />
+                <Grid
+                    container spacing={2} direction="column"
+                    style={{'marginBottom': '15px', 'marginTop': '15px', 'marginLeft': '5px'}}
+                >
+                    {printInputs(data)}
                 </Grid>
 
                 <Grid item xs={12}>

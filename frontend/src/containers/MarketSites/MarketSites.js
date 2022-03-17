@@ -1,11 +1,13 @@
 import React, {Fragment, useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {deleteMarketRequest, fetchMarketRequest} from "../../store/actions/marketActions";
-import {Card, CardMedia, Container, Grid, IconButton, Link, Typography} from "@mui/material";
+import {Card, CardMedia, Container, Grid, IconButton, Link} from "@mui/material";
 import {apiURL} from "../../config";
 import MarketAdmin from "../../components/MarketAdmin/MarketAdmin";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import AppWindow from "../../components/UI/AppWindow/AppWindow";
+
+
 
 const MarketSites = () => {
     const dispatch = useDispatch();
@@ -30,9 +32,6 @@ const MarketSites = () => {
             maxWidth="md"
             style={{textAlign: "center", paddingTop: '160px'}}>
             <Grid container justifyContent={"center"} direction={"column"}>
-                <Typography variant={"h6"} textAlign={"center"}>
-                    Где вы можете купить товар
-                </Typography>
                 <Grid container direction="row" spacing={2} justifyContent={"center"}>
                     {market && market.map(m => (
                         <Fragment key={m._id}>
@@ -47,7 +46,7 @@ const MarketSites = () => {
                                 </Link>
                                 {user && user.role === 'admin' && (
                                     <>
-                                        <IconButton
+                                        <IconButton style={{position: "absolute", top: '0', right: '-20px'}}
                                             onClick={() => setOpen(true)}>
                                             <HighlightOffIcon/>
                                         </IconButton>
@@ -57,7 +56,7 @@ const MarketSites = () => {
                                 )}
                                 {user && user.role === 'superAdmin' && (
                                     <>
-                                        <IconButton
+                                        <IconButton style={{position: "absolute", top: '0', right: '-20px'}}
                                             onClick={() => setOpen(true)}>
                                             <HighlightOffIcon/>
                                         </IconButton>

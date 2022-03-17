@@ -1,11 +1,12 @@
 class distributions {
-    passwordReset(code) {
+    passwordReset(code, user) {
         return (
             `<div>
-                <p>Здравствуйте!</p>
+                <p>Здравствуйте уважаемый(ая) ${user}!</p>
                 <p>Мы получили запрос о смене пароля к вашему  аккаунту.</p> 
                 <p>Код для сброса пароля: <b>${code}</b></p>
                 <p>Для изменения пароля, пожалуйста,  <a href="http://localhost:3000/secret/reset-password">Перейдите по ссылке</a></p>
+                <p>Код для сброса действителен только в течении 5 минут</p>
                 <p>Если вы не отправляли запрос - просто проигнорируйте это письмо.</p>
                 <p>С уважением Alga-express</p>
             </div>`
@@ -14,7 +15,7 @@ class distributions {
     balanceText(balance, currentBalance, user) {
         return (
             `<div>
-                <p>Здравствуйте уважаемый ${user}!</p>
+                <p>Здравствуйте уважаемый(ая) ${user}!</p>
                 <p>Ваш баланс пополнен на <b>${balance}</b> сом.</p>
                 <p>Ваш текущий баланс составляет: <b>${currentBalance}</b> сом.</p>
                 <p>Подробную выписку можно посмотреть в вашем личном кабинете.</p>
@@ -22,13 +23,19 @@ class distributions {
             </div>`
         )}
 
+    balanceTextTelegram(balance, currentBalance, user) {
+        return `Здравствуйте уважаемый ${user}!
+                Ваш баланс пополнен на <b>${balance}</b> сом.
+                Ваш текущий баланс составляет: <i><b>${currentBalance}</b></i> сом.
+                Подробную выписку можно посмотреть в вашем личном кабинете.
+                С уважением Alga-express`
+        }
 
-    packagesText(cargoNumber, packagesTitle) {
+    packagesText(cargoNumber, packagesStatus, user) {
         return (
             `<div>
-                <p>Здравствуйте!</p>
-                <p>Посылка прибыла на наш склад и готова к доставке:</p> 
-                <p>${cargoNumber}  ${packagesTitle}</p>
+                <p>Здравствуйте уважаемый(ая) ${user}!</p>
+                <p>Статус вашей посылки ${cargoNumber} изменен на ${packagesStatus}</p> 
                 <p>Стоимость доставки и ваш баланс вы можете проверить в вашем личном кабинете</p>
                 <p>С уважением Alga-express</p>
             </div>`

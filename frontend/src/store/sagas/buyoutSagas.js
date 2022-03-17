@@ -27,8 +27,6 @@ import {
 import {listBuyouts} from "../../paths";
 import History from "../../History";
 
-
-
 export function* getBuyoutSagas() {
     try {
         const response = yield axiosApi.get('/buyouts');
@@ -54,7 +52,7 @@ export function* addBuyoutSaga({payload}) {
     try {
         yield axiosApi.post( '/buyouts', payload);
         yield put(addBuyoutSuccess());
-       History.push(listBuyouts);
+        History.push(listBuyouts);
         toast.success('Новый заказ выкупа добавлен!');
 
     } catch (error) {
@@ -101,10 +99,28 @@ function* editBuyoutStatusSagas({payload: id}) {
     }
 }
 
-function* fetchBuyoutsListSaga({payload}) {
+function* fetchBuyoutsListSaga({payload: buyoutsData}) {
+    let response;
+    const page = buyoutsData.page;
+    const limit = buyoutsData.limit;
+    const id = buyoutsData.id;
+    const history = buyoutsData.history;
+
     try {
-        const {data} = yield axiosApi.get(`/buyouts/list?page=${payload.page}&limit=${payload.limit}`)
-        yield put(fetchBuyoutsListSuccess(data));
+        if (id) {
+            if (history) {
+                response = yield axiosApi.get(`/buyouts/list?page=${page}&limit=${limit}&history=${true}&id=${id}`)
+            } else {
+                response = yield axiosApi.get(`/buyouts/list?page=${page}&limit=${limit}&id=${id}`)
+            }
+        } else {
+            if (history) {
+                response = yield axiosApi.get(`/buyouts/list?page=${page}&limit=${limit}&history=${true}`)
+            } else {
+                response = yield axiosApi.get(`/buyouts/list?page=${page}&limit=${limit}`)
+            }
+        }
+        yield put(fetchBuyoutsListSuccess(response.data));
     } catch (e) {
         yield put(fetchBuyoutsListFailure(e));
     }

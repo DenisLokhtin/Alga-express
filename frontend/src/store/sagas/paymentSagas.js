@@ -12,12 +12,29 @@ import {
     paymentAcceptedSuccess,
 } from "../actions/paymentActions";
 import {toast} from "react-toastify";
+import History from "../../History";
 
-export function* fetchPaymentAdmin ({payload}){
-    const page = payload.page;
-    const limit = payload.limit;
+export function* fetchPaymentAdmin ({payload: paymentsData}){
+    let response;
+    const page = paymentsData.page;
+    const limit = paymentsData.limit;
+    const id = paymentsData.id;
+    const history = paymentsData.history;
+
     try {
-        const response = yield axiosApi.get(`/cargo?page=${page}&limit=${limit}`);
+        if (id) {
+            if (history) {
+                response = yield axiosApi.get(`/cargo?page=${page}&limit=${limit}&history=${true}&id=${id}`);
+            } else {
+                response = yield axiosApi.get(`/cargo?page=${page}&limit=${limit}&id=${id}`);
+            }
+        } else {
+            if (history) {
+                response = yield axiosApi.get(`/cargo?page=${page}&limit=${limit}&history=${true}`);
+            } else {
+                response = yield axiosApi.get(`/cargo?page=${page}&limit=${limit}`);
+            }
+        }
         yield put (fetchPaymentSuccess(response.data));
     } catch (e) {
         toast.error(e.response.data.error);
@@ -41,6 +58,7 @@ export function* addPaymentAdmin ({payload}){
         yield put (paymentAcceptedSuccess());
         yield put(fetchPaymentFailure());
         toast.success(payment.data);
+        History.push('/');
     } catch (e) {
         // toast.error(e.response.data.error);
         yield put (fetchPaymentFailure(e.response.data));
