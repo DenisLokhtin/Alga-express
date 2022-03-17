@@ -6,7 +6,7 @@ import {
     howCompany,
     newsCompany,
     rulesCompany,
-    sitesCompany
+    sitesCompany, wareHouseCompany
 } from "../../../paths";
 import {Link} from "react-router-dom";
 import './Footer.css';
@@ -85,7 +85,7 @@ const Footer = () => {
                                 <Link className="ft-main-list__link" to={faqCompany}>FAQ</Link>
                             </li>
                             <li className="ft-main-list__item">
-                                <Link className="ft-main-list__link" to={contactsCompany}>Адреса складов</Link>
+                                <Link className="ft-main-list__link" to={wareHouseCompany}>Адреса складов</Link>
                             </li>
                         </ul>
                     </div>
