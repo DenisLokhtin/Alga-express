@@ -4,7 +4,7 @@ const cors = require('cors');
 const news = require('./app/news');
 const mongoose = require('mongoose');
 const exitHook = require('async-exit-hook');
-const {Telegraf} = require('telegraf')
+// const {Telegraf} = require('telegraf')
 const users = require('./app/users');
 const userEdit = require('./app/usersProfileEdit');
 const market = require('./app/market');
@@ -21,13 +21,13 @@ const tariffs = require('./app/tariffs');
 const help = require('./help_commands');
 const User = require("./models/User");
 
-const token = process.env.BOT_TOKEN
-
-if (token === undefined) {
-    throw new Error('BOT_TOKEN must be provided!')
-}
-
-const bot = new Telegraf(token);
+// const token = process.env.BOT_TOKEN
+//
+// if (token === undefined) {
+//     throw new Error('BOT_TOKEN must be provided!')
+// }
+//
+// const bot = new Telegraf(token);
 
 const currencies = require('./app/currencies');
 const delivery = require('./app/delivery');
@@ -61,46 +61,46 @@ app.use('/carousels', carousels);
 app.use('/players', players);
 app.use('/information', information);
 
-bot.catch((err, ctx) => {
-    console.log(`Ooops, encountered an error for ${ctx.updateType}`, err)
-});
+// bot.catch((err, ctx) => {
+//     console.log(`Ooops, encountered an error for ${ctx.updateType}`, err)
+// });
+//
+// bot.start((ctx) => {
+//     ctx.reply(`Здравствуйте ${ctx.message.from.first_name ? ctx.message.from.first_name : ''}!
+// Для дальнейшей работы необходимо ввести свой номер телефона указанный на сайте \n /help - полный список команд`)
+// });
+// bot.help((ctx) => ctx.reply(help.commands));
+//
+// bot.on('text', async (ctx) => {
+//     ctx.reply('Проверка');
+//     const idChat = ctx.message.from.id;
+//     const chatHave = await User.findOne({idChat: idChat});
+//     if (chatHave) {
+//         await ctx.telegram.sendMessage(idChat, 'Ваш чат имеется в базе данных рассылки, спасибо.');
+//     } else {
+//         const text = ctx.message.text;
+//         if ((text.length < 9) || (isNaN(Number(text)))) {
+//             await ctx.telegram.sendMessage(idChat, 'Номер телефона указан не полностью, введите в виде 555444333');
+//         } else {
+//             const userTelegramId = await User.findOne({'phone.number': {$regex: text}});
+//             if (userTelegramId) {
+//                 if (!userTelegramId.idChat) {
+//                     userTelegramId.idChat = idChat;
+//                     await userTelegramId.save({validateBeforeSave: false});
+//                     await ctx.telegram.sendMessage(idChat, 'Ваш номер был добавлен в базу');
+//                 }
+//             } else {
+//                 await ctx.telegram.sendMessage(ctx.message.from.id, 'Номер телефона в базе не найден');
+//             }
+//         }
+//     }
+// });
 
-bot.start((ctx) => {
-    ctx.reply(`Здравствуйте ${ctx.message.from.first_name ? ctx.message.from.first_name : ''}! 
-Для дальнейшей работы необходимо ввести свой номер телефона указанный на сайте \n /help - полный список команд`)
-});
-bot.help((ctx) => ctx.reply(help.commands));
 
-bot.on('text', async (ctx) => {
-    ctx.reply('Проверка');
-    const idChat = ctx.message.from.id;
-    const chatHave = await User.findOne({idChat: idChat});
-    if (chatHave) {
-        await ctx.telegram.sendMessage(idChat, 'Ваш чат имеется в базе данных рассылки, спасибо.');
-    } else {
-        const text = ctx.message.text;
-        if ((text.length < 9) || (isNaN(Number(text)))) {
-            await ctx.telegram.sendMessage(idChat, 'Номер телефона указан не полностью, введите в виде 555444333');
-        } else {
-            const userTelegramId = await User.findOne({'phone.number': {$regex: text}});
-            if (userTelegramId) {
-                if (!userTelegramId.idChat) {
-                    userTelegramId.idChat = idChat;
-                    await userTelegramId.save({validateBeforeSave: false});
-                    await ctx.telegram.sendMessage(idChat, 'Ваш номер был добавлен в базу');
-                }
-            } else {
-                await ctx.telegram.sendMessage(ctx.message.from.id, 'Номер телефона в базе не найден');
-            }
-        }
-    }
-});
+// bot.launch();
 
-
-bot.launch();
-
-process.once('SIGINT', () => bot.stop('SIGINT'));
-process.once('SIGTERM', () => bot.stop('SIGTERM'));
+// process.once('SIGINT', () => bot.stop('SIGINT'));
+// process.once('SIGTERM', () => bot.stop('SIGTERM'));
 
 const run = async () => {
     await mongoose.connect(config.db.url);

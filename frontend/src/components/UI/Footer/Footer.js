@@ -15,6 +15,8 @@ import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import TelegramIcon from '@mui/icons-material/Telegram';
 import PhoneIcon from '@mui/icons-material/Phone';
 import EmailIcon from '@mui/icons-material/Email';
+import {fetchAllInformationRequest} from "../../../store/actions/informationActions";
+import {useDispatch} from "react-redux";
 
 const Footer = () => {
     const dispatch = useDispatch();

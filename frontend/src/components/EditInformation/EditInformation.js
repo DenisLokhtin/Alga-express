@@ -3,11 +3,9 @@ import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWit
 import {useDispatch, useSelector} from "react-redux";
 import {Container, FormControl, Grid, InputLabel, MenuItem, Select, TextareaAutosize} from "@mui/material";
 import {makeStyles} from "@mui/styles";
-import theme from "../../theme";
 import FormElement from "../UI/Form/FormElement";
-import {Editor} from "@tinymce/tinymce-react";
 import {createTheme} from "@mui/material/styles";
-import {changeInformationRequest, fetchInformationRequest} from "../../store/actions/informationActions";
+import {changeInformationRequest} from "../../store/actions/informationActions";
 
 const theme = createTheme({
     breakpoints: {

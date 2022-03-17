@@ -131,7 +131,11 @@ const UserPage = () => {
         if (paymentsHistory) {
             dispatch(fetchPaymentRequest({page: paymentsPage, limit: paymentsPageLimit, history: true, id: userId}));
         }
-    }, [messagesEndRef]);
+    }, [
+        messagesEndRef, dispatch, packagesPage, paymentsPage,
+        packagesPageLimit, userId, buyoutsPageLimit, paymentsPageLimit,
+        buyoutsHistory, buyoutsPage, packagesHistory, paymentsHistory
+    ]);
 
     return (
         <Container ref={messagesEndRef}>
