@@ -39,12 +39,28 @@ import {apiURL} from "../../config";
 import FileInput from "../../components/UI/FileInput/FileInput";
 import Autocomplete from '@mui/material/Autocomplete';
 
+const theme = createTheme({
+    breakpoints: {
+        values: {
+            sm: 768,
+        },
+    },
+});
 
 const useStyles = makeStyles(() => ({
+    breakpoints: {
+        values: {
+            sm: 768,
+        },
+    },
+
     container: {
-        marginTop: '10px',
-        paddingBottom: '40px',
-        display: "flex"
+        display: "flex",
+        paddingTop: '180px',
+        marginBottom: '30px',
+        [theme.breakpoints.down('sm')]: {
+            paddingTop: '95px',
+        },
     },
 
     packageBtnContainer: {
@@ -63,41 +79,31 @@ const useStyles = makeStyles(() => ({
             marginBottom: '50px',
         },
     },
+
     phoneField: {
         '&:last-child': {
             marginBottom: '100px',
         },
     },
+
     submit: {
-        margin: theme.spacing(3, 0, 2),
+        margin: '24px 0 16px',
     },
+
     margin0: {
         margin: 0,
     },
+
     addButton: {
         position: "relative",
         bottom: '-35px',
     },
+
     padding: {
         padding: '15px',
         marginTop: '20px',
     }
-
-
 }));
-
-const theme = createTheme();
-
-theme.typography.h4 = {
-    fontSize: '1.3rem',
-    '@media (min-width:600px)': {
-        fontSize: '1.6rem',
-    },
-    [theme.breakpoints.up('md')]: {
-        fontSize: '2rem',
-    },
-};
-
 
 function ExpandMoreIcon() {
     return null;

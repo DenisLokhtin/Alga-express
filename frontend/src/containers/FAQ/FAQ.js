@@ -19,7 +19,7 @@ const FAQ = () => {
     }, [dispatch, messagesEndRef]);
 
     return (
-        <Container component='div' ref={messagesEndRef}>
+        <Container component='div' ref={messagesEndRef} style={{paddingTop: '150px'}}>
             <div className="post__content" dangerouslySetInnerHTML={{__html: page.text}}/>
         </Container>
     )

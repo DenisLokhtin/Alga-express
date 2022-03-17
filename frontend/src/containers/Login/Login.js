@@ -14,20 +14,50 @@ import Link from "@mui/material/Link";
 import Alert from '@mui/material/Alert';
 import {AlertTitle, InputAdornment} from "@mui/material";
 import {forgotPassword, newUserRegister} from "../../paths";
-import theme from "../../theme";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import {createTheme} from "@mui/material/styles";
 
-const useStyles = makeStyles(theme => ({
+const theme = createTheme({
+    breakpoints: {
+        values: {
+            sm: 768,
+        },
+    },
+});
+
+const useStyles = makeStyles(() => ({
     form: {
-        marginTop: theme.spacing(1),
+        marginTop: '8px',
     },
+
+    breakpoints: {
+        values: {
+            sm: 768,
+        },
+    },
+
+    container: {
+        textAlign: 'center',
+        paddingTop: '170px',
+        marginBottom: '30px',
+        [theme.breakpoints.down('sm')]: {
+            paddingTop: '100px',
+        },
+    },
+
+
     submit: {
-        margin: theme.spacing(3, 0, 2),
+        margin: '24px 0 16px',
     },
+
     alert: {
         marginTop: theme.spacing(3),
         width: "100%",
+    },
+
+    avatar: {
+        margin: '0 auto',
     },
 }));
 
@@ -74,13 +104,13 @@ const Login = () => {
     };
 
     return (
-        <Container ref={messagesEndRef} component="section" maxWidth="xs">
+        <Container ref={messagesEndRef} component="section" maxWidth="xs" className={classes.container}>
             <div style={theme.paper}>
                 <Avatar className={classes.avatar}>
                     <LockOpenIcon/>
                 </Avatar>
 
-                <Typography component="h1" variant="h6">
+                <Typography component="h1" variant="h6" sx={{margin: '20px'}}>
                     Вход
                 </Typography>
                 {

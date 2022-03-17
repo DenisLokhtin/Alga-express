@@ -7,8 +7,35 @@ import FlightListItem from "../../components/FlightListItem/FlightListItem";
 import {Accordion, AccordionDetails, AccordionSummary, TablePagination} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import {makeStyles} from "@mui/styles";
+import {createTheme} from "@mui/material/styles";
+
+const theme = createTheme({
+    breakpoints: {
+        values: {
+            sm: 786,
+        },
+    },
+});
+
+const useStyles = makeStyles(() => ({
+    breakpoints: {
+        values: {
+            sm: 786,
+        },
+    },
+    container: {
+        textAlign: 'center',
+        paddingTop: '140px',
+        marginBottom: '30px',
+        [theme.breakpoints.down('sm')]: {
+            paddingTop: '90px',
+        },
+    }
+}));
 
 const FlightsList = () => {
+    const classes = useStyles();
     const dispatch = useDispatch();
     const [update, setUpdate] =  useState(false);
     const flights = useSelector(state => state.flights.flights);
@@ -42,9 +69,8 @@ const FlightsList = () => {
         if (expanded === 'panel2') return dispatch(getFlightsRequest({page: page, limit: rowsPerPage, status: 'DONE'}));
     }, [dispatch, page, expanded, rowsPerPage, update, messagesEndRef]);
 
-
     return (
-        <Container ref={messagesEndRef} style={{textAlign: 'center'}}>
+        <Container ref={messagesEndRef} className={classes.container}>
             <h1>Рейсы</h1>
             <Grid container flexDirection='column' spacing={4}>
                 <Grid item>
