@@ -159,17 +159,15 @@ router.post('/reset', async (req, res) => {
 
 router.post('/change', auth, async (req, res) => {
     try {
-        const user = await User.find({_id: req.user._id});
+        let user = await User.find({_id: req.user._id});
         if (!user) {
             console.log('error')
             return res.status(401).send({message: 'Доступ запрещен'})
         }
-        const newPassword = req.body.password;
+        user.password = req.body.password
 
-        const salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
-        const password2 = await bcrypt.hash(newPassword, salt);
-
-        await User.findOneAndUpdate({email: req.user.email}, {password: password2});
+        user.$ignore('email');
+        await user.save()
         res.send({message: " Пароль успешно изменен"});
     } catch (e) {
         res.status(500).send(e);

@@ -120,7 +120,7 @@ export function* userPaymentSaga({payload}) {
     try {
         const response = yield  axiosApi.post('/userEdit/payment/', payload);
         yield put(addUserPaymentSuccess(response.data));
-        History.push(userPaymentsList);
+        History.push('/');
         toast.success('Оплата отправлена');
     } catch (e) {
         toast.error(e.response.data.error);

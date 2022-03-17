@@ -11,6 +11,9 @@ const PaymentMove = require("../models/PaymentMove");
 const fs = require("fs");
 const Currency = require("../models/Currency");
 const filterBuyouts = require('../middleware/filter');
+const sendMail = require("../middleware/sendMail");
+const {buyoutTextTelegram} = require('../email-texts');
+const {buyoutText} = require('../email-texts');
 
 const newDir = `${config.uploadPath}/buyouts`;
 
@@ -194,6 +197,11 @@ router.put('/:id', auth, upload.single('image'), permit('admin', 'user'), async 
                     status: 'DEBIT',
                 };
 
+               await sendMail({email: user.email},'Alga-express, статус изменен',
+                   buyoutTextTelegram(buyout.description, "Принят в обработку", user.name),
+                   buyoutText(buyout.description, "Принят в обработку", user.name)
+                   );
+
                 const paySave = new PaymentMove(buyoutMove);
                 console.log(paySave);
                 await paySave.save();
@@ -233,6 +241,14 @@ router.put('/change/:id',auth, permit('admin'),async (req,res)=>{
             return res.status(404).send({error: `Выкуп с ID=${req.params.id} не найден.`});
         } else {
             await Buyout.findByIdAndUpdate(req.params.id,{status: 'ORDERED'});
+
+            const user = await User.findById(buyout.user);
+            console.log(user)
+
+            await sendMail({email: user.email},'Alga-express, статус изменен',
+                buyoutTextTelegram(buyout.description, "Принят в обработку", user.name),
+                buyoutText(buyout.description, "Принят в обработку", user.name)
+            );
             return res.send({message: `Выкуп успешно заказан.`})
         }
     } catch (error) {

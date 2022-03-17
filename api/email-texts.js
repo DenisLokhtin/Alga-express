@@ -40,6 +40,26 @@ class distributions {
                 <p>С уважением Alga-express</p>
             </div>`
         )}
+
+    buyoutText(text, buyoutStatus, user) {
+        return (
+            `<div>
+                <p>Здравствуйте уважаемый(ая) ${user}!</p>
+                <p>Статус вашего выкупа <i>${text}</i> изменен на ${buyoutStatus}</p> 
+                <p>Стоимость доставки и ваш баланс вы можете проверить в вашем личном кабинете</p>
+                <p>С уважением Alga-express</p>
+            </div>`
+        )}
+
+    buyoutTextTelegram(text, buyoutStatus, user) {
+        return (
+            `
+                Здравствуйте уважаемый(ая) ${user}!
+                Статус вашего выкупа <i>${text}</i> изменен на <b>${buyoutStatus}</b>
+                Стоимость доставки и ваш баланс вы можете проверить в вашем личном кабинете
+                С уважением Alga-express
+            `
+        )}
 }
 
 const mailDistributions = new distributions();

@@ -91,7 +91,7 @@ router.post('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
 
                 await sendMail({email: user.email, telegram: user.idChat},
                     'Alga-express: Баланс пополнен',
-                    // balanceTextTelegram(pay, user.balance, user.name),
+                    balanceTextTelegram(pay, user.balance, user.name),
                     balanceText(pay, user.balance, user.name));
 
                 return res.status(200).send({status: true});
