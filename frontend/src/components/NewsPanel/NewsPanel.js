@@ -20,9 +20,7 @@ const NewsPanel = () => {
                         {news.datetime}
                     </li>
                     <li className="news-list__item">
-                        <a className="menu__list-link">
-                            {news.title}
-                        </a>
+                        {news.title}
                     </li>
                     <li className="news-list__item">
                         <Link to={`${newsCompany}/${news._id}`} className="read-more">
