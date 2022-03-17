@@ -184,7 +184,6 @@ const UserPage = () => {
                             setPackagesSelectionModel(newSelectionModel);
                         }}
                         loading={packagesLoading}
-                        onCellClick={(e) => {console.log(e)}}
                         toolbarElements={
                             <SwitchElement
                                 checked={packagesHistory}
@@ -211,7 +210,6 @@ const UserPage = () => {
                             setBuyoutsSelectionModel(newSelectionModel);
                         }}
                         loading={buyoutsLoading}
-                        onCellClick={(e) => {console.log(e)}}
                         toolbarElements={
                             <SwitchElement
                                 checked={buyoutsHistory}

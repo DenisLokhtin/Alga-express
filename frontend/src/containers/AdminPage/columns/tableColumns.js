@@ -1,3 +1,6 @@
+import Button from "@mui/material/Button";
+import LinkIcon from '@mui/icons-material/Link';
+
 export const packagesColumns = [
     {
         field: 'cargoNumber',
@@ -57,6 +60,16 @@ export const buyoutsColumns = [
         minWidth: 150,
         headerAlign: 'center',
         align: 'center',
+        renderCell: (params) => (
+            <Button
+                startIcon={<LinkIcon/>}
+                component={"a"}
+                href={params.row.url}
+                target="_blank"
+            >
+                Перейти
+            </Button>
+        )
     },
     {
         field: 'country',
