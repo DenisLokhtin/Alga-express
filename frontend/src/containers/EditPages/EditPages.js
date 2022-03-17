@@ -109,12 +109,12 @@ const EditPages = () => {
                             id="demo-controlled-open-select"
                             defaultValue=''
                             label="Страница"
-                            value={data.page}
+                            value={data.page === undefined ? '' : data.page}
                             name="page"
                             required
                             onChange={inputChangeHandler}
                         >
-                            <MenuItem value={''}></MenuItem>
+                            <MenuItem value={''}/>
                             <MenuItem value={'rules'}>Правила</MenuItem>
                             <MenuItem value={'about'}>О нас</MenuItem>
                             <MenuItem value={'contacts'}>Контакты</MenuItem>
