@@ -4,7 +4,7 @@ const cors = require('cors');
 const news = require('./app/news');
 const mongoose = require('mongoose');
 const exitHook = require('async-exit-hook');
-const {Telegraf} = require('telegraf')
+// const {Telegraf} = require('telegraf')
 const users = require('./app/users');
 const userEdit = require('./app/usersProfileEdit');
 const market = require('./app/market');
@@ -21,13 +21,13 @@ const tariffs = require('./app/tariffs');
 const help = require('./help_commands');
 const User = require("./models/User");
 
-const token = process.env.BOT_TOKEN
-
-if (token === undefined) {
-    throw new Error('BOT_TOKEN must be provided!')
-}
-
-const bot = new Telegraf(token);
+// const token = process.env.BOT_TOKEN
+//
+// if (token === undefined) {
+//     throw new Error('BOT_TOKEN must be provided!')
+// }
+//
+// const bot = new Telegraf(token);
 
 const currencies = require('./app/currencies');
 const delivery = require('./app/delivery');
@@ -95,10 +95,10 @@ app.use('/information', information);
 //         }
 //     }
 // });
-//
-//
+
+
 // bot.launch();
-//
+
 // process.once('SIGINT', () => bot.stop('SIGINT'));
 // process.once('SIGTERM', () => bot.stop('SIGTERM'));
 

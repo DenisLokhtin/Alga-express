@@ -17,6 +17,8 @@ import {fetchPaymentRequest} from "../../store/actions/paymentActions";
 import {apiURL} from "../../config";
 import SwitchElement from "../../components/UI/SwitchElement/SwitchElement";
 import ImageModal from "../../components/UI/ImageModal/ImageModal";
+import {createTheme} from "@mui/material/styles";
+import {makeStyles} from "@mui/styles";
 import ImageIcon from "@mui/icons-material/Image";
 
 // import ImageModal from "../../components/UI/ImageModal/ImageModal";
@@ -28,7 +30,33 @@ function a11yProps(index) {
     };
 }
 
+const theme = createTheme({
+    breakpoints: {
+        values: {
+            sm: 786,
+        },
+    },
+});
+
+const useStyles = makeStyles(() => ({
+    breakpoints: {
+        values: {
+            sm: 786,
+        },
+    },
+
+    container: {
+        textAlign: 'center',
+        paddingTop: '155px',
+        marginBottom: '30px',
+        [theme.breakpoints.down('sm')]: {
+            paddingTop: '90px',
+        },
+    }
+}));
+
 const AdminPage = () => {
+    const classes = useStyles();
     const dispatch = useDispatch();
     const messagesEndRef = useRef(null);
     const [value, setValue] = useState(0);
@@ -142,8 +170,8 @@ const AdminPage = () => {
     ]);
 
     return (
-        <Container ref={messagesEndRef}>
-            <Box sx={{ width: '100%' }}>
+        <Container ref={messagesEndRef} className={classes.container}>
+            <Box sx={{ width: '100%'}}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <Tabs
                         value={value}

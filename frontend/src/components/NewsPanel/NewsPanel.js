@@ -1,8 +1,6 @@
-import React, {useEffect} from "react";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
+import React, {Fragment, useEffect} from "react";
 import {Link} from "react-router-dom";
-import {newsIdCompany} from "../../paths";
+import {newsCompany} from "../../paths";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchNewsRequest} from "../../store/actions/newsActions";
 
@@ -11,36 +9,29 @@ const NewsPanel = () => {
     const news = useSelector(state => state.news.news);
 
     useEffect(() => {
-        dispatch(fetchNewsRequest());
+        dispatch(fetchNewsRequest('?latestNews=4'));
     }, [dispatch]);
 
     return (
-        <Grid item xs={2} style={{textAlign: "center", border: '1px solid grey', marginTop: 20}}>
-            <Typography style={{fontSize: 20}}>
-                Новости:
-            </Typography>
-            <Grid style={{
-                textAlign: "center",
-                maxHeight: 300,
-                overflowX: "auto"
-            }}>
-                {news.length !== 0 && news.map(item => (
-                    <div key={item._id}
-                         style={{marginTop: 15, paddingLeft: 10, paddingRight: 10, wordBreak: "wrap"}}>
-                        <Link style={{color: "black"}}
-                              to={newsIdCompany.slice(0, newsIdCompany.length - 3) + item._id}>
-                            {item.title}
+        <ul className="news-list">
+            {news.length > 0 ? news.map(news => (
+                <Fragment key={news._id}>
+                    <li>
+                        {news.datetime}
+                    </li>
+                    <li className="news-list__item">
+                        <a className="menu__list-link">
+                            {news.title}
+                        </a>
+                    </li>
+                    <li className="news-list__item">
+                        <Link to={`${newsCompany}/${news._id}`} className="read-more">
+                            <span>Подробнее {news.description ? '...' : ''}</span>
                         </Link>
-                        <span style={{
-                            color: "grey",
-                            display: "block",
-                            textAlign: "right",
-                            fontSize: 12
-                        }}>{item.datetime}</span>
-                    </div>
-                ))}
-            </Grid>
-        </Grid>
+                    </li>
+                </Fragment>
+            )) : null}
+        </ul>
     )
 };
 

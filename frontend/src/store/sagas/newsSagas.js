@@ -19,9 +19,15 @@ import {
     fetchOneNewsSuccess
 } from "../actions/newsActions";
 
-export function* newsSagas() {
+export function* newsSagas({payload}) {
+    let queryParams = '/news';
+
+    if (payload) {
+        queryParams += payload;
+    }
+
     try {
-        const response = yield axiosApi.get('/news');
+        const response = yield axiosApi.get(`${queryParams}`);
         yield put(fetchNewsSuccess(response.data));
     } catch (e) {
         toast.error('Не удалось загрузить новость');
