@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {makeStyles} from "@mui/styles";
 import {Grid} from "@mui/material";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
@@ -10,6 +10,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import {useDispatch, useSelector} from "react-redux";
 import {deletePlayerRequest, fetchPlayerRequest} from "../../store/actions/playerActions";
 import ReactPlayer from "react-player";
+import AppWindow from "../UI/AppWindow/AppWindow";
 
 const useStyles = makeStyles(theme => ({
     submit: {
@@ -59,9 +60,11 @@ const Player = () => {
     const loading = useSelector(state => state.players.createLoading);
     const deletePlayer = (id) => {
         dispatch(deletePlayerRequest(id));
+        setOpen(false);
     };
     const players = useSelector(state => state.players.player);
     const messagesEndRef = useRef(null);
+    const [open, setOpen] = useState(false);
 
     useEffect(() => {
         if (!!messagesEndRef.current) {
@@ -117,10 +120,12 @@ const Player = () => {
                         className={classes.submit}
                         loading={loading}
                         disabled={loading}
-                        onClick={() => deletePlayer(IdFromYoutube)}
+                        onClick={() => setOpen(true)}
                     >
                         <DeleteForeverIcon/> Удалить текущее видео
                     </ButtonWithProgress>
+                    <AppWindow open={open} onClose={() => setOpen(false)}
+                               confirm={() => deletePlayer(IdFromYoutube)}/>
                 </Grid> : ''}
 
             <ReactPlayer

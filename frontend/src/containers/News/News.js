@@ -42,7 +42,8 @@ const News = () => {
     }, [dispatch, messagesEndRef]);
 
     const deleteNews = newsId => {
-        dispatch(deleteNewsRequest(newsId))
+        dispatch(deleteNewsRequest(newsId));
+        setOpen(false);
     };
 
     return (
