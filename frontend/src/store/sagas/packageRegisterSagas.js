@@ -28,7 +28,7 @@ import {
     getOrdersHistorySuccess,
     getPackageByIdFailure,
     getPackageByIdRequest,
-    getPackageByIdSuccess,
+    getPackageByIdSuccess, giveOutFailure, giveOutRequest, giveOutSuccess,
 } from "../actions/packageRegisterActions";
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
@@ -175,6 +175,16 @@ export function* fetchNewPackagesSaga() {
     }
 }
 
+export function* giveOutSagas({payload}) {
+    try {
+        const {data} = yield axiosApi.put(`/packages/giveout/${payload.id}`, payload.data);
+        console.log(data);
+        yield put(giveOutSuccess());
+    } catch (e) {
+        yield put(giveOutFailure(e));
+    }
+}
+
 const packageSagas = [
     takeEvery(createPackageRequest, packageRegisterSagas),
     takeEvery(changePackageRequest, packageChangeSagas),
@@ -186,6 +196,7 @@ const packageSagas = [
     takeEvery(changeStatusesRequest, changeStatuses),
     takeEvery(fetchNewPackages, fetchNewPackagesSaga),
     takeEvery(changeDeliveryStatusRequest, changeDeliveryStatus),
+    takeEvery(giveOutRequest, giveOutSagas)
 ];
 
 export default packageSagas;
