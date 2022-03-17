@@ -181,7 +181,7 @@ const AdminPaymentsProcessing = () => {
                                                         color="primary"
                                                         className={classes.submit}
                                                         // loading={loading}
-                                                        // disabled={buttonDis}
+                                                        disabled={!(permitPayment[index].pay !== undefined && permitPayment[index].pay !== '')}
                                                     >
                                                         Принять оплату
                                                     </ButtonWithProgress>
