@@ -171,6 +171,7 @@ const AdminPaymentsProcessing = () => {
                                                         value={permitPayment[index].pay}
                                                         onChange={e => changePermitPayments(index, e.target.value)}
                                                         name='pay'
+                                                        InputProps={{ inputProps: {min: 1}}}
                                                     />
                                                 </Grid>
                                                 <Grid item>
