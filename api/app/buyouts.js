@@ -168,8 +168,8 @@ router.put('/:id', auth, upload.single('image'), permit('admin', 'user'), async 
     const commission = Number(req.body.commission);
     const value = req.body.value;
     console.log('body: ', req.body);
-    console.log('price: ', typeof (price), price);
-    console.log('commission: ', typeof (commission), commission);
+    // console.log('price: ', typeof (price), price);
+    // console.log('commission: ', typeof (commission), commission);
     try {
         if (req.user.role === 'admin') {
             const updatedPrice = await Buyout.findById(req.params.id);
@@ -198,12 +198,12 @@ router.put('/:id', auth, upload.single('image'), permit('admin', 'user'), async 
                 };
 
                await sendMail({email: user.email},'Alga-express, статус изменен',
-                   buyoutTextTelegram(buyout.description, "Принят в обработку", user.name),
-                   buyoutText(buyout.description, "Принят в обработку", user.name)
+                   buyoutTextTelegram(updatedPrice.description, "Принят на заказ", user.name),
+                   buyoutText(updatedPrice.description, "Принят на заказ", user.name)
                    );
 
                 const paySave = new PaymentMove(buyoutMove);
-                console.log(paySave);
+                // console.log(paySave);
                 await paySave.save();
             }
 
@@ -246,8 +246,8 @@ router.put('/change/:id',auth, permit('admin'),async (req,res)=>{
             console.log(user)
 
             await sendMail({email: user.email},'Alga-express, статус изменен',
-                buyoutTextTelegram(buyout.description, "Принят в обработку", user.name),
-                buyoutText(buyout.description, "Принят в обработку", user.name)
+                buyoutTextTelegram(buyout.description, "Заказан", user.name),
+                buyoutText(buyout.description, "Заказан", user.name)
             );
             return res.send({message: `Выкуп успешно заказан.`})
         }
