@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Container, IconButton} from "@mui/material";
+import {Container, IconButton, TextField} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchCurrencies} from "../../store/actions/currenciesActions";
 import CurrenciesCard from "../../components/CurrenciesCard/CurrenciesCard";
@@ -21,6 +21,8 @@ import {createTheme} from "@mui/material/styles";
 import {makeStyles} from "@mui/styles";
 import ImageIcon from "@mui/icons-material/Image";
 import Button from "@mui/material/Button";
+import Autocomplete from "@mui/material/Autocomplete";
+import {fetchUsersRequest} from "../../store/actions/usersActions";
 
 function a11yProps(index) {
     return {
@@ -63,6 +65,10 @@ const AdminPage = () => {
     const [openImg, setOpenImg] = useState(false);
     const [img, setImg] = useState(null);
     const currencies = useSelector(state => state.currencies.currencies);
+    const users = useSelector(state => state.users.users);
+
+    const [valueSelect, setValueSelect] = useState({_id: null});
+    const [inputValueSelect, setInputValueSelect] = useState('');
 
     const buyouts = useSelector(state => state.buyouts.buyouts);
     const [buyoutsHistory, setBuyoutsHistory] = useState(false);
@@ -100,6 +106,7 @@ const AdminPage = () => {
             id: order._id,
             cargoNumber: order.cargoNumber,
             trackNumber: order.trackNumber,
+            name: order.user.name,
             title: order.title,
             country: countries[order.country],
             status: statuses[order.status],
@@ -129,9 +136,9 @@ const AdminPage = () => {
             image: apiURL + '/' + payment.image,
             user: payment.user.name,
             date: dayjs(payment.date).format('DD-MM-YYYY'),
-            amount: payment.amount
+            amount: payment.amount,
         }
-    })
+    });
 
     useEffect(() => {
         if (!!messagesEndRef.current) {
@@ -139,6 +146,10 @@ const AdminPage = () => {
                 behavior: 'smooth'
             }, 250);
         }
+        dispatch(fetchUsersRequest());
+    }, [dispatch, messagesEndRef]);
+
+    useEffect(() => {
         dispatch(fetchCurrencies());
 
         if (packagesHistory) {
@@ -158,10 +169,9 @@ const AdminPage = () => {
         } else {
             dispatch(fetchPaymentRequest({page: paymentsPage, limit: paymentsPageLimit}));
         }
-
     }, [dispatch,
-        messagesEndRef,
         packagesPage,
+        value,
         packagesPageLimit,
         buyoutsPage,
         buyoutsPageLimit,
@@ -169,6 +179,8 @@ const AdminPage = () => {
         paymentsPage,
         paymentsPageLimit,
         packagesHistory,
+        paymentsHistory,
+        valueSelect,
         paymentsHistory,
         update
     ]);
@@ -188,6 +200,28 @@ const AdminPage = () => {
                         <Tab label="Пополнения" {...a11yProps(3)} />
                         <Tab label="Валюты" {...a11yProps(4)} />
                     </Tabs>
+                </Box>
+
+                <Box>
+                    <Autocomplete
+                        onChange={(event, newValue) => {
+                            if (newValue) {
+                                setValueSelect(newValue);
+                            } else {
+                                setValueSelect({_id: null});
+                            }
+                        }}
+                        inputValue={inputValueSelect}
+                        onInputChange={(event, newInputValue) => {
+                            setInputValueSelect(newInputValue);
+                        }}
+                        name={users}
+                        id="usersSelected"
+                        options={users}
+                        getOptionLabel={(option) => (option.name + ' ' + option.email)}
+                        sx={{width: 300}}
+                        renderInput={(params) => <TextField {...params} label="Пользователи"/>}
+                    />
                 </Box>
 
                 <TabPanelComponent value={value} index={0}>

@@ -2,7 +2,6 @@ import {put, takeEvery} from "redux-saga/effects";
 import {
     addUserPaymentFailure,
     addUserPaymentRequest,
-    addUserPaymentSuccess,
     changePasswordFailure,
     changePasswordRequest,
     changePasswordSuccess,
@@ -38,7 +37,7 @@ import {
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
 import History from '../../History';
-import {userLogin, userPaymentsList} from "../../paths";
+import {adminPagePath, processingTrackNumbersAdmin, root, userLogin, userPage, userPaymentsList} from "../../paths";
 
 export function* registerUserSaga({payload}) {
     try {
@@ -63,7 +62,7 @@ export function* registerUserSaga({payload}) {
             }
         } else {
             yield put(registerUserSuccess(response.data));
-            History.push('/');
+            History.push(root);
             toast.success('Вы зарегистрированы');
         }
     } catch (e) {
@@ -78,7 +77,19 @@ export function* loginUserSaga({payload: user}) {
         user.navigate('/', true);
         yield put(loginUserSuccess(response.data));
         toast.success('Вы авторизированы!');
-        History.push('/user/page');
+        switch (response.data.role) {
+            case 'admin' || 'superAdmin':
+                History.push(adminPagePath);
+                break;
+            case 'warehouseman':
+                History.push(processingTrackNumbersAdmin);
+                break;
+            case 'user':
+                History.push(userPage);
+                break;
+            default:
+                return
+        }
     } catch (e) {
         toast.error(e.response.data.global);
         yield put(loginUserFailure(e.response.data));
@@ -119,8 +130,7 @@ export function* editPassportSaga({payload}) {
 
 export function* userPaymentSaga({payload}) {
     try {
-        const response = yield  axiosApi.post('/userEdit/payment/', payload);
-        yield put(addUserPaymentSuccess(response.data));
+        yield  axiosApi.post('/userEdit/payment/', payload);
         History.push(userPaymentsList);
         toast.success('Оплата отправлена');
     } catch (e) {
