@@ -27,14 +27,6 @@ export const packagesColumns = [
         align: 'center',
     },
     {
-        field: 'status',
-        headerName: 'Статус',
-        flex: 1,
-        minWidth: 100,
-        headerAlign: 'center',
-        align: 'center',
-    },
-    {
         field: 'title',
         headerName: 'Заголовок',
         flex: 1,
