@@ -91,7 +91,6 @@ function* getOrdersHistorySagas({payload: pageData}) {
     const history = pageData.history;
     const from = pageData.from;
     const to = pageData.to;
-    console.log(pageData);
     let url = `/packages?page=${page}&limit=${limit}`;
 
     if (id) url = url.concat(`&id=${id}`);
@@ -174,7 +173,8 @@ export function* fetchNewPackagesSaga() {
 
 export function* giveOutSagas({payload}) {
     try {
-        const {data} = yield axiosApi.put(`/packages/giveout/${payload.id}`, payload.data);
+        // const {data} =
+        yield axiosApi.put(`/packages/giveout/${payload.id}`, payload.data);
         yield put(giveOutSuccess());
     } catch (e) {
         yield put(giveOutFailure(e));

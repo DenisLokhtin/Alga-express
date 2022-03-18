@@ -59,7 +59,6 @@ router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) =>
     let findFilter = {};
     try {
         findFilter = filterPackage(query, 'packages');
-        console.log(findFilter);
         const size = await Package.find(findFilter);
 
         const packages = await Package.find(findFilter)
@@ -192,7 +191,7 @@ router.put('/', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req,
 
             const userEmail = await updatedStatuses.populate('user', 'email')
 
-            sendMail(userEmail.user.email, 'Alga-express: Баланс пополнен', null, packagesText(userEmail.trackNumber, userEmail.status));
+            await sendMail(userEmail.user.email, 'Alga-express: Баланс пополнен', null, packagesText(userEmail.trackNumber, userEmail.status));
 
             if (!updatedStatuses) {
                 const notFoundTrackNumbersData = {

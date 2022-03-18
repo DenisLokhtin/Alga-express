@@ -167,9 +167,7 @@ router.put('/:id', auth, upload.single('image'), permit('admin', 'user'), async 
     const price = Number(req.body.price);
     const commission = Number(req.body.commission);
     const value = req.body.value;
-    console.log('body: ', req.body);
-    // console.log('price: ', typeof (price), price);
-    // console.log('commission: ', typeof (commission), commission);
+
     try {
         if (req.user.role === 'admin') {
             const updatedPrice = await Buyout.findById(req.params.id);
@@ -203,7 +201,6 @@ router.put('/:id', auth, upload.single('image'), permit('admin', 'user'), async 
                    );
 
                 const paySave = new PaymentMove(buyoutMove);
-                // console.log(paySave);
                 await paySave.save();
             }
 
@@ -234,7 +231,6 @@ router.put('/:id', auth, upload.single('image'), permit('admin', 'user'), async 
 
 router.put('/change/:id',auth, permit('admin'),async (req,res)=>{
     try {
-        console.log(req.params.id)
         const buyout = await Buyout.findById(req.params.id);
 
         if (Object.keys(buyout).length === 0) {
@@ -243,7 +239,6 @@ router.put('/change/:id',auth, permit('admin'),async (req,res)=>{
             await Buyout.findByIdAndUpdate(req.params.id,{status: 'ORDERED'});
 
             const user = await User.findById(buyout.user);
-            console.log(user)
 
             await sendMail({email: user.email},'Alga-express, статус изменен',
                 buyoutTextTelegram(buyout.description, "Заказан", user.name),

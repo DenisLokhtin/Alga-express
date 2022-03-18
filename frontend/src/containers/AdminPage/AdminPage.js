@@ -178,7 +178,7 @@ const AdminPage = () => {
 
     useEffect(() => {
         const pageData = {};
-        if ((searchData)) {
+        if (searchData) {
             pageData.from = periodDate.from;
             pageData.to = periodDate.to;
             pageData.page = packagesPage;
@@ -237,6 +237,7 @@ const AdminPage = () => {
         value,
         searchData,
         packagesPage,
+        periodDate,
         packagesPageLimit,
         buyoutsPage,
         buyoutsPageLimit,
@@ -284,6 +285,7 @@ const AdminPage = () => {
                             onChange={(event, newValue) => {
                                 if (newValue) {
                                     setValueSelect(newValue);
+                                    setSearchData(false);
                                 } else {
                                     setValueSelect({_id: null});
                                 }
@@ -363,28 +365,6 @@ const AdminPage = () => {
                         </ButtonWithProgress>
                     </Grid>
                 </Grid>
-
-                <Box sx={{padding: "12px 24px"}}>
-                    <Autocomplete
-                        onChange={(event, newValue) => {
-                            if (newValue) {
-                                setValueSelect(newValue);
-                            } else {
-                                setValueSelect({_id: null});
-                            }
-                        }}
-                        inputValue={inputValueSelect}
-                        onInputChange={(event, newInputValue) => {
-                            setInputValueSelect(newInputValue);
-                        }}
-                        name={users}
-                        id="usersSelected"
-                        options={users}
-                        getOptionLabel={(option) => (option.name + ' ' + option.email)}
-                        sx={{width: 300}}
-                        renderInput={(params) => <TextField {...params} label="Пользователи"/>}
-                    />
-                </Box>
 
                 <TabPanelComponent value={value} index={0}>
                     <TableComponent

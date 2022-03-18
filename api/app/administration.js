@@ -16,8 +16,6 @@ router.get('/', auth, permit('user', 'admin', 'superAdmin'), async (req, res) =>
     let page = 0;
     let limit = 10;
 
-    console.log('id query: ', req.query.id);
-
     if (req.query.page) {
         page = req.query.page;
     }
