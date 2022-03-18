@@ -11,6 +11,9 @@ const PaymentMove = require("../models/PaymentMove");
 const fs = require("fs");
 const Currency = require("../models/Currency");
 const filterBuyouts = require('../middleware/filter');
+const sendMail = require("../middleware/sendMail");
+const {buyoutTextTelegram} = require('../email-texts');
+const {buyoutText} = require('../email-texts');
 
 const newDir = `${config.uploadPath}/buyouts`;
 
@@ -70,22 +73,22 @@ router.get('/list', auth, permit('admin', 'user', 'superAdmin'), async (req, res
     if (req.query.page) {
         page = Number(req.query.page);
     }
-
     if (req.query.limit) {
         limit = Number(req.query.limit);
     }
-
-    if (req.query.id) query.id = req.query.id;
     if (req.query.history) query.history = req.query.history;
-
     if (req.query.sort) {
         query.sort = {[req.query.sort]: 1};
     } else {
         query.sort = {datetime: 1};
     }
-
-    query.role = req.user.role;
-    query.user_id = req.user._id;
+    if (req.user.role === 'user') {
+        query.role = 'user'
+        query.id = req.user.id;
+    } else {
+        query.role = req.user.role;
+        query.id = req.query.id;
+    }
 
     const findFilter = filterBuyouts(query, 'buyouts');
 
@@ -93,7 +96,7 @@ router.get('/list', auth, permit('admin', 'user', 'superAdmin'), async (req, res
         const size = await Buyout.find(findFilter);
 
         const buyouts = await Buyout.find(findFilter)
-            .populate('user', 'name')
+            .populate('user', 'name email')
             .sort(query.sort)
             .limit(limit)
             .skip(page * limit);
@@ -164,9 +167,7 @@ router.put('/:id', auth, upload.single('image'), permit('admin', 'user'), async 
     const price = Number(req.body.price);
     const commission = Number(req.body.commission);
     const value = req.body.value;
-    console.log('body: ', req.body);
-    console.log('price: ', typeof (price), price);
-    console.log('commission: ', typeof (commission), commission);
+
     try {
         if (req.user.role === 'admin') {
             const updatedPrice = await Buyout.findById(req.params.id);
@@ -194,8 +195,12 @@ router.put('/:id', auth, upload.single('image'), permit('admin', 'user'), async 
                     status: 'DEBIT',
                 };
 
+               await sendMail({email: user.email},'Alga-express, статус изменен',
+                   buyoutTextTelegram(updatedPrice.description, "Принят на заказ", user.name),
+                   buyoutText(updatedPrice.description, "Принят на заказ", user.name)
+                   );
+
                 const paySave = new PaymentMove(buyoutMove);
-                console.log(paySave);
                 await paySave.save();
             }
 
@@ -226,13 +231,19 @@ router.put('/:id', auth, upload.single('image'), permit('admin', 'user'), async 
 
 router.put('/change/:id',auth, permit('admin'),async (req,res)=>{
     try {
-        console.log(req.params.id)
         const buyout = await Buyout.findById(req.params.id);
 
         if (Object.keys(buyout).length === 0) {
             return res.status(404).send({error: `Выкуп с ID=${req.params.id} не найден.`});
         } else {
             await Buyout.findByIdAndUpdate(req.params.id,{status: 'ORDERED'});
+
+            const user = await User.findById(buyout.user);
+
+            await sendMail({email: user.email},'Alga-express, статус изменен',
+                buyoutTextTelegram(buyout.description, "Заказан", user.name),
+                buyoutText(buyout.description, "Заказан", user.name)
+            );
             return res.send({message: `Выкуп успешно заказан.`})
         }
     } catch (error) {

@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Container, Grid, IconButton, TextField} from "@mui/material";
+import {Container, IconButton, TextField} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchCurrencies} from "../../store/actions/currenciesActions";
 import CurrenciesCard from "../../components/CurrenciesCard/CurrenciesCard";
@@ -23,7 +23,16 @@ import ImageIcon from "@mui/icons-material/Image";
 import Button from "@mui/material/Button";
 import Autocomplete from "@mui/material/Autocomplete";
 import {fetchUsersRequest} from "../../store/actions/usersActions";
-import Typography from "@mui/material/Typography";
+import {Link} from "react-router-dom";
+import {editBuyout, newPackageRegister} from "../../paths";
+import EditIcon from '@mui/icons-material/Edit';
+import {DatePicker, LocalizationProvider} from "@mui/lab";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import Grid from "@mui/material/Grid";
+import ruLocale from "date-fns/locale/ru";
+import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
+
+// import ImageModal from "../../components/UI/ImageModal/ImageModal";
 
 function a11yProps(index) {
     return {
@@ -57,6 +66,14 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
+const localeMap = {
+    ru: ruLocale,
+};
+
+const maskMap = {
+    ru: '__.__.____',
+};
+
 const AdminPage = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
@@ -71,6 +88,13 @@ const AdminPage = () => {
     const [valueSelect, setValueSelect] = useState({_id: null});
     const [inputValueSelect, setInputValueSelect] = useState('');
 
+    const [periodDate, setPeriodDate] = useState(
+        {
+            from: null,
+            to: null,
+        });
+    const [searchData, setSearchData] = useState(false);
+    console.log(valueSelect);
     const buyouts = useSelector(state => state.buyouts.buyouts);
     const [buyoutsHistory, setBuyoutsHistory] = useState(false);
     const buyoutsLoading = useSelector(state => state.buyouts.fetchLoading);
@@ -126,7 +150,8 @@ const AdminPage = () => {
             price: buyout.price,
             commission: buyout.commission,
             value: buyout.value,
-            totalPrice: buyout.totalPrice
+            totalPrice: buyout.totalPrice,
+            userData: buyout.user
         }
     });
 
@@ -148,31 +173,71 @@ const AdminPage = () => {
             }, 250);
         }
         dispatch(fetchUsersRequest());
+        dispatch(fetchCurrencies());
     }, [dispatch, messagesEndRef]);
 
     useEffect(() => {
-        dispatch(fetchCurrencies());
-
-        if (packagesHistory) {
-            dispatch(getOrdersHistoryRequest({page: packagesPage, limit: packagesPageLimit, history: true, id: valueSelect._id}));
+        const pageData = {};
+        if (searchData) {
+            pageData.from = periodDate.from;
+            pageData.to = periodDate.to;
+            pageData.page = packagesPage;
+            pageData.limit = packagesPageLimit;
+            pageData.id = valueSelect._id;
         } else {
-            dispatch(getOrdersHistoryRequest({page: packagesPage, limit: packagesPageLimit, id: valueSelect._id}));
+            pageData.page = packagesPage;
+            pageData.limit = packagesPageLimit;
         }
 
-        if (buyoutsHistory) {
-            dispatch(fetchBuyoutsList({page: buyoutsPage, limit: buyoutsPageLimit, history: true, id: valueSelect._id}));
-        } else {
-            dispatch(fetchBuyoutsList({page: buyoutsPage, limit: buyoutsPageLimit, id: valueSelect._id}));
-        }
+        switch (value) {
+            case 0:
+                if (packagesHistory) {
+                    pageData.history = true;
+                }
+                dispatch(getOrdersHistoryRequest({
+                    page: pageData.page,
+                    limit: pageData.limit,
+                    history: pageData.history,
+                    id: pageData.id,
+                    from: pageData.from,
+                    to: pageData.to
+                }));
 
-        if (paymentsHistory) {
-            dispatch(fetchPaymentRequest({page: paymentsPage, limit: paymentsPageLimit, history: true, id: valueSelect._id}));
-        } else {
-            dispatch(fetchPaymentRequest({page: paymentsPage, limit: paymentsPageLimit, id: valueSelect._id}));
+                break;
+            case 1:
+                if (buyoutsHistory) {
+                    pageData.history = true;
+                }
+                dispatch(fetchBuyoutsList({
+                    page: pageData.page,
+                    limit: pageData.limit,
+                    history: pageData.history,
+                    id: pageData.id,
+                    from: pageData.from,
+                    to: pageData.to
+                }));
+                break;
+            case 2:
+                if (paymentsHistory) {
+                    pageData.history = true;
+                }
+                dispatch(fetchPaymentRequest({
+                    page: pageData.page,
+                    limit: pageData.limit,
+                    history: pageData.history,
+                    id: pageData.id,
+                    from: pageData.from,
+                    to: pageData.to
+                }));
+                break;
+            default:
+                break;
         }
     }, [dispatch,
-        packagesPage,
         value,
+        searchData,
+        packagesPage,
+        periodDate,
         packagesPageLimit,
         buyoutsPage,
         buyoutsPageLimit,
@@ -182,8 +247,17 @@ const AdminPage = () => {
         packagesHistory,
         paymentsHistory,
         valueSelect,
-        paymentsHistory,
-        update]);
+    ]);
+
+    const submitFormHandler = (e) => {
+        e.preventDefault();
+        setSearchData(true);
+    };
+
+    const clearHandler = () => {
+        setValueSelect({_id: null});
+        setSearchData(false);
+    };
 
     return (
         <Container ref={messagesEndRef} className={classes.container}>
@@ -201,28 +275,96 @@ const AdminPage = () => {
                         <Tab label="Валюты" {...a11yProps(4)} />
                     </Tabs>
                 </Box>
+                <Grid
+                    container
+                    component="form"
+                    onSubmit={submitFormHandler}
+                >
+                    <Box item>
+                        <Autocomplete
+                            onChange={(event, newValue) => {
+                                if (newValue) {
+                                    setValueSelect(newValue);
+                                    setSearchData(false);
+                                } else {
+                                    setValueSelect({_id: null});
+                                }
+                            }}
+                            inputValue={inputValueSelect}
+                            onInputChange={(event, newInputValue) => {
+                                setInputValueSelect(newInputValue);
+                            }}
+                            name={users}
+                            id="usersSelected"
+                            options={users}
+                            getOptionLabel={(option) => (option.name + ' ' + option.email)}
+                            sx={{width: 300}}
+                            renderInput={(params) => <TextField {...params} label="Пользователи"/>}
+                        />
+                    </Box>
 
-                <Box sx={{padding: "12px 24px"}}>
-                    <Autocomplete
-                        onChange={(event, newValue) => {
-                            if (newValue) {
-                                setValueSelect(newValue);
-                            } else {
-                                setValueSelect({_id: null});
-                            }
-                        }}
-                        inputValue={inputValueSelect}
-                        onInputChange={(event, newInputValue) => {
-                            setInputValueSelect(newInputValue);
-                        }}
-                        name={users}
-                        id="usersSelected"
-                        options={users}
-                        getOptionLabel={(option) => (option.name + ' ' + option.email)}
-                        sx={{width: 300}}
-                        renderInput={(params) => <TextField {...params} label="Пользователи"/>}
-                    />
-                </Box>
+                    <Box item>
+                        <LocalizationProvider dateAdapter={AdapterDateFns} locale={localeMap['ru']}>
+                            <DatePicker
+                                mask={maskMap['ru']}
+                                label="от"
+                                openTo="month"
+                                views={['year', 'month', 'day']}
+                                value={periodDate.from}
+                                onChange={(newValue) => {
+                                    setPeriodDate(prevState => ({
+                                        ...prevState,
+                                        from: newValue,
+                                    }));
+                                }}
+                                renderInput={(params) => <TextField {...params}/>}
+                            />
+                        </LocalizationProvider>
+                    </Box>
+                    <Box item>
+                        <LocalizationProvider dateAdapter={AdapterDateFns} locale={localeMap['ru']}>
+                            <DatePicker
+                                mask={maskMap['ru']}
+                                label="До"
+                                openTo="month"
+                                views={['year', 'month', 'day']}
+                                value={periodDate.to}
+                                onChange={(newValue) => {
+                                    setPeriodDate(prevState => ({
+                                        ...prevState,
+                                        to: newValue,
+                                    }));
+                                }}
+                                renderInput={(params) => <TextField {...params}/>}
+                            />
+                        </LocalizationProvider>
+                    </Box>
+                    <Grid item>
+                        <ButtonWithProgress
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            // className={classes.submit}
+                            // loading={loading}
+                            // disabled={!(permitPayment[index].pay !== undefined && permitPayment[index].pay !== '')}
+                        >
+                            Найти
+                        </ButtonWithProgress>
+                        <ButtonWithProgress
+                            type="button"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            onClick={clearHandler}
+                            // className={classes.submit}
+                            // loading={loading}
+                            // disabled={!(permitPayment[index].pay !== undefined && permitPayment[index].pay !== '')}
+                        >
+                            Сброс
+                        </ButtonWithProgress>
+                    </Grid>
+                </Grid>
 
                 <TabPanelComponent value={value} index={0}>
                     <TableComponent
@@ -230,33 +372,21 @@ const AdminPage = () => {
                         columns={[
                             ...packagesColumns,
                             {
-                                field: "status",
-                                headerName: 'Статус',
-                                flex: 1,
-                                minWidth: 200,
-                                headerAlign: 'center',
-                                align: 'center',
-                                renderCell: (params) => (
-                                    <Grid container alignItems="center" spacing={2}>
-                                        <Grid item xs={6} md={6} lg={6}>
-                                            <Typography>
-                                                {params.row.status}
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={6} md={6} lg={6}>
-                                            <Button
-                                                variant="outlined"
-                                                disabled={params.row.status !== "Доставлено"}
-                                                onClick={() => {
-                                                    dispatch(giveOutRequest({id: params.row.id, data: null}));
-                                                    setUpdate(!update);
-                                                }}
-                                            >
-                                                Выдать
-                                            </Button>
-                                        </Grid>
-                                    </Grid>
-                                )
+                                field: "actions",
+                                type: "actions",
+                                width: 100,
+                                getActions: (params) => [
+                                    <Button
+                                        variant="outlined"
+                                        disabled={params.row.status !== "Доставлено"}
+                                        onClick={() => {
+                                            dispatch(giveOutRequest({id: params.row.id, data: null}));
+                                            setUpdate(!update);
+                                        }}
+                                    >
+                                        Выдать
+                                    </Button>
+                                ]
                             }
                         ]}
                         pageSize={packagesPageLimit}
@@ -284,7 +414,38 @@ const AdminPage = () => {
                 <TabPanelComponent value={value} index={1}>
                     <TableComponent
                         rows={buyoutsRows}
-                        columns={buyoutsColumns}
+                        columns={[
+                            ...buyoutsColumns,
+                            {
+                                field: "actions",
+                                type: "actions",
+                                width: 200,
+                                getActions: (params) => [
+                                    <Button
+                                        variant="outlined"
+                                        component={Link}
+                                        to={newPackageRegister}
+                                        state={{
+                                            userProps: {
+                                                id: params.row.userData._id,
+                                                name: params.row.userData.name,
+                                                email: params.row.userData.email,
+                                                buyoutId: params.row.id
+                                            }
+                                        }}
+                                    >
+                                        Оформить
+                                    </Button>,
+
+                                    <IconButton
+                                        component={Link}
+                                        to={editBuyout.slice(0, editBuyout.length - 3) + params.row.id}
+                                    >
+                                        <EditIcon/>
+                                    </IconButton>
+                                ]
+                            }
+                        ]}
                         pageSize={buyoutsPageLimit}
                         rowCount={buyoutsTotalRow}
                         rowHeight={70}
@@ -332,7 +493,6 @@ const AdminPage = () => {
                                 align: 'center',
                             },
                             ...paymentsColumns,
-
                         ]}
                         pageSize={paymentsPageLimit}
                         rowCount={paymentsTotalRow}

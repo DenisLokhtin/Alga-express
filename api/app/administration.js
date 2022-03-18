@@ -35,9 +35,6 @@ router.get('/', auth, permit('user', 'admin', 'superAdmin'), async (req, res) =>
 
     const findFilter = filter(query, 'payments');
 
-    console.log('query:', query);
-    console.log('find:', findFilter);
-
     try {
         const size = await Payment.find(findFilter);
         const response = await Payment.find(findFilter)
