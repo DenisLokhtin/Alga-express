@@ -60,6 +60,24 @@ class distributions {
                 С уважением Alga-express
             `
         )}
+
+    newsText(text, user) {
+        return (
+            `<div>
+                <p>Здравствуйте уважаемый(ая) ${user}!</p>
+                <p>${text}</p>
+                <p>С уважением Alga-express</p>
+            </div>`
+        )}
+
+    newsTextTelegram(text, user) {
+        return (
+            `
+                Здравствуйте уважаемый(ая) ${user}!
+               ${text}
+                С уважением Alga-express
+            `
+        )}
 }
 
 const mailDistributions = new distributions();
