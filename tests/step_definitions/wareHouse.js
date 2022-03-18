@@ -19,6 +19,11 @@ When('нажимаю на кнопку {string}', (button) => {
     I.click(button);
 });
 
+When('нажимаю на кнопку кнопку редактирования склада {string}', (button) => {
+    I.click(button);
+    I.wait(3);
+});
+
 Then('я вижу текст {string}', (text) => {
     I.see(text);
 });
