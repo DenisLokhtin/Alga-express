@@ -174,7 +174,18 @@ const packageSlice = createSlice({
         },
         clearPackage(state) {
             state.package = null;
-        }
+        },
+
+        giveOutRequest(state, action) {
+            state.changeStatusesLoading = true;
+        },
+        giveOutSuccess(state, action) {
+            state.changeStatusesLoading = false;
+        },
+        giveOutFailure(state, action) {
+            state.changeStatusesError = action.payload;
+            state.changeStatusesLoading = false;
+        },
     },
 });
 

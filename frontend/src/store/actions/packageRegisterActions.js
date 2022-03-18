@@ -33,4 +33,7 @@ export const {
     changeDeliveryStatusError,
     clearAdminErrors,
     clearPackage,
+    giveOutRequest,
+    giveOutFailure,
+    giveOutSuccess
 } = packageSlice.actions;

@@ -21,6 +21,9 @@ import ImageModal from "../../components/UI/ImageModal/ImageModal";
 import ImageIcon from '@mui/icons-material/Image';
 import {createTheme} from "@mui/material/styles";
 import {makeStyles} from "@mui/styles";
+import EditIcon from "@mui/icons-material/Edit";
+import {Link} from "react-router-dom";
+import {editBuyout} from "../../paths";
 
 function a11yProps(index) {
     return {
@@ -143,22 +146,22 @@ const UserPage = () => {
             }, 200);
         }
 
-        console.log('weqwe');
-
-        dispatch(getOrdersHistoryRequest({page: packagesPage, limit: packagesPageLimit, id: userId}));
-        dispatch(fetchBuyoutsList({page: buyoutsPage, limit: buyoutsPageLimit, id: userId}));
-        dispatch(fetchPaymentRequest({page: paymentsPage, limit: paymentsPageLimit, id: userId}));
-
         if (packagesHistory) {
             dispatch(getOrdersHistoryRequest({page: packagesPage, limit: packagesPageLimit, history: true, id: userId}));
+        } else {
+            dispatch(getOrdersHistoryRequest({page: packagesPage, limit: packagesPageLimit, id: userId}));
         }
 
         if (buyoutsHistory) {
             dispatch(fetchBuyoutsList({page: buyoutsPage, limit: buyoutsPageLimit, history: true, id: userId}));
+        } else {
+            dispatch(fetchBuyoutsList({page: buyoutsPage, limit: buyoutsPageLimit, id: userId}));
         }
 
         if (paymentsHistory) {
             dispatch(fetchPaymentRequest({page: paymentsPage, limit: paymentsPageLimit, history: true, id: userId}));
+        } else {
+            dispatch(fetchPaymentRequest({page: paymentsPage, limit: paymentsPageLimit, id: userId}));
         }
     }, [
         messagesEndRef, dispatch, packagesPage, paymentsPage,
@@ -229,7 +232,21 @@ const UserPage = () => {
                 <TabPanelComponent value={value} index={1}>
                     <TableComponent
                         rows={buyoutsRows}
-                        columns={buyoutsColumns}
+                        columns={[...buyoutsColumns,
+                            {
+                                field: "actions",
+                                type: "actions",
+                                width: 70,
+                                getActions: (params) => [
+                                    <IconButton
+                                        component={Link}
+                                        to={editBuyout.slice(0, editBuyout.length - 3) + params.row.id}
+                                    >
+                                        <EditIcon/>
+                                    </IconButton>
+                                ]
+                            }
+                        ]}
                         pageSize={buyoutsPageLimit}
                         rowCount={buyoutsTotalRow}
                         rowHeight={70}

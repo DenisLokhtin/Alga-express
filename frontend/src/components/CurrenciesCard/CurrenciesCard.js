@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Card, CardContent, CardHeader, Grid, IconButton, TextField} from "@mui/material";
+import {Card, CardContent, CardHeader, Grid, TextField} from "@mui/material";
 import {useDispatch} from "react-redux";
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
@@ -80,11 +80,12 @@ const CurrenciesCard = ({currency}) => {
                     <Grid item xs={12} md={12} lg={12}>
                         <Grid container justifyContent="space-evenly">
                             <Grid item>
-                                <IconButton
+                                <Button
                                     onClick={edit}
+                                    startIcon={<EditIcon sx={{color: "green"}}/>}
                                 >
-                                    <EditIcon sx={{color: "green"}}/>
-                                </IconButton>
+                                    Редактировать
+                                </Button>
                             </Grid>
                             <Grid item>
                                 <Button

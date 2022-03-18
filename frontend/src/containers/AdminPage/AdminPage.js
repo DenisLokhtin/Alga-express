@@ -5,7 +5,7 @@ import {fetchCurrencies} from "../../store/actions/currenciesActions";
 import CurrenciesCard from "../../components/CurrenciesCard/CurrenciesCard";
 import TableComponent from "../../components/TableComponent/TableComponent";
 import {countries, statuses} from "../../dataLocalization";
-import {getOrdersHistoryRequest} from "../../store/actions/packageRegisterActions";
+import {getOrdersHistoryRequest, giveOutRequest} from "../../store/actions/packageRegisterActions";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -20,8 +20,12 @@ import ImageModal from "../../components/UI/ImageModal/ImageModal";
 import {createTheme} from "@mui/material/styles";
 import {makeStyles} from "@mui/styles";
 import ImageIcon from "@mui/icons-material/Image";
+import Button from "@mui/material/Button";
 import Autocomplete from "@mui/material/Autocomplete";
 import {fetchUsersRequest} from "../../store/actions/usersActions";
+import {Link} from "react-router-dom";
+import {editBuyout, newPackageRegister} from "../../paths";
+import EditIcon from '@mui/icons-material/Edit';
 import {DatePicker, LocalizationProvider} from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import Grid from "@mui/material/Grid";
@@ -74,6 +78,7 @@ const AdminPage = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const messagesEndRef = useRef(null);
+    const [update, setUpdate] = useState(false);
     const [value, setValue] = useState(0);
     const [openImg, setOpenImg] = useState(false);
     const [img, setImg] = useState(null);
@@ -145,7 +150,8 @@ const AdminPage = () => {
             price: buyout.price,
             commission: buyout.commission,
             value: buyout.value,
-            totalPrice: buyout.totalPrice
+            totalPrice: buyout.totalPrice,
+            userData: buyout.user
         }
     });
 
@@ -254,8 +260,8 @@ const AdminPage = () => {
 
     return (
         <Container ref={messagesEndRef} className={classes.container}>
-            <Box sx={{width: '100%'}}>
-                <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
+            <Box sx={{ width: '100%'}}>
+                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <Tabs
                         value={value}
                         onChange={handleChange}
@@ -357,10 +363,52 @@ const AdminPage = () => {
                         </ButtonWithProgress>
                     </Grid>
                 </Grid>
+
+                <Box sx={{padding: "12px 24px"}}>
+                    <Autocomplete
+                        onChange={(event, newValue) => {
+                            if (newValue) {
+                                setValueSelect(newValue);
+                            } else {
+                                setValueSelect({_id: null});
+                            }
+                        }}
+                        inputValue={inputValueSelect}
+                        onInputChange={(event, newInputValue) => {
+                            setInputValueSelect(newInputValue);
+                        }}
+                        name={users}
+                        id="usersSelected"
+                        options={users}
+                        getOptionLabel={(option) => (option.name + ' ' + option.email)}
+                        sx={{width: 300}}
+                        renderInput={(params) => <TextField {...params} label="Пользователи"/>}
+                    />
+                </Box>
+
                 <TabPanelComponent value={value} index={0}>
                     <TableComponent
                         rows={packagesRows}
-                        columns={packagesColumns}
+                        columns={[
+                            ...packagesColumns,
+                            {
+                                field: "actions",
+                                type: "actions",
+                                width: 100,
+                                getActions: (params) => [
+                                    <Button
+                                        variant="outlined"
+                                        disabled={params.row.status !== "Доставлено"}
+                                        onClick={() => {
+                                            dispatch(giveOutRequest({id: params.row.id, data: null}));
+                                            setUpdate(!update);
+                                        }}
+                                    >
+                                        Выдать
+                                    </Button>
+                                ]
+                            }
+                        ]}
                         pageSize={packagesPageLimit}
                         rowCount={packagesTotalRow}
                         rowHeight={70}
@@ -374,9 +422,6 @@ const AdminPage = () => {
                             setPackagesSelectionModel(newSelectionModel);
                         }}
                         loading={packagesLoading}
-                        onCellClick={(e) => {
-                            console.log(e)
-                        }}
                         toolbarElements={
                             <SwitchElement
                                 checked={packagesHistory}
@@ -389,7 +434,38 @@ const AdminPage = () => {
                 <TabPanelComponent value={value} index={1}>
                     <TableComponent
                         rows={buyoutsRows}
-                        columns={buyoutsColumns}
+                        columns={[
+                            ...buyoutsColumns,
+                            {
+                                field: "actions",
+                                type: "actions",
+                                width: 200,
+                                getActions: (params) => [
+                                    <Button
+                                        variant="outlined"
+                                        component={Link}
+                                        to={newPackageRegister}
+                                        state={{
+                                            userProps: {
+                                                id: params.row.userData._id,
+                                                name: params.row.userData.name,
+                                                email: params.row.userData.email,
+                                                buyoutId: params.row.id
+                                            }
+                                        }}
+                                    >
+                                        Оформить
+                                    </Button>,
+
+                                    <IconButton
+                                        component={Link}
+                                        to={editBuyout.slice(0, editBuyout.length - 3) + params.row.id}
+                                    >
+                                        <EditIcon/>
+                                    </IconButton>
+                                ]
+                            }
+                        ]}
                         pageSize={buyoutsPageLimit}
                         rowCount={buyoutsTotalRow}
                         rowHeight={70}
@@ -403,9 +479,6 @@ const AdminPage = () => {
                             setBuyoutsSelectionModel(newSelectionModel);
                         }}
                         loading={buyoutsLoading}
-                        onCellClick={(e) => {
-                            console.log(e)
-                        }}
                         toolbarElements={
                             <SwitchElement
                                 checked={buyoutsHistory}
@@ -440,11 +513,10 @@ const AdminPage = () => {
                                 align: 'center',
                             },
                             ...paymentsColumns,
-
                         ]}
                         pageSize={paymentsPageLimit}
                         rowCount={paymentsTotalRow}
-                        rowHeight={150}
+                        rowHeight={70}
                         onPageSizeChange={newRowsLimit => setPaymentsPageLimit(newRowsLimit)}
                         onPageChange={(newPage) => {
                             paymentsPrevSelection.current = paymentsSelectionModel;
@@ -455,10 +527,6 @@ const AdminPage = () => {
                             setPaymentsSelectionModel(newSelectionModel);
                         }}
                         loading={paymentsLoading}
-                        onRowClick={(e) => {
-                            setImg(e.row);
-                            setOpenImg(true);
-                        }}
                         toolbarElements={
                             <SwitchElement
                                 checked={paymentsHistory}
@@ -472,7 +540,7 @@ const AdminPage = () => {
 
                 <TabPanelComponent value={value} index={3}>
                     {currencies &&
-                    <CurrenciesCard currency={currencies}/>}
+                        <CurrenciesCard currency={currencies}/>}
                 </TabPanelComponent>
             </Box>
         </Container>
