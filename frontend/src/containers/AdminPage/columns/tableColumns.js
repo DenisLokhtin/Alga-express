@@ -42,6 +42,14 @@ export const packagesColumns = [
         headerAlign: 'center',
         align: 'center',
     },
+    {
+        field: 'name',
+        headerName: 'Пользователь',
+        flex: 1,
+        minWidth: 200,
+        headerAlign: 'center',
+        align: 'center',
+    },
 ];
 
 export const buyoutsColumns = [

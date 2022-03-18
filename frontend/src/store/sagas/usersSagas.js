@@ -37,7 +37,7 @@ import {
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
 import History from '../../History';
-import {userLogin, userPaymentsList} from "../../paths";
+import {adminPagePath, processingTrackNumbersAdmin, root, userLogin, userPage, userPaymentsList} from "../../paths";
 
 export function* registerUserSaga({payload}) {
     try {
@@ -62,7 +62,7 @@ export function* registerUserSaga({payload}) {
             }
         } else {
             yield put(registerUserSuccess(response.data));
-            History.push('/');
+            History.push(root);
             toast.success('Вы зарегистрированы');
         }
     } catch (e) {
@@ -77,7 +77,19 @@ export function* loginUserSaga({payload: user}) {
         user.navigate('/', true);
         yield put(loginUserSuccess(response.data));
         toast.success('Вы авторизированы!');
-        History.push('/user/page');
+        switch (response.data.role) {
+            case 'admin' || 'superAdmin':
+                History.push(adminPagePath);
+                break;
+            case 'warehouseman':
+                History.push(processingTrackNumbersAdmin);
+                break;
+            case 'user':
+                History.push(userPage);
+                break;
+            default:
+                return
+        }
     } catch (e) {
         toast.error(e.response.data.global);
         yield put(loginUserFailure(e.response.data));
