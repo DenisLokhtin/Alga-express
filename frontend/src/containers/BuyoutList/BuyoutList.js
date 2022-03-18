@@ -122,9 +122,9 @@ const BuyoutList = () => {
                                             </Link>
                                         )}
 
-                                        {b.status === 'ORDERED' && (
-                                            <p className={classes.btn}>Заказан</p>
-                                        )}
+                                        {/*{b.status === 'ORDERED' && (*/}
+                                        {/*    <p className={classes.btn}>Заказан</p>*/}
+                                        {/*)}*/}
                                     </Grid>
                                 )}
 
@@ -146,9 +146,9 @@ const BuyoutList = () => {
                                                 </Link>
                                             )}
 
-                                            {b.status === 'ORDERED' && (
-                                                <p className={classes.btn}>Заказан</p>
-                                            )}
+                                            {/*{b.status === 'ORDERED' && (*/}
+                                            {/*    <p className={classes.btn}>Заказан</p>*/}
+                                            {/*)}*/}
                                         </Grid>
                                     )}
 
