@@ -96,7 +96,7 @@ router.get('/list', auth, permit('admin', 'user', 'superAdmin'), async (req, res
         const size = await Buyout.find(findFilter);
 
         const buyouts = await Buyout.find(findFilter)
-            .populate('user', 'name')
+            .populate('user', 'name email')
             .sort(query.sort)
             .limit(limit)
             .skip(page * limit);

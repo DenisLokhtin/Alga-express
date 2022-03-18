@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Container, Grid, IconButton, TextField} from "@mui/material";
+import {Container, IconButton, TextField} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchCurrencies} from "../../store/actions/currenciesActions";
 import CurrenciesCard from "../../components/CurrenciesCard/CurrenciesCard";
@@ -23,7 +23,9 @@ import ImageIcon from "@mui/icons-material/Image";
 import Button from "@mui/material/Button";
 import Autocomplete from "@mui/material/Autocomplete";
 import {fetchUsersRequest} from "../../store/actions/usersActions";
-import Typography from "@mui/material/Typography";
+import {Link} from "react-router-dom";
+import {editBuyout, newPackageRegister} from "../../paths";
+import EditIcon from '@mui/icons-material/Edit';
 
 function a11yProps(index) {
     return {
@@ -126,7 +128,8 @@ const AdminPage = () => {
             price: buyout.price,
             commission: buyout.commission,
             value: buyout.value,
-            totalPrice: buyout.totalPrice
+            totalPrice: buyout.totalPrice,
+            userData: buyout.user
         }
     });
 
@@ -185,8 +188,6 @@ const AdminPage = () => {
         paymentsHistory,
         update]);
 
-    console.log('something');
-
     return (
         <Container ref={messagesEndRef} className={classes.container}>
             <Box sx={{ width: '100%'}}>
@@ -232,33 +233,21 @@ const AdminPage = () => {
                         columns={[
                             ...packagesColumns,
                             {
-                                field: "status",
-                                headerName: 'Статус',
-                                flex: 1,
-                                minWidth: 200,
-                                headerAlign: 'center',
-                                align: 'center',
-                                renderCell: (params) => (
-                                    <Grid container alignItems="center" spacing={2}>
-                                        <Grid item xs={6} md={6} lg={6}>
-                                            <Typography>
-                                                {params.row.status}
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={6} md={6} lg={6}>
-                                            <Button
-                                                variant="outlined"
-                                                disabled={params.row.status !== "Доставлено"}
-                                                onClick={() => {
-                                                    dispatch(giveOutRequest({id: params.row.id, data: null}));
-                                                    setUpdate(!update);
-                                                }}
-                                            >
-                                                Выдать
-                                            </Button>
-                                        </Grid>
-                                    </Grid>
-                                )
+                                field: "actions",
+                                type: "actions",
+                                width: 100,
+                                getActions: (params) => [
+                                    <Button
+                                        variant="outlined"
+                                        disabled={params.row.status !== "Доставлено"}
+                                        onClick={() => {
+                                            dispatch(giveOutRequest({id: params.row.id, data: null}));
+                                            setUpdate(!update);
+                                        }}
+                                    >
+                                        Выдать
+                                    </Button>
+                                ]
                             }
                         ]}
                         pageSize={packagesPageLimit}
@@ -286,7 +275,38 @@ const AdminPage = () => {
                 <TabPanelComponent value={value} index={1}>
                     <TableComponent
                         rows={buyoutsRows}
-                        columns={buyoutsColumns}
+                        columns={[
+                            ...buyoutsColumns,
+                            {
+                                field: "actions",
+                                type: "actions",
+                                width: 200,
+                                getActions: (params) => [
+                                    <Button
+                                        variant="outlined"
+                                        component={Link}
+                                        to={newPackageRegister}
+                                        state={{
+                                            userProps: {
+                                                id: params.row.userData._id,
+                                                name: params.row.userData.name,
+                                                email: params.row.userData.email,
+                                                buyoutId: params.row.id
+                                            }
+                                        }}
+                                    >
+                                        Оформить
+                                    </Button>,
+
+                                    <IconButton
+                                        component={Link}
+                                        to={editBuyout.slice(0, editBuyout.length - 3) + params.row.id}
+                                    >
+                                        <EditIcon/>
+                                    </IconButton>
+                                ]
+                            }
+                        ]}
                         pageSize={buyoutsPageLimit}
                         rowCount={buyoutsTotalRow}
                         rowHeight={70}
@@ -334,7 +354,6 @@ const AdminPage = () => {
                                 align: 'center',
                             },
                             ...paymentsColumns,
-
                         ]}
                         pageSize={paymentsPageLimit}
                         rowCount={paymentsTotalRow}

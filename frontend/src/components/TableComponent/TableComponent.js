@@ -76,8 +76,6 @@ const TableComponent = (
         toolbarElements
     }) => {
 
-    console.log(rows);
-
     return (
         <DataGrid
             rows={rows}
