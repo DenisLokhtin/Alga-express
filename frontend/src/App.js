@@ -36,7 +36,8 @@ import {
     cargoCreateUser,
     contactsCompany,
     editBuyout,
-    editCarousel, editInformation,
+    editCarousel,
+    editInformation,
     editPackageAdmin,
     editPackageUser,
     editPages,
@@ -113,8 +114,10 @@ const App = () => {
                         <Route path={packageInfoId} element={<SpecificPackage/>}/>
                         <Route path={orderBuyouts} element={<OrderBuyout/>}/>
                         <Route path={listBuyouts} element={<BuyoutList/>}/>
+                        <Route path={userPage} element={<UserPage/>}/>
                         <Route path={addUserPayment} element={<UserPayment/>}/>
                     </Route>
+
                     <Route element={<ProtectedRoutesForAdmin/>}>
                         {/* Routes for admin and superAdmin*/}
                         <Route path={adminPagePath} element={<AdminPage/>}/>
@@ -134,20 +137,22 @@ const App = () => {
                         <Route path={addPlayer} element={<AddPlayerAdmin/>}/>
                         <Route path={editPlayer} element={<EditPlayerAdmin/>}/>
                         <Route path={editInformation} element={<EditInformation/>}/>
+                        <Route path={editBuyout} element={<EditBuyout/>}/>
+                        <Route path={editTariffGroup} element={<EditTariffGroup/>}/>
                     </Route>
+
                     {/* Routes for warehouseman and SuperAdmin*/}
-                    {/*Приватные роуты можно сделать одним компонентом потом фикс*/}
                     <Route element={<ProtectedRoutesForWarehouseman/>}>
                         <Route path={processingTrackNumbersAdmin} element={<WarehousemanStatusEdit/>}/>
                     </Route>
+
                     <Route element={<ProtectedRoutesForSuperAdmin/>}>
                         <Route path={cargoCreateUser} element={<CreateUser/>}/>
                     </Route>
-                    <Route path={editBuyout} element={<EditBuyout/>}/>
-                    <Route path={wareHouseCompany} element={<WarehousePage/>}/>
-                    <Route path={editTariffGroup} element={<EditTariffGroup/>}/>
-                    <Route path={tariffs} element={<TariffsPage/>}/>
+
                     {/* Routes for not registered user */}
+                    <Route path={wareHouseCompany} element={<WarehousePage/>}/>
+                    <Route path={tariffs} element={<TariffsPage/>}/>
                     <Route path={root} element={<HomePage/>}/>
                     <Route path={faqCompany} element={<FAQ/>}/>
                     <Route path={newUserRegister} element={<Register/>}/>
@@ -158,7 +163,6 @@ const App = () => {
                     <Route path={howCompany} element={<HowItWorks/>}/>
                     <Route path={newsCompany} element={<News/>}/>
                     <Route path={newsIdCompany} element={<SingleNews/>}/>
-                    <Route path={userPage} element={<UserPage/>}/>
                     <Route path={forgotPassword} element={<ForgotPassword/>}/>
                     <Route path={resetPassword} element={<ResetPassword/>}/>
                     <Route path={sitesCompany} element={<MarketSites/>}/>
