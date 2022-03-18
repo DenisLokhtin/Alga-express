@@ -15,7 +15,7 @@ import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 import {changeStatusesRequest, clearTextFieldsErrors} from "../../store/actions/packageRegisterActions";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
 import FormElement from "../../components/UI/Form/FormElement";
-
+import {createTheme} from "@mui/material/styles";
 
 const menuItems = [
     {value: 'REGISTERED', text: 'Оформлен'},
@@ -26,9 +26,29 @@ const menuItems = [
     {value: 'DONE', text: 'Выдано'},
 ];
 
+const theme = createTheme({
+    breakpoints: {
+        values: {
+            sm: 786,
+        },
+    },
+});
+
+
 const useStyles = makeStyles(() => ({
+    breakpoints: {
+        values: {
+            sm: 786,
+        },
+    },
+
     container: {
-        marginTop: '100px',
+        textAlign: 'center',
+        paddingTop: '175px',
+        marginBottom: '30px',
+        [theme.breakpoints.down('sm')]: {
+            paddingTop: '100px',
+        },
     },
 
     btnContainer: {
@@ -77,7 +97,6 @@ const WarehousemanStatusEdit = () => {
         dispatch(changeStatusesRequest(packageStatus));
     };
 
-    console.log(packageStatus);
     const messagesEndRef = useRef(null);
 
     useEffect(() => {
@@ -126,7 +145,7 @@ const WarehousemanStatusEdit = () => {
                         minRows={3}
                     />
                 </Grid>
-                <Grid item xs={12} sm={8} md={7} lg={12} className={classes.btnContainer}>
+                <Grid item xs={12} sm={8} md={7} lg={7} className={classes.btnContainer}>
                     <ButtonWithProgress
                         variant="contained"
                         type="submit"

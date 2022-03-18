@@ -30,7 +30,7 @@ const MarketSites = () => {
             ref={messagesEndRef}
             component="section"
             maxWidth="md"
-            style={{textAlign: "center"}}>
+            style={{textAlign: "center", paddingTop: '160px', paddingBottom: '150px'}}>
             <Grid container justifyContent={"center"} direction={"column"}>
                 <Grid container direction="row" spacing={2} justifyContent={"center"}>
                     {market && market.map(m => (

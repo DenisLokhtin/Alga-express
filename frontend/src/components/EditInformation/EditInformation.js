@@ -3,23 +3,38 @@ import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWit
 import {useDispatch, useSelector} from "react-redux";
 import {Container, FormControl, Grid, InputLabel, MenuItem, Select, TextareaAutosize} from "@mui/material";
 import {makeStyles} from "@mui/styles";
-import {changeInformationRequest} from "../../store/actions/informationActions";
-import theme from "../../theme";
 import FormElement from "../UI/Form/FormElement";
+import {createTheme} from "@mui/material/styles";
+import {changeInformationRequest} from "../../store/actions/informationActions";
 
-const useStyles = makeStyles(theme => ({
-    submit: {
-        margin: theme.spacing(3, 0, 2),
+const theme = createTheme({
+    breakpoints: {
+        values: {
+            sm: 767,
+        },
     },
+});
+
+const useStyles = makeStyles(() => ({
+    breakpoints: {
+        values: {
+            sm: 767,
+        },
+    },
+
     container: {
         width: "90%",
         margin: "0 auto",
-        marginTop: theme.spacing(2),
+        marginTop: '16px',
+        paddingTop: '170px',
         [theme.breakpoints.up('sm')]: {
             width: '60%',
         },
         [theme.breakpoints.up('md')]: {
             width: '50%',
+        },
+        [theme.breakpoints.down('sm')]: {
+            paddingTop: '90px',
         },
     },
 }));
@@ -33,6 +48,7 @@ const EditPages = () => {
         information: '',
         text: [],
     });
+
     const messagesEndRef = useRef(null);
 
     useEffect(() => {
@@ -153,7 +169,7 @@ const EditPages = () => {
                         fullWidth
                         variant="contained"
                         color="primary"
-                        className={classes.submit}
+                        sx={{marginBottom: '30px'}}
                     >
                         Изменить
                     </ButtonWithProgress>

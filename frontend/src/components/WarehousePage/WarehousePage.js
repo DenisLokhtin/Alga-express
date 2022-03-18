@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Box, Grid, Tab} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import {TabContext, TabList, TabPanel} from "@mui/lab";
@@ -9,6 +9,7 @@ import {addWareHouseAddress, editingSingleWareHouse} from "../../paths";
 import {deleteWareHouseRequest, fetchWareHouseRequest} from "../../store/actions/wareHouseActions";
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import Player from "../Player/Player";
+import AppWindow from "../UI/AppWindow/AppWindow";
 
 const useStyles = makeStyles(theme => ({
     submit: {
@@ -44,8 +45,11 @@ const WarehousePage = () => {
     const deleteWareHouse = (id) => {
         dispatch(deleteWareHouseRequest(id));
         setValue("0");
+        setOpen(false);
     };
     const content = wareHouses[value]?.info.split('\n').filter(info => info !== '').map(info => ({info}));
+
+    const [open, setOpen] = useState(false);
 
     return (
         <Box ref={messagesEndRef} sx={{width: '100%', typography: 'body1'}} className={classes.tableContainer}>
@@ -123,7 +127,7 @@ const WarehousePage = () => {
                                         className={classes.submit}
                                         loading={loading}
                                         disabled={loading}
-                                        onClick={() => deleteWareHouse(warehouse._id)}
+                                        onClick={() => setOpen(true)}
                                     >
                                         Удалить страну
                                     </ButtonWithProgress>
@@ -155,12 +159,14 @@ const WarehousePage = () => {
                                         className={classes.submit}
                                         loading={loading}
                                         disabled={loading}
-                                        onClick={() => deleteWareHouse(warehouse._id)}
+                                        onClick={() => setOpen(true)}
                                     >
                                         Удалить страну
                                     </ButtonWithProgress>
                                 </Grid>
                             </Grid> : null}
+                        <AppWindow open={open} onClose={() => setOpen(false)}
+                                   confirm={() => deleteWareHouse(warehouse._id)}/>
                     </TabPanel>
                 ))}
             </TabContext>

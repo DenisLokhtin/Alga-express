@@ -15,29 +15,33 @@ import {apiURL} from "../../config";
 import FormElement from "../UI/Form/FormElement";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 
+const theme = createTheme({
+    breakpoints: {
+        values: {
+            sm: 767,
+        },
+    },
+});
+
 const useStyles = makeStyles(() => ({
+    breakpoints: {
+        values: {
+            sm: 767,
+        },
+    },
+
     container: {
-        marginTop: '10px',
-        paddingBottom: '40px',
-        display: "flex"
-    },
+        textAlign: 'center',
+        paddingTop: '170px',
+        marginBottom: '30px',
+        [theme.breakpoints.down('sm')]: {
+            paddingTop: '110px',
+        },
+    }
 }));
-
-const theme = createTheme();
-
-theme.typography.h4 = {
-    fontSize: '1.3rem',
-    '@media (min-width:600px)': {
-        fontSize: '1.6rem',
-    },
-    [theme.breakpoints.up('md')]: {
-        fontSize: '2rem',
-    },
-};
 
 const AdminPaymentsProcessing = () => {
     const classes = useStyles();
-
     const dispatch = useDispatch();
     const paymentData = useSelector(state => state.payments.payment);
     const updatePermit = useSelector(state => state.payments.status);
@@ -167,6 +171,7 @@ const AdminPaymentsProcessing = () => {
                                                         value={permitPayment[index].pay}
                                                         onChange={e => changePermitPayments(index, e.target.value)}
                                                         name='pay'
+                                                        InputProps={{ inputProps: {min: 1}}}
                                                     />
                                                 </Grid>
                                                 <Grid item>
@@ -177,7 +182,7 @@ const AdminPaymentsProcessing = () => {
                                                         color="primary"
                                                         className={classes.submit}
                                                         // loading={loading}
-                                                        // disabled={buttonDis}
+                                                        disabled={!(permitPayment[index].pay !== undefined && permitPayment[index].pay !== '')}
                                                     >
                                                         Принять оплату
                                                     </ButtonWithProgress>

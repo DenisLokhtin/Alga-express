@@ -167,9 +167,9 @@ router.put('/', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req,
     const filtered = trackNumbersData.filter(packageStatus => packageStatus.trackNumber !== '');
 
     const uniquePackages = filtered.filter((packageInfo, index, self) =>
-            index === self.findIndex((packageData) => (
-                packageData.trackNumber === packageInfo.trackNumber
-            ))
+        index === self.findIndex((packageData) => (
+            packageData.trackNumber === packageInfo.trackNumber
+        ))
     );
 
     try {
@@ -187,7 +187,7 @@ router.put('/', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req,
                 {status: key.status},
                 {new: true, runValidators: true});
 
-            const userEmail =  await updatedStatuses.populate('user','email')
+            const userEmail = await updatedStatuses.populate('user', 'email')
 
             sendMail(userEmail.user.email, 'Alga-express: Баланс пополнен', null, packagesText(userEmail.trackNumber, userEmail.status));
 
@@ -205,7 +205,7 @@ router.put('/', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req,
             }
         }
 
-       await Package.find({status: 'DELIVERED'});
+        await Package.find({status: 'DELIVERED'});
 
         if (notFoundTrackNumbers.length > 0) {
             res.status(404).send(notFoundTrackNumbers);
@@ -219,21 +219,37 @@ router.put('/', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req,
     }
 });
 
-router.put('/packageDelivery', auth, permit('user'), async (req, res) => {
+router.put('/packageDelivery', auth, permit('user', 'admin', 'warehouseman', 'superAdmin'), async (req, res) => {
     try {
-        const onePackage = await Package.find({trackNumber: req.body.trackNumber});
+        const onePackage = await Package.findOne({trackNumber: req.body.trackNumber});
 
-        const updatedPackage = await Package.findOneAndUpdate({trackNumber: req.body.trackNumber}, {
-            delivery: !onePackage[0].delivery,
+        await Package.findOneAndUpdate({trackNumber: req.body.trackNumber}, {
+            delivery: !onePackage.delivery,
         });
 
-        res.send(updatedPackage);
+        res.send('delivery updated');
 
     } catch (error) {
         console.log(error);
         res.status(400).send(error);
     }
 });
+
+router.put('/giveout/:id', auth, permit('admin', 'warehouseman', 'superAdmin', 'user'), async (req, res) => {
+    try {
+        const pack = await Package.findById(req.params.id);
+
+        if (pack) {
+            pack.status = "DONE";
+            await Package.findByIdAndUpdate(req.params.id, pack, {new: true});
+            res.send({message: "Статус посылки обновлен!"});
+        } else {
+            res.send({message: "Нет такой посылки"});
+        }
+    } catch (e) {
+        res.status(500).send(e);
+    }
+})
 
 router.put('/:id', auth, permit('admin', 'warehouseman', 'superAdmin', 'user'), async (req, res) => {
     let result = {};
@@ -274,7 +290,7 @@ router.put('/:id', auth, permit('admin', 'warehouseman', 'superAdmin', 'user'), 
 
             }
 
-           result.success.$ignore('trackNumber');
+            result.success.$ignore('trackNumber');
             await result.success.save();
             return res.status(result.code).send(result.success);
         }
