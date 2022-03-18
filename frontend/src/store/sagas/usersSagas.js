@@ -2,6 +2,7 @@ import {put, takeEvery} from "redux-saga/effects";
 import {
     addUserPaymentFailure,
     addUserPaymentRequest,
+    addUserPaymentSuccess,
     changePasswordFailure,
     changePasswordRequest,
     changePasswordSuccess,
@@ -130,7 +131,8 @@ export function* editPassportSaga({payload}) {
 
 export function* userPaymentSaga({payload}) {
     try {
-        yield  axiosApi.post('/userEdit/payment/', payload);
+        const response = yield  axiosApi.post('/userEdit/payment/', payload);
+        yield put(addUserPaymentSuccess(response.data));
         History.push(userPaymentsList);
         toast.success('Оплата отправлена');
     } catch (e) {

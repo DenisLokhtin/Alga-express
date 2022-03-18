@@ -52,7 +52,7 @@ const EditWareHouseAdmin = () => {
         });
     };
     return (
-        <div>
+        <div style={{paddingTop: '150px', paddingBottom: '100px'}}>
             <h3>{oneWareHouse.country}</h3>
             <Grid item xs={12} sm={8} md={7} lg={7}>
             </Grid>

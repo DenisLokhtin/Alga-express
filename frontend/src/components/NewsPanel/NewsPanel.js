@@ -16,15 +16,15 @@ const NewsPanel = () => {
         <ul className="news-list">
             {news.length > 0 ? news.map(news => (
                 <Fragment key={news._id}>
-                    <li>
+                    <li style={{color: 'rgba(255,255,255, 0.3)', fontSize: '13px'}}>
                         {news.datetime}
                     </li>
-                    <li className="news-list__item">
+                    <li className="news-list__item" style={{fontSize: '26px'}}>
                         {news.title}
                     </li>
                     <li className="news-list__item">
                         <Link to={`${newsCompany}/${news._id}`} className="read-more">
-                            <span>Подробнее {news.description ? '...' : ''}</span>
+                            <span style={{fontSize: '18px'}}>Подробнее {news.description ? '...' : ''}</span>
                         </Link>
                     </li>
                 </Fragment>

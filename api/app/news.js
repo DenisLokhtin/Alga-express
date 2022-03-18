@@ -5,8 +5,10 @@ const {nanoid} = require('nanoid');
 const config = require('../config');
 const News = require('../models/News');
 const dayjs = require("dayjs");
-// const sendMail = require('../middleware/sendMail');
-// const {describeAll} = require("npm/lib/utils/config");
+const sendMail = require('../middleware/sendMail');
+const {newsTextTelegram} = require('../email-texts');
+const {newsText} = require('../email-texts');
+const User = require("../models/User");
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -53,10 +55,7 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', upload.single('image'), async (req, res) => {
     try {
-        // const users = await User.find({role: 'user'});
-        // users.map(user => {
-        //        sendMail(user.email, 'Alga-express: Новость', null, newsData.description);
-        // })
+
 
         const newsData = {
             title: req.body.title,
@@ -69,9 +68,12 @@ router.post('/', upload.single('image'), async (req, res) => {
         }
 
         const news = new News(newsData);
-
-
         await news.save();
+
+        const users = await User.find({role: 'user'});
+        users.map(async user => {
+            await sendMail({email: user.email}, 'Alga-express: '+ newsData.title, newsTextTelegram(news?.description, user.name), newsText(news?.description, user.name));
+        })
         res.send(news);
     } catch (error) {
         res.status(400).send(error);
