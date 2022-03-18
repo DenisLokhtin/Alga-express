@@ -22,6 +22,10 @@ import {makeStyles} from "@mui/styles";
 import ImageIcon from "@mui/icons-material/Image";
 import Autocomplete from "@mui/material/Autocomplete";
 import {fetchUsersRequest} from "../../store/actions/usersActions";
+import {DatePicker, LocalizationProvider} from "@mui/lab";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import Grid from "@mui/material/Grid";
+import ruLocale from "date-fns/locale/ru";
 
 // import ImageModal from "../../components/UI/ImageModal/ImageModal";
 
@@ -57,6 +61,14 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
+const localeMap = {
+    ru: ruLocale,
+};
+
+const maskMap = {
+    ru: '__.__.____',
+};
+
 const AdminPage = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
@@ -69,6 +81,13 @@ const AdminPage = () => {
 
     const [valueSelect, setValueSelect] = useState({_id: null});
     const [inputValueSelect, setInputValueSelect] = useState('');
+
+    const [periodDate, setPeriodDate] = useState(
+        {
+            from: Date.now(),
+            to: Date.now(),
+            set: false,
+        });
 
     const buyouts = useSelector(state => state.buyouts.buyouts);
     const [buyoutsHistory, setBuyoutsHistory] = useState(false);
@@ -150,6 +169,11 @@ const AdminPage = () => {
     }, [dispatch, messagesEndRef]);
 
     useEffect(() => {
+        // const period = null;
+        // if (periodDate.set) {
+        //     period.from = periodDate.from;
+        //     period.to = periodDate.to;
+        // }
         switch (value) {
             case 0:
                 dispatch(getOrdersHistoryRequest({page: packagesPage, limit: packagesPageLimit, id: valueSelect._id}));
@@ -163,19 +187,35 @@ const AdminPage = () => {
             case 3:
                 dispatch(fetchCurrencies());
                 break;
-            default: break;
+            default:
+                break;
         }
 
         if (packagesHistory) {
-            dispatch(getOrdersHistoryRequest({page: packagesPage, limit: packagesPageLimit, history: true, id: valueSelect._id}));
+            dispatch(getOrdersHistoryRequest({
+                page: packagesPage,
+                limit: packagesPageLimit,
+                history: true,
+                id: valueSelect._id
+            }));
         }
 
         if (buyoutsHistory) {
-            dispatch(fetchBuyoutsList({page: buyoutsPage, limit: buyoutsPageLimit, history: true, id: valueSelect._id}));
+            dispatch(fetchBuyoutsList({
+                page: buyoutsPage,
+                limit: buyoutsPageLimit,
+                history: true,
+                id: valueSelect._id
+            }));
         }
 
         if (paymentsHistory) {
-            dispatch(fetchPaymentRequest({page: paymentsPage, limit: paymentsPageLimit, history: true, id: valueSelect._id}));
+            dispatch(fetchPaymentRequest({
+                page: paymentsPage,
+                limit: paymentsPageLimit,
+                history: true,
+                id: valueSelect._id
+            }));
         }
 
     }, [dispatch,
@@ -191,6 +231,8 @@ const AdminPage = () => {
         paymentsHistory,
         valueSelect,
     ]);
+
+    console.log(periodDate);
 
     return (
         <Container ref={messagesEndRef} className={classes.container}>
@@ -208,27 +250,68 @@ const AdminPage = () => {
                         <Tab label="Валюты" {...a11yProps(4)} />
                     </Tabs>
                 </Box>
-                <Box>
-                    <Autocomplete
-                        onChange={(event, newValue) => {
-                            if (newValue) {
-                                setValueSelect(newValue);
-                            } else {
-                                setValueSelect({_id: null});
-                            }
-                        }}
-                        inputValue={inputValueSelect}
-                        onInputChange={(event, newInputValue) => {
-                            setInputValueSelect(newInputValue);
-                        }}
-                        name={users}
-                        id="usersSelected"
-                        options={users}
-                        getOptionLabel={(option) => (option.name + ' ' + option.email)}
-                        sx={{width: 300}}
-                        renderInput={(params) => <TextField {...params} label="Пользователи"/>}
-                    />
-                </Box>
+                <Grid container>
+                    <Box item>
+                        <Autocomplete
+                            onChange={(event, newValue) => {
+                                if (newValue) {
+                                    setValueSelect(newValue);
+                                } else {
+                                    setValueSelect({_id: null});
+                                }
+                            }}
+                            inputValue={inputValueSelect}
+                            onInputChange={(event, newInputValue) => {
+                                setInputValueSelect(newInputValue);
+                            }}
+                            name={users}
+                            id="usersSelected"
+                            options={users}
+                            getOptionLabel={(option) => (option.name + ' ' + option.email)}
+                            sx={{width: 300}}
+                            renderInput={(params) => <TextField {...params} label="Пользователи"/>}
+                        />
+                    </Box>
+
+                    <Box item>
+                        <LocalizationProvider dateAdapter={AdapterDateFns} locale={localeMap['ru']}>
+                            <DatePicker
+                                mask={maskMap['ru']}
+                                label="от"
+                                openTo="month"
+                                views={['year', 'month', 'day']}
+                                value={periodDate.from}
+                                onChange={(newValue) => {
+                                    setPeriodDate(prevState => ({
+                                        ...prevState,
+                                        from: newValue,
+                                        set: true,
+                                    }));
+                                }}
+                                renderInput={(params) => <TextField {...params}/>}
+                            />
+                        </LocalizationProvider>
+                    </Box>
+                    <Box item>
+                        <LocalizationProvider dateAdapter={AdapterDateFns} locale={localeMap['ru']}>
+                            <DatePicker
+                                mask={maskMap['ru']}
+                                label="До"
+                                openTo="month"
+                                views={['year', 'month', 'day']}
+                                value={periodDate.to}
+                                onChange={(newValue) => {
+                                    setPeriodDate(prevState => ({
+                                        ...prevState,
+                                        to: newValue,
+                                        set: true,
+                                    }));
+                                }}
+                                renderInput={(params) => <TextField {...params}/>}
+                            />
+                        </LocalizationProvider>
+                    </Box>
+                </Grid>
                 <TabPanelComponent value={value} index={0}>
                     <TableComponent
                         rows={packagesRows}
