@@ -70,22 +70,22 @@ router.get('/list', auth, permit('admin', 'user', 'superAdmin'), async (req, res
     if (req.query.page) {
         page = Number(req.query.page);
     }
-
     if (req.query.limit) {
         limit = Number(req.query.limit);
     }
-
-    if (req.query.id) query.id = req.query.id;
     if (req.query.history) query.history = req.query.history;
-
     if (req.query.sort) {
         query.sort = {[req.query.sort]: 1};
     } else {
         query.sort = {datetime: 1};
     }
-
-    query.role = req.user.role;
-    query.user_id = req.user._id;
+    if (req.user.role === 'user') {
+        query.role = 'user'
+        query.id = req.user.id;
+    } else {
+        query.role = req.user.role;
+        query.id = req.query.id;
+    }
 
     const findFilter = filterBuyouts(query, 'buyouts');
 

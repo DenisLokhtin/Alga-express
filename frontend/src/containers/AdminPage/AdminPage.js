@@ -26,6 +26,7 @@ import {DatePicker, LocalizationProvider} from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import Grid from "@mui/material/Grid";
 import ruLocale from "date-fns/locale/ru";
+import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
 
 // import ImageModal from "../../components/UI/ImageModal/ImageModal";
 
@@ -84,11 +85,11 @@ const AdminPage = () => {
 
     const [periodDate, setPeriodDate] = useState(
         {
-            from: Date.now(),
-            to: Date.now(),
-            set: false,
+            from: null,
+            to: null,
         });
-
+    const [searchData, setSearchData] = useState(false);
+    console.log(valueSelect);
     const buyouts = useSelector(state => state.buyouts.buyouts);
     const [buyoutsHistory, setBuyoutsHistory] = useState(false);
     const buyoutsLoading = useSelector(state => state.buyouts.fetchLoading);
@@ -166,60 +167,69 @@ const AdminPage = () => {
             }, 250);
         }
         dispatch(fetchUsersRequest());
+        dispatch(fetchCurrencies());
     }, [dispatch, messagesEndRef]);
 
     useEffect(() => {
-        // const period = null;
-        // if (periodDate.set) {
-        //     period.from = periodDate.from;
-        //     period.to = periodDate.to;
-        // }
+        const pageData = {};
+        if ((searchData)) {
+            pageData.from = periodDate.from;
+            pageData.to = periodDate.to;
+            pageData.page = packagesPage;
+            pageData.limit = packagesPageLimit;
+            pageData.id = valueSelect._id;
+        } else {
+            pageData.page = packagesPage;
+            pageData.limit = packagesPageLimit;
+        }
+
         switch (value) {
             case 0:
-                dispatch(getOrdersHistoryRequest({page: packagesPage, limit: packagesPageLimit, id: valueSelect._id}));
+                if (packagesHistory) {
+                    pageData.history = true;
+                }
+                dispatch(getOrdersHistoryRequest({
+                    page: pageData.page,
+                    limit: pageData.limit,
+                    history: pageData.history,
+                    id: pageData.id,
+                    from: pageData.from,
+                    to: pageData.to
+                }));
+
                 break;
             case 1:
-                dispatch(fetchBuyoutsList({page: buyoutsPage, limit: buyoutsPageLimit, id: valueSelect._id}));
+                if (buyoutsHistory) {
+                    pageData.history = true;
+                }
+                dispatch(fetchBuyoutsList({
+                    page: pageData.page,
+                    limit: pageData.limit,
+                    history: pageData.history,
+                    id: pageData.id,
+                    from: pageData.from,
+                    to: pageData.to
+                }));
                 break;
             case 2:
-                dispatch(fetchPaymentRequest({page: paymentsPage, limit: paymentsPageLimit, id: valueSelect._id}));
-                break;
-            case 3:
-                dispatch(fetchCurrencies());
+                if (paymentsHistory) {
+                    pageData.history = true;
+                }
+                dispatch(fetchPaymentRequest({
+                    page: pageData.page,
+                    limit: pageData.limit,
+                    history: pageData.history,
+                    id: pageData.id,
+                    from: pageData.from,
+                    to: pageData.to
+                }));
                 break;
             default:
                 break;
         }
-
-        if (packagesHistory) {
-            dispatch(getOrdersHistoryRequest({
-                page: packagesPage,
-                limit: packagesPageLimit,
-                history: true,
-                id: valueSelect._id
-            }));
-        }
-
-        if (buyoutsHistory) {
-            dispatch(fetchBuyoutsList({
-                page: buyoutsPage,
-                limit: buyoutsPageLimit,
-                history: true,
-                id: valueSelect._id
-            }));
-        }
-
-        if (paymentsHistory) {
-            dispatch(fetchPaymentRequest({
-                page: paymentsPage,
-                limit: paymentsPageLimit,
-                history: true,
-                id: valueSelect._id
-            }));
-        }
-
     }, [dispatch,
         value,
+        searchData,
         packagesPage,
         packagesPageLimit,
         buyoutsPage,
@@ -232,7 +242,15 @@ const AdminPage = () => {
         valueSelect,
     ]);
 
-    console.log(periodDate);
+    const submitFormHandler = (e) => {
+        e.preventDefault();
+        setSearchData(true);
+    };
+
+    const clearHandler = () => {
+        setValueSelect({_id: null});
+        setSearchData(false);
+    };
 
     return (
         <Container ref={messagesEndRef} className={classes.container}>
@@ -250,7 +268,11 @@ const AdminPage = () => {
                         <Tab label="Валюты" {...a11yProps(4)} />
                     </Tabs>
                 </Box>
-                <Grid container>
+                <Grid
+                    container
+                    component="form"
+                    onSubmit={submitFormHandler}
+                >
                     <Box item>
                         <Autocomplete
                             onChange={(event, newValue) => {
@@ -285,7 +307,6 @@ const AdminPage = () => {
                                     setPeriodDate(prevState => ({
                                         ...prevState,
                                         from: newValue,
-                                        set: true,
                                     }));
                                 }}
                                 renderInput={(params) => <TextField {...params}/>}
@@ -304,13 +325,37 @@ const AdminPage = () => {
                                     setPeriodDate(prevState => ({
                                         ...prevState,
                                         to: newValue,
-                                        set: true,
                                     }));
                                 }}
                                 renderInput={(params) => <TextField {...params}/>}
                             />
                         </LocalizationProvider>
                     </Box>
+                    <Grid item>
+                        <ButtonWithProgress
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            // className={classes.submit}
+                            // loading={loading}
+                            // disabled={!(permitPayment[index].pay !== undefined && permitPayment[index].pay !== '')}
+                        >
+                            Найти
+                        </ButtonWithProgress>
+                        <ButtonWithProgress
+                            type="button"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            onClick={clearHandler}
+                            // className={classes.submit}
+                            // loading={loading}
+                            // disabled={!(permitPayment[index].pay !== undefined && permitPayment[index].pay !== '')}
+                        >
+                            Сброс
+                        </ButtonWithProgress>
+                    </Grid>
                 </Grid>
                 <TabPanelComponent value={value} index={0}>
                     <TableComponent

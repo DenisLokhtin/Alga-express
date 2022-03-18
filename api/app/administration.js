@@ -16,6 +16,8 @@ router.get('/', auth, permit('user', 'admin', 'superAdmin'), async (req, res) =>
     let page = 0;
     let limit = 10;
 
+    console.log('id query: ', req.query.id);
+
     if (req.query.page) {
         page = req.query.page;
     }
@@ -34,9 +36,6 @@ router.get('/', auth, permit('user', 'admin', 'superAdmin'), async (req, res) =>
     req.query.history ? query.history = req.query.history : null;
 
     const findFilter = filter(query, 'payments');
-
-    console.log('query:', query);
-    console.log('find:', findFilter);
 
     try {
         const size = await Payment.find(findFilter);
