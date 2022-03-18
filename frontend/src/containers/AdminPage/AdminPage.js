@@ -5,7 +5,7 @@ import {fetchCurrencies} from "../../store/actions/currenciesActions";
 import CurrenciesCard from "../../components/CurrenciesCard/CurrenciesCard";
 import TableComponent from "../../components/TableComponent/TableComponent";
 import {countries, statuses} from "../../dataLocalization";
-import {getOrdersHistoryRequest} from "../../store/actions/packageRegisterActions";
+import {getOrdersHistoryRequest, giveOutRequest} from "../../store/actions/packageRegisterActions";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -20,8 +20,7 @@ import ImageModal from "../../components/UI/ImageModal/ImageModal";
 import {createTheme} from "@mui/material/styles";
 import {makeStyles} from "@mui/styles";
 import ImageIcon from "@mui/icons-material/Image";
-
-// import ImageModal from "../../components/UI/ImageModal/ImageModal";
+import Button from "@mui/material/Button";
 
 function a11yProps(index) {
     return {
@@ -59,6 +58,7 @@ const AdminPage = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const messagesEndRef = useRef(null);
+    const [update, setUpdate] = useState(false);
     const [value, setValue] = useState(0);
     const [openImg, setOpenImg] = useState(false);
     const [img, setImg] = useState(null);
@@ -140,20 +140,23 @@ const AdminPage = () => {
             }, 250);
         }
         dispatch(fetchCurrencies());
-        dispatch(getOrdersHistoryRequest({page: packagesPage, limit: packagesPageLimit}));
-        dispatch(fetchBuyoutsList({page: buyoutsPage, limit: buyoutsPageLimit}));
-        dispatch(fetchPaymentRequest({page: paymentsPage, limit: paymentsPageLimit}));
 
         if (packagesHistory) {
             dispatch(getOrdersHistoryRequest({page: packagesPage, limit: packagesPageLimit, history: true}));
+        } else {
+            dispatch(getOrdersHistoryRequest({page: packagesPage, limit: packagesPageLimit}));
         }
 
         if (buyoutsHistory) {
             dispatch(fetchBuyoutsList({page: buyoutsPage, limit: buyoutsPageLimit, history: true}));
+        } else {
+            dispatch(fetchBuyoutsList({page: buyoutsPage, limit: buyoutsPageLimit}));
         }
 
         if (paymentsHistory) {
             dispatch(fetchPaymentRequest({page: paymentsPage, limit: paymentsPageLimit, history: true}));
+        } else {
+            dispatch(fetchPaymentRequest({page: paymentsPage, limit: paymentsPageLimit}));
         }
 
     }, [dispatch,
@@ -166,7 +169,8 @@ const AdminPage = () => {
         paymentsPage,
         paymentsPageLimit,
         packagesHistory,
-        paymentsHistory
+        paymentsHistory,
+        update
     ]);
 
     return (
@@ -189,7 +193,29 @@ const AdminPage = () => {
                 <TabPanelComponent value={value} index={0}>
                     <TableComponent
                         rows={packagesRows}
-                        columns={packagesColumns}
+                        columns={[
+                            ...packagesColumns,
+                            {
+                                field: 'status',
+                                headerName: 'Статус',
+                                flex: 1,
+                                minWidth: 100,
+                                headerAlign: 'center',
+                                align: 'center',
+                                renderCell: (params) => (
+                                    <Button
+                                        variant="outlined"
+                                        disabled={params.row.status === "Выдан"}
+                                        onClick={() => {
+                                            dispatch(giveOutRequest({id: params.row.id, data: null}));
+                                            setUpdate(!update);
+                                        }}
+                                    >
+                                        {params.row.status === "Выдан" ? "Выдан" : params.row.status}
+                                    </Button>
+                                )
+                            }
+                        ]}
                         pageSize={packagesPageLimit}
                         rowCount={packagesTotalRow}
                         rowHeight={70}
@@ -203,7 +229,6 @@ const AdminPage = () => {
                             setPackagesSelectionModel(newSelectionModel);
                         }}
                         loading={packagesLoading}
-                        onCellClick={(e) => {console.log(e)}}
                         toolbarElements={
                             <SwitchElement
                                 checked={packagesHistory}
@@ -230,7 +255,6 @@ const AdminPage = () => {
                             setBuyoutsSelectionModel(newSelectionModel);
                         }}
                         loading={buyoutsLoading}
-                        onCellClick={(e) => {console.log(e)}}
                         toolbarElements={
                             <SwitchElement
                                 checked={buyoutsHistory}
@@ -280,10 +304,6 @@ const AdminPage = () => {
                             setPaymentsSelectionModel(newSelectionModel);
                         }}
                         loading={paymentsLoading}
-                        onRowClick={(e) => {
-                            setImg(e.row);
-                            setOpenImg(true);
-                        }}
                         toolbarElements={
                             <SwitchElement
                                 checked={paymentsHistory}

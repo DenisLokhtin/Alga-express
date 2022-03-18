@@ -239,14 +239,13 @@ router.put('/giveout/:id', auth, permit('admin', 'warehouseman', 'superAdmin', '
     try {
         const pack = await Package.findById(req.params.id);
 
-        const newData = {
-            ...pack,
-            status: "DONE",
+        if (pack) {
+            pack.status = "DONE";
+            await Package.findByIdAndUpdate(req.params.id, pack, {new: true});
+            res.send({message: "Статус посылки обновлен!"});
+        } else {
+            res.send({message: "Нет такой посылки"});
         }
-
-        await Package.findOneAndUpdate(req.params.id, newData);
-
-        res.send({message: "Статус посылки обновлен!"});
     } catch (e) {
         res.status(500).send(e);
     }

@@ -178,7 +178,6 @@ export function* fetchNewPackagesSaga() {
 export function* giveOutSagas({payload}) {
     try {
         const {data} = yield axiosApi.put(`/packages/giveout/${payload.id}`, payload.data);
-        console.log(data);
         yield put(giveOutSuccess());
     } catch (e) {
         yield put(giveOutFailure(e));
