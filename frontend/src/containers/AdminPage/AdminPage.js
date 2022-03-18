@@ -246,7 +246,7 @@ const AdminPage = () => {
                                         <Grid item xs={6} md={6} lg={6}>
                                             <Button
                                                 variant="outlined"
-                                                disabled={params.row.status === "Выдан"}
+                                                disabled={params.row.status !== "Доставлено"}
                                                 onClick={() => {
                                                     dispatch(giveOutRequest({id: params.row.id, data: null}));
                                                     setUpdate(!update);
