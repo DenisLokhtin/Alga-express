@@ -80,11 +80,12 @@ const CurrenciesCard = ({currency}) => {
                     <Grid item xs={12} md={12} lg={12}>
                         <Grid container justifyContent="space-evenly">
                             <Grid item>
-                                <IconButton
+                                <Button
                                     onClick={edit}
+                                    startIcon={<EditIcon sx={{color: "green"}}/>}
                                 >
-                                    <EditIcon sx={{color: "green"}}/>
-                                </IconButton>
+                                    Редактировать
+                                </Button>
                             </Grid>
                             <Grid item>
                                 <Button
