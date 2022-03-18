@@ -185,6 +185,8 @@ const AdminPage = () => {
         paymentsHistory,
         update]);
 
+    console.log('something');
+
     return (
         <Container ref={messagesEndRef} className={classes.container}>
             <Box sx={{ width: '100%'}}>
