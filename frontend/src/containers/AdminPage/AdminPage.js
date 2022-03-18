@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Container, IconButton, TextField} from "@mui/material";
+import {Container, Grid, IconButton, TextField} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchCurrencies} from "../../store/actions/currenciesActions";
 import CurrenciesCard from "../../components/CurrenciesCard/CurrenciesCard";
@@ -23,6 +23,7 @@ import ImageIcon from "@mui/icons-material/Image";
 import Button from "@mui/material/Button";
 import Autocomplete from "@mui/material/Autocomplete";
 import {fetchUsersRequest} from "../../store/actions/usersActions";
+import Typography from "@mui/material/Typography";
 
 function a11yProps(index) {
     return {
@@ -153,21 +154,21 @@ const AdminPage = () => {
         dispatch(fetchCurrencies());
 
         if (packagesHistory) {
-            dispatch(getOrdersHistoryRequest({page: packagesPage, limit: packagesPageLimit, history: true}));
+            dispatch(getOrdersHistoryRequest({page: packagesPage, limit: packagesPageLimit, history: true, id: valueSelect._id}));
         } else {
-            dispatch(getOrdersHistoryRequest({page: packagesPage, limit: packagesPageLimit}));
+            dispatch(getOrdersHistoryRequest({page: packagesPage, limit: packagesPageLimit, id: valueSelect._id}));
         }
 
         if (buyoutsHistory) {
-            dispatch(fetchBuyoutsList({page: buyoutsPage, limit: buyoutsPageLimit, history: true}));
+            dispatch(fetchBuyoutsList({page: buyoutsPage, limit: buyoutsPageLimit, history: true, id: valueSelect._id}));
         } else {
-            dispatch(fetchBuyoutsList({page: buyoutsPage, limit: buyoutsPageLimit}));
+            dispatch(fetchBuyoutsList({page: buyoutsPage, limit: buyoutsPageLimit, id: valueSelect._id}));
         }
 
         if (paymentsHistory) {
-            dispatch(fetchPaymentRequest({page: paymentsPage, limit: paymentsPageLimit, history: true}));
+            dispatch(fetchPaymentRequest({page: paymentsPage, limit: paymentsPageLimit, history: true, id: valueSelect._id}));
         } else {
-            dispatch(fetchPaymentRequest({page: paymentsPage, limit: paymentsPageLimit}));
+            dispatch(fetchPaymentRequest({page: paymentsPage, limit: paymentsPageLimit, id: valueSelect._id}));
         }
     }, [dispatch,
         packagesPage,
@@ -182,8 +183,7 @@ const AdminPage = () => {
         paymentsHistory,
         valueSelect,
         paymentsHistory,
-        update
-    ]);
+        update]);
 
     return (
         <Container ref={messagesEndRef} className={classes.container}>
@@ -202,7 +202,7 @@ const AdminPage = () => {
                     </Tabs>
                 </Box>
 
-                <Box>
+                <Box sx={{padding: "12px 24px"}}>
                     <Autocomplete
                         onChange={(event, newValue) => {
                             if (newValue) {
@@ -230,23 +230,32 @@ const AdminPage = () => {
                         columns={[
                             ...packagesColumns,
                             {
-                                field: 'status',
+                                field: "status",
                                 headerName: 'Статус',
                                 flex: 1,
-                                minWidth: 100,
+                                minWidth: 200,
                                 headerAlign: 'center',
                                 align: 'center',
                                 renderCell: (params) => (
-                                    <Button
-                                        variant="outlined"
-                                        disabled={params.row.status === "Выдан"}
-                                        onClick={() => {
-                                            dispatch(giveOutRequest({id: params.row.id, data: null}));
-                                            setUpdate(!update);
-                                        }}
-                                    >
-                                        {params.row.status === "Выдан" ? "Выдан" : params.row.status}
-                                    </Button>
+                                    <Grid container alignItems="center" spacing={2}>
+                                        <Grid item xs={6} md={6} lg={6}>
+                                            <Typography>
+                                                {params.row.status}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={6} md={6} lg={6}>
+                                            <Button
+                                                variant="outlined"
+                                                disabled={params.row.status === "Выдан"}
+                                                onClick={() => {
+                                                    dispatch(giveOutRequest({id: params.row.id, data: null}));
+                                                    setUpdate(!update);
+                                                }}
+                                            >
+                                                Выдать
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
                                 )
                             }
                         ]}
@@ -327,7 +336,7 @@ const AdminPage = () => {
                         ]}
                         pageSize={paymentsPageLimit}
                         rowCount={paymentsTotalRow}
-                        rowHeight={150}
+                        rowHeight={70}
                         onPageSizeChange={newRowsLimit => setPaymentsPageLimit(newRowsLimit)}
                         onPageChange={(newPage) => {
                             paymentsPrevSelection.current = paymentsSelectionModel;
