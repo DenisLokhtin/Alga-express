@@ -125,7 +125,7 @@ const Footer = () => {
                             </a>
                         </li>
                         <li className="ft-social-list__item">
-                            <a href="https://api.whatsapp.com/send?phone=996774769434" target="_blank" rel="noreferrer">
+                            <a href="https://t.me/Vi10_kg">
                                 <TelegramIcon sx={{color: "white"}}/>
                             </a>
                         </li>

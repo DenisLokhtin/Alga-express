@@ -34,36 +34,30 @@ const StyledGridOverlay = styled(GridOverlay)(({theme}) => ({
     },
 }));
 
-function CustomToolbar(toolbarElements) {
-    return (
-        <GridToolbarContainer>
-            <GridToolbarDensitySelector/>
-            {toolbarElements}
-        </GridToolbarContainer>
-    );
-}
+const CustomToolbar = toolbarElements => (
+    <GridToolbarContainer>
+        <GridToolbarDensitySelector/>
+        {toolbarElements}
+    </GridToolbarContainer>
+);
 
-function CustomLoadingOverlay() {
-    return (
-        <GridOverlay>
-            <div style={{position: 'absolute', top: 0, width: '100%'}}>
-                <LinearProgress/>
-            </div>
-        </GridOverlay>
-    );
-}
+const CustomLoadingOverlay = () => (
+    <GridOverlay>
+        <div style={{position: 'absolute', top: 0, width: '100%'}}>
+            <LinearProgress/>
+        </div>
+    </GridOverlay>
+);
 
-function CustomNoRowsOverlay() {
-    return (
-        <StyledGridOverlay>
-            <Box sx={{mt: 3, mb: 3}}>
-                <Typography variant="h3">
-                    У вас ещё нет посылок
-                </Typography>
-            </Box>
-        </StyledGridOverlay>
-    );
-}
+const CustomNoRowsOverlay = () => (
+    <StyledGridOverlay>
+        <Box sx={{mt: 3, mb: 3}}>
+            <Typography variant="h3">
+                У Вас нет данных
+            </Typography>
+        </Box>
+    </StyledGridOverlay>
+);
 
 const TableComponent = (
     {
@@ -81,6 +75,8 @@ const TableComponent = (
         onCellClick,
         toolbarElements
     }) => {
+
+    console.log(rows);
 
     return (
         <DataGrid

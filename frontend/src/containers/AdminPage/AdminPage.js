@@ -1,11 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Container, IconButton} from "@mui/material";
+import {Container, Grid, IconButton, TextField} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchCurrencies} from "../../store/actions/currenciesActions";
 import CurrenciesCard from "../../components/CurrenciesCard/CurrenciesCard";
 import TableComponent from "../../components/TableComponent/TableComponent";
 import {countries, statuses} from "../../dataLocalization";
-import {getOrdersHistoryRequest} from "../../store/actions/packageRegisterActions";
+import {getOrdersHistoryRequest, giveOutRequest} from "../../store/actions/packageRegisterActions";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -20,8 +20,10 @@ import ImageModal from "../../components/UI/ImageModal/ImageModal";
 import {createTheme} from "@mui/material/styles";
 import {makeStyles} from "@mui/styles";
 import ImageIcon from "@mui/icons-material/Image";
-
-// import ImageModal from "../../components/UI/ImageModal/ImageModal";
+import Button from "@mui/material/Button";
+import Autocomplete from "@mui/material/Autocomplete";
+import {fetchUsersRequest} from "../../store/actions/usersActions";
+import Typography from "@mui/material/Typography";
 
 function a11yProps(index) {
     return {
@@ -59,10 +61,15 @@ const AdminPage = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const messagesEndRef = useRef(null);
+    const [update, setUpdate] = useState(false);
     const [value, setValue] = useState(0);
     const [openImg, setOpenImg] = useState(false);
     const [img, setImg] = useState(null);
     const currencies = useSelector(state => state.currencies.currencies);
+    const users = useSelector(state => state.users.users);
+
+    const [valueSelect, setValueSelect] = useState({_id: null});
+    const [inputValueSelect, setInputValueSelect] = useState('');
 
     const buyouts = useSelector(state => state.buyouts.buyouts);
     const [buyoutsHistory, setBuyoutsHistory] = useState(false);
@@ -100,6 +107,7 @@ const AdminPage = () => {
             id: order._id,
             cargoNumber: order.cargoNumber,
             trackNumber: order.trackNumber,
+            name: order.user.name,
             title: order.title,
             country: countries[order.country],
             status: statuses[order.status],
@@ -129,9 +137,9 @@ const AdminPage = () => {
             image: apiURL + '/' + payment.image,
             user: payment.user.name,
             date: dayjs(payment.date).format('DD-MM-YYYY'),
-            amount: payment.amount
+            amount: payment.amount,
         }
-    })
+    });
 
     useEffect(() => {
         if (!!messagesEndRef.current) {
@@ -139,26 +147,32 @@ const AdminPage = () => {
                 behavior: 'smooth'
             }, 250);
         }
+        dispatch(fetchUsersRequest());
+    }, [dispatch, messagesEndRef]);
+
+    useEffect(() => {
         dispatch(fetchCurrencies());
-        dispatch(getOrdersHistoryRequest({page: packagesPage, limit: packagesPageLimit}));
-        dispatch(fetchBuyoutsList({page: buyoutsPage, limit: buyoutsPageLimit}));
-        dispatch(fetchPaymentRequest({page: paymentsPage, limit: paymentsPageLimit}));
 
         if (packagesHistory) {
-            dispatch(getOrdersHistoryRequest({page: packagesPage, limit: packagesPageLimit, history: true}));
+            dispatch(getOrdersHistoryRequest({page: packagesPage, limit: packagesPageLimit, history: true, id: valueSelect._id}));
+        } else {
+            dispatch(getOrdersHistoryRequest({page: packagesPage, limit: packagesPageLimit, id: valueSelect._id}));
         }
 
         if (buyoutsHistory) {
-            dispatch(fetchBuyoutsList({page: buyoutsPage, limit: buyoutsPageLimit, history: true}));
+            dispatch(fetchBuyoutsList({page: buyoutsPage, limit: buyoutsPageLimit, history: true, id: valueSelect._id}));
+        } else {
+            dispatch(fetchBuyoutsList({page: buyoutsPage, limit: buyoutsPageLimit, id: valueSelect._id}));
         }
 
         if (paymentsHistory) {
-            dispatch(fetchPaymentRequest({page: paymentsPage, limit: paymentsPageLimit, history: true}));
+            dispatch(fetchPaymentRequest({page: paymentsPage, limit: paymentsPageLimit, history: true, id: valueSelect._id}));
+        } else {
+            dispatch(fetchPaymentRequest({page: paymentsPage, limit: paymentsPageLimit, id: valueSelect._id}));
         }
-
     }, [dispatch,
-        messagesEndRef,
         packagesPage,
+        value,
         packagesPageLimit,
         buyoutsPage,
         buyoutsPageLimit,
@@ -166,8 +180,10 @@ const AdminPage = () => {
         paymentsPage,
         paymentsPageLimit,
         packagesHistory,
-        paymentsHistory
-    ]);
+        paymentsHistory,
+        valueSelect,
+        paymentsHistory,
+        update]);
 
     return (
         <Container ref={messagesEndRef} className={classes.container}>
@@ -186,10 +202,63 @@ const AdminPage = () => {
                     </Tabs>
                 </Box>
 
+                <Box sx={{padding: "12px 24px"}}>
+                    <Autocomplete
+                        onChange={(event, newValue) => {
+                            if (newValue) {
+                                setValueSelect(newValue);
+                            } else {
+                                setValueSelect({_id: null});
+                            }
+                        }}
+                        inputValue={inputValueSelect}
+                        onInputChange={(event, newInputValue) => {
+                            setInputValueSelect(newInputValue);
+                        }}
+                        name={users}
+                        id="usersSelected"
+                        options={users}
+                        getOptionLabel={(option) => (option.name + ' ' + option.email)}
+                        sx={{width: 300}}
+                        renderInput={(params) => <TextField {...params} label="Пользователи"/>}
+                    />
+                </Box>
+
                 <TabPanelComponent value={value} index={0}>
                     <TableComponent
                         rows={packagesRows}
-                        columns={packagesColumns}
+                        columns={[
+                            ...packagesColumns,
+                            {
+                                field: "status",
+                                headerName: 'Статус',
+                                flex: 1,
+                                minWidth: 200,
+                                headerAlign: 'center',
+                                align: 'center',
+                                renderCell: (params) => (
+                                    <Grid container alignItems="center" spacing={2}>
+                                        <Grid item xs={6} md={6} lg={6}>
+                                            <Typography>
+                                                {params.row.status}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={6} md={6} lg={6}>
+                                            <Button
+                                                variant="outlined"
+                                                disabled={params.row.status !== "Доставлено"}
+                                                onClick={() => {
+                                                    dispatch(giveOutRequest({id: params.row.id, data: null}));
+                                                    setUpdate(!update);
+                                                }}
+                                            >
+                                                Выдать
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
+                                )
+                            }
+                        ]}
                         pageSize={packagesPageLimit}
                         rowCount={packagesTotalRow}
                         rowHeight={70}
@@ -203,7 +272,6 @@ const AdminPage = () => {
                             setPackagesSelectionModel(newSelectionModel);
                         }}
                         loading={packagesLoading}
-                        onCellClick={(e) => {console.log(e)}}
                         toolbarElements={
                             <SwitchElement
                                 checked={packagesHistory}
@@ -230,7 +298,6 @@ const AdminPage = () => {
                             setBuyoutsSelectionModel(newSelectionModel);
                         }}
                         loading={buyoutsLoading}
-                        onCellClick={(e) => {console.log(e)}}
                         toolbarElements={
                             <SwitchElement
                                 checked={buyoutsHistory}
@@ -269,7 +336,7 @@ const AdminPage = () => {
                         ]}
                         pageSize={paymentsPageLimit}
                         rowCount={paymentsTotalRow}
-                        rowHeight={150}
+                        rowHeight={70}
                         onPageSizeChange={newRowsLimit => setPaymentsPageLimit(newRowsLimit)}
                         onPageChange={(newPage) => {
                             paymentsPrevSelection.current = paymentsSelectionModel;
@@ -280,10 +347,6 @@ const AdminPage = () => {
                             setPaymentsSelectionModel(newSelectionModel);
                         }}
                         loading={paymentsLoading}
-                        onRowClick={(e) => {
-                            setImg(e.row);
-                            setOpenImg(true);
-                        }}
                         toolbarElements={
                             <SwitchElement
                                 checked={paymentsHistory}
