@@ -46,15 +46,18 @@ const HomePage = () => {
                             <div>
                                 <ul className="delivery__list">
                                     <li className="delivery__list-item">
-                                       <span className="delivery__list-icon"><LocalShippingOutlinedIcon style={{fontSize: '35px'}}/></span>
+                                        <span className="delivery__list-icon"><LocalShippingOutlinedIcon
+                                            style={{fontSize: '35px'}}/></span>
                                         <span>Перевозки грузов по земле и воздуху</span>
                                     </li>
                                     <li className="delivery__list-item">
-                                        <span className="delivery__list-icon"><InventoryOutlinedIcon style={{fontSize: '35px'}}/></span>
+                                        <span className="delivery__list-icon"><InventoryOutlinedIcon
+                                            style={{fontSize: '35px'}}/></span>
                                         <span>Выкупаем, доставляем с любого сайта 7-10 дней</span>
                                     </li>
                                     <li className="delivery__list-item">
-                                        <span className="delivery__list-icon"><PeopleOutlinedIcon style={{fontSize: '35px'}}/></span>
+                                        <span className="delivery__list-icon"><PeopleOutlinedIcon
+                                            style={{fontSize: '35px'}}/></span>
                                         <span>Более 3000 довольных клиентов</span>
                                     </li>
                                 </ul>

@@ -52,7 +52,7 @@ const WarehousePage = () => {
     const [open, setOpen] = useState(false);
 
     return (
-        <Box ref={messagesEndRef} sx={{width: '100%', typography: 'body1'}} className={classes.tableContainer}>
+        <Box ref={messagesEndRef} sx={{width: '100%', typography: 'body1'}} style={{paddingTop: '150px'}} className={classes.tableContainer}>
             {user && user.role === 'admin' ?
                 <Grid item xs={5}>
                     <ButtonWithProgress
