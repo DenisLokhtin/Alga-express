@@ -235,6 +235,22 @@ router.put('/packageDelivery', auth, permit('user', 'admin', 'warehouseman', 'su
     }
 });
 
+router.put('/giveout/:id', auth, permit('admin', 'warehouseman', 'superAdmin', 'user'), async (req, res) => {
+    try {
+        const pack = await Package.findById(req.params.id);
+
+        if (pack) {
+            pack.status = "DONE";
+            await Package.findByIdAndUpdate(req.params.id, pack, {new: true});
+            res.send({message: "Статус посылки обновлен!"});
+        } else {
+            res.send({message: "Нет такой посылки"});
+        }
+    } catch (e) {
+        res.status(500).send(e);
+    }
+})
+
 router.put('/:id', auth, permit('admin', 'warehouseman', 'superAdmin', 'user'), async (req, res) => {
     let result = {};
 
