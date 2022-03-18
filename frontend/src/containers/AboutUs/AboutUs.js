@@ -19,7 +19,7 @@ const AboutUs = () => {
 
 
     return (
-        <Container ref={messagesEndRef} component='div' style={{paddingTop: '150px'}}>
+        <Container ref={messagesEndRef} component='div' style={{paddingTop: '150px', paddingBottom: '100px'}}>
             <div className="post__content" dangerouslySetInnerHTML={{__html: page.text}}/>
         </Container>
     )

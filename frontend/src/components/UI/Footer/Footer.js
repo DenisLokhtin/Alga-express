@@ -94,7 +94,7 @@ const Footer = () => {
                         <ul className="ft-main-list">
                             <li className="ft-main-list__item">
                                 <PhoneIcon/>
-                                <span style={{marginLeft: '5px'}}>{print('contacts')}</span>
+                                <span style={{marginLeft: '10px'}}>{print('contacts')}</span>
                             </li>
                             <li className="ft-main-list__item">
                                 <EmailIcon/>
