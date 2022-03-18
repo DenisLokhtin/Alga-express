@@ -131,7 +131,6 @@ const App = () => {
                         <Route path={addWareHouseAddress} element={<AddWareHouseAdmin/>}/>
                         <Route path={addCarousel} element={<AddCarouselAdmin/>}/>
                         <Route path={editCarousel} element={<EditCarouselAdmin/>}/>
-                        <Route path={editWareHouseAddress} element={<EditWareHouseAdmin/>}/>
                         <Route path={addPlayer} element={<AddPlayerAdmin/>}/>
                         <Route path={editPlayer} element={<EditPlayerAdmin/>}/>
                         <Route path={editInformation} element={<EditInformation/>}/>
