@@ -42,6 +42,14 @@ export const packagesColumns = [
         headerAlign: 'center',
         align: 'center',
     },
+    {
+        field: "status",
+        headerName: 'Статус',
+        flex: 1,
+        minWidth: 120,
+        headerAlign: 'center',
+        align: 'center',
+    },
 ];
 
 export const buyoutsColumns = [
