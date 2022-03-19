@@ -31,8 +31,7 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import Grid from "@mui/material/Grid";
 import ruLocale from "date-fns/locale/ru";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
-
-// import ImageModal from "../../components/UI/ImageModal/ImageModal";
+import AppWindow from "../../components/UI/AppWindow/AppWindow";
 
 function a11yProps(index) {
     return {
@@ -81,6 +80,11 @@ const AdminPage = () => {
     const [update, setUpdate] = useState(false);
     const [value, setValue] = useState(0);
     const [openImg, setOpenImg] = useState(false);
+    const [openDone, setOpenDone] = useState({
+        open: false,
+        id: '',
+    });
+
     const [img, setImg] = useState(null);
     const currencies = useSelector(state => state.currencies.currencies);
     const users = useSelector(state => state.users.users);
@@ -256,6 +260,7 @@ const AdminPage = () => {
         packagesHistory,
         paymentsHistory,
         valueSelect,
+        update,
     ]);
 
     const submitFormHandler = (e) => {
@@ -287,6 +292,8 @@ const AdminPage = () => {
             search: true,
         }));
     };
+
+    console.log(openDone);
 
     return (
         <Container ref={messagesEndRef} className={classes.container}>
@@ -424,7 +431,11 @@ const AdminPage = () => {
                                         variant="outlined"
                                         disabled={params.row.status !== "Доставлено"}
                                         onClick={() => {
-                                            dispatch(giveOutRequest({id: params.row.id, data: null}));
+                                            setOpenDone(prevState => ({
+                                                ...prevState,
+                                                open: true,
+                                                id: params.row.id
+                                            }))
                                             setUpdate(!update);
                                         }}
                                     >
@@ -567,8 +578,27 @@ const AdminPage = () => {
                     <CurrenciesCard currency={currencies}/>}
                 </TabPanelComponent>
             </Box>
+            <AppWindow
+                open={openDone.open}
+                onClose={() => setOpenDone(prevState => ({
+                    ...prevState,
+                    open: false,
+                    id: '',
+                }))}
+                confirm={() => {
+                    dispatch(giveOutRequest({id: openDone.id, data: null}));
+                    setUpdate(prevState => {
+                        prevState = !prevState;
+                        return prevState
+                    });
+                    setOpenDone(prevState => ({
+                        ...prevState,
+                        open: false,
+                        id: '',
+                    }))
+                }}
+            />
         </Container>
     );
 };
-
 export default AdminPage;
