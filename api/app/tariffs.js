@@ -9,7 +9,6 @@ const router = express.Router();
 router.get('/', async(req,res)=>{
     try {
         const currentTariffs = await TariffGroup.find();
-        console.log(currentTariffs)
         res.send(currentTariffs);
     }catch (e) {
         res.status(500).send(e);
@@ -18,10 +17,6 @@ router.get('/', async(req,res)=>{
 
 router.put('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
     try {
-
-        console.log(req.body.id);
-        console.log(req.body.data);
-
         const tariff = await TariffGroup.findByIdAndUpdate(req.body.id, req.body.data);
 
         if (tariff) {
