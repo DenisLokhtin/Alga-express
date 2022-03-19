@@ -287,7 +287,6 @@ const AdminPage = () => {
             search: true,
         }));
     };
-    console.log(searchData);
 
     return (
         <Container ref={messagesEndRef} className={classes.container}>

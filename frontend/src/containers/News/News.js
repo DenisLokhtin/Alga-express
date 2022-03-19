@@ -31,6 +31,7 @@ const News = () => {
     const user = useSelector((state => state.users.user));
     const [open, setOpen] = useState(false);
     const messagesEndRef = useRef(null);
+    const [deleteElement, setDeleteElement] = useState('');
 
     useEffect(() => {
         if (!!messagesEndRef.current) {
@@ -44,6 +45,7 @@ const News = () => {
     const deleteNews = newsId => {
         dispatch(deleteNewsRequest(newsId));
         setOpen(false);
+        setDeleteElement(prevState => {prevState = ''; return prevState});
     };
 
     return (
@@ -71,16 +73,25 @@ const News = () => {
                                 Подробнее...
                             </Link>
                             {user && user.role === 'admin' && (
-                                <button onClick={() => setOpen(true)}>
+                                <button onClick={() => {
+                                    setOpen(true);
+                                    setDeleteElement(prevState => {prevState = item._id; return prevState});
+                                }}>
                                     Удалить новость
                                 </button>
                             )}
                             {user && user.role === 'superAdmin' && (
-                                <button onClick={() => setOpen(true)}>
+                                <button onClick={() => {
+                                    setOpen(true);
+                                    setDeleteElement(prevState => {prevState = item._id; return prevState});
+                                }}>
                                     Удалить новость
                                 </button>
                             )}
-                            <AppWindow open={open} onClose={() => setOpen(false)} confirm={() => deleteNews(item._id)}/>
+                            <AppWindow open={open} onClose={() => {
+                                setOpen(false);
+                                setDeleteElement(prevState => {prevState = ''; return prevState});
+                            }} confirm={() => deleteNews(deleteElement)}/>
                         </div>
                     </Grid>
                 ))}
