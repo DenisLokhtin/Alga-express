@@ -85,7 +85,11 @@ const AdminPage = () => {
     const currencies = useSelector(state => state.currencies.currencies);
     const users = useSelector(state => state.users.users);
 
-    const [valueSelect, setValueSelect] = useState({_id: null});
+    const [valueSelect, setValueSelect] = useState({
+        name: '',
+        email: '',
+        _id: '',
+    });
     const [inputValueSelect, setInputValueSelect] = useState('');
 
     const [periodDate, setPeriodDate] = useState(
@@ -93,8 +97,12 @@ const AdminPage = () => {
             from: null,
             to: null,
         });
-    const [searchData, setSearchData] = useState(false);
-    console.log(valueSelect);
+    const [searchData, setSearchData] = useState({
+        user: false,
+        date: false,
+        search: true,
+    });
+
     const buyouts = useSelector(state => state.buyouts.buyouts);
     const [buyoutsHistory, setBuyoutsHistory] = useState(false);
     const buyoutsLoading = useSelector(state => state.buyouts.fetchLoading);
@@ -178,7 +186,7 @@ const AdminPage = () => {
 
     useEffect(() => {
         const pageData = {};
-        if (searchData) {
+        if ((searchData.date) || (searchData.user)) {
             pageData.from = periodDate.from;
             pageData.to = periodDate.to;
             pageData.page = packagesPage;
@@ -189,50 +197,51 @@ const AdminPage = () => {
             pageData.limit = packagesPageLimit;
         }
 
-        switch (value) {
-            case 0:
-                if (packagesHistory) {
-                    pageData.history = true;
-                }
-                dispatch(getOrdersHistoryRequest({
-                    page: pageData.page,
-                    limit: pageData.limit,
-                    history: pageData.history,
-                    id: pageData.id,
-                    from: pageData.from,
-                    to: pageData.to
-                }));
+        if (searchData.search)
+            switch (value) {
+                case 0:
+                    if (packagesHistory) {
+                        pageData.history = true;
+                    }
+                    dispatch(getOrdersHistoryRequest({
+                        page: pageData.page,
+                        limit: pageData.limit,
+                        history: pageData.history,
+                        id: pageData.id,
+                        from: pageData.from,
+                        to: pageData.to
+                    }));
 
-                break;
-            case 1:
-                if (buyoutsHistory) {
-                    pageData.history = true;
-                }
-                dispatch(fetchBuyoutsList({
-                    page: pageData.page,
-                    limit: pageData.limit,
-                    history: pageData.history,
-                    id: pageData.id,
-                    from: pageData.from,
-                    to: pageData.to
-                }));
-                break;
-            case 2:
-                if (paymentsHistory) {
-                    pageData.history = true;
-                }
-                dispatch(fetchPaymentRequest({
-                    page: pageData.page,
-                    limit: pageData.limit,
-                    history: pageData.history,
-                    id: pageData.id,
-                    from: pageData.from,
-                    to: pageData.to
-                }));
-                break;
-            default:
-                break;
-        }
+                    break;
+                case 1:
+                    if (buyoutsHistory) {
+                        pageData.history = true;
+                    }
+                    dispatch(fetchBuyoutsList({
+                        page: pageData.page,
+                        limit: pageData.limit,
+                        history: pageData.history,
+                        id: pageData.id,
+                        from: pageData.from,
+                        to: pageData.to
+                    }));
+                    break;
+                case 2:
+                    if (paymentsHistory) {
+                        pageData.history = true;
+                    }
+                    dispatch(fetchPaymentRequest({
+                        page: pageData.page,
+                        limit: pageData.limit,
+                        history: pageData.history,
+                        id: pageData.id,
+                        from: pageData.from,
+                        to: pageData.to
+                    }));
+                    break;
+                default:
+                    break;
+            }
     }, [dispatch,
         value,
         searchData,
@@ -251,18 +260,38 @@ const AdminPage = () => {
 
     const submitFormHandler = (e) => {
         e.preventDefault();
-        setSearchData(true);
+        setSearchData(prevState => ({
+            ...prevState,
+            user: true,
+            date: true,
+            search: true,
+        }));
     };
 
     const clearHandler = () => {
-        setValueSelect({_id: null});
-        setSearchData(false);
+        setValueSelect(prevState => ({
+            ...prevState,
+            email: '',
+            name: '',
+            _id: '',
+        }));
+        setPeriodDate(prevState => ({
+            ...prevState,
+            from: null,
+            to: null,
+        }));
+        setSearchData(prevState => ({
+            ...prevState,
+            user: false,
+            date: false,
+            search: true,
+        }));
     };
 
     return (
         <Container ref={messagesEndRef} className={classes.container}>
-            <Box sx={{ width: '100%'}}>
-                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <Box sx={{width: '100%'}}>
+                <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
                     <Tabs
                         value={value}
                         onChange={handleChange}
@@ -282,12 +311,16 @@ const AdminPage = () => {
                 >
                     <Box item>
                         <Autocomplete
+                            value={valueSelect}
+                            isOptionEqualToValue={(option, value) => option.id === value.id}
                             onChange={(event, newValue) => {
                                 if (newValue) {
                                     setValueSelect(newValue);
-                                    setSearchData(false);
-                                } else {
-                                    setValueSelect({_id: null});
+                                    setSearchData(prevState => ({
+                                        ...prevState,
+                                        user: true,
+                                        search: false,
+                                    }));
                                 }
                             }}
                             inputValue={inputValueSelect}
@@ -316,6 +349,11 @@ const AdminPage = () => {
                                         ...prevState,
                                         from: newValue,
                                     }));
+                                    setSearchData(prevState => ({
+                                        ...prevState,
+                                        date: true,
+                                        search: false,
+                                    }));
                                 }}
                                 renderInput={(params) => <TextField {...params}/>}
                             />
@@ -334,7 +372,13 @@ const AdminPage = () => {
                                         ...prevState,
                                         to: newValue,
                                     }));
+                                    setSearchData(prevState => ({
+                                        ...prevState,
+                                        date: true,
+                                        search: false,
+                                    }));
                                 }}
+                                disabled={Boolean(!periodDate.from)}
                                 renderInput={(params) => <TextField {...params}/>}
                             />
                         </LocalizationProvider>
@@ -520,7 +564,7 @@ const AdminPage = () => {
 
                 <TabPanelComponent value={value} index={3}>
                     {currencies &&
-                        <CurrenciesCard currency={currencies}/>}
+                    <CurrenciesCard currency={currencies}/>}
                 </TabPanelComponent>
             </Box>
         </Container>

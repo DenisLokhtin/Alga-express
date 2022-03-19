@@ -285,8 +285,8 @@ const run = async () => {
             datetime: '2322-12-22',
         },
         {
-            title: 'title 2',
-            description: 'description 2',
+            title: 'title 3',
+            description: 'description 3',
             image: 'fixtures/container2.jpeg',
             deleted: true,
             datetime: '2322-12-22',
