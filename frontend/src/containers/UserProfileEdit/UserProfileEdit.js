@@ -6,13 +6,13 @@ import {
     Accordion,
     AccordionDetails,
     AccordionSummary,
-    Box,
     Button,
     Container,
     FormControl,
     Grid,
     ImageList,
     ImageListItem,
+    InputLabel,
     MenuItem,
     Paper,
     Select,
@@ -94,10 +94,6 @@ const useStyles = makeStyles(() => ({
         margin: 0,
     },
 
-    addButton: {
-        position: "relative",
-        bottom: '-35px',
-    },
 
     padding: {
         padding: '15px',
@@ -315,12 +311,12 @@ const UserProfileEdit = () => {
                 <Avatar
                     alt="Remy Sharp"
                     src={imageURL}
-                    sx={{width: 150, height: 150, margin: '0 auto'}}
+                    sx={{width: 110, height: 110, margin: '0 auto'}}
                 />
             </Grid>
 
             <Grid container justifyContent="center">
-                <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+                <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')} style={{margin: '20px 0'}}>
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon/>}
                         aria-controls="panel1bh-content"
@@ -334,23 +330,25 @@ const UserProfileEdit = () => {
                             Профиль пользователя
                         </Typography>
                     </AccordionSummary>
-                    {user && user.role === 'admin' ? (<Grid>
-                        <Autocomplete
-                            onChange={(event, newValue) => {
-                                setValue(newValue);
-                            }}
-                            inputValue={inputValue}
-                            onInputChange={(event, newInputValue) => {
-                                setInputValue(newInputValue);
-                            }}
-                            name={users}
-                            id="usersSelected"
-                            options={users}
-                            getOptionLabel={(option) => (option.name + ' ' + option.email)}
-                            sx={{width: 300}}
-                            renderInput={(params) => <TextField {...params} label="Пользователи"/>}
-                        />
-                    </Grid>) : null}
+                    {user && (user.role === 'admin' || user.role === 'superAdmin') && (
+                        <Grid item xs={11} sm={7.4} md={6.6} lg={6.6} sx={{margin: '0 auto'}}>
+                            <Autocomplete
+                                onChange={(event, newValue) => {
+                                    setValue(newValue);
+                                }}
+                                inputValue={inputValue}
+                                onInputChange={(event, newInputValue) => {
+                                    setInputValue(newInputValue);
+                                }}
+                                xs={12} sm={8} md={7} lg={3}
+                                name={users}
+                                id="usersSelected"
+                                options={users}
+                                sx={{margin: '10px 0'}}
+                                getOptionLabel={(option) => (option.name + ' ' + option.email)}
+                                renderInput={(params) => <TextField {...params} label="Пользователи"/>}
+                            />
+                        </Grid>)}
                     <AccordionDetails>
                         <Grid
                             container
@@ -363,7 +361,7 @@ const UserProfileEdit = () => {
                                 justifyContent="center"
                                 container
                                 noValidate
-                                spacing={5}
+                                spacing={3}
                             >
                                 <Grid item xs={12} sm={8} md={7} lg={7}>
                                     <FormElement
@@ -389,29 +387,20 @@ const UserProfileEdit = () => {
                                         error={getFieldError('name')}
                                     />
                                 </Grid>
-                                <Grid item xs={12} sm={7} md={6} lg={6}>
+                                <Grid item xs={12} sm={8} md={7} lg={7}>
                                     {phone.map((phone, id) => (
-                                        <Box
+                                        <Grid
                                             key={id}
                                             display="flex"
                                             container
                                             flexWrap="nowrap"
                                             alignItems="center"
                                             justifyContent="space-between"
+                                            style={{marginBottom: '20px'}}
                                         >
-                                            <Grid
-                                                item
-                                                container
-                                                // flexGrow={20}
-                                                display="flex"
-                                                flexWrap="nowrap"
-                                                flexDirection='column'
-                                                justifyContent="space-between"
-
-                                                className={classes.margin0}
+                                            <Grid item xs={12} sm={12} md={12} lg={12}
                                             >
                                                 <PhoneInput
-                                                    style={{'margin': '8px'}}
                                                     country={'kg'}
                                                     localization={ru}
                                                     required
@@ -427,27 +416,17 @@ const UserProfileEdit = () => {
                                             <Grid
                                                 item
                                                 alignSelf='center'
-                                                justifySelf='center'
+                                                sx={{minWidth: 113}}
+                                                style={{margin: '3px 0 3px 8px'}}
                                             >
-                                                <IconButton
-                                                    aria-label="erase"
-                                                    className={classes.submit}
-                                                    type='button'
-                                                    onClick={() => eraseInputPhone(id)}
-                                                >
-                                                    <DeleteForeverIcon/>
-                                                </IconButton>
-                                            </Grid>
-                                            <Grid
-                                                item
-                                                alignSelf='center'
-                                            >
-                                                <FormControl>
+                                                <FormControl fullWidth>
+                                                    <InputLabel id="demo-simple-select-label">Номер</InputLabel>
                                                     <Select
                                                         defaultValue="PHONE"
                                                         labelId="demo-simple-select-helper-label"
                                                         id="demo-simple-select-helper"
                                                         value={phone.type}
+                                                        label="Номер"
                                                         onChange={e => inputChangePhoneHandler(id, 'type', e.target.value)}
                                                     >
                                                         <MenuItem value="PHONE">Phone</MenuItem>
@@ -455,17 +434,28 @@ const UserProfileEdit = () => {
                                                     </Select>
                                                 </FormControl>
                                             </Grid>
-                                        </Box>
+                                            <Grid>
+                                                <IconButton
+                                                    aria-label="erase"
+                                                    sx={{padding: '0'}}
+                                                    type='button'
+                                                    onClick={() => eraseInputPhone(id)}
+                                                >
+                                                    <DeleteForeverIcon/>
+                                                </IconButton>
+                                            </Grid>
+                                        </Grid>
                                     ))}
                                 </Grid>
-                                <Grid item
-                                      justifySelf='center'
-                                      alignSelf='end'
+                                <Grid
+                                    item
+                                    xs={12} sm={8} md={7} lg={7}
+                                    style={{display: 'flex'}}
                                 >
                                     <IconButton
-                                        className={classes.addButton}
                                         aria-label="add"
                                         type='button'
+                                        style={{marginLeft: 'auto'}}
                                         onClick={inputPhone}
                                         disabled={disabled}
                                         error={getFieldError('add')}
@@ -504,85 +494,83 @@ const UserProfileEdit = () => {
                         </Grid>
                     </AccordionDetails>
                 </Accordion>
-                    <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon/>}
-                            aria-controls="panel2bh-content"
-                            id="panel2bh-header"
+                <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon/>}
+                        aria-controls="panel2bh-content"
+                        id="panel2bh-header"
+                    >
+                        <Typography
+                            variant="h5"
+                            sx={{margin: '0 auto'}}
+                            className={classes.packageMainTitle}
                         >
-                            <Typography
-                                variant="h5"
-                                sx={{margin: '0 auto'}}
-                                className={classes.packageMainTitle}
-                            >
-                                Доверенные Лица
-                            </Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
+                            Доверенные Лица
+                        </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <Grid
+                            container
+                            item
+                            justifyContent='center'
+                        >
                             <Grid
+                                component="form"
+                                onSubmit={e => submitFormPassportHandler(e, user._id)}
+                                justifyContent="center"
                                 container
-                                item
-                                justifyContent='center'
+                                noValidate
+                                spacing={5}
                             >
                                 <Grid
-                                    component="form"
-                                    onSubmit={e => submitFormPassportHandler(e, user._id)}
-                                    justifyContent="center"
-                                    container
-                                    noValidate
-                                    spacing={5}
+                                    item
+                                    xs={12} sm={8} md={8} lg={8}
                                 >
-                                    <Grid
-                                        item
-                                        xs={12} sm={8} md={8} lg={8}
-
+                                    <FileInput
+                                        name="image"
+                                        type="file"
+                                        multiple="multiple"
+                                        fullWidth
+                                        onChange={fileChangeHandler}
+                                        error={getFieldError('passport')}
                                     >
-                                        <FileInput
-                                            name="image"
-                                            type="file"
-                                            multiple="multiple"
-                                            fullWidth
-                                            onChange={fileChangeHandler}
-                                            error={getFieldError('passport')}
-                                        >
-
-                                        </FileInput>
-                                    </Grid>
-                                    <Grid item xs={12} sm={8} md={7} lg={7}
-                                          className={classes.packageBtnContainer}>
-                                        <ButtonWithProgress
-                                            loading={loading}
-                                            disabled={loading}
-                                            type="submit"
-                                            variant="contained">
-                                            Сохранить
-                                        </ButtonWithProgress>
-                                    </Grid>
+                                    </FileInput>
                                 </Grid>
-                                <Grid item>
-                                    <Paper
-                                        className={classes.padding}
-                                    >
-                                        <ImageList sx={{maxWidth: 500, minHeight: 450}}>
-                                            {imagesPassport.map(passport => (
-                                                <Grid item
-                                                      key={passport}
-                                                >
-                                                    <ImageListItem>
-                                                        <img
-                                                            alt={passport}
-                                                            src={`${passport}?w=248&fit=crop&auto=format`}
-                                                            srcSet={`${passport}?w=248&fit=crop&auto=format&dpr=2 2x`}
-                                                        />
-                                                    </ImageListItem>
-                                                </Grid>
-                                            ))}
-                                        </ImageList>
-                                    </Paper>
+                                <Grid item xs={12} sm={8} md={7} lg={7}
+                                      className={classes.packageBtnContainer}>
+                                    <ButtonWithProgress
+                                        loading={loading}
+                                        disabled={loading}
+                                        type="submit"
+                                        variant="contained">
+                                        Сохранить
+                                    </ButtonWithProgress>
                                 </Grid>
                             </Grid>
-                        </AccordionDetails>
-                    </Accordion>
+                            <Grid item>
+                                <Paper
+                                    className={classes.padding}
+                                >
+                                    <ImageList sx={{maxWidth: 500, minHeight: 450}}>
+                                        {imagesPassport.map(passport => (
+                                            <Grid item
+                                                  key={passport}
+                                            >
+                                                <ImageListItem>
+                                                    <img
+                                                        alt={passport}
+                                                        src={`${passport}?w=248&fit=crop&auto=format`}
+                                                        srcSet={`${passport}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                                                    />
+                                                </ImageListItem>
+                                            </Grid>
+                                        ))}
+                                    </ImageList>
+                                </Paper>
+                            </Grid>
+                        </Grid>
+                    </AccordionDetails>
+                </Accordion>
             </Grid>
         </Container>
     );
