@@ -96,6 +96,7 @@ const Carousel = () => {
     const loading = useSelector(state => state.carousels.carouselsLoading);
     const carousels = useSelector(state => state.carousels.carousels);
     const [open, setOpen] = useState(false);
+    const [deleteElement, setDeleteElement] = useState('');
 
     useEffect(() => {
         dispatch(fetchCarouselsRequest());
@@ -104,6 +105,7 @@ const Carousel = () => {
     const deleteCarousel = (id) => {
         dispatch(deleteCarouselsRequest(id));
         setOpen(false);
+        setDeleteElement(prevState => {prevState = ''; return prevState});
     };
 
     return (
@@ -111,8 +113,6 @@ const Carousel = () => {
             <Slider {...settings}>
                 {carousels && carousels.map(carousel => (
                     <Fragment key={carousel._id}>
-                        <AppWindow open={open} onClose={() => setOpen(false)}
-                                   confirm={() => deleteCarousel(carousel._id)}/>
                         <h3 className={classes.carouselTitle}>{carousel.info}</h3>
                         <img width="80%" style={{margin: '0 auto'}} src={apiURL + '/' + carousel.picture} alt={carousel.info}
                              className={classes.carouselImage}/>
@@ -162,13 +162,20 @@ const Carousel = () => {
                                         color="error"
                                         loading={loading}
                                         disabled={loading}
-                                        onClick={() => setOpen(true)}
+                                        onClick={() => {
+                                            setOpen(true);
+                                            setDeleteElement(prevState => {prevState = carousel._id; return prevState});
+                                        }}
                                     >
                                         Удалить изображение
                                     </ButtonWithProgress>
                                 </Grid>
                             </Grid>
                         )}
+                        <AppWindow open={open} onClose={() => {
+                            setOpen(false);
+                            setDeleteElement(prevState => {prevState = ''; return prevState});
+                        }} confirm={() => deleteCarousel(deleteElement)}/>
                     </Fragment>
                 ))}
             </Slider>
