@@ -271,25 +271,25 @@ const run = async () => {
 
     await News.create(
         {
-            title: 'title 1',
+            title: 'Транзит и логистика товаров зависят от политических решений и могут негативно повлиять на снятие ограничений при перевозках, - министр ЕЭК',
             description: 'description 1',
             image: 'fixtures/container1.jpeg',
             deleted: false,
-            datetime: '2222-12-22',
+            datetime: '2022/7/1',
         },
         {
-            title: 'title 2',
+            title: 'Решение вопросов, связанных с упрощением процедур торговли в ЦА, может привести к росту экономических показателей каждой страны, - ТПП КР',
             description: 'description 2',
             image: 'fixtures/container2.jpeg',
             deleted: false,
-            datetime: '2322-12-22',
+            datetime: '2022/5/8',
         },
         {
-            title: 'title 3',
+            title: 'Для развития электронной коммерции необходимы логистическая инфраструктура и развитие платежные системы, - анализ',
             description: 'description 3',
             image: 'fixtures/container2.jpeg',
-            deleted: true,
-            datetime: '2322-12-22',
+            deleted: false,
+            datetime: '2021/12/22',
         }
     );
 

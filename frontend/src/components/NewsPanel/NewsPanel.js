@@ -19,7 +19,7 @@ const NewsPanel = () => {
                     <li style={{color: 'rgba(255,255,255, 0.3)', fontSize: '13px'}}>
                         {news.datetime}
                     </li>
-                    <li className="news-list__item" style={{fontSize: '26px'}}>
+                    <li className="news-list__item" style={{fontSize: '20px'}}>
                         {news.title}
                     </li>
                     <li className="news-list__item">

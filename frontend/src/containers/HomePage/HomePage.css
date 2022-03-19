@@ -27,13 +27,13 @@
 .delivery__title {
     max-width: 500px;
     font-size: 48px;
-    line-height: 70px;
+    line-height: 60px;
     color: #fff;
 }
 
 .delivery {
     width: 60%;
-    padding: 0 15px;
+    padding: 8px 15px;
 }
 
 .news {
@@ -42,6 +42,7 @@
     font-size: 20px;
     padding: 25px;
     background-color: #1e3d59;
+    margin-top: auto;
 }
 
 .menu__list-link {
