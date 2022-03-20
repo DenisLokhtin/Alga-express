@@ -22,6 +22,8 @@ const Footer = () => {
     const dispatch = useDispatch();
     const information = useSelector(state => state.information.allInformation);
 
+    console.log(information);
+
     useEffect(() => {
         dispatch(fetchAllInformationRequest());
     }, [dispatch]);
@@ -70,11 +72,6 @@ const Footer = () => {
                             <li className="ft-main-list__item">
                                 <Link className="ft-main-list__link" to={newsCompany}>Новости</Link>
                             </li>
-                        </ul>
-                    </div>
-                    <div className="ft-main-item">
-                        <h4 className="ft-title">Полезные ссылки</h4>
-                        <ul className="ft-main-list">
                             <li className="ft-main-list__item">
                                 <Link className="ft-main-list__link" to={contactsCompany}>Контакты</Link>
                             </li>
@@ -89,6 +86,23 @@ const Footer = () => {
                             </li>
                         </ul>
                     </div>
+                    {/*<div className="ft-main-item">*/}
+                    {/*    <h4 className="ft-title">Полезные ссылки</h4>*/}
+                    {/*    <ul className="ft-main-list">*/}
+                    {/*        <li className="ft-main-list__item">*/}
+                    {/*            <Link className="ft-main-list__link" to={contactsCompany}>Контакты</Link>*/}
+                    {/*        </li>*/}
+                    {/*        <li className="ft-main-list__item">*/}
+                    {/*            <Link className="ft-main-list__link" to={rulesCompany}>Правила</Link>*/}
+                    {/*        </li>*/}
+                    {/*        <li className="ft-main-list__item">*/}
+                    {/*            <Link className="ft-main-list__link" to={faqCompany}>FAQ</Link>*/}
+                    {/*        </li>*/}
+                    {/*        <li className="ft-main-list__item">*/}
+                    {/*            <Link className="ft-main-list__link" to={wareHouseCompany}>Адреса складов</Link>*/}
+                    {/*        </li>*/}
+                    {/*    </ul>*/}
+                    {/*</div>*/}
                     <div className="ft-main-item">
                         <h4 className="ft-title">Наши контакты</h4>
                         <ul className="ft-main-list">
