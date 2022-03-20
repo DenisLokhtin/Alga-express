@@ -26,14 +26,29 @@ const run = async () => {
         await mongoose.connection.db.dropCollection(coll.name);
     }
 
-    const tariff = await TariffGroup.create({
-        new: {
+    const [newGroup, advancedGroup] = await TariffGroup.create(
+        {
             usa: 12,
             turkey: 4.3,
             china: 15,
             chinaGround: 5,
-        }
-    });
+            name: 'new',
+        },
+        {
+            usa: 11.5,
+            turkey: 4.1,
+            china: 14,
+            chinaGround: 4.5,
+            name: 'advanced',
+        },
+        {
+            usa: 11,
+            turkey: 4,
+            china: 13,
+            chinaGround: 4,
+            name: 'buyer',
+        },
+    );
 
     await Currency.create({
         usd: 86
@@ -62,7 +77,8 @@ const run = async () => {
             role: "user",
             balance: 200,
             name: "User",
-            tariff: tariff.new,
+            tariff: newGroup,
+            group: 'NEW',
             avatar: 'fixtures/avatar1.jpeg',
             phone: {number: '786677899', type: 'PHONE'},
             passport: {image: 'fixtures/passport.jpg'}
@@ -74,7 +90,8 @@ const run = async () => {
             role: "user",
             balance: 200,
             name: "User user",
-            tariff: tariff.new,
+            tariff: advancedGroup,
+            group: 'ADVANCED',
             avatar: 'fixtures/avatar1.jpeg',
             phone: {number: '996555222111', type: 'PHONE'},
             passport: {image: 'fixtures/passport.jpg'}
@@ -86,6 +103,7 @@ const run = async () => {
             role: "admin",
             balance: 0,
             name: "Admin",
+            group: 'NONE',
             avatar: 'fixtures/avatar2.jpeg',
             phone: {number: '754 76 45 54', type: 'PHONE'},
             passport: {image: 'passport.jpg'}
@@ -96,6 +114,7 @@ const run = async () => {
             token: nanoid(),
             role: "warehouseman",
             name: "Warehouseman",
+            group: 'NONE',
             avatar: 'fixtures/avatar2.jpeg',
         },
         {
@@ -104,6 +123,7 @@ const run = async () => {
             token: nanoid(),
             role: "superAdmin",
             name: "superAdmin",
+            group: 'NONE',
             avatar: 'fixtures/avatar2.jpeg',
         },
     );

@@ -23,7 +23,7 @@ export function* getTariffsSagas() {
 export function* putTariffsSagas({payload}) {
     try {
         const response = yield axiosApi.put('/tariffs', payload);
-        console.log(response.data)
+        console.log(response.data);
         yield put(changeTariffSuccess(response.data));
     } catch (e) {
         toast.error('Не удалось загрузить тарифы');
@@ -34,7 +34,6 @@ export function* putTariffsSagas({payload}) {
 const tariffSagas = [
     takeEvery(fetchTariffsRequest, getTariffsSagas),
     takeEvery(changeTariffRequest, putTariffsSagas),
-
 ];
 
 export default tariffSagas;

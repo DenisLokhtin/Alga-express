@@ -23,7 +23,6 @@ const tariffSlice = createSlice({
 
         },
         changeTariffSuccess(state, {payload: tariffs}) {
-            console.log(tariffs);
             state.tariffs = tariffs;
         },
         changeTariffFailure(state) {

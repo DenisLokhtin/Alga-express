@@ -4,7 +4,6 @@ const permit = require("../middleware/permit");
 const Payment = require("../models/Payment");
 const PaymentMove = require("../models/PaymentMove");
 const User = require("../models/User");
-const TariffGroup = require("../models/TariffGroup");
 const sendMail = require('../middleware/sendMail');
 const {balanceText} = require('../email-texts');
 const filter = require("../middleware/filter");
@@ -46,15 +45,6 @@ router.get('/', auth, permit('user', 'admin', 'superAdmin'), async (req, res) =>
         res.send({totalElements: size.length, data: response});
     } catch (e) {
         res.status(400).send({error: e});
-    }
-});
-
-router.get('/tariff', auth, permit('admin', 'superAdmin'), async (req, res) => {
-    try {
-        const tariff = await TariffGroup.findOne();
-        res.send(tariff);
-    } catch (e) {
-        res.status(500).send({error: e});
     }
 });
 
