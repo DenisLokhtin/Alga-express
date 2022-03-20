@@ -30,6 +30,7 @@ const run = async () => {
         {
             usa: 12,
             turkey: 4.3,
+            turkeyGround: 4,
             china: 15,
             chinaGround: 5,
             name: 'new',
@@ -38,6 +39,7 @@ const run = async () => {
             usa: 11.5,
             turkey: 4.1,
             china: 14,
+            turkeyGround: 4,
             chinaGround: 4.5,
             name: 'advanced',
         },
@@ -45,6 +47,7 @@ const run = async () => {
             usa: 11,
             turkey: 4,
             china: 13,
+            turkeyGround: 4,
             chinaGround: 4,
             name: 'buyer',
         },
