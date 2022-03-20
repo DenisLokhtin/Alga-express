@@ -73,7 +73,7 @@
 
 .news-list .read-more::before {
     --line-width: 115%;
-    --line-height: 2px;
+    --line-height: 1px;
     --line-easing: ease;
     --line-transition-duration: 300ms;
     content: "";
