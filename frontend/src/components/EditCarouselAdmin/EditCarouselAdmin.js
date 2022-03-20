@@ -99,7 +99,9 @@ const EditCarouselAdmin = () => {
             <Container
                 component="section"
                 maxWidth="md"
-                className={classes.container}>
+                className={classes.container}
+                style={{paddingTop: '150px'}}
+            >
                 <h2>Редактирование изображения для слайдера</h2>
                 <Grid
                     component="form"
