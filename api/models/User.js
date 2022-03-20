@@ -120,7 +120,7 @@ const UserSchema = new mongoose.Schema({
     group: {
         type: String,
         trim: true,
-        enum: ['NEW', 'BUYERS', "ADVANCED", 'SPECIAL'],
+        enum: ['NEW', 'BUYERS', "ADVANCED", 'SPECIAL', 'NONE'],
         default: "NEW",
     },
     idChat: {
