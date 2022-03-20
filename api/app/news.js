@@ -24,9 +24,8 @@ const upload = multer({storage});
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-
     try {
-        const news = await News.find({deleted: {$ne: true}});
+        const news = await News.find({deleted: {$ne: true}}).sort({createdAt: -1});
 
         if (req.query.latestNews) {
             const latestNews = await News.find({deleted: {$ne: true}}).sort({createdAt: -1}).limit(4);
