@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {fetchTariffsRequest} from "../../store/actions/tariffActions";
 import {Grid, List, ListItem, ListItemText} from "@mui/material";
@@ -8,6 +8,13 @@ const TariffsPage = () => {
     const tariff = useSelector(state => state.tariffs.tariffs);
     const user = useSelector(state => state.users.user);
     const messagesEndRef = useRef(null);
+    const [showTariff, setShowTariff] = useState({
+        usa: '',
+        turkey: '',
+        turkeyGround: '',
+        china: '',
+        chinaGround: ''
+    });
 
     useEffect(() => {
         if (!!messagesEndRef.current) {
@@ -18,51 +25,55 @@ const TariffsPage = () => {
         dispatch(fetchTariffsRequest());
     }, [dispatch, messagesEndRef]);
 
-    const shownTariff = [];
-
-    if (tariff && tariff.length !==0) {
-        const obj = tariff[0];
-        const keys = Object.keys(obj);
-        keys.forEach(key => {
-            if (key === 'new') {
-                return shownTariff.push(obj[key]);
-            } else if (key === 'buyers' && user?.group === 'BUYERS') {
-                return shownTariff.push(obj[key]);
-            } else if (key === 'advanced' && user?.group === 'ADVANCED') {
-                return shownTariff.push(obj[key]);
+    useEffect(() => {
+        tariff && tariff.forEach(key => {
+            if (key.name.toUpperCase() === user.group) {
+                setShowTariff(prevState => ({
+                    ...prevState,
+                    usa: key.usa,
+                    turkey: key.turkey,
+                    turkeyGround: key.turkeyGround,
+                    china: key.china,
+                    chinaGround: key.chinaGround,
+                }));
             }
-        });
-    }
+        })
+    }, [tariff, user]);
 
     return (
         <Grid ref={messagesEndRef}>
-            {shownTariff.length !== 0 && shownTariff.map((t,i) => (
-                <List key={i} sx={{width: 150}}>
+            {showTariff && (
+                <List sx={{width: 150}}>
                     <ListItem divider disablePadding>
                         <ListItemText>
-                            США <b>{t.usa} $</b>
+                            США <b>{showTariff.usa} $</b>
                         </ListItemText>
                     </ListItem>
 
                     <ListItem divider disablePadding>
                         <ListItemText>
-                            Китай(авиа) <b>{t.china} $</b>
+                            Китай(авиа) <b>{showTariff.china} $</b>
                         </ListItemText>
                     </ListItem>
 
                     <ListItem divider disablePadding>
                         <ListItemText>
-                            Китай <b>{t.chinaGround} $</b>
+                            Китай <b>{showTariff.chinaGround} $</b>
                         </ListItemText>
                     </ListItem>
 
                     <ListItem disablePadding>
                         <ListItemText>
-                            Турция <b>{t.turkey} $</b>
+                            Турция(авиа) <b>{showTariff.turkey} $</b>
+                        </ListItemText>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemText>
+                            Турция <b>{showTariff.turkeyGround} $</b>
                         </ListItemText>
                     </ListItem>
                 </List>
-            ))}
+            )}
         </Grid>
     );
 }

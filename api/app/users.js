@@ -49,12 +49,12 @@ router.post('/', async (req, res) => {
             name: req.body.name,
             role: req.body.role,
             tariff: {
-                usa: tariff.new.usa,
-                turkey: tariff.new.turkey,
-                china: tariff.new.china,
-                chinaGround: tariff.new.chinaGround,
+                usa: tariff.usa,
+                turkey: tariff.turkey,
+                turkeyGround: tariff.turkeyGround,
+                china: tariff.china,
+                chinaGround: tariff.chinaGround,
             },
-            group: 'NEW'
         });
 
         user.generateToken();
