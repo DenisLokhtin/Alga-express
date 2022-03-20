@@ -78,7 +78,9 @@ const EditPlayerAdmin = () => {
             <Container
                 component="section"
                 maxWidth="md"
-                className={classes.container}>
+                className={classes.container}
+                style={{paddingTop: '150px'}}
+            >
                 <h3>Изменить ссылку на видео из Youtube</h3>
                 <Grid item xs={12} sm={8} md={7} lg={7}>
                 </Grid>

@@ -80,7 +80,9 @@ const AddCarouselAdmin = () => {
         <Container
             component="section"
             maxWidth="md"
-            className={classes.container}>
+            className={classes.container}
+            style={{paddingTop: '150px'}}
+        >
             <Grid
                 container
                 direction="column"
