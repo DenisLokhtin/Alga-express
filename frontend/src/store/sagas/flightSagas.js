@@ -29,7 +29,6 @@ function* postFlight({payload: data}) {
 function* getFlights({payload}) {
     try {
         const response = yield axiosApi.get(`/flights?page=${payload.page}&limit=${payload.limit}&status=${payload.status}`);
-        console.log(response.data);
         yield put(getFlightsSuccess(response.data));
     } catch (e) {
         yield put(getFlightsFailure(e.response.data));
@@ -38,8 +37,8 @@ function* getFlights({payload}) {
 
 function* putFlight({payload}) {
     try {
-        yield axiosApi.put(`/flights/${payload.id}`, payload.flightData);
-        yield put(putFlightSuccess());
+        const response = yield axiosApi.put(`/flights/${payload.id}?page=${payload.page}&limit=${payload.limit}&status=${payload.status}`, payload.flightData);
+        yield put(putFlightSuccess(response.data));
         toast.success('Рейс отредактирован!');
     } catch (e) {
         yield put(putFlightFailure(e.response.data.message));
