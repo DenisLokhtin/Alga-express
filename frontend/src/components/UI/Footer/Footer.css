@@ -38,6 +38,7 @@
     display: flex;
     flex-wrap: wrap;
 }
+
 @media screen and (min-width: 29.8125rem) {
     .ft-main {
         justify-content: space-evenly;
@@ -50,9 +51,9 @@
     }
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 700px) {
     .ft-main {
-        justify-content: center;
+        justify-content: flex-start;
     }
 }
 

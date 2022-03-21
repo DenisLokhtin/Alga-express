@@ -8,7 +8,6 @@ import {makeStyles} from "@mui/styles";
 import {addNewsRequest} from "../../store/actions/newsActions";
 import {Editor} from "@tinymce/tinymce-react";
 import Resizer from "react-image-file-resizer";
-import theme from "../../theme";
 
 const useStyles = makeStyles(theme => ({
     submit: {
@@ -130,7 +129,6 @@ const AddNewsAdmin = () => {
                 onSubmit={submitFormHandler}
                 noValidate
             >
-                <h3 style={theme.title}>Добавить новость</h3>
                 <FormElement
                     required
                     label="Название"

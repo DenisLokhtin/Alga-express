@@ -26,14 +26,32 @@ const run = async () => {
         await mongoose.connection.db.dropCollection(coll.name);
     }
 
-    const tariff = await TariffGroup.create({
-        new: {
+    const [newGroup, advancedGroup] = await TariffGroup.create(
+        {
             usa: 12,
             turkey: 4.3,
+            turkeyGround: 4,
             china: 15,
             chinaGround: 5,
-        }
-    });
+            name: 'new',
+        },
+        {
+            usa: 11.5,
+            turkey: 4.1,
+            china: 14,
+            turkeyGround: 4,
+            chinaGround: 4.5,
+            name: 'advanced',
+        },
+        {
+            usa: 11,
+            turkey: 4,
+            china: 13,
+            turkeyGround: 4,
+            chinaGround: 4,
+            name: 'buyer',
+        },
+    );
 
     await Currency.create({
         usd: 86
@@ -62,7 +80,8 @@ const run = async () => {
             role: "user",
             balance: 200,
             name: "User",
-            tariff: tariff.new,
+            tariff: newGroup,
+            group: 'NEW',
             avatar: 'fixtures/avatar1.jpeg',
             phone: {number: '786677899', type: 'PHONE'},
             passport: {image: 'fixtures/passport.jpg'}
@@ -74,7 +93,8 @@ const run = async () => {
             role: "user",
             balance: 200,
             name: "User user",
-            tariff: tariff.new,
+            tariff: advancedGroup,
+            group: 'ADVANCED',
             avatar: 'fixtures/avatar1.jpeg',
             phone: {number: '996555222111', type: 'PHONE'},
             passport: {image: 'fixtures/passport.jpg'}
@@ -86,6 +106,7 @@ const run = async () => {
             role: "admin",
             balance: 0,
             name: "Admin",
+            group: 'NONE',
             avatar: 'fixtures/avatar2.jpeg',
             phone: {number: '754 76 45 54', type: 'PHONE'},
             passport: {image: 'passport.jpg'}
@@ -96,6 +117,7 @@ const run = async () => {
             token: nanoid(),
             role: "warehouseman",
             name: "Warehouseman",
+            group: 'NONE',
             avatar: 'fixtures/avatar2.jpeg',
         },
         {
@@ -104,6 +126,7 @@ const run = async () => {
             token: nanoid(),
             role: "superAdmin",
             name: "superAdmin",
+            group: 'NONE',
             avatar: 'fixtures/avatar2.jpeg',
         },
     );
@@ -271,26 +294,35 @@ const run = async () => {
 
     await News.create(
         {
-            title: 'Транзит и логистика товаров зависят от политических решений и могут негативно повлиять на снятие ограничений при перевозках, - министр ЕЭК',
-            description: 'description 1',
+            title: 'Кыргызстан: грузовые перевозки в условиях борьбы с коронавирусом',
+            description: 'Разрешен въезд/выезд грузовых транспортных средств с соблюдением повышенных мер противоэпидемической безопасности.\n' +
+                '\n' +
+                'По неофициальным данным (оперативная информация от руководства Агентства автомобильного, водного транспорта и весогабаритного контроля Кыргызстана) в ближайшее время могут быть введены нормы, предусматривающие помещение международных перевозчиков при пересечении границы на 3-х дневный карантин.',
             image: 'fixtures/container1.jpeg',
             deleted: false,
             datetime: '2022/7/1',
         },
         {
-            title: 'Решение вопросов, связанных с упрощением процедур торговли в ЦА, может привести к росту экономических показателей каждой страны, - ТПП КР',
-            description: 'description 2',
+            title: 'Кыргызстан. До 1 сентября действуют ограничения на проезд крупногабаритных автопоездов.',
+            description: 'В нем указано, что в дневное время по дорогам общего пользования запрещено передвигаться большегрузам с общей массой от 18 тонн. Ограничения вступили в силу с 1 июня и будут действовать до 1 сентября с 10 часов утра до 8 часов вечера, при условии температурного режима выше 28 градусов.',
             image: 'fixtures/container2.jpeg',
             deleted: false,
             datetime: '2022/5/8',
         },
         {
-            title: 'Для развития электронной коммерции необходимы логистическая инфраструктура и развитие платежные системы, - анализ',
-            description: 'description 3',
+            title: 'Россия ограничивает украинский транзит через свою территорию',
+            description: 'Президент России Владимир Путин внес изменения в указ об обеспечении экономической безопасности и национальных интересов России при транзитных перевозках с Украины в Казахстан, распространив существующие требования на Киргизию, документ опубликован на официальном интернет-портале правовой информации. Также российский президент продлил действие указа до 31 декабря 2017 года.',
             image: 'fixtures/container2.jpeg',
             deleted: false,
             datetime: '2021/12/22',
-        }
+        },
+        {
+            title: 'В Кыргызстане решается вопрос логистики в сельском хозяйстве',
+            description: 'Международные компании помогут Кыргызстану полноправно войти на рынок ЕАЭС. В 2017-ом частные транспортно-логистические компании, в орбиту которых входят более 200 стран по всему миру, планируют открытие филиалов в центральных городах всех 7 областей республики. Сейчас такие центры работают только в Бишкеке и Оше.',
+            image: 'fixtures/container2.jpeg',
+            deleted: false,
+            datetime: '2021/12/22',
+        },
     );
 
     await Market.create(
