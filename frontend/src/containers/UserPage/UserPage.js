@@ -109,6 +109,10 @@ const UserPage = () => {
             title: order.title,
             country: countries[order.country],
             status: statuses[order.status],
+            name: order.user.name,
+            amount: order.amount,
+            price: order.price,
+            delivery: order.delivery,
         }
     });
 

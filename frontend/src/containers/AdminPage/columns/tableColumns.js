@@ -1,5 +1,8 @@
 import Button from "@mui/material/Button";
 import LinkIcon from '@mui/icons-material/Link';
+import Typography from "@mui/material/Typography";
+import {Link} from "react-router-dom";
+import React from "react";
 
 export const packagesColumns = [
     {
@@ -50,6 +53,51 @@ export const packagesColumns = [
         headerAlign: 'center',
         align: 'center',
     },
+    {
+        field: "amount",
+        headerName: 'Колличество',
+        flex: 1,
+        minWidth: 120,
+        headerAlign: 'center',
+        align: 'center',
+    },
+    {
+        field: "price",
+        headerName: 'Цена',
+        flex: 1,
+        minWidth: 120,
+        headerAlign: 'center',
+        align: 'center',
+    },
+    {
+        field: "delivery",
+        headerName: 'Доставка',
+        flex: 1,
+        minWidth: 120,
+        headerAlign: 'center',
+        align: 'center',
+        renderCell: (params) => (
+            <Typography>
+                {params.row.delivery ? 'Да' : 'Нет'}
+            </Typography>
+        )
+    },
+    {
+        field: "actions",
+        type: "actions",
+        width: 150,
+        getActions: (params) => [
+            <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                disabled={params.row.status !== 'Оформлен'}
+            >
+                <Link to={`/user/package/edit/${params.id}`}
+                      style={{textDecoration: 'none', color: 'inherit'}}>Редактировать</Link>
+            </Button>
+        ]
+    }
 ];
 
 export const buyoutsColumns = [
