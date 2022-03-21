@@ -496,7 +496,7 @@ const AdminPage = () => {
                                         } else {
                                             dispatch(changeDeliveryStatusRequest({...params.row}));
                                             dispatch(deleteDeliveryRequest({...params.row}));
-                                            dispatch(getOrdersHistoryRequest({page: packagesPage, limit: packagesPageLimit, id: userId}));
+                                            setUpdate(!update);
                                         }
                                     };
                                     return (

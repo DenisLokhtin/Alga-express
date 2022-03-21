@@ -67,6 +67,7 @@ const UserPage = () => {
     const dispatch = useDispatch();
     const messagesEndRef = useRef(null);
     const [value, setValue] = useState(0);
+    const [update, setUpdate] = useState(false);
     const userId = useSelector(state => state.users.user._id);
     const [open, setOpen] = useState(false);
     const [currentModal, setCurrentModal] = useState({
@@ -279,7 +280,7 @@ const UserPage = () => {
                                         } else {
                                             dispatch(changeDeliveryStatusRequest({...params.row}));
                                             dispatch(deleteDeliveryRequest({...params.row}));
-                                            dispatch(getOrdersHistoryRequest({page: packagesPage, limit: packagesPageLimit, id: userId}));
+                                            setUpdate(!update);
                                         }
                                     };
                                     return (
