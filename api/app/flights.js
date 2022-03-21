@@ -40,6 +40,22 @@ router.put('/:id',  auth, permit('admin', 'superAdmin'), async (req, res) => {
             status: req.body.status
         }
 
+        let page = 0;
+        let limit = 10;
+        let status = null;
+
+        if (req.query.page) {
+            page = req.query.page;
+        }
+
+        if (req.query.limit) {
+            limit = req.query.limit;
+        }
+
+        if (req.query.status) {
+            status = req.query.status;
+        }
+
         if (req.body.status === 'DONE') {
             let users = [];
             const getUsers = await Package.find({flight: oldFlight._id.toString()}).populate({path: 'user', select: 'email'});
@@ -47,8 +63,6 @@ router.put('/:id',  auth, permit('admin', 'superAdmin'), async (req, res) => {
             getUsers.map(user => {
                 users.push(user.user.email);
             })
-
-            console.log(users);
 
             // sendMail('test@gmail.com', 'test', 'test body');
 
@@ -69,10 +83,15 @@ router.put('/:id',  auth, permit('admin', 'superAdmin'), async (req, res) => {
             //     console.log('Sent: ', info.response);
             // })
         }
+        await Flight.findByIdAndUpdate(req.params.id, flightData);
 
-        const flight = await Flight.findByIdAndUpdate(req.params.id, flightData);
+        const size = await Flight.find({status: status});
+        const flights = await Flight.find({status: status})
+            .sort({date: -1})
+            .limit(limit)
+            .skip(page * limit);
 
-        res.send({message: "Success", flight});
+        res.send({totalElements: size.length, data: flights});
     } catch (e) {
         res.status(500).send(e);
     }

@@ -37,7 +37,7 @@ const useStyles = makeStyles(() => ({
 const FlightsList = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const [update, setUpdate] =  useState(false);
+    // const [update, setUpdate] =  useState(false);
     const flights = useSelector(state => state.flights.flights);
     const count = useSelector(state => state.flights.flightsCount);
     const [expanded, setExpanded] = useState('panel1');
@@ -67,7 +67,7 @@ const FlightsList = () => {
         }
         if (expanded === 'panel1') return dispatch(getFlightsRequest({page: page, limit: rowsPerPage, status: 'ACTIVE'}));
         if (expanded === 'panel2') return dispatch(getFlightsRequest({page: page, limit: rowsPerPage, status: 'DONE'}));
-    }, [dispatch, page, expanded, rowsPerPage, update, messagesEndRef]);
+    }, [dispatch, page, expanded, rowsPerPage, messagesEndRef]);
 
     return (
         <Container ref={messagesEndRef} className={classes.container}>
@@ -91,7 +91,9 @@ const FlightsList = () => {
                                             key={item._id}
                                             flight={item}
                                             id={item._id}
-                                            update={()=> setUpdate(prevState => !prevState)}
+                                            page={page}
+                                            limit={rowsPerPage}
+                                            // update={()=> setUpdate(prevState => !prevState)}
                                         />
                                     ))
                                     :
@@ -132,7 +134,7 @@ const FlightsList = () => {
                                             key={item._id}
                                             flight={item}
                                             id={item._id}
-                                            update={()=> setUpdate(prevState => !prevState)}
+                                            // update={()=> setUpdate(prevState => !prevState)}
                                         />
                                     ))
                                     :

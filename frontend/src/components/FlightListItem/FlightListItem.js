@@ -15,7 +15,7 @@ const maskMap = {
     ru: '__.__.____',
 };
 
-const FlightListItem = ({flight, id, update}) => {
+const FlightListItem = ({flight, id, page, limit}) => {
     const dispatch = useDispatch();
     const [editStatus, setEditStatus] = useState(true);
     const [flightData, setFlightData] = useState({
@@ -42,9 +42,9 @@ const FlightListItem = ({flight, id, update}) => {
     };
 
     const saveAfterEdit = () => {
-        dispatch(putFlightRequest({id, flightData}));
+        dispatch(putFlightRequest({id, flightData, page: page, limit: limit, status: 'ACTIVE'}));
         setEditStatus(!editStatus);
-        update();
+        // update();
     };
 
     const statusChanger = () => {

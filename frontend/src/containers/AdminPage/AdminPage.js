@@ -293,8 +293,6 @@ const AdminPage = () => {
         }));
     };
 
-    console.log(openDone);
-
     return (
         <Container ref={messagesEndRef} className={classes.container}>
             <Box sx={{width: '100%'}}>
