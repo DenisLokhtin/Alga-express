@@ -13,7 +13,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {countries, statuses} from "../../dataLocalization";
 import dayjs from "dayjs";
 import {apiURL} from "../../config";
-import {getOrdersHistoryRequest} from "../../store/actions/packageRegisterActions";
+import {changeDeliveryStatusRequest, getOrdersHistoryRequest} from "../../store/actions/packageRegisterActions";
 import {fetchBuyoutsList} from "../../store/actions/buyoutActions";
 import {fetchPaymentRequest} from "../../store/actions/paymentActions";
 import Typography from "@mui/material/Typography";
@@ -24,6 +24,12 @@ import {makeStyles} from "@mui/styles";
 import EditIcon from "@mui/icons-material/Edit";
 import {Link} from "react-router-dom";
 import {editBuyout} from "../../paths";
+import {deleteDeliveryRequest} from "../../store/actions/deliveryAction";
+import Checkbox from "@mui/material/Checkbox";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import CurrencyYenIcon from "@mui/icons-material/CurrencyYen";
+import CurrencyLiraIcon from "@mui/icons-material/CurrencyLira";
+import DeliveryModal from "../../components/DeliveryModal/DeliveryModal";
 
 function a11yProps(index) {
     return {
@@ -62,17 +68,18 @@ const UserPage = () => {
     const messagesEndRef = useRef(null);
     const [value, setValue] = useState(0);
     const userId = useSelector(state => state.users.user._id);
-
-    const [
-        openImg,
-        setOpenImg] = useState(false);
-    const [
-        img,
-        setImg] = useState(null);
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
+    const [open, setOpen] = useState(false);
+    const [currentModal, setCurrentModal] = useState({
+        cargoNumber: "1",
+        country: "Китай-Авия",
+        delivery: "false",
+        id: "6220b025363a1780b6f28293",
+        status: "В пути",
+        title: "package 3",
+        trackNumber: "DnS5myCQv6H4H1_4YCtPM",
+    });
+    const [openImg, setOpenImg] = useState(false);
+    const [img, setImg] = useState(null);
 
     const packages = useSelector(state => state.package.orders);
     const [packagesHistory, setPackagesHistory] = useState(false);
@@ -100,6 +107,12 @@ const UserPage = () => {
     const [buyoutsPageLimit, setBuyoutsPageLimit] = useState(10);
     const [buyoutsSelectionModel, setBuyoutsSelectionModel] = useState([]);
     const buyoutsPrevSelection = useRef(buyoutsSelectionModel);
+
+    const handleClose = () => setOpen(false);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
 
     const packagesRows = packages.map(order => {
         return {
@@ -208,9 +221,73 @@ const UserPage = () => {
                 </Box>
 
                 <TabPanelComponent value={value} index={0}>
+                    <DeliveryModal title={currentModal.title}
+                                   track={currentModal.trackNumber}
+                                   status={currentModal.status}
+                                   country={currentModal.country}
+                                   open={open} page={packagesPage}
+                                   pageLimit={packagesPageLimit}
+                                   close={handleClose}/>
                     <TableComponent
                         rows={packagesRows}
-                        columns={packagesColumns}
+                        columns={[
+                            ...packagesColumns,
+                            {
+                                field: 'price',
+                                headerName: 'Цена товара',
+                                flex: 1,
+                                minWidth: 140,
+                                headerAlign: 'center',
+                                align: 'center',
+                                renderCell: (params => {
+                                    const order = packages.find(order => order._id === params.id);
+
+                                    if (order.currency === 'usd') {
+                                        return (
+                                            <div style={{display: 'flex', alignItems: 'center'}}>
+                                                {order.price} <AttachMoneyIcon/>
+                                            </div>
+                                        )
+                                    } else if (order.currency === 'cny') {
+                                        return (
+                                            <div style={{display: 'flex', alignItems: 'center'}}>
+                                                {order.price} <CurrencyYenIcon/>
+                                            </div>
+                                        )
+                                    } else if (order.currency === 'try') {
+                                        return (
+                                            <div style={{display: 'flex', alignItems: 'center'}}>
+                                                {order.price} <CurrencyLiraIcon/>
+                                            </div>
+                                        )
+                                    }
+                                })
+                            },
+                            {
+                                field: 'delivery',
+                                headerName: 'Доставка',
+                                flex: 1,
+                                minWidth: 90,
+                                headerAlign: 'center',
+                                align: 'center',
+                                renderCell: (params) => {
+                                    const onClick = (e) => {
+                                        e.stopPropagation();
+                                        if (e.target.checked) {
+                                            setOpen(true);
+                                            setCurrentModal({...params.row});
+                                        } else {
+                                            dispatch(changeDeliveryStatusRequest({...params.row}));
+                                            dispatch(deleteDeliveryRequest({...params.row}));
+                                            dispatch(getOrdersHistoryRequest({page: packagesPage, limit: packagesPageLimit, id: userId}));
+                                        }
+                                    };
+                                    return (
+                                        <Checkbox checked={params.row.delivery} onChange={(e) => onClick(e)}/>
+                                    );
+                                }
+                            },
+                        ]}
                         pageSize={packagesPageLimit}
                         rowCount={packagesTotalRow}
                         rowHeight={70}

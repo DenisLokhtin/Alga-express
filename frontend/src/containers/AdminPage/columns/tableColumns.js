@@ -1,6 +1,5 @@
 import Button from "@mui/material/Button";
 import LinkIcon from '@mui/icons-material/Link';
-import Typography from "@mui/material/Typography";
 import {Link} from "react-router-dom";
 import React from "react";
 
@@ -60,27 +59,6 @@ export const packagesColumns = [
         minWidth: 120,
         headerAlign: 'center',
         align: 'center',
-    },
-    {
-        field: "price",
-        headerName: 'Цена',
-        flex: 1,
-        minWidth: 120,
-        headerAlign: 'center',
-        align: 'center',
-    },
-    {
-        field: "delivery",
-        headerName: 'Доставка',
-        flex: 1,
-        minWidth: 120,
-        headerAlign: 'center',
-        align: 'center',
-        renderCell: (params) => (
-            <Typography>
-                {params.row.delivery ? 'Да' : 'Нет'}
-            </Typography>
-        )
     },
     {
         field: "actions",

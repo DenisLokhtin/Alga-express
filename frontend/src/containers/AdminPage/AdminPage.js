@@ -5,7 +5,11 @@ import {fetchCurrencies} from "../../store/actions/currenciesActions";
 import CurrenciesCard from "../../components/CurrenciesCard/CurrenciesCard";
 import TableComponent from "../../components/TableComponent/TableComponent";
 import {countries, statuses} from "../../dataLocalization";
-import {getOrdersHistoryRequest, giveOutRequest} from "../../store/actions/packageRegisterActions";
+import {
+    changeDeliveryStatusRequest,
+    getOrdersHistoryRequest,
+    giveOutRequest
+} from "../../store/actions/packageRegisterActions";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -32,6 +36,12 @@ import Grid from "@mui/material/Grid";
 import ruLocale from "date-fns/locale/ru";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
 import AppWindow from "../../components/UI/AppWindow/AppWindow";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import CurrencyYenIcon from "@mui/icons-material/CurrencyYen";
+import CurrencyLiraIcon from "@mui/icons-material/CurrencyLira";
+import {deleteDeliveryRequest} from "../../store/actions/deliveryAction";
+import Checkbox from "@mui/material/Checkbox";
+import DeliveryModal from "../../components/DeliveryModal/DeliveryModal";
 
 function a11yProps(index) {
     return {
@@ -84,6 +94,16 @@ const AdminPage = () => {
         open: false,
         id: '',
     });
+    const [open, setOpen] = useState(false);
+    const [currentModal, setCurrentModal] = useState({
+        cargoNumber: "1",
+        country: "Китай-Авия",
+        delivery: "false",
+        id: "6220b025363a1780b6f28293",
+        status: "В пути",
+        title: "package 3",
+        trackNumber: "DnS5myCQv6H4H1_4YCtPM",
+    });
 
     const [img, setImg] = useState(null);
     const currencies = useSelector(state => state.currencies.currencies);
@@ -133,6 +153,8 @@ const AdminPage = () => {
     const [paymentsPageLimit, setPaymentsPageLimit] = useState(10);
     const [paymentsSelectionModel, setPaymentsSelectionModel] = useState([]);
     const paymentsPrevSelection = useRef(paymentsSelectionModel);
+
+    const handleClose = () => setOpen(false);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -416,10 +438,72 @@ const AdminPage = () => {
                 </Grid>
 
                 <TabPanelComponent value={value} index={0}>
+                    <DeliveryModal title={currentModal.title}
+                                   track={currentModal.trackNumber}
+                                   status={currentModal.status}
+                                   country={currentModal.country}
+                                   open={open} page={packagesPage}
+                                   pageLimit={packagesPageLimit}
+                                   close={handleClose}/>
                     <TableComponent
                         rows={packagesRows}
                         columns={[
                             ...packagesColumns,
+                            {
+                                field: 'price',
+                                headerName: 'Цена товара',
+                                flex: 1,
+                                minWidth: 140,
+                                headerAlign: 'center',
+                                align: 'center',
+                                renderCell: (params => {
+                                    const order = packages.find(order => order._id === params.id);
+
+                                    if (order.currency === 'usd') {
+                                        return (
+                                            <div style={{display: 'flex', alignItems: 'center'}}>
+                                                {order.price} <AttachMoneyIcon/>
+                                            </div>
+                                        )
+                                    } else if (order.currency === 'cny') {
+                                        return (
+                                            <div style={{display: 'flex', alignItems: 'center'}}>
+                                                {order.price} <CurrencyYenIcon/>
+                                            </div>
+                                        )
+                                    } else if (order.currency === 'try') {
+                                        return (
+                                            <div style={{display: 'flex', alignItems: 'center'}}>
+                                                {order.price} <CurrencyLiraIcon/>
+                                            </div>
+                                        )
+                                    }
+                                })
+                            },
+                            {
+                                field: 'delivery',
+                                headerName: 'Доставка',
+                                flex: 1,
+                                minWidth: 90,
+                                headerAlign: 'center',
+                                align: 'center',
+                                renderCell: (params) => {
+                                    const onClick = (e) => {
+                                        e.stopPropagation();
+                                        if (e.target.checked) {
+                                            setOpen(true);
+                                            setCurrentModal({...params.row});
+                                        } else {
+                                            dispatch(changeDeliveryStatusRequest({...params.row}));
+                                            dispatch(deleteDeliveryRequest({...params.row}));
+                                            dispatch(getOrdersHistoryRequest({page: packagesPage, limit: packagesPageLimit, id: userId}));
+                                        }
+                                    };
+                                    return (
+                                        <Checkbox checked={params.row.delivery} onChange={(e) => onClick(e)}/>
+                                    );
+                                }
+                            },
                             {
                                 field: "actions",
                                 type: "actions",
