@@ -12,6 +12,7 @@ import Grid from "@mui/material/Grid";
 import Alert from '@mui/material/Alert';
 import {AlertTitle} from "@mui/material";
 import theme from "../../theme";
+import Typography from "@mui/material/Typography";
 
 const useStyles = makeStyles(theme => ({
     form: {
@@ -30,6 +31,9 @@ const useStyles = makeStyles(theme => ({
         [theme.breakpoints.down('sm')]: {
             paddingTop: '100px',
         },
+    },
+    avatar: {
+        margin: '0 auto',
     },
 }));
 
@@ -120,9 +124,11 @@ const ResetPassword = () => {
     return (
         <Container ref={messagesEndRef} component="section" maxWidth="xs" className={classes.container}>
             <div style={theme.paper}>
+                <Grid item sx={{mb: '1.3em'}}>
                 <Avatar className={classes.avatar}>
                     <LockClockIcon/>
                 </Avatar>
+                </Grid>
 
                 {
                     error &&
@@ -140,6 +146,9 @@ const ResetPassword = () => {
                         onSubmit={submitFormHandler}
                         spacing={2}
                     >
+                        <Typography component="h1" variant="h6" align={'center'}>
+                            Смена пароля
+                        </Typography>
                         <>
                             <FormElement
                                 type="password"
@@ -187,6 +196,9 @@ const ResetPassword = () => {
                         onSubmit={submitFormHandler}
                         spacing={2}
                     >
+                        <Typography component="h1" variant="h6" align={'center'}>
+                            Смена пароля
+                        </Typography>
                         <>
                             <FormElement
                                 type="text"
