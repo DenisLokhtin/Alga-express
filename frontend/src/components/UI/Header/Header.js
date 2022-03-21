@@ -27,6 +27,7 @@ const Header = () => {
     const loadInformationData = useSelector(state => state.information.loading);
     const loadMarketData = useSelector(state => state.market.fetchLoading);
     const loadNewsData = useSelector(state => state.news.fetchLoading);
+    const loadSingleNewsData = useSelector(state => state.news.singleLoading);
     const loadPageData = useSelector(state => state.pages.loading);
     const loadPlayerData = useSelector(state => state.players.fetchLoading);
     const loadRequisiteData = useSelector(state => state.requisites.loading);
@@ -48,6 +49,7 @@ const Header = () => {
                     loadInformationData ||
                     loadMarketData ||
                     loadNewsData ||
+                    loadSingleNewsData ||
                     loadPageData ||
                     loadPlayerData ||
                     loadRequisiteData ||
@@ -57,17 +59,19 @@ const Header = () => {
             }));
     }, [
         loadUserData,
-        loadCarouselData,
         loadDeliveryData,
+        loadCarouselData,
         loadFlightData,
         loadInformationData,
         loadMarketData,
         loadNewsData,
+        loadSingleNewsData,
         loadPageData,
         loadPlayerData,
         loadRequisiteData,
         loadTariffData,
         loadWareHouseData,
+        loadWareHouseSingleData,
     ]);
 
     const addClass = () => {
