@@ -13,6 +13,7 @@ import AppWindow from "../UI/AppWindow/AppWindow";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import Container from "@mui/material/Container";
+import countryPicture from "../../assets/images/country-flags.jpg";
 
 const useStyles = makeStyles(theme => ({
     submit: {
@@ -27,6 +28,13 @@ const useStyles = makeStyles(theme => ({
         [theme.breakpoints.down('sm')]: {
             paddingTop: '60px',
         },
+    },
+    countryFlag: {
+        background: `url(${countryPicture})`,
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        minHeight: '30vh',
     },
 }));
 
@@ -63,8 +71,11 @@ const WarehousePage = () => {
     return (
         <Container maxWidth="lg" className={classes.container}>
             <Grid container direction={"column"} justifyContent={"center"}>
+                <Grid>
+                    <div className={classes.countryFlag}></div>
+                </Grid>
                 <Grid item>
-                    <Box ref={messagesEndRef} sx={{width: '100%', typography: 'body1'}} style={{paddingTop: '150px'}}
+                    <Box ref={messagesEndRef} sx={{width: '100%', typography: 'body1'}} style={{paddingTop: '20px'}}
                          className={classes.tableContainer}>
                         {user && user.role === 'admin' ?
                             <Grid item xs={5}>
