@@ -84,7 +84,6 @@ const Header = () => {
         }
     };
 
-    console.log(loading);
     return (
         <Slide appear={false} direction="down" in={!trigger}>
             <header className="header">
