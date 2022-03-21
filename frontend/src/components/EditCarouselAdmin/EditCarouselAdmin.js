@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate, useParams} from "react-router-dom";
 import Grid from "@mui/material/Grid";
@@ -49,7 +49,7 @@ const EditCarouselAdmin = () => {
 
     }, [dispatch, params.id, oneCarousel.info]);
 
-    useMemo(() => {
+    useEffect(() => {
         oneCarousel && setSingleCarousel({
             info: oneCarousel.info,
             picture: oneCarousel.picture,
@@ -124,7 +124,7 @@ const EditCarouselAdmin = () => {
                     <Grid item xs={12}>
                         {imagePreload ?
                             <img src={imagePreload} alt="preview imagePreload"/> :
-                            <img src={apiURL + '/' + singleCarousel.picture} alt={singleCarousel.info}/>
+                            singleCarousel.picture && <img src={apiURL + '/' + singleCarousel.picture} alt={singleCarousel.info}/>
                         }
                     </Grid>
 

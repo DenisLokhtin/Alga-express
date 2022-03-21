@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {makeStyles} from "@mui/styles";
 import {createTheme} from "@mui/material/styles";
 import {useDispatch, useSelector} from "react-redux";
@@ -168,7 +168,7 @@ const UserProfileEdit = () => {
         };
     }, [dispatch, messagesEndRef]);
 
-    useMemo(() => {
+    useEffect(() => {
         userData && setDataUser({
             name: userData.name,
             email: userData.email,

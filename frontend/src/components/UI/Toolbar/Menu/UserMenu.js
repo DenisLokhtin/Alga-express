@@ -167,6 +167,7 @@ const UserMenu = ({user}) => {
                     anchorEl={anchorEl}
                     open={open}
                     onClose={handleClose}
+                    onClick={handleClose}
                     TransitionComponent={Fade}
                     anchorOrigin={{
                         vertical: 'top',
