@@ -129,12 +129,12 @@ const UserMenu = ({user}) => {
     return (
         <Grid className={classes.test}>
             <Grid item>
-            {users?.role === 'admin' &&
+            {(users?.role === 'admin' || users?.role === 'superAdmin') &&
                 <IconButton
                     sx={{color: '#F5F5F7',}}
                     size="small"
                     component={Link}
-                    to={listPaymentsAdmin}
+                    to={adminPagePath}
                 >
                     <Badge badgeContent={total} color="error">
                         <NotificationsIcon/>

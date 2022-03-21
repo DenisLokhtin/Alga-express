@@ -6,7 +6,6 @@ import {apiURL} from "../../config";
 import Container from "@mui/material/Container";
 import {makeStyles} from "@mui/styles";
 import {createTheme} from "@mui/material/styles";
-import {Box, Grid, LinearProgress} from "@mui/material";
 
 const theme = createTheme({
     breakpoints: {
@@ -78,7 +77,6 @@ const SingleNews = () => {
     const news = useSelector(state => state.news.oneNews);
     const {id} = useParams();
     const messagesEndRef = useRef(null);
-    const loading = useSelector(state => state.news.singleLoading);
 
     useEffect(() => {
         if (!!messagesEndRef.current) {
@@ -91,30 +89,19 @@ const SingleNews = () => {
 
     return (
         <Container maxWidth="lg" ref={messagesEndRef} className={classes.container}>
-            {loading ? (
-                <Grid className={classes.root}>
-                    <Box sx={{width: '80%', margin: 'auto 0'}}>
-                        <LinearProgress sx={{justifyContent: 'center'}}/>
-                    </Box>
-                </Grid>
-            ) : (
-                <>
-                    {news && (
-                        <div className={classes.newsBlock}>
-                            <div>
-                                <h4 className={classes.newsTitle}>{news.title}</h4>
-                                <div id='description' className={classes.newsText}
-                                     dangerouslySetInnerHTML={{__html: news.description}}/>
-                            </div>
-                            <div className={classes.newsImageBlock}>
-                                {news?.image ?
-                                    <img className={classes.newsImage} src={apiURL + '/' + news.image}
-                                         alt={'news'}/> : null}
-                            </div>
-
-                        </div>
-                    )}
-                </>
+            {news && (
+                <div className={classes.newsBlock}>
+                    <div>
+                        <h4 className={classes.newsTitle}>{news.title}</h4>
+                        <div id='description' className={classes.newsText}
+                             dangerouslySetInnerHTML={{__html: news.description}}/>
+                    </div>
+                    <div className={classes.newsImageBlock}>
+                        {news?.image ?
+                            <img className={classes.newsImage} src={apiURL + '/' + news.image}
+                                 alt={'news'}/> : null}
+                    </div>
+                </div>
             )}
         </Container>
     );

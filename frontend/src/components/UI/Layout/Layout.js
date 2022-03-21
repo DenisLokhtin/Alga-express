@@ -7,8 +7,6 @@ const Layout = ({children}) => {
     return (
         <>
             <CssBaseline/>
-            {/*<AppToolbar/>*/}
-            {/*<AppSidebar/>*/}
             <Header/>
             <div style={{display: 'flex', minHeight: '100vh', flexDirection: 'column'}}>
                 <div style={{flex: '1 1 auto'}}>
