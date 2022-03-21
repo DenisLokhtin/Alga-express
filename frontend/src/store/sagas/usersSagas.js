@@ -37,7 +37,7 @@
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
 import History from '../../History';
-import {adminPagePath, processingTrackNumbersAdmin, root, userLogin, userPage, userPaymentsList} from "../../paths";
+import {adminPagePath, processingTrackNumbersAdmin, root, userLogin, userPage} from "../../paths";
  import {put, takeEvery} from "redux-saga/effects";
 
 export function* registerUserSaga({payload}) {
@@ -133,7 +133,7 @@ export function* userPaymentSaga({payload}) {
     try {
         const response = yield  axiosApi.post('/userEdit/payment/', payload);
         yield put(addUserPaymentSuccess(response.data));
-        History.push(userPaymentsList);
+        History.push(userPage);
         toast.success('Оплата отправлена');
     } catch (e) {
         toast.error(e.response.data.error);

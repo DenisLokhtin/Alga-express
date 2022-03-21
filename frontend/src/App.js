@@ -21,7 +21,6 @@ import AddFlight from "./containers/AddFlight/AddFlight";
 import FlightsList from "./containers/FlightsList/FlightsList";
 import UserProfileEdit from "./containers/UserProfileEdit/UserProfileEdit";
 import UserPayment from "./components/UserPayment/UserPayment";
-import UserPayments from "./components/UserPayments/UserPayments";
 import WarehousemanStatusEdit from "./containers/WarehousemanStatusEdit/WarehousemanStatusEdit";
 import AdminPaymentsProcessing from "./components/AdminPaymentsProcessing/AdminPaymentsProcessing";
 import {
@@ -67,7 +66,6 @@ import {
     tariffs,
     userLogin,
     userPage,
-    userPaymentsList,
     wareHouseCompany,
 } from "./paths";
 import OrderBuyout from "./containers/OrderBuyout/OrderBuyout";
@@ -107,7 +105,6 @@ const App = () => {
                     <Route element={<ProtectedRoutesForUser/>}>
                         {/* Routes for registered user admin and superAdmin*/}
                         <Route path={packageHistory} element={<OrderHistory/>}/>
-                        <Route path={userPaymentsList} element={<UserPayments/>}/>
                         <Route path={newPackageRegister} element={<PackageRegister/>}/>
                         <Route path={editUserProfile} element={<UserProfileEdit/>}/>
                         <Route path={editPackageUser} element={<UserEditPackage/>}/>

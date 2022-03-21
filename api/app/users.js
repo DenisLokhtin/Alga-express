@@ -5,11 +5,8 @@ const permit = require("../middleware/permit");
 const auth = require("../middleware/auth");
 const {nanoid} = require("nanoid");
 const sendMail = require('../middleware/sendMail');
-const bcrypt = require("bcrypt");
 const emailDistribution = require("../email-texts");
 
-
-const SALT_WORK_FACTOR = 10;
 const router = express.Router();
 
 router.get('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
@@ -159,7 +156,7 @@ router.post('/reset', async (req, res) => {
 
 router.post('/change', auth, async (req, res) => {
     try {
-        let user = await User.find({_id: req.user._id});
+        let user = await User.findById(req.user._id);
         if (!user) {
             console.log('error')
             return res.status(401).send({message: 'Доступ запрещен'})
@@ -170,6 +167,7 @@ router.post('/change', auth, async (req, res) => {
         await user.save()
         res.send({message: " Пароль успешно изменен"});
     } catch (e) {
+        console.log(e.message)
         res.status(500).send(e);
     }
 })
