@@ -10,7 +10,6 @@ export const newPackageRegister = '/user/package/register';
 export const packageInfo = '/user/package/info/';
 export const editPackageUser = '/user/package/edit/:id';
 export const editUserProfile = '/user/userProfile/edit';
-export const userPaymentsList = '/user/payments';
 export const addUserPayment = '/user/payments/add';
 export const newUserRegister = '/user/register';
 export const userLogin = "/user/login";

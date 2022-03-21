@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {fetchTariffsRequest} from "../../store/actions/tariffActions";
 import {Grid, List, ListItem, ListItemText} from "@mui/material";
+import {fetchTariffsRequest} from "../../store/actions/tariffActions";
 
 const TariffsPage = () => {
     const dispatch = useDispatch();

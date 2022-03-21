@@ -24,7 +24,15 @@ const useStyles = makeStyles(theme => ({
         marginTop: theme.spacing(3),
         width: "100%",
     },
+    container: {
+        paddingTop: '170px',
+        textAlign: 'center',
+        [theme.breakpoints.down('sm')]: {
+            paddingTop: '100px',
+        },
+    },
 }));
+
 
 const ResetPassword = () => {
     const classes = useStyles();
@@ -110,7 +118,7 @@ const ResetPassword = () => {
     };
 
     return (
-        <Container ref={messagesEndRef} component="section" maxWidth="xs" style={{textAlign: 'center'}}>
+        <Container ref={messagesEndRef} component="section" maxWidth="xs" className={classes.container}>
             <div style={theme.paper}>
                 <Avatar className={classes.avatar}>
                     <LockClockIcon/>
@@ -174,6 +182,7 @@ const ResetPassword = () => {
                     <Grid
                         component="form"
                         container
+                        direction="column"
                         className={classes.form}
                         onSubmit={submitFormHandler}
                         spacing={2}
@@ -191,6 +200,7 @@ const ResetPassword = () => {
                         </>
                         <>
                             <FormElement
+                                fullWidth
                                 type="password"
                                 autoComplete="current-password"
                                 label="Новый пароль"
