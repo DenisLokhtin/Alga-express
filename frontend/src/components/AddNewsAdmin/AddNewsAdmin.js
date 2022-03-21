@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
 const AddNewsAdmin = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const loading = useSelector(state => state.news.createLoading);
+    const loading = useSelector(state => state.news.addLoading);
     const error = useSelector(state => state.news.addError);
 
     const [news, setNews] = useState({
