@@ -4,7 +4,6 @@ const path = require('path');
 const {nanoid} = require('nanoid');
 const config = require('../config');
 const News = require('../models/News');
-const dayjs = require("dayjs");
 const sendMail = require('../middleware/sendMail');
 const {newsTextTelegram} = require('../email-texts');
 const {newsText} = require('../email-texts');
@@ -54,12 +53,9 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', upload.single('image'), async (req, res) => {
     try {
-
-
         const newsData = {
             title: req.body.title,
             description: req.body.description,
-            datetime: dayjs().format('DD/MM/YYYY'),
         };
 
         if (req.file) {
