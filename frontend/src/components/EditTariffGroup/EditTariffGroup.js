@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Grid, Paper, Typography} from "@mui/material";
+import {Grid, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import FormElement from "../UI/Form/FormElement";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
