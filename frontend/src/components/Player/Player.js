@@ -49,6 +49,9 @@ const useStyles = makeStyles(theme => ({
     videoMain: {
         border: '1px solid',
         borderColor: 'rgba(0, 0, 0, 0.12)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
     },
 }));
 
@@ -110,7 +113,7 @@ const Player = () => {
                 url={urlFromYoutube}
             />
 
-            <Grid container>
+            <Grid container justifyContent={"center"}>
                 {user && (user.role === 'admin' || user.role === 'superAdmin') && urlFromYoutube ?
                     <Grid item xs={3}>
                         <ButtonWithProgress
