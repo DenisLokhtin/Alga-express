@@ -5,11 +5,7 @@ import {fetchCurrencies} from "../../store/actions/currenciesActions";
 import CurrenciesCard from "../../components/CurrenciesCard/CurrenciesCard";
 import TableComponent from "../../components/TableComponent/TableComponent";
 import {countries, saleCountry, statuses} from "../../dataLocalization";
-import {
-    changeDeliveryStatusRequest,
-    getOrdersHistoryRequest,
-    giveOutRequest
-} from "../../store/actions/packageRegisterActions";
+import {getOrdersHistoryRequest, giveOutRequest} from "../../store/actions/packageRegisterActions";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -17,7 +13,7 @@ import TabPanelComponent from "../../components/UI/TabPanelComponent/TabPanelCom
 import {buyoutsColumns, packagesColumns, paymentsColumns} from "./columns/tableColumns";
 import {fetchBuyoutsList} from "../../store/actions/buyoutActions";
 import dayjs from "dayjs";
-import {fetchPaymentRequest} from "../../store/actions/paymentActions";
+import {fetchPaymentRequest, paymentAcceptedRequest} from "../../store/actions/paymentActions";
 import {apiURL} from "../../config";
 import SwitchElement from "../../components/UI/SwitchElement/SwitchElement";
 import ImageModal from "../../components/UI/ImageModal/ImageModal";
@@ -39,9 +35,8 @@ import AppWindow from "../../components/UI/AppWindow/AppWindow";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import CurrencyYenIcon from "@mui/icons-material/CurrencyYen";
 import CurrencyLiraIcon from "@mui/icons-material/CurrencyLira";
-import {deleteDeliveryRequest} from "../../store/actions/deliveryAction";
-import Checkbox from "@mui/material/Checkbox";
 import DeliveryModal from "../../components/DeliveryModal/DeliveryModal";
+import {toast} from "react-toastify";
 
 function a11yProps(index) {
     return {
@@ -209,6 +204,7 @@ const AdminPage = () => {
             user: payment.user.name,
             date: dayjs(payment.date).format('DD-MM-YYYY'),
             amount: payment.amount,
+            pay: ''
         }
     });
 
@@ -482,20 +478,7 @@ const AdminPage = () => {
                                 headerAlign: 'center',
                                 align: 'center',
                                 renderCell: (params) => {
-                                    const onClick = (e) => {
-                                        e.stopPropagation();
-                                        if (e.target.checked) {
-                                            setOpen(true);
-                                            setCurrentModal({...params.row});
-                                        } else {
-                                            dispatch(changeDeliveryStatusRequest({...params.row}));
-                                            dispatch(deleteDeliveryRequest({...params.row}));
-                                            setUpdate(!update);
-                                        }
-                                    };
-                                    return (
-                                        <Checkbox checked={params.row.delivery} onChange={(e) => onClick(e)}/>
-                                    );
+
                                 }
                             },
                             {
@@ -624,6 +607,35 @@ const AdminPage = () => {
                                 align: 'center',
                             },
                             ...paymentsColumns,
+                            {
+                                headerName: 'Оплата',
+                                field: 'pay',
+                                minWidth: 100,
+                                editable: true
+                            },
+                            {
+                                field: "actions",
+                                type: "actions",
+                                width: 250,
+                                getActions: (params) => [
+                                    <Button
+                                        variant="outlined"
+                                        onClick={() => {
+                                            if (params.row.pay.length !== 0) {
+                                                dispatch(paymentAcceptedRequest({
+                                                    pay: params.row.pay,
+                                                    id: params.row.id,
+                                                }));
+                                            } else {
+                                                toast.error('Укажите сумму!');
+                                            }
+                                            setUpdate(!update);
+                                        }}
+                                    >
+                                        Принять
+                                    </Button>
+                                ]
+                            }
                         ]}
                         pageSize={paymentsPageLimit}
                         rowCount={paymentsTotalRow}
