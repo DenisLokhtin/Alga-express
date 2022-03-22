@@ -13,7 +13,6 @@ import MarketSites from "./containers/MarketSites/MarketSites";
 import SingleNews from "./containers/SingleNews/SingleNews";
 import HomePage from "./containers/HomePage/HomePage";
 import FAQ from "./containers/FAQ/FAQ";
-import EditNews from "./containers/EditNews/EditNews";
 import AdminEditPackagePage from "./containers/AdminEditPackagePage/AdminEditPackagePage";
 import OrderHistory from "./containers/OrderHistory/OrderHistory";
 import SpecificPackage from "./containers/SpecificPackage/SpecificPackage";
@@ -53,7 +52,6 @@ import {
     listPaymentsAdmin,
     newPackageRegister,
     newsCompany,
-    newsEditCompany,
     newsIdCompany,
     newUserRegister,
     orderBuyouts,
@@ -121,7 +119,6 @@ const App = () => {
                     <Route element={<ProtectedRoutesForAdmin/>}>
                         {/* Routes for admin and superAdmin*/}
                         <Route path={adminPagePath} element={<AdminPage/>}/>
-                        <Route path={newsEditCompany} element={<EditNews/>}/>
                         <Route path={editPages} element={<EditPages/>}/>
                         <Route path={editPackageAdmin} element={<AdminEditPackagePage/>}/>
                         <Route path={addPaymentHandler} element={<AddPaymentAdmin/>}/>
