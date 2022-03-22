@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchCurrencies} from "../../store/actions/currenciesActions";
 import CurrenciesCard from "../../components/CurrenciesCard/CurrenciesCard";
 import TableComponent from "../../components/TableComponent/TableComponent";
-import {countries, statuses} from "../../dataLocalization";
+import {countries, saleCountry, statuses} from "../../dataLocalization";
 import {
     changeDeliveryStatusRequest,
     getOrdersHistoryRequest,
@@ -160,6 +160,19 @@ const AdminPage = () => {
         setValue(newValue);
     };
 
+    const valueIcon = (value) => {
+        switch (value) {
+            case 'USD':
+                return <AttachMoneyIcon/>;
+            case 'CNY':
+                return <CurrencyYenIcon/>;
+            case 'TRY':
+                return <CurrencyLiraIcon/>;
+            default:
+                return;
+        }
+    };
+
     const packagesRows = packages.map(order => {
         return {
             id: order._id,
@@ -176,15 +189,14 @@ const AdminPage = () => {
         return {
             id: buyout._id,
             url: buyout.url,
-            country: buyout.country,
+            country: saleCountry[buyout.country],
             description: buyout.description,
             datetime: dayjs(buyout.datetime).format('DD-MM-YYYY'),
             user: buyout.user.name,
-            status: buyout.status,
-            price: buyout.price,
-            commission: buyout.commission,
-            value: buyout.value,
-            totalPrice: buyout.totalPrice,
+            status: statuses[buyout.status],
+            price: buyout.price ? {price: buyout.price, icon: valueIcon(buyout.value)} : 0,
+            commission: `${buyout.commission} %`,
+            totalPrice: buyout.totalPrice ? `${buyout.totalPrice} сом` : null,
             userData: buyout.user
         }
     });
@@ -453,32 +465,18 @@ const AdminPage = () => {
                                 field: 'price',
                                 headerName: 'Цена товара',
                                 flex: 1,
-                                minWidth: 140,
+                                minWidth: 110,
                                 headerAlign: 'center',
                                 align: 'center',
-                                renderCell: (params => {
+                                renderCell: params => {
                                     const order = packages.find(order => order._id === params.id);
-
-                                    if (order.currency === 'usd') {
+                                    console.log(params);
                                         return (
                                             <div style={{display: 'flex', alignItems: 'center'}}>
-                                                {order.price} <AttachMoneyIcon/>
-                                            </div>
-                                        )
-                                    } else if (order.currency === 'cny') {
-                                        return (
-                                            <div style={{display: 'flex', alignItems: 'center'}}>
-                                                {order.price} <CurrencyYenIcon/>
-                                            </div>
-                                        )
-                                    } else if (order.currency === 'try') {
-                                        return (
-                                            <div style={{display: 'flex', alignItems: 'center'}}>
-                                                {order.price} <CurrencyLiraIcon/>
+                                                {order.price} {valueIcon(order.priceCurrency)}
                                             </div>
                                         )
                                     }
-                                })
                             },
                             {
                                 field: 'delivery',

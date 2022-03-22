@@ -10,7 +10,7 @@ import TableComponent from "../../components/TableComponent/TableComponent";
 import {buyoutsColumns, packagesColumns, paymentsColumns} from "../AdminPage/columns/tableColumns";
 import SwitchElement from "../../components/UI/SwitchElement/SwitchElement";
 import {useDispatch, useSelector} from "react-redux";
-import {countries, statuses} from "../../dataLocalization";
+import {countries, saleCountry, statuses} from "../../dataLocalization";
 import dayjs from "dayjs";
 import {apiURL} from "../../config";
 import {changeDeliveryStatusRequest, getOrdersHistoryRequest} from "../../store/actions/packageRegisterActions";
@@ -134,11 +134,11 @@ const UserPage = () => {
         return {
             id: buyout._id,
             url: buyout.url,
-            country: buyout.country,
+            country: saleCountry[buyout.country],
             description: buyout.description,
             datetime: dayjs(buyout.datetime).format('DD-MM-YYYY'),
             user: buyout.user.name,
-            status: buyout.status,
+            status: statuses[buyout.status],
             price: buyout.price,
             commission: buyout.commission,
             value: buyout.value,
