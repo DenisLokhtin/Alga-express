@@ -41,6 +41,22 @@ router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) =>
     if (req.query.limit) {
         limit = Number(req.query.limit);
     }
+    if (req.query.packageFind) {
+        let packageFind = null;
+        packageFind = await Package.findOne({cargoNumber: req.query.packageFind});
+        if (packageFind) {
+            query.packageFind = req.query.packageFind;
+            query.category = 'cargoNumber';
+        } else {
+            packageFind = await Package.findOne({trackNumber: req.query.packageFind});
+            if (packageFind) {
+                query.packageFind = req.query.packageFind;
+                query.category = 'trackNumber';
+            } else {
+                return res.status(404).send({error: 'Данные введены не корректно, номер не найден'});
+            }
+        }
+    }
     if (req.query.history) query.history = req.query.history;
     if (req.query.from) query.from = req.query.from;
     if (req.query.to) query.to = req.query.to;
@@ -169,9 +185,9 @@ router.put('/', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req,
     const filtered = trackNumbersData.filter(packageStatus => packageStatus.trackNumber !== '');
 
     const uniquePackages = filtered.filter((packageInfo, index, self) =>
-        index === self.findIndex((packageData) => (
-            packageData.trackNumber === packageInfo.trackNumber
-        ))
+            index === self.findIndex((packageData) => (
+                packageData.trackNumber === packageInfo.trackNumber
+            ))
     );
 
     try {
@@ -244,6 +260,7 @@ router.put('/giveout/:id', auth, permit('admin', 'warehouseman', 'superAdmin', '
         if (pack) {
             pack.status = "DONE";
             await Package.findByIdAndUpdate(req.params.id, pack, {new: true});
+
             res.send({message: "Статус посылки обновлен!"});
         } else {
             res.send({message: "Нет такой посылки"});
