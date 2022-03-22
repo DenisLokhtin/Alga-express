@@ -213,11 +213,7 @@ const AdminPage = () => {
     });
 
     useEffect(() => {
-        if (!!messagesEndRef.current) {
-            messagesEndRef.current.scrollIntoView({
-                behavior: 'smooth'
-            }, 250);
-        }
+        window.scrollTo(0, 0);
         dispatch(fetchUsersRequest());
         dispatch(fetchCurrencies());
     }, [dispatch, messagesEndRef]);

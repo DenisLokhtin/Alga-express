@@ -4,12 +4,14 @@ import {deleteNewsRequest, fetchNewsRequest} from "../../store/actions/newsActio
 import {makeStyles} from "@mui/styles";
 import {Button, Grid} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import {Link} from "react-router-dom";
 import AddNewsAdmin from "../../components/AddNewsAdmin/AddNewsAdmin";
 import {newsIdCompany} from "../../paths";
 import AppWindow from "../../components/UI/AppWindow/AppWindow";
 import Container from "@mui/material/Container";
 import {createTheme} from "@mui/material/styles";
+import EditNewsModal from "../../components/EditNewsModal/EditNewsModal";
 
 const theme = createTheme({
     breakpoints: {
@@ -96,6 +98,9 @@ const News = () => {
     const [open, setOpen] = useState(false);
     const messagesEndRef = useRef(null);
     const [deleteElement, setDeleteElement] = useState('');
+    const [id, setId] = useState(null);
+    const [openEdit, setOpenEdit] = useState(false);
+    const handleClose = () => setOpenEdit(false);
 
     useEffect(() => {
         if (!!messagesEndRef.current) {
@@ -115,8 +120,20 @@ const News = () => {
         });
     };
 
+    const openModal = (e) => {
+        setOpenEdit(true);
+        setId(e.target.id)
+    };
+
     return (
         <Container maxWidth="lg" className={classes.container}>
+            {openEdit ?
+                <EditNewsModal
+                    id={id}
+                    open={openEdit}
+                    close={handleClose}
+                /> : null
+            }
             <Grid ref={messagesEndRef} container direction={"column"} justifyContent={"center"}>
                 {(user?.role === 'admin' || user?.role === 'superAdmin') && (
                     <AddNewsAdmin/>
@@ -139,7 +156,8 @@ const News = () => {
                                     </Link>
                                 </Grid>
                                 {(user?.role === 'admin' || user?.role === 'superAdmin') && (
-                                    <Grid item xs={9} sm={7} md={7} lg={7} style={{margin: '0 auto'}}>
+                                    <Grid item xs={9} sm={7} md={7} lg={7}
+                                          style={{margin: '0 auto', display: 'flex', justifyContent: 'space-between'}}>
                                         <Button variant="outlined" startIcon={<DeleteIcon/>} onClick={() => {
                                             setOpen(true);
                                             setDeleteElement(prevState => {
@@ -148,6 +166,10 @@ const News = () => {
                                             });
                                         }}>
                                             Удалить новость
+                                        </Button>
+                                        <Button variant="outlined" startIcon={<EditIcon/>} id={item._id}
+                                                onClick={(e) => openModal(e)}>
+                                            Редактировать новость
                                         </Button>
                                     </Grid>
                                 )}
