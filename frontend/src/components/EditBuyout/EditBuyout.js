@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {clearBuyoutsError, editBuyoutRequest, fetchSingleBuyoutRequest} from "../../store/actions/buyoutActions";
 import {useParams} from "react-router-dom";
@@ -56,7 +56,7 @@ const EditBuyout = () => {
         dispatch(fetchSingleBuyoutRequest(id));
     }, [dispatch, id]);
 
-    useMemo(() => {
+    useEffect(() => {
         oneBuyout && setBuyout(prevState => ({
             ...prevState,
             description: oneBuyout.description,

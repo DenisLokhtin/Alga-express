@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate, useParams} from "react-router-dom";
 import Grid from "@mui/material/Grid";
@@ -46,7 +46,7 @@ const EditPlayerAdmin = () => {
 
     }, [dispatch, params.id, onePlayer.urlYoutube]);
 
-    useMemo(() => {
+    useEffect(() => {
         setSinglePlayer({
             urlYoutube: onePlayer.urlYoutube,
         });
