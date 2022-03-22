@@ -43,6 +43,7 @@ import {deleteDeliveryRequest} from "../../store/actions/deliveryAction";
 import Checkbox from "@mui/material/Checkbox";
 import DeliveryModal from "../../components/DeliveryModal/DeliveryModal";
 import Requisites from "../../components/Requisites/Requisites";
+import FormElement from "../../components/UI/Form/FormElement";
 
 function a11yProps(index) {
     return {
@@ -126,6 +127,11 @@ const AdminPage = () => {
         user: false,
         date: false,
         search: true,
+    });
+
+    const [searchByNumber, setSearchByNumber] = useState({
+        number: '',
+        search: false,
     });
 
     const buyouts = useSelector(state => state.buyouts.buyouts);
@@ -232,11 +238,19 @@ const AdminPage = () => {
             pageData.limit = packagesPageLimit;
         }
 
-        if (searchData.search)
+        if (((searchData.search) && (searchByNumber.number === '')) || searchByNumber.search) {
             switch (value) {
                 case 0:
                     if (packagesHistory) {
                         pageData.history = true;
+                    }
+                    if (searchByNumber.search) {
+                        pageData.packageFind = searchByNumber.number;
+                        setSearchByNumber(prevState => ({
+                            ...prevState,
+                            number: '',
+                            search: false,
+                        }));
                     }
                     dispatch(getOrdersHistoryRequest({
                         page: pageData.page,
@@ -244,9 +258,9 @@ const AdminPage = () => {
                         history: pageData.history,
                         id: pageData.id,
                         from: pageData.from,
-                        to: pageData.to
+                        to: pageData.to,
+                        packageFind: pageData.packageFind,
                     }));
-
                     break;
                 case 1:
                     if (buyoutsHistory) {
@@ -277,6 +291,7 @@ const AdminPage = () => {
                 default:
                     break;
             }
+        }
     }, [dispatch,
         value,
         searchData,
@@ -291,8 +306,26 @@ const AdminPage = () => {
         packagesHistory,
         paymentsHistory,
         valueSelect,
+        searchByNumber,
         update,
     ]);
+
+    const submitFormByNumber = e => {
+        e.preventDefault();
+        setSearchByNumber(prevState => ({
+            ...prevState,
+            search: true,
+        }));
+    };
+
+    const changeSearchByNumber = e => {
+        const {name, value} = e.target;
+        setSearchByNumber(prevState => ({
+            ...prevState,
+            [name]: value,
+        }));
+
+    };
 
     const submitFormHandler = (e) => {
         e.preventDefault();
@@ -321,6 +354,11 @@ const AdminPage = () => {
             user: false,
             date: false,
             search: true,
+        }));
+        setSearchByNumber(prevState => ({
+            ...prevState,
+            number: '',
+            search: false,
         }));
     };
 
@@ -446,6 +484,33 @@ const AdminPage = () => {
                     </Grid>
                 </Grid>
 
+                <Grid
+                    container
+                    component='form'
+                    onSubmit={submitFormByNumber}
+                >
+                    <Grid item>
+                        <FormElement
+                            label='Поиск по Трек Карго номеру'
+                            name='number' value={searchByNumber.number}
+                            autoComplete='off'
+                            onChange={changeSearchByNumber}/>
+                    </Grid>
+                    <Grid item>
+                        <ButtonWithProgress
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            // className={classes.submit}
+                            // loading={loading}
+                            // disabled={!(permitPayment[index].pay !== undefined && permitPayment[index].pay !== '')}
+                        >
+                            Найти
+                        </ButtonWithProgress>
+                    </Grid>
+                </Grid>
+
                 <TabPanelComponent value={value} index={0}>
                     <DeliveryModal title={currentModal.title}
                                    track={currentModal.trackNumber}
@@ -467,13 +532,12 @@ const AdminPage = () => {
                                 align: 'center',
                                 renderCell: params => {
                                     const order = packages.find(order => order._id === params.id);
-                                    console.log(params);
-                                        return (
-                                            <div style={{display: 'flex', alignItems: 'center'}}>
-                                                {order.price} {valueIcon(order.priceCurrency)}
-                                            </div>
-                                        )
-                                    }
+                                    return (
+                                        <div style={{display: 'flex', alignItems: 'center'}}>
+                                            {order.price} {valueIcon(order.priceCurrency)}
+                                        </div>
+                                    )
+                                }
                             },
                             {
                                 field: 'delivery',

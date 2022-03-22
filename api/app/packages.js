@@ -34,6 +34,7 @@ router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) =>
 
     let page = 0;
     let limit = 20;
+    let packageFind = null;
 
     if (req.query.page) {
         page = Number(req.query.page);
@@ -42,7 +43,6 @@ router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) =>
         limit = Number(req.query.limit);
     }
     if (req.query.packageFind) {
-        let packageFind = null;
         packageFind = await Package.findOne({cargoNumber: req.query.packageFind});
         if (packageFind) {
             query.packageFind = req.query.packageFind;
@@ -75,6 +75,7 @@ router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) =>
     let findFilter = {};
     try {
         findFilter = filterPackage(query, 'packages');
+
         const size = await Package.find(findFilter);
 
         const packages = await Package.find(findFilter)
@@ -83,7 +84,6 @@ router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) =>
             .sort(query.sort)
             .limit(limit)
             .skip(page * limit);
-
         res.send({totalPage: Math.ceil(size.length), packages: packages});
     } catch (e) {
         res.status(400).send(e);

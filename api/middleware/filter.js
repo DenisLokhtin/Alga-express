@@ -44,22 +44,20 @@ const checkHistoryPackages = (data, user_id, fromTo) => {
     } else {
             filterData.status = {$in: ['NEW', 'REGISTERED', 'ON_WAREHOUSE', 'ON_WAY', 'DELIVERED']};
     }
+    if (data.packageFind) filterData[data.category] = data.packageFind;
 
     return filterData;
 };
 
 const checkHistoryPayments = (data, user_id, fromTo) => {
     const filterData = {};
-
     const date = fromToCreate(fromTo);
-    if (date) filterData.date = date;
 
+    if (date) filterData.date = date;
     if (user_id) {
         filterData.user = user_id;
     }
     data.history ? filterData.status = true : filterData.status = false;
-
-    if (data.packageFind) filterData[data.category] = data.packageFind;
 
     return filterData;
 }
