@@ -12,6 +12,7 @@ import Grid from "@mui/material/Grid";
 import Alert from '@mui/material/Alert';
 import {AlertTitle} from "@mui/material";
 import theme from "../../theme";
+import Typography from "@mui/material/Typography";
 
 const useStyles = makeStyles(theme => ({
     form: {
@@ -24,7 +25,18 @@ const useStyles = makeStyles(theme => ({
         marginTop: theme.spacing(3),
         width: "100%",
     },
+    container: {
+        paddingTop: '170px',
+        textAlign: 'center',
+        [theme.breakpoints.down('sm')]: {
+            paddingTop: '100px',
+        },
+    },
+    avatar: {
+        margin: '0 auto',
+    },
 }));
+
 
 const ResetPassword = () => {
     const classes = useStyles();
@@ -110,11 +122,13 @@ const ResetPassword = () => {
     };
 
     return (
-        <Container ref={messagesEndRef} component="section" maxWidth="xs" style={{textAlign: 'center'}}>
+        <Container ref={messagesEndRef} component="section" maxWidth="xs" className={classes.container}>
             <div style={theme.paper}>
+                <Grid item sx={{mb: '1.3em'}}>
                 <Avatar className={classes.avatar}>
                     <LockClockIcon/>
                 </Avatar>
+                </Grid>
 
                 {
                     error &&
@@ -132,6 +146,9 @@ const ResetPassword = () => {
                         onSubmit={submitFormHandler}
                         spacing={2}
                     >
+                        <Typography component="h1" variant="h6" align={'center'}>
+                            Смена пароля
+                        </Typography>
                         <>
                             <FormElement
                                 type="password"
@@ -174,10 +191,14 @@ const ResetPassword = () => {
                     <Grid
                         component="form"
                         container
+                        direction="column"
                         className={classes.form}
                         onSubmit={submitFormHandler}
                         spacing={2}
                     >
+                        <Typography component="h1" variant="h6" align={'center'}>
+                            Смена пароля
+                        </Typography>
                         <>
                             <FormElement
                                 type="text"
@@ -191,6 +212,7 @@ const ResetPassword = () => {
                         </>
                         <>
                             <FormElement
+                                fullWidth
                                 type="password"
                                 autoComplete="current-password"
                                 label="Новый пароль"

@@ -21,6 +21,13 @@ const useStyles = makeStyles(theme => ({
         marginTop: theme.spacing(3),
         width: "100%",
     },
+    container: {
+        paddingTop: '170px',
+        textAlign: 'center',
+        [theme.breakpoints.down('sm')]: {
+            paddingTop: '100px',
+        },
+    },
 }));
 
 const ForgotPassword = () => {
@@ -59,7 +66,7 @@ const ForgotPassword = () => {
     }, [messagesEndRef]);
 
     return (
-        <Container ref={messagesEndRef} component="section" maxWidth="xs" style={{textAlign: 'center'}}>
+        <Container ref={messagesEndRef} component="section" maxWidth="xs" className={classes.container}>
             <div style={theme.paper}>
                 {
                     error &&

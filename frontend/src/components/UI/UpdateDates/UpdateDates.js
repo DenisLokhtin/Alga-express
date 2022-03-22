@@ -13,14 +13,14 @@ const UpdateDates = ({children}) => {
     const [nowCounts, setNowCounts] = useState(0);
 
     useMemo(() => {
-        if (user && user.role === 'admin') {
+        if (user && ((user.role === 'admin') || (user.role === 'superAdmin'))) {
             dispatch(fetchPaymentRequest({page: 0, limit: 0}));
             dispatch(fetchBuyoutsRequest());
         }
     }, [dispatch, user]);
 
     useEffect(() => {
-        if (user && user.role === 'admin' && paymentCount) {
+        if (user && ((user.role === 'admin') || (user.role === 'superAdmin')) && paymentCount) {
             const total = paymentCount.totalElements + buyouts;
             setNowCounts(total);
 

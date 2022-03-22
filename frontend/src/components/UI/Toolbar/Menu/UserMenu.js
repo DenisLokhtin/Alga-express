@@ -31,7 +31,6 @@ import {
     packageInfo,
     processingTrackNumbersAdmin,
     userPage,
-    userPaymentsList
 } from "../../../../paths";
 import Avatar from "@mui/material/Avatar";
 import FactCheckIcon from '@mui/icons-material/FactCheck';
@@ -51,7 +50,6 @@ const userSettings = [
     {url: orderBuyouts, title: 'Заказать выкуп', icon: <ShoppingCartIcon/>},
     {url: listBuyouts, title: 'Список заказов', icon: <FactCheckIcon/>},
     {url: addUserPayment, title: 'Пополнить баланс', icon: <PaidIcon/>},
-    {url: userPaymentsList, title: 'История пополнения', icon: <HistoryIcon/>},
     {url: packageInfo, title: 'Информация доставки', icon: <InfoIcon/>},
 ];
 
@@ -63,7 +61,6 @@ const superAdminSettings = [
     {url: orderBuyouts, title: 'Заказать выкуп', icon: <ShoppingCartIcon/>},
     {url: listBuyouts, title: 'Список заказов', icon: <FactCheckIcon/>},
     {url: addUserPayment, title: 'Пополнить баланс', icon: <PaidIcon/>},
-    {url: userPaymentsList, title: 'История пополнения', icon: <HistoryIcon/>},
     {url: packageInfo, title: 'Информация доставки', icon: <InfoIcon/>},
     {url: adminPagePath, title: 'Администратор', icon: <ManageAccountsIcon/>},
     {url: listFlightAdmin, title: 'Рейсы', icon: <FlightIcon/>},
@@ -132,12 +129,12 @@ const UserMenu = ({user}) => {
     return (
         <Grid className={classes.test}>
             <Grid item>
-            {users?.role === 'admin' &&
+            {(users?.role === 'admin' || users?.role === 'superAdmin') &&
                 <IconButton
                     sx={{color: '#F5F5F7',}}
                     size="small"
                     component={Link}
-                    to={listPaymentsAdmin}
+                    to={adminPagePath}
                 >
                     <Badge badgeContent={total} color="error">
                         <NotificationsIcon/>
