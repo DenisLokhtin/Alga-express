@@ -4,8 +4,8 @@ class distributions {
             `<div>
                 <p>Здравствуйте уважаемый(ая) ${user}!</p>
                 <p>Мы получили запрос о смене пароля к вашему  аккаунту.</p> 
-                <p>Код для сброса пароля: <b>${code}</b></p>
-                <p>Для изменения пароля, пожалуйста,  <a href="http://localhost:3000/secret/reset-password">Перейдите по ссылке</a></p>
+                <p>Код для сброса пароля: <b>${code}</b>
+                Для изменения пароля, пожалуйста,  <a href="http://localhost:3000/secret/reset-password">Перейдите по ссылке</a></p>
                 <p>Код для сброса действителен только в течении 5 минут</p>
                 <p>Если вы не отправляли запрос - просто проигнорируйте это письмо.</p>
                 <p>С уважением Alga-express</p>
@@ -41,11 +41,20 @@ class distributions {
             </div>`
         )}
 
+    packagesTextTelegram(cargoNumber, packagesStatus, user) {
+        return (
+            `Здравствуйте уважаемый(ая) ${user}!
+                Статус вашей посылки ${cargoNumber} изменен на ${packagesStatus}
+                Стоимость доставки и ваш баланс вы можете проверить в вашем личном кабинете
+               С уважением Alga-express
+            `
+        )}
+
     buyoutText(text, buyoutStatus, user) {
         return (
             `<div>
                 <p>Здравствуйте уважаемый(ая) ${user}!</p>
-                <p>Статус вашего выкупа <i>${text}</i> изменен на ${buyoutStatus}</p> 
+                <p>Статус вашего выкупа <i>${text}</i> изменен на  <i>${buyoutStatus}</i></p> 
                 <p>Стоимость доставки и ваш баланс вы можете проверить в вашем личном кабинете</p>
                 <p>С уважением Alga-express</p>
             </div>`
