@@ -47,8 +47,6 @@ const useStyles = makeStyles(theme => ({
         },
     },
     videoMain: {
-        border: '1px solid',
-        borderColor: 'rgba(0, 0, 0, 0.12)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',

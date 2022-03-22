@@ -27,6 +27,7 @@ const MarketSites = () => {
 
     return (
         <Container
+            className="containerStyle"
             ref={messagesEndRef}
             component="section"
             maxWidth="md"
