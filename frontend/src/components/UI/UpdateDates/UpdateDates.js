@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {fetchPaymentRequest} from "../../../store/actions/paymentActions";
 import {fetchBuyoutsRequest} from "../../../store/actions/buyoutActions";
@@ -12,7 +12,7 @@ const UpdateDates = ({children}) => {
     const [totalCounts, setTotalCounts] = useState(0);
     const [nowCounts, setNowCounts] = useState(0);
 
-    useMemo(() => {
+    useEffect(() => {
         if (user && ((user.role === 'admin') || (user.role === 'superAdmin'))) {
             dispatch(fetchPaymentRequest({page: 0, limit: 0}));
             dispatch(fetchBuyoutsRequest());
