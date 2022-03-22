@@ -30,6 +30,7 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import CurrencyYenIcon from "@mui/icons-material/CurrencyYen";
 import CurrencyLiraIcon from "@mui/icons-material/CurrencyLira";
 import DeliveryModal from "../../components/DeliveryModal/DeliveryModal";
+import Requisites from "../../components/Requisites/Requisites";
 
 function a11yProps(index) {
     return {
@@ -393,6 +394,7 @@ const UserPage = () => {
                     <ImageModal open={openImg} onClose={() => setOpenImg(false)} data={img}/>
                 </TabPanelComponent>
             </Box>
+            <Requisites/>
 
         </Container>
     );

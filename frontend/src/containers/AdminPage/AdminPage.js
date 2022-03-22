@@ -42,6 +42,7 @@ import CurrencyLiraIcon from "@mui/icons-material/CurrencyLira";
 import {deleteDeliveryRequest} from "../../store/actions/deliveryAction";
 import Checkbox from "@mui/material/Checkbox";
 import DeliveryModal from "../../components/DeliveryModal/DeliveryModal";
+import Requisites from "../../components/Requisites/Requisites";
 
 function a11yProps(index) {
     return {
@@ -654,6 +655,7 @@ const AdminPage = () => {
                     <CurrenciesCard currency={currencies}/>}
                 </TabPanelComponent>
             </Box>
+            <Requisites/>
             <AppWindow
                 open={openDone.open}
                 onClose={() => setOpenDone(prevState => ({
