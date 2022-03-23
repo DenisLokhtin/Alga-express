@@ -41,6 +41,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import HomeIcon from '@mui/icons-material/Home';
 import {makeStyles} from "@mui/styles";
 import {apiURL} from "../../../../config";
+import {createTheme} from "@mui/material/styles";
 
 const userSettings = [
     {url: editUserProfile, title: 'Личный кабинет', icon: <ManageAccountsIcon/>},
@@ -90,8 +91,16 @@ const adminSettings = [
     {url: editInformation, title: 'Редактировать информацию', icon: <EditIcon/>},
 ];
 
-const useStyles = makeStyles(theme => ({
-    test: {
+const theme = createTheme({
+    breakpoints: {
+        values: {
+            sm: 768,
+        },
+    },
+});
+
+const useStyles = makeStyles(() => ({
+    avatarContainer: {
         zIndex: '2',
         minWidth: '407px',
         display: 'flex',
@@ -99,6 +108,7 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         [theme.breakpoints.down('sm')]: {
             minWidth: '0',
+            justifyContent: 'center',
         },
     },
 }));
@@ -127,7 +137,7 @@ const UserMenu = ({user}) => {
     };
 
     return (
-        <Grid className={classes.test}>
+        <Grid className={classes.avatarContainer}>
             <Grid item>
             {(users?.role === 'admin' || users?.role === 'superAdmin') &&
                 <IconButton

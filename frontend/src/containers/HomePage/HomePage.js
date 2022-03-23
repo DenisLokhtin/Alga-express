@@ -1,16 +1,27 @@
-import React, {useEffect, useRef} from 'react';
+import React, {Fragment, useEffect, useRef, useState} from 'react';
 import {makeStyles} from "@mui/styles";
 import NewsPanel from "../../components/NewsPanel/NewsPanel";
 import Carousel from "../../components/Carousel/Carousel";
 import {fetchAllInformationRequest} from "../../store/actions/informationActions";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import '../HomePage/HomePage.css';
 import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined';
 import InventoryOutlinedIcon from '@mui/icons-material/InventoryOutlined';
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
 import mainPicture from '../../assets/images/mainPic.jpg';
+import {Grid, IconButton, Link} from "@mui/material";
+import {apiURL} from "../../config";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import AppWindow from "../../components/UI/AppWindow/AppWindow";
+import {deleteMarketRequest, fetchMarketRequest} from "../../store/actions/marketActions";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(() => ({
+    breakpoints: {
+        values: {
+            sm: 768,
+        },
+    },
+
     content: {
         background: `url(${mainPicture})`,
         backgroundPosition: 'center',
@@ -18,11 +29,15 @@ const useStyles = makeStyles({
         backgroundSize: 'cover',
         minHeight: '100vh',
     },
-});
+}));
 
 const HomePage = () => {
     const classes = useStyles();
+    const user = useSelector(state => state.users.user);
     const messagesEndRef = useRef(null);
+    const market = useSelector(state => state.market.sites);
+
+    const [open, setOpen] = useState(false);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -32,6 +47,7 @@ const HomePage = () => {
                 behavior: 'smooth'
             }, 200);
         }
+        dispatch(fetchMarketRequest());
     }, [messagesEndRef, dispatch]);
 
     return (
@@ -105,6 +121,30 @@ const HomePage = () => {
                         </div>
                     </div>
                 </div>
+            </div>
+            <div className="container">
+                <h3 className="websites-logo-title">Где покупать ? </h3>
+                <Grid container className="website-block-container">
+                    {market && market.map(m => (
+                        <Fragment key={m._id}>
+                            <div className="website-block-container__item" style={{position: "relative",}}>
+                                <Link href={m.url} target={'_blank'} rel={'noopener'}>
+                                    <img className="website-block-container__img" src={`${apiURL}/${m.image}`} alt="website"/>
+                                </Link>
+                                {user && (user.role === 'admin' || user.role === 'superAdmin') && (
+                                    <>
+                                        <IconButton style={{position: "absolute", top: '0', right: '-20px'}}
+                                                    onClick={() => setOpen(true)}>
+                                            <HighlightOffIcon/>
+                                        </IconButton>
+                                        <AppWindow open={open} onClose={() => setOpen(false)}
+                                                   confirm={() => dispatch(deleteMarketRequest(m._id))}/>
+                                    </>
+                                )}
+                            </div>
+                        </Fragment>
+                    ))}
+                </Grid>
             </div>
             <div className="carousel">
                 <div className="container">

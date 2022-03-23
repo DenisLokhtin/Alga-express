@@ -43,6 +43,8 @@ import {deleteDeliveryRequest} from "../../store/actions/deliveryAction";
 import Checkbox from "@mui/material/Checkbox";
 import DeliveryModal from "../../components/DeliveryModal/DeliveryModal";
 import Requisites from "../../components/Requisites/Requisites";
+import SearchIcon from '@mui/icons-material/Search';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
 
 function a11yProps(index) {
     return {
@@ -66,14 +68,18 @@ const useStyles = makeStyles(() => ({
         },
     },
 
+    'MuiBox-root': {
+        padding: '0'
+    },
     container: {
+        maxWidth: '1230',
         textAlign: 'center',
         paddingTop: '155px',
         marginBottom: '30px',
         [theme.breakpoints.down('sm')]: {
             paddingTop: '90px',
         },
-    }
+    },
 }));
 
 const localeMap = {
@@ -326,7 +332,6 @@ const AdminPage = () => {
 
     return (
         <Container ref={messagesEndRef} className={classes.container}>
-            <Box sx={{width: '100%'}}>
                 <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
                     <Tabs
                         value={value}
@@ -343,9 +348,13 @@ const AdminPage = () => {
                 <Grid
                     container
                     component="form"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    spacing={2}
+                    sx={{marginTop: '30px'}}
                     onSubmit={submitFormHandler}
                 >
-                    <Box item>
+                    <Grid item xs={12} sm={4} md={3}>
                         <Autocomplete
                             value={valueSelect}
                             isOptionEqualToValue={(option, value) => option.id === value.id}
@@ -370,9 +379,8 @@ const AdminPage = () => {
                             sx={{width: 300}}
                             renderInput={(params) => <TextField {...params} label="Пользователи"/>}
                         />
-                    </Box>
-
-                    <Box item>
+                    </Grid>
+                    <Grid item xs={12} sm={4} md={3}>
                         <LocalizationProvider dateAdapter={AdapterDateFns} locale={localeMap['ru']}>
                             <DatePicker
                                 mask={maskMap['ru']}
@@ -394,8 +402,8 @@ const AdminPage = () => {
                                 renderInput={(params) => <TextField {...params}/>}
                             />
                         </LocalizationProvider>
-                    </Box>
-                    <Box item>
+                    </Grid>
+                    <Grid item xs={12} sm={4} md={3}>
                         <LocalizationProvider dateAdapter={AdapterDateFns} locale={localeMap['ru']}>
                             <DatePicker
                                 mask={maskMap['ru']}
@@ -418,31 +426,52 @@ const AdminPage = () => {
                                 renderInput={(params) => <TextField {...params}/>}
                             />
                         </LocalizationProvider>
-                    </Box>
-                    <Grid item>
-                        <ButtonWithProgress
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            // className={classes.submit}
-                            // loading={loading}
-                            // disabled={!(permitPayment[index].pay !== undefined && permitPayment[index].pay !== '')}
-                        >
-                            Найти
-                        </ButtonWithProgress>
-                        <ButtonWithProgress
-                            type="button"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            onClick={clearHandler}
-                            // className={classes.submit}
-                            // loading={loading}
-                            // disabled={!(permitPayment[index].pay !== undefined && permitPayment[index].pay !== '')}
-                        >
-                            Сброс
-                        </ButtonWithProgress>
+                    </Grid>
+                    <Grid container justifyContent="center" spacing={1}
+                          sx={{
+                              maxWidth: {
+                                  md: '200px',
+                              }
+                          }}
+                    >
+                        <Grid item xs={7} sm={5} sx={{
+                            margin: {
+                                xs: '15px 0 1px',
+                            }
+                        }}
+                              md={9}>
+                            <ButtonWithProgress
+                                startIcon={<SearchIcon/>}
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                // className={classes.submit}
+                                // loading={loading}
+                                // disabled={!(permitPayment[index].pay !== undefined && permitPayment[index].pay !== '')}
+                            >
+                                Найти
+                            </ButtonWithProgress>
+                        </Grid>
+                        <Grid item xs={7} sm={5} sx={{
+                            margin: {
+                                xs: '15px 0 1px',
+                            }
+                        }} md={9}>
+                            <ButtonWithProgress
+                                type="button"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                onClick={clearHandler}
+                                startIcon={<RestartAltIcon/>}
+                                // className={classes.submit}
+                                // loading={loading}
+                                // disabled={!(permitPayment[index].pay !== undefined && permitPayment[index].pay !== '')}
+                            >
+                                Сброс
+                            </ButtonWithProgress>
+                        </Grid>
                     </Grid>
                 </Grid>
 
@@ -654,7 +683,6 @@ const AdminPage = () => {
                     {currencies &&
                     <CurrenciesCard currency={currencies}/>}
                 </TabPanelComponent>
-            </Box>
             <Requisites/>
             <AppWindow
                 open={openDone.open}

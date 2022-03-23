@@ -133,7 +133,7 @@ const theme = createTheme({
         position: "absolute",
         marginLeft: '-10px',
         bottom: 0,
-        zIndex: zIndex.drawer + 999,
+        zIndex: zIndex.drawer + 1,
     },
     relative: {
         position:'relative',

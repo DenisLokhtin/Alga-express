@@ -87,16 +87,14 @@ const PackageRegister = () => {
         }
     }, [dispatch, user]);
 
-
     const [packageRegister, setPackageRegister] = useState({
         trackNumber: '',
         title: '',
         amount: '',
         price: '',
         country: '',
-        currency: '',
+        priceCurrency: '',
     });
-
 
     const [value, setValue] = React.useState({});
     const [inputValue, setInputValue] = React.useState('');
@@ -167,7 +165,7 @@ const PackageRegister = () => {
                 justifyContent="center"
                 container
                 noValidate
-                spacing={5}
+                spacing={2}
             >
                 <Grid item xs={12} sm={8} md={7} lg={9}>
                     <FormControl variant="outlined" fullWidth error={Boolean(getFieldError('country'))}>
@@ -243,7 +241,7 @@ const PackageRegister = () => {
                             <Select
                                 labelId="demo-controlled-open-select-label"
                                 id="demo-controlled-open-select"
-                                value={packageRegister.currency}
+                                value={packageRegister.priceCurrency}
                                 label="Выберите валюту"
                                 name="currency"
                                 required
@@ -304,7 +302,7 @@ const PackageRegister = () => {
                     packageRegister.amount &&
                     packageRegister.price &&
                     packageRegister.trackNumber &&
-                    packageRegister.currency &&
+                    packageRegister.priceCurrency &&
                     packageRegister.title ? (
                         <ButtonWithProgress
                             loading={loading}
