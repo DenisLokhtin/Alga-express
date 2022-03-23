@@ -105,7 +105,6 @@ router.put('/tariffEdit', auth, permit('admin', 'superAdmin'), async (req, res) 
     const id = req.query.id;
     const change = {};
 
-    console.log(req.body);
     if (req.body.group !== "undefined") change.group = req.body.group;
     if (req.body.tariff !== "undefined") change.tariff = req.body.tariff;
     try {
