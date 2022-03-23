@@ -32,7 +32,7 @@
 }
 
 .delivery {
-    width: 60%;
+    width: 55%;
     padding: 8px 15px;
 }
 
@@ -189,6 +189,42 @@
     left: 50%;
 }
 
+.website-block-container {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.websites-logo-title {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 40px;
+    line-height: 47px;
+    text-align: center;
+    letter-spacing: -0.5px;
+    color: #5F5F5F;
+}
+
+.website-block-container__item {
+    width: 31.3333%;
+    padding: 15px;
+    margin: 15px 10px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0 8px 24px;
+    transition: all 0.4s ease;
+}
+
+.website-block-container__item:hover {
+    background: rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+    cursor: pointer;
+}
+
+.website-block-container__img {
+    max-width: 60%;
+    height: 150px;
+}
+
+
 .sending-cargo {
     background: url('../../assets/images/sending-cargo.svg') top center no-repeat;
     -webkit-filter: invert(35%) sepia(9%) saturate(15%) hue-rotate(351deg) brightness(100%) contrast(90%);
@@ -235,7 +271,16 @@
 
 @media screen and (max-width: 1046px) {
     .benefits__blocks-block {
-        width: 47%;
+        width: 45%;
+    }
+
+    .website-block-container__item {
+        width: 29%;
+    }
+
+    .website-block-container__img {
+        width: 50%;
+        height: 110px;
     }
 }
 
@@ -243,10 +288,6 @@
     .delivery__title {
         max-width: 500px;
         font-size: 35px;
-    }
-
-    .news {
-        text-align: center;
     }
 
     .menu__list-link {
@@ -260,11 +301,17 @@
         line-height: 50px;
         max-width: 400px;
     }
+
+    .website-block-container__img {
+        max-width: 45%;
+        height: 110px;
+    }
+
 }
 
 @media screen and (max-width: 800px) {
     .content__text {
-        padding: 140px 0 30px 0;
+        padding: 110px 0 30px 0;
         flex-direction: column;
     }
 
@@ -299,6 +346,15 @@
         align-content: center;
     }
 
+    .content__text {
+        padding: 90px 0 30px 0;
+    }
+
+    .website-block-container__item {
+        width: 28%;
+        margin: 10px auto;
+    }
+
     .benefits__title {
         font-size: 24px;
     }
@@ -308,6 +364,17 @@
 @media screen and (max-width: 500px) {
     .delivery {
         padding-left: 30px;
+        margin-bottom: 15px;
+    }
+
+    .website-block-container__item {
+        width: 45%;
+        margin: 10px auto;
+    }
+
+    .website-block-container__img {
+        width: 80px;
+        height: 80px;
     }
 
     .news {

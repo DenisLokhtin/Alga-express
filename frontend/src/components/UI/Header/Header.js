@@ -35,7 +35,7 @@ const Header = () => {
     const loadWareHouseData = useSelector(state => state.wareHouses.fetchLoading);
     const loadWareHouseSingleData = useSelector(state => state.wareHouses.singleLoading);
 
-    const [addActiveClass, setAddActiveClass] = useState({status: false});
+    const [addActiveClass, setAddActiveClass] = useState(false);
     const trigger = useScrollTrigger();
     const [loading, setLoading] = useState(false);
 
@@ -89,8 +89,9 @@ const Header = () => {
             <header className="header">
                 <div className="container" style={theme.relative}>
                     <div className="header__body">
-                        <Link to="/" className="header__logo">
+                        <Link to="/" className={`header__logo`}>
                             <img src={logo} alt="alga-express"/>
+                            <span className="header__logo-title">Alga-Express</span>
                         </Link>
                         {user && user.role ? (
                             <UserMenu user={user}/>
