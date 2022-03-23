@@ -123,10 +123,10 @@ router.get('/:id', auth, async (req, res) => {
         const user = await User.findById(req.params.id)
             .select('email name passport phone avatar');
 
-        if ((req.user.role !== 'admin') && (req.user._id.toString() !== user._id.toString())) {
+        if ((req.user.role !== 'admin' && req.user.role !== 'superAdmin') && (req.user._id.toString() !== user._id.toString())) {
             return res.status(403).send({error: 'Доступ запрещен'});
         } else {
-            if ((req.user.role === 'admin') || (req.user._id.toString() === user._id.toString())) {
+            if ((req.user.role === 'admin' || req.user.role === 'superAdmin') || (req.user._id.toString() === user._id.toString())) {
                 return res.status(200).send(user);
             }
         }
