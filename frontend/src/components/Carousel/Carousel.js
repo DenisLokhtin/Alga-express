@@ -122,7 +122,7 @@ const Carousel = () => {
                                     <ButtonWithProgress
                                         type="submit"
                                         startIcon={<AddBoxIcon/>}
-                                        variant="contained"
+                                        variant="outlined"
                                         size={'medium'}
                                         loading={loading}
                                         disabled={loading}
@@ -141,7 +141,7 @@ const Carousel = () => {
                                         className={classes.mediaQueriesEditBtn}
                                         fullWidth
                                         sx={{padding: '6px 10px'}}
-                                        variant="contained"
+                                        variant="outlined"
                                         color="success"
                                         loading={loading}
                                         disabled={loading}
@@ -158,7 +158,7 @@ const Carousel = () => {
                                         className={classes.mediaQueriesDeleteBtn}
                                         fullWidth
                                         size={'medium'}
-                                        variant="contained"
+                                        variant="outlined"
                                         color="error"
                                         loading={loading}
                                         disabled={loading}

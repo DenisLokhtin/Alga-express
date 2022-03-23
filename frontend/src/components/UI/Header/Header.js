@@ -37,7 +37,7 @@ const Header = () => {
 
     const [addActiveClass, setAddActiveClass] = useState(false);
     const trigger = useScrollTrigger();
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState({status: false});
 
     useEffect(() => {
             setLoading(prevState => ({
@@ -161,7 +161,7 @@ const Header = () => {
                     </div>
                 </div>
                 <div style={theme.progress}>
-                    {loading.status && <LinearProgress/>}
+                    {loading.status && <LinearProgress color="error"/>}
                 </div>
             </header>
         </Slide>

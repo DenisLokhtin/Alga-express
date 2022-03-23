@@ -204,7 +204,7 @@ const run = async () => {
     const packagesArray = [
         {
             trackNumber: nanoid(),
-            currency: 'usd',
+            priceCurrency: 'USD',
             title: 'package 1',
             amount: 1,
             price: 2345,
@@ -219,7 +219,7 @@ const run = async () => {
         {
             trackNumber: nanoid(),
             title: 'package 2',
-            currency: 'try',
+            priceCurrency: 'TRY',
             amount: 1,
             price: 443,
             flight: flight1,
@@ -233,7 +233,7 @@ const run = async () => {
         {
             trackNumber: nanoid(),
             title: 'package 3',
-            currency: 'cny',
+            priceCurrency: 'CNY',
             amount: 1,
             price: 7564,
             flight: flight1,
@@ -248,7 +248,7 @@ const run = async () => {
             trackNumber: nanoid(),
             title: 'package 4',
             amount: 1,
-            currency: 'usd',
+            priceCurrency: 'USD',
             price: 678,
             flight: flight2,
             country: 'chinaGround',
@@ -261,7 +261,7 @@ const run = async () => {
         {
             trackNumber: nanoid(),
             title: 'package 5',
-            currency: 'try',
+            priceCurrency: 'TRY',
             amount: 1,
             price: 345,
             flight: flight2,
@@ -275,7 +275,7 @@ const run = async () => {
         {
             trackNumber: nanoid(),
             title: 'package 6',
-            currency: 'try',
+            priceCurrency: 'TRY',
             amount: 1,
             price: 345,
             flight: flight2,

@@ -31,7 +31,6 @@ import {
     packageInfo,
     processingTrackNumbersAdmin,
     userPage,
-    userPaymentsList
 } from "../../../../paths";
 import Avatar from "@mui/material/Avatar";
 import FactCheckIcon from '@mui/icons-material/FactCheck';
@@ -52,7 +51,6 @@ const userSettings = [
     {url: orderBuyouts, title: 'Заказать выкуп', icon: <ShoppingCartIcon/>},
     {url: listBuyouts, title: 'Список заказов', icon: <FactCheckIcon/>},
     {url: addUserPayment, title: 'Пополнить баланс', icon: <PaidIcon/>},
-    {url: userPaymentsList, title: 'История пополнения', icon: <HistoryIcon/>},
     {url: packageInfo, title: 'Информация доставки', icon: <InfoIcon/>},
 ];
 
@@ -64,7 +62,6 @@ const superAdminSettings = [
     {url: orderBuyouts, title: 'Заказать выкуп', icon: <ShoppingCartIcon/>},
     {url: listBuyouts, title: 'Список заказов', icon: <FactCheckIcon/>},
     {url: addUserPayment, title: 'Пополнить баланс', icon: <PaidIcon/>},
-    {url: userPaymentsList, title: 'История пополнения', icon: <HistoryIcon/>},
     {url: packageInfo, title: 'Информация доставки', icon: <InfoIcon/>},
     {url: adminPagePath, title: 'Администратор', icon: <ManageAccountsIcon/>},
     {url: listFlightAdmin, title: 'Рейсы', icon: <FlightIcon/>},
@@ -177,6 +174,7 @@ const UserMenu = ({user}) => {
                     anchorEl={anchorEl}
                     open={open}
                     onClose={handleClose}
+                    onClick={handleClose}
                     TransitionComponent={Fade}
                     anchorOrigin={{
                         vertical: 'top',

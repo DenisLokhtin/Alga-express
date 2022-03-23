@@ -4,8 +4,12 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchCurrencies} from "../../store/actions/currenciesActions";
 import CurrenciesCard from "../../components/CurrenciesCard/CurrenciesCard";
 import TableComponent from "../../components/TableComponent/TableComponent";
-import {countries, statuses} from "../../dataLocalization";
-import {getOrdersHistoryRequest, giveOutRequest} from "../../store/actions/packageRegisterActions";
+import {countries, saleCountry, statuses} from "../../dataLocalization";
+import {
+    changeDeliveryStatusRequest,
+    getOrdersHistoryRequest,
+    giveOutRequest
+} from "../../store/actions/packageRegisterActions";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -32,6 +36,13 @@ import Grid from "@mui/material/Grid";
 import ruLocale from "date-fns/locale/ru";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
 import AppWindow from "../../components/UI/AppWindow/AppWindow";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import CurrencyYenIcon from "@mui/icons-material/CurrencyYen";
+import CurrencyLiraIcon from "@mui/icons-material/CurrencyLira";
+import {deleteDeliveryRequest} from "../../store/actions/deliveryAction";
+import Checkbox from "@mui/material/Checkbox";
+import DeliveryModal from "../../components/DeliveryModal/DeliveryModal";
+import Requisites from "../../components/Requisites/Requisites";
 import SearchIcon from '@mui/icons-material/Search';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 
@@ -90,6 +101,16 @@ const AdminPage = () => {
         open: false,
         id: '',
     });
+    const [open, setOpen] = useState(false);
+    const [currentModal, setCurrentModal] = useState({
+        cargoNumber: "1",
+        country: "Китай-Авия",
+        delivery: "false",
+        id: "6220b025363a1780b6f28293",
+        status: "В пути",
+        title: "package 3",
+        trackNumber: "DnS5myCQv6H4H1_4YCtPM",
+    });
 
     const [img, setImg] = useState(null);
     const currencies = useSelector(state => state.currencies.currencies);
@@ -140,8 +161,23 @@ const AdminPage = () => {
     const [paymentsSelectionModel, setPaymentsSelectionModel] = useState([]);
     const paymentsPrevSelection = useRef(paymentsSelectionModel);
 
+    const handleClose = () => setOpen(false);
+
     const handleChange = (event, newValue) => {
         setValue(newValue);
+    };
+
+    const valueIcon = (value) => {
+        switch (value) {
+            case 'USD':
+                return <AttachMoneyIcon/>;
+            case 'CNY':
+                return <CurrencyYenIcon/>;
+            case 'TRY':
+                return <CurrencyLiraIcon/>;
+            default:
+                return;
+        }
     };
 
     const packagesRows = packages.map(order => {
@@ -160,15 +196,14 @@ const AdminPage = () => {
         return {
             id: buyout._id,
             url: buyout.url,
-            country: buyout.country,
+            country: saleCountry[buyout.country],
             description: buyout.description,
             datetime: dayjs(buyout.datetime).format('DD-MM-YYYY'),
             user: buyout.user.name,
-            status: buyout.status,
-            price: buyout.price,
-            commission: buyout.commission,
-            value: buyout.value,
-            totalPrice: buyout.totalPrice,
+            status: statuses[buyout.status],
+            price: buyout.price ? {price: buyout.price, icon: valueIcon(buyout.value)} : 0,
+            commission: `${buyout.commission} %`,
+            totalPrice: buyout.totalPrice ? `${buyout.totalPrice} сом` : null,
             userData: buyout.user
         }
     });
@@ -185,11 +220,7 @@ const AdminPage = () => {
     });
 
     useEffect(() => {
-        if (!!messagesEndRef.current) {
-            messagesEndRef.current.scrollIntoView({
-                behavior: 'smooth'
-            }, 250);
-        }
+        window.scrollTo(0, 0);
         dispatch(fetchUsersRequest());
         dispatch(fetchCurrencies());
     }, [dispatch, messagesEndRef]);
@@ -444,10 +475,58 @@ const AdminPage = () => {
                 </Grid>
 
                 <TabPanelComponent value={value} index={0}>
+                    <DeliveryModal title={currentModal.title}
+                                   track={currentModal.trackNumber}
+                                   status={currentModal.status}
+                                   country={currentModal.country}
+                                   open={open} page={packagesPage}
+                                   pageLimit={packagesPageLimit}
+                                   close={handleClose}/>
                     <TableComponent
                         rows={packagesRows}
                         columns={[
                             ...packagesColumns,
+                            {
+                                field: 'price',
+                                headerName: 'Цена товара',
+                                flex: 1,
+                                minWidth: 110,
+                                headerAlign: 'center',
+                                align: 'center',
+                                renderCell: params => {
+                                    const order = packages.find(order => order._id === params.id);
+                                    console.log(params);
+                                        return (
+                                            <div style={{display: 'flex', alignItems: 'center'}}>
+                                                {order.price} {valueIcon(order.priceCurrency)}
+                                            </div>
+                                        )
+                                    }
+                            },
+                            {
+                                field: 'delivery',
+                                headerName: 'Доставка',
+                                flex: 1,
+                                minWidth: 90,
+                                headerAlign: 'center',
+                                align: 'center',
+                                renderCell: (params) => {
+                                    const onClick = (e) => {
+                                        e.stopPropagation();
+                                        if (e.target.checked) {
+                                            setOpen(true);
+                                            setCurrentModal({...params.row});
+                                        } else {
+                                            dispatch(changeDeliveryStatusRequest({...params.row}));
+                                            dispatch(deleteDeliveryRequest({...params.row}));
+                                            setUpdate(!update);
+                                        }
+                                    };
+                                    return (
+                                        <Checkbox checked={params.row.delivery} onChange={(e) => onClick(e)}/>
+                                    );
+                                }
+                            },
                             {
                                 field: "actions",
                                 type: "actions",
@@ -603,6 +682,8 @@ const AdminPage = () => {
                     {currencies &&
                     <CurrenciesCard currency={currencies}/>}
                 </TabPanelComponent>
+            </Box>
+            <Requisites/>
             <AppWindow
                 open={openDone.open}
                 onClose={() => setOpenDone(prevState => ({

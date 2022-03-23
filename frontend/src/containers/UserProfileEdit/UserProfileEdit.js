@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {makeStyles} from "@mui/styles";
 import {createTheme} from "@mui/material/styles";
 import {useDispatch, useSelector} from "react-redux";
@@ -18,6 +18,7 @@ import {
     Select,
     TextField,
     Typography,
+    Link,
 } from "@mui/material";
 import IconButton from '@mui/material/IconButton';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -38,6 +39,8 @@ import noImage from '../../assets/images/no_avatar.png';
 import {apiURL} from "../../config";
 import FileInput from "../../components/UI/FileInput/FileInput";
 import Autocomplete from '@mui/material/Autocomplete';
+import {resetPassword} from "../../paths";
+import {Link as RouterLink} from "react-router-dom";
 
 const theme = createTheme({
     breakpoints: {
@@ -168,7 +171,7 @@ const UserProfileEdit = () => {
         };
     }, [dispatch, messagesEndRef]);
 
-    useMemo(() => {
+    useEffect(() => {
         userData && setDataUser({
             name: userData.name,
             email: userData.email,
@@ -388,6 +391,13 @@ const UserProfileEdit = () => {
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={8} md={7} lg={7}>
+                                    <Link component={RouterLink} to={resetPassword}>
+                                        <Typography align="right" variant="body2">
+                                            Поменять пароль
+                                        </Typography>
+                                    </Link>
+                                </Grid>
+                                <Grid item xs={12} sm={8} md={7} lg={7}>
                                     {phone.map((phone, id) => (
                                         <Grid
                                             key={id}
@@ -491,6 +501,7 @@ const UserProfileEdit = () => {
                                     </ButtonWithProgress>
                                 </Grid>
                             </Grid>
+
                         </Grid>
                     </AccordionDetails>
                 </Accordion>

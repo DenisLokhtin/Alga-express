@@ -35,9 +35,9 @@ export function* newsSagas({payload}) {
     }
 }
 
-export function* oneNewsSagas({payload:id}) {
+export function* oneNewsSagas({payload}) {
     try {
-        const response = yield axiosApi.get('/news/'+ id);
+        const response = yield axiosApi.get('/news/'+ payload);
         yield put(fetchOneNewsSuccess(response.data));
     } catch (e) {
         toast.error('Не удалось загрузить новость');
@@ -58,12 +58,12 @@ export function* addNewsSaga({payload: newNews}) {
 
 function* newsEditSaga({payload}) {
     try {
-        yield axiosApi.put(`/news/${payload.id}`, payload.news);
+        yield axiosApi.put(`/news`, payload);
         yield put(changeNewsSuccess());
         toast.success('Новость отредактирована!');
         payload.navigate('/news');
     } catch (e) {
-        yield put(changeNewsFailure(e.response.data));
+        yield put(changeNewsFailure(e));
     }
 }
 

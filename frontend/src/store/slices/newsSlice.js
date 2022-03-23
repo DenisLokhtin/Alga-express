@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 
-const name = 'news'
+const name = 'news';
 const initialState = {
     news: [],
     oneNews:{},
@@ -8,7 +8,7 @@ const initialState = {
     fetchLoading: false,
     addLoading: false,
     addError: null,
-}
+};
 
 const newsSlice = createSlice({
     name,
@@ -56,9 +56,9 @@ const newsSlice = createSlice({
             state.singleLoading = false;
         },
 
-        changeNewsFailure(state, {payload: error}) {
+        changeNewsFailure(state, action) {
             state.singleLoading = false;
-            state.addError = error;
+            state.addError = action.payload;
         },
         deleteNewsRequest(state){
             state.deleteLoading = true;

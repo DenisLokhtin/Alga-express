@@ -5,11 +5,8 @@ const permit = require("../middleware/permit");
 const auth = require("../middleware/auth");
 const {nanoid} = require("nanoid");
 const sendMail = require('../middleware/sendMail');
-const bcrypt = require("bcrypt");
 const emailDistribution = require("../email-texts");
 
-
-const SALT_WORK_FACTOR = 10;
 const router = express.Router();
 
 router.get('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
@@ -108,8 +105,6 @@ router.post('/forgot', async (req, res) => {
     try {
         const user = await User.findOne({email: req.body.email});
 
-        console.log(user)
-
         if (!user) return res.status(404).send({message: 'Такая почта не найдена'});
 
         const resetCode = nanoid(8);
@@ -137,19 +132,13 @@ router.post('/reset', async (req, res) => {
     try {
         let user = await User.findOne({resetCode: req.body.secretCode});
         if (!user) {
-            console.log('error')
             return res.status(404).send({message: 'Неправильный код'})
         }
         user.password = req.body.password
 
         user.$ignore('email');
        await user.save()
-// const newPassword = req.body.password
-//
-//         const salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
-//         const password2 = await bcrypt.hash(newPassword, salt);
 
-        // await User.findOneAndUpdate({resetCode: req.body.secretCode}, {password: password2});
         res.send({message: " Пароль успешно изменен"});
     } catch (e) {
         console.log(e.message)
@@ -159,17 +148,17 @@ router.post('/reset', async (req, res) => {
 
 router.post('/change', auth, async (req, res) => {
     try {
-        let user = await User.find({_id: req.user._id});
+        let user = await User.findById(req.user._id);
         if (!user) {
-            console.log('error')
             return res.status(401).send({message: 'Доступ запрещен'})
         }
         user.password = req.body.password
-
         user.$ignore('email');
         await user.save()
+
         res.send({message: " Пароль успешно изменен"});
     } catch (e) {
+        console.log(e.message)
         res.status(500).send(e);
     }
 })

@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {changeWareHouseRequest, fetchOneWareHouseRequest} from "../../store/actions/wareHouseActions";
 import {useNavigate, useParams} from "react-router-dom";
@@ -34,7 +34,7 @@ const EditWareHouseAdmin = () => {
 
     }, [dispatch, params.id, oneWareHouse.info]);
 
-    useMemo(() => {
+    useEffect(() => {
         setSingleWareHouse({
             country: oneWareHouse.country,
             info: oneWareHouse.info,
