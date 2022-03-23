@@ -169,9 +169,9 @@ router.put('/', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req,
     const filtered = trackNumbersData.filter(packageStatus => packageStatus.trackNumber !== '');
 
     const uniquePackages = filtered.filter((packageInfo, index, self) =>
-        index === self.findIndex((packageData) => (
-            packageData.trackNumber === packageInfo.trackNumber
-        ))
+            index === self.findIndex((packageData) => (
+                packageData.trackNumber === packageInfo.trackNumber
+            ))
     );
 
     try {
@@ -189,12 +189,14 @@ router.put('/', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req,
                 {status: key.status},
                 {new: true, runValidators: true});
 
-            const userObj = await updatedStatuses.populate('user', 'email name');
+            if (updatedStatuses) {
+                const userObj = await updatedStatuses.populate('user', 'email name');
+                await sendMail({email: userObj.user.email},
+                    'Alga-express: Смена статуса у посылки',
+                    packagesTextTelegram(userObj.trackNumber, status[userObj.status], userObj.user.name),
+                    packagesText(userObj.trackNumber, status[userObj.status], userObj.user.name));
+            }
 
-            await sendMail({email:userObj.user.email},
-                'Alga-express: Смена статуса у посылки',
-                packagesTextTelegram(userObj.trackNumber, status[userObj.status],userObj.user.name),
-                packagesText(userObj.trackNumber, status[userObj.status],userObj.user.name));
 
             if (!updatedStatuses) {
                 const notFoundTrackNumbersData = {
