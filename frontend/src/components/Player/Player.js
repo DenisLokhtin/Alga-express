@@ -111,7 +111,7 @@ const Player = () => {
                 url={urlFromYoutube}
             />
 
-            <Grid container justifyContent={"center"}>
+            <Grid container justifyContent={"center"} sx={{mt: '20px'}}>
                 {user && (user.role === 'admin' || user.role === 'superAdmin') && urlFromYoutube ?
                     <Grid item xs={3}>
                         <ButtonWithProgress
@@ -123,8 +123,9 @@ const Player = () => {
                             disabled={loading}
                             component={Link}
                             to={editingSinglePlayer + IdFromYoutube}
+                            startIcon={<EditIcon/>}
                         >
-                            <EditIcon/> Редактировать видео
+                            Редактировать видео
                         </ButtonWithProgress>
                     </Grid> : ''}
 
@@ -138,8 +139,9 @@ const Player = () => {
                             loading={loading}
                             disabled={loading}
                             onClick={() => setOpen(true)}
+                            startIcon={<DeleteForeverIcon/> }
                         >
-                            <DeleteForeverIcon/> Удалить видео
+                           Удалить видео
                         </ButtonWithProgress>
                         <AppWindow open={open} onClose={() => setOpen(false)}
                                    confirm={() => deletePlayer(IdFromYoutube)}/>
