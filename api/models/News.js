@@ -5,23 +5,22 @@ const NewsSchema = new mongoose.Schema({
         type: String,
         required: 'Название является обязательным полем',
     },
+
     description: {
         type: String,
     },
+
     image: String,
-    datetime: {
-        type: String,
-        required: true,
-    },
 
     createdAt: {
         type: Date,
         default: Date.now,
     },
+
     deleted: {
         type: Boolean,
         default: false
-    }
+    },
 });
 
 

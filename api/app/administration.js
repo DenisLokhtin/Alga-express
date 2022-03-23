@@ -156,7 +156,7 @@ router.post('/cash', auth, permit('admin', 'superAdmin'), async (req, res) => {
 
         await sendMail({email: updatedUser.email},
             'Alga-express: Баланс пополнен',
-            null.
+            null,
             // balanceTextTelegram(price, updatedUser.balance, updatedUser.name),
             balanceText(price, updatedUser.balance, updatedUser.name));
 

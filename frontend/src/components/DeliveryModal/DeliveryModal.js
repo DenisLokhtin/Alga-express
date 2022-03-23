@@ -16,7 +16,7 @@ const styleModal = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 800,
+    maxWidth: 800,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -72,16 +72,16 @@ const DeliveryModal = (props) => {
                         <Typography>Трек номер: {props.track}</Typography>
                         <Typography>Статус: {props.status}</Typography>
                         <Typography>Страна: {props.country}</Typography>
-                        <Typography><b>Укажите адрес:</b></Typography>
+                        <Typography style={{marginTop: 10}}><b>Укажите адрес:</b></Typography>
                         <TextareaAutosize name="address" id="address" placeholder="Введите ваш адрес"
-                                          onChange={inputChangeHandler}/>
-                        <Grid item xs={12} sm={8} md={7} lg={7}>
+                                          onChange={inputChangeHandler} style={{width: 300, height: '100px'}}/>
+                        <Grid item xs={12} sm={8} md={7} lg={7} sx={{margin: '0 auto'}}>
                             <ButtonWithProgress
                                 type="submit"
                                 fullWidth
                                 variant="contained"
                                 color="primary"
-                                style={{marginTop: 10, width: '172%'}}
+                                style={{marginTop: 1}}
                                 disabled={address.address === ''}
                             >
                                 Подтвердить

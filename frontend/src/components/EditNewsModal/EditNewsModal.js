@@ -16,7 +16,7 @@ const styleModal = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 800,
+    maxWidth: 800,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -112,13 +112,13 @@ const EditNewsModal = (props) => {
                             />
                         </Grid>
 
-                        <Grid item xs={12} sm={8} md={7} lg={7}>
+                        <Grid item xs={12} sm={8} md={7} lg={7} sx={{margin: '0 auto'}}>
                             <ButtonWithProgress
                                 type="submit"
                                 fullWidth
                                 variant="contained"
                                 color="primary"
-                                style={{marginTop: 10, width: '172%'}}
+                                style={{marginTop: 10}}
                                 disabled={data.title === '' && data.description === ''}
                             >
                                 Подтвердить

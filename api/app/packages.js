@@ -11,9 +11,9 @@ const User = require("../models/User");
 const Currency = require('../models/Currency');
 const packageValidate = require("../middleware/packageValidate");
 const {packagesText} = require('../email-texts');
+const {packagesTextTelegram} = require('../email-texts')
 const sendMail = require("../middleware/sendMail");
-// const sendMail = require("../middleware/sendMail");
-// const {balanceText} = require("../email-texts");
+const status = require('../app/dataLocalization');
 
 const router = express.Router();
 
@@ -169,9 +169,9 @@ router.put('/', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req,
     const filtered = trackNumbersData.filter(packageStatus => packageStatus.trackNumber !== '');
 
     const uniquePackages = filtered.filter((packageInfo, index, self) =>
-        index === self.findIndex((packageData) => (
-            packageData.trackNumber === packageInfo.trackNumber
-        ))
+            index === self.findIndex((packageData) => (
+                packageData.trackNumber === packageInfo.trackNumber
+            ))
     );
 
     try {
@@ -189,9 +189,14 @@ router.put('/', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req,
                 {status: key.status},
                 {new: true, runValidators: true});
 
-            const userEmail = await updatedStatuses.populate('user', 'email')
+            if (updatedStatuses) {
+                const userObj = await updatedStatuses.populate('user', 'email name');
+                await sendMail({email: userObj.user.email},
+                    'Alga-express: Смена статуса у посылки',
+                    packagesTextTelegram(userObj.trackNumber, status[userObj.status], userObj.user.name),
+                    packagesText(userObj.trackNumber, status[userObj.status], userObj.user.name));
+            }
 
-            await sendMail(userEmail.user.email, 'Alga-express: Баланс пополнен', null, packagesText(userEmail.trackNumber, userEmail.status));
 
             if (!updatedStatuses) {
                 const notFoundTrackNumbersData = {
