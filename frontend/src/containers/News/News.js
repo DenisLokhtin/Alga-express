@@ -11,6 +11,7 @@ import {newsIdCompany} from "../../paths";
 import AppWindow from "../../components/UI/AppWindow/AppWindow";
 import Container from "@mui/material/Container";
 import {createTheme} from "@mui/material/styles";
+import dayjs from "dayjs";
 import EditNewsModal from "../../components/EditNewsModal/EditNewsModal";
 
 const theme = createTheme({
@@ -146,7 +147,7 @@ const News = () => {
                         <Grid key={item._id} item>
                             <div className={classes.newsBlock}>
                                 <Grid container>
-                                    <span className={classes.datetime}>{item.datetime}</span>
+                                    <span className={classes.datetime}>{dayjs(item.createdAt).format('DD/MM/YYYY')}</span>
                                 </Grid>
                                 <h4 className={classes.newsTitle}>{item.title}</h4>
                                 <Grid container>
