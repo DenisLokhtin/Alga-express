@@ -182,7 +182,7 @@ const BuyoutList = () => {
                             )}
                             <Grid container direction={"column"} spacing={2}>
                                 <Grid item xs={12} sm={6} md={6} >
-                                    <a href={b.url} target={'_blank'} rel={'noopener'}
+                                    <a href={b.url} target={'_blank'} rel='noreferrer'
                                                   className={classes.productLink}>
                                         <ProductionQuantityLimitsIcon/>
                                         Ссылка на товар
