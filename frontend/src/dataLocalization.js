@@ -1,3 +1,8 @@
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import CurrencyYenIcon from "@mui/icons-material/CurrencyYen";
+import CurrencyLiraIcon from "@mui/icons-material/CurrencyLira";
+import React from "react";
+
 export const statuses = {
     NEW: 'Новый',
     REGISTERED: 'Оформлен',
@@ -22,3 +27,16 @@ export const saleCountry = {
     Turkey: 'Турция',
     China: 'Китай',
 }
+
+export const valueIcon = (value) => {
+    switch (value) {
+        case 'USD':
+            return <AttachMoneyIcon/>;
+        case 'CNY':
+            return <CurrencyYenIcon/>;
+        case 'TRY':
+            return <CurrencyLiraIcon/>;
+        default:
+            return;
+    }
+};

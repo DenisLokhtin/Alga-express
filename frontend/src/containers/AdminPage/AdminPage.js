@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchCurrencies} from "../../store/actions/currenciesActions";
 import CurrenciesCard from "../../components/CurrenciesCard/CurrenciesCard";
 import TableComponent from "../../components/TableComponent/TableComponent";
-import {countries, saleCountry, statuses} from "../../dataLocalization";
+import {countries, saleCountry, statuses, valueIcon} from "../../dataLocalization";
 import {
     changeDeliveryStatusRequest,
     getOrdersHistoryRequest,
@@ -36,9 +36,6 @@ import Grid from "@mui/material/Grid";
 import ruLocale from "date-fns/locale/ru";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
 import AppWindow from "../../components/UI/AppWindow/AppWindow";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import CurrencyYenIcon from "@mui/icons-material/CurrencyYen";
-import CurrencyLiraIcon from "@mui/icons-material/CurrencyLira";
 import {deleteDeliveryRequest} from "../../store/actions/deliveryAction";
 import Checkbox from "@mui/material/Checkbox";
 import DeliveryModal from "../../components/DeliveryModal/DeliveryModal";
@@ -121,6 +118,7 @@ const AdminPage = () => {
         name: '',
         email: '',
         _id: '',
+
     });
     const [inputValueSelect, setInputValueSelect] = useState('');
 
@@ -173,19 +171,6 @@ const AdminPage = () => {
         setValue(newValue);
     };
 
-    const valueIcon = (value) => {
-        switch (value) {
-            case 'USD':
-                return <AttachMoneyIcon/>;
-            case 'CNY':
-                return <CurrencyYenIcon/>;
-            case 'TRY':
-                return <CurrencyLiraIcon/>;
-            default:
-                return;
-        }
-    };
-
     const packagesRows = packages.map(order => {
         return {
             id: order._id,
@@ -207,9 +192,9 @@ const AdminPage = () => {
             datetime: dayjs(buyout.datetime).format('DD-MM-YYYY'),
             user: buyout.user.name,
             status: statuses[buyout.status],
-            price: buyout.price ? {price: buyout.price, icon: valueIcon(buyout.value)} : 0,
+            price: buyout.price ? {price: buyout.price, icon: valueIcon(buyout.value)} : {price: 'Нет'},
             commission: `${buyout.commission} %`,
-            totalPrice: buyout.totalPrice ? `${buyout.totalPrice} сом` : null,
+            totalPrice: buyout.totalPrice ? `${buyout.totalPrice} сом` : 'Нет',
             userData: buyout.user
         }
     });
@@ -221,7 +206,7 @@ const AdminPage = () => {
             image: apiURL + '/' + payment.image,
             user: payment.user.name,
             date: dayjs(payment.date).format('DD-MM-YYYY'),
-            amount: payment.amount,
+            amount: payment.amount ? payment.amount : 'В обработке',
         }
     });
 
