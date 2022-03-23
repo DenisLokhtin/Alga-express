@@ -5,7 +5,11 @@ import {fetchCurrencies} from "../../store/actions/currenciesActions";
 import CurrenciesCard from "../../components/CurrenciesCard/CurrenciesCard";
 import TableComponent from "../../components/TableComponent/TableComponent";
 import {countries, saleCountry, statuses} from "../../dataLocalization";
-import {getOrdersHistoryRequest, giveOutRequest} from "../../store/actions/packageRegisterActions";
+import {
+    changeDeliveryStatusRequest,
+    getOrdersHistoryRequest,
+    giveOutRequest
+} from "../../store/actions/packageRegisterActions";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -13,7 +17,7 @@ import TabPanelComponent from "../../components/UI/TabPanelComponent/TabPanelCom
 import {buyoutsColumns, packagesColumns, paymentsColumns} from "./columns/tableColumns";
 import {fetchBuyoutsList} from "../../store/actions/buyoutActions";
 import dayjs from "dayjs";
-import {fetchPaymentRequest, paymentAcceptedRequest} from "../../store/actions/paymentActions";
+import {fetchPaymentRequest} from "../../store/actions/paymentActions";
 import {apiURL} from "../../config";
 import SwitchElement from "../../components/UI/SwitchElement/SwitchElement";
 import ImageModal from "../../components/UI/ImageModal/ImageModal";
@@ -35,12 +39,18 @@ import AppWindow from "../../components/UI/AppWindow/AppWindow";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import CurrencyYenIcon from "@mui/icons-material/CurrencyYen";
 import CurrencyLiraIcon from "@mui/icons-material/CurrencyLira";
+import {deleteDeliveryRequest} from "../../store/actions/deliveryAction";
+import Checkbox from "@mui/material/Checkbox";
 import DeliveryModal from "../../components/DeliveryModal/DeliveryModal";
-import {toast} from "react-toastify";
-import TariffCard from "../../components/TariffCard/TariffCard";
 import Requisites from "../../components/Requisites/Requisites";
 import SearchIcon from '@mui/icons-material/Search';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import {paymentAcceptedRequest} from "../../store/actions/paymentActions";
+import {deleteDeliveryRequest} from "../../store/actions/deliveryAction";
+import Checkbox from "@mui/material/Checkbox";
+import {toast} from "react-toastify";
+import TariffCard from "../../components/TariffCard/TariffCard";
+import FormElement from "../../components/UI/Form/FormElement";
 
 function a11yProps(index) {
     return {
@@ -118,6 +128,7 @@ const AdminPage = () => {
         _id: '',
         tariff: null,
         group: ''
+
     });
     const [inputValueSelect, setInputValueSelect] = useState('');
 
@@ -130,6 +141,11 @@ const AdminPage = () => {
         user: false,
         date: false,
         search: true,
+    });
+
+    const [searchByNumber, setSearchByNumber] = useState({
+        number: '',
+        search: false,
     });
 
     const buyouts = useSelector(state => state.buyouts.buyouts);
@@ -165,19 +181,6 @@ const AdminPage = () => {
         setValue(newValue);
     };
 
-    const valueIcon = (value) => {
-        switch (value) {
-            case 'USD':
-                return <AttachMoneyIcon/>;
-            case 'CNY':
-                return <CurrencyYenIcon/>;
-            case 'TRY':
-                return <CurrencyLiraIcon/>;
-            default:
-                return;
-        }
-    };
-
     const packagesRows = packages.map(order => {
         return {
             id: order._id,
@@ -199,9 +202,9 @@ const AdminPage = () => {
             datetime: dayjs(buyout.datetime).format('DD-MM-YYYY'),
             user: buyout.user.name,
             status: statuses[buyout.status],
-            price: buyout.price ? {price: buyout.price, icon: valueIcon(buyout.value)} : 0,
+            price: buyout.price ? {price: buyout.price, icon: valueIcon(buyout.value)} : {price: 'Нет'},
             commission: `${buyout.commission} %`,
-            totalPrice: buyout.totalPrice ? `${buyout.totalPrice} сом` : null,
+            totalPrice: buyout.totalPrice ? `${buyout.totalPrice} сом` : 'Нет',
             userData: buyout.user
         }
     });
@@ -213,6 +216,7 @@ const AdminPage = () => {
             image: apiURL + '/' + payment.image,
             user: payment.user.name,
             date: dayjs(payment.date).format('DD-MM-YYYY'),
+            amount: payment.amount ? payment.amount : 'В обработке',
             pay: '',
             status: payment.status
         }
@@ -237,7 +241,7 @@ const AdminPage = () => {
             pageData.limit = packagesPageLimit;
         }
 
-        if (searchData.search)
+        if (((searchData.search) && (searchByNumber.number === '')) || searchByNumber.search) {
             switch (value) {
                 case 0:
                     if (packagesHistory) {
@@ -249,9 +253,9 @@ const AdminPage = () => {
                         history: pageData.history,
                         id: pageData.id,
                         from: pageData.from,
-                        to: pageData.to
+                        to: pageData.to,
+                        packageFind: pageData.packageFind,
                     }));
-
                     break;
                 case 1:
                     if (buyoutsHistory) {
@@ -282,6 +286,7 @@ const AdminPage = () => {
                 default:
                     break;
             }
+        }
     }, [dispatch,
         value,
         searchData,
@@ -296,8 +301,26 @@ const AdminPage = () => {
         packagesHistory,
         paymentsHistory,
         valueSelect,
+        searchByNumber,
         update,
     ]);
+
+    const submitFormByNumber = e => {
+        e.preventDefault();
+        setSearchByNumber(prevState => ({
+            ...prevState,
+            search: true,
+        }));
+    };
+
+    const changeSearchByNumber = e => {
+        const {name, value} = e.target;
+        setSearchByNumber(prevState => ({
+            ...prevState,
+            [name]: value,
+        }));
+
+    };
 
     const submitFormHandler = (e) => {
         e.preventDefault();
@@ -328,6 +351,11 @@ const AdminPage = () => {
             user: false,
             date: false,
             search: true,
+        }));
+        setSearchByNumber(prevState => ({
+            ...prevState,
+            number: '',
+            search: false,
         }));
     };
 
@@ -476,6 +504,33 @@ const AdminPage = () => {
                     </Grid>
                 </Grid>
 
+                <Grid
+                    container
+                    component='form'
+                    onSubmit={submitFormByNumber}
+                >
+                    <Grid item>
+                        <FormElement
+                            label='Поиск по Трек Карго номеру'
+                            name='number' value={searchByNumber.number}
+                            autoComplete='off'
+                            onChange={changeSearchByNumber}/>
+                    </Grid>
+                    <Grid item>
+                        <ButtonWithProgress
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            // className={classes.submit}
+                            // loading={loading}
+                            // disabled={!(permitPayment[index].pay !== undefined && permitPayment[index].pay !== '')}
+                        >
+                            Найти
+                        </ButtonWithProgress>
+                    </Grid>
+                </Grid>
+
                 <TabPanelComponent value={value} index={0}>
                     <DeliveryModal title={currentModal.title}
                                    track={currentModal.trackNumber}
@@ -497,12 +552,12 @@ const AdminPage = () => {
                                 align: 'center',
                                 renderCell: params => {
                                     const order = packages.find(order => order._id === params.id);
-                                        return (
+                                    
+                                    return (
                                             <div style={{display: 'flex', alignItems: 'center'}}>
                                                 {order.price} {valueIcon(order.priceCurrency)}
                                             </div>
-                                        )
-                                    }
+                                    )}
                             },
                             {
                                 field: 'delivery',

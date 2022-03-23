@@ -37,7 +37,7 @@
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
 import History from '../../History';
-import {adminPagePath, processingTrackNumbersAdmin, root, userLogin, userPage} from "../../paths";
+import {adminPagePath, processingTrackNumbersAdmin, userLogin, userPage} from "../../paths";
  import {put, takeEvery} from "redux-saga/effects";
 
 export function* registerUserSaga({payload}) {
@@ -63,7 +63,19 @@ export function* registerUserSaga({payload}) {
             }
         } else {
             yield put(registerUserSuccess(response.data));
-            History.push(root);
+            switch (response.data.role) {
+                case 'admin' || 'superAdmin':
+                    History.push(adminPagePath);
+                    break;
+                case 'warehouseman':
+                    History.push(processingTrackNumbersAdmin);
+                    break;
+                case 'user':
+                    History.push(userPage);
+                    break;
+                default:
+                    return
+            }
             toast.success('Вы зарегистрированы');
         }
     } catch (e) {

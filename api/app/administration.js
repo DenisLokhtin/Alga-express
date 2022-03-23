@@ -48,6 +48,18 @@ router.get('/', auth, permit('user', 'admin', 'superAdmin'), async (req, res) =>
     }
 });
 
+router.get('/payments', auth, permit('user', 'admin', 'superAdmin'), async (req, res) => {
+    // if (req.query.id)
+    console.log(req.query.id);
+    try {
+        const data = await PaymentMove.find({user: req.query.id})
+            // .populate('user payment', 'name amount')
+        res.send(data);
+    } catch (e) {
+        console.log(e)
+    }
+});
+
 router.post('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
     let pay = Number(req.body.pay).toFixed(2);
     pay = Number(pay);

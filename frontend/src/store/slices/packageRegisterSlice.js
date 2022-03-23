@@ -176,10 +176,10 @@ const packageSlice = createSlice({
             state.package = null;
         },
 
-        giveOutRequest(state, action) {
+        giveOutRequest(state) {
             state.changeStatusesLoading = true;
         },
-        giveOutSuccess(state, action) {
+        giveOutSuccess(state) {
             state.changeStatusesLoading = false;
         },
         giveOutFailure(state, action) {
