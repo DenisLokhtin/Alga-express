@@ -28,7 +28,7 @@ import {
     newPackageRegister,
     orderBuyouts,
     packageHistory,
-    packageInfo,
+    // packageInfo,
     processingTrackNumbersAdmin,
     userPage,
 } from "../../../../paths";
@@ -50,7 +50,7 @@ const userSettings = [
     {url: orderBuyouts, title: 'Заказать выкуп', icon: <ShoppingCartIcon/>},
     {url: listBuyouts, title: 'Список заказов', icon: <FactCheckIcon/>},
     {url: addUserPayment, title: 'Пополнить баланс', icon: <PaidIcon/>},
-    {url: packageInfo, title: 'Информация доставки', icon: <InfoIcon/>},
+    // {url: packageInfo, title: 'Информация доставки', icon: <InfoIcon/>},
 ];
 
 const superAdminSettings = [
@@ -61,7 +61,7 @@ const superAdminSettings = [
     {url: orderBuyouts, title: 'Заказать выкуп', icon: <ShoppingCartIcon/>},
     {url: listBuyouts, title: 'Список заказов', icon: <FactCheckIcon/>},
     {url: addUserPayment, title: 'Пополнить баланс', icon: <PaidIcon/>},
-    {url: packageInfo, title: 'Информация доставки', icon: <InfoIcon/>},
+    // {url: packageInfo, title: 'Информация доставки', icon: <InfoIcon/>},
     {url: adminPagePath, title: 'Администратор', icon: <ManageAccountsIcon/>},
     {url: listFlightAdmin, title: 'Рейсы', icon: <FlightIcon/>},
     {url: addFlightAdmin, title: 'Добавить рейс', icon: <AddIcon/>},
