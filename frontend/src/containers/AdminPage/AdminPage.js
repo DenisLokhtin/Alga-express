@@ -5,11 +5,7 @@ import {fetchCurrencies} from "../../store/actions/currenciesActions";
 import CurrenciesCard from "../../components/CurrenciesCard/CurrenciesCard";
 import TableComponent from "../../components/TableComponent/TableComponent";
 import {countries, saleCountry, statuses} from "../../dataLocalization";
-import {
-    changeDeliveryStatusRequest,
-    getOrdersHistoryRequest,
-    giveOutRequest
-} from "../../store/actions/packageRegisterActions";
+import {getOrdersHistoryRequest, giveOutRequest} from "../../store/actions/packageRegisterActions";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -17,7 +13,7 @@ import TabPanelComponent from "../../components/UI/TabPanelComponent/TabPanelCom
 import {buyoutsColumns, packagesColumns, paymentsColumns} from "./columns/tableColumns";
 import {fetchBuyoutsList} from "../../store/actions/buyoutActions";
 import dayjs from "dayjs";
-import {fetchPaymentRequest} from "../../store/actions/paymentActions";
+import {fetchPaymentRequest, paymentAcceptedRequest} from "../../store/actions/paymentActions";
 import {apiURL} from "../../config";
 import SwitchElement from "../../components/UI/SwitchElement/SwitchElement";
 import ImageModal from "../../components/UI/ImageModal/ImageModal";
@@ -36,18 +32,10 @@ import Grid from "@mui/material/Grid";
 import ruLocale from "date-fns/locale/ru";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
 import AppWindow from "../../components/UI/AppWindow/AppWindow";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import CurrencyYenIcon from "@mui/icons-material/CurrencyYen";
-import CurrencyLiraIcon from "@mui/icons-material/CurrencyLira";
-import {deleteDeliveryRequest} from "../../store/actions/deliveryAction";
-import Checkbox from "@mui/material/Checkbox";
 import DeliveryModal from "../../components/DeliveryModal/DeliveryModal";
 import Requisites from "../../components/Requisites/Requisites";
 import SearchIcon from '@mui/icons-material/Search';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import {paymentAcceptedRequest} from "../../store/actions/paymentActions";
-import {deleteDeliveryRequest} from "../../store/actions/deliveryAction";
-import Checkbox from "@mui/material/Checkbox";
 import {toast} from "react-toastify";
 import TariffCard from "../../components/TariffCard/TariffCard";
 import FormElement from "../../components/UI/Form/FormElement";
