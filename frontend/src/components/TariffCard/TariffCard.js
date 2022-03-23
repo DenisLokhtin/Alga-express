@@ -33,7 +33,7 @@ const TariffCard = ({tariff, id, group}) => {
 
     const saveChanges = () => {
         setStatus(false);
-        dispatch(editTariff({id, tariff: tariffData}));
+        dispatch(editTariff({id, tariff: tariffData, group: groupData}));
     }
 
     return (
@@ -55,10 +55,10 @@ const TariffCard = ({tariff, id, group}) => {
                                         disabled={status}
                                         onChange={handleChange}
                                     >
-                                        <MenuItem value="NEW">{groups.NEW}</MenuItem>
-                                        <MenuItem value="ADVANCED">{groups.ADVANCED}</MenuItem>
-                                        <MenuItem value="BUYER">{groups.BUYER}</MenuItem>
-                                        <MenuItem value="VIP">{groups.VIP}</MenuItem>
+                                        <MenuItem value={"NEW"}>{groups.NEW}</MenuItem>
+                                        <MenuItem value={"ADVANCED"}>{groups.ADVANCED}</MenuItem>
+                                        <MenuItem value={"BUYER"}>{groups.BUYER}</MenuItem>
+                                        <MenuItem value={"VIP"}>{groups.VIP}</MenuItem>
                                     </Select>
                                 </FormControl>
                             </Grid>

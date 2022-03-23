@@ -219,7 +219,7 @@ export function* editTariffSagas({payload}) {
     const tariff = payload.tariff;
 
     try {
-        const {data} = yield axiosApi.put(`users/tariffEdit?id=${id}`, {group, tariff});
+        const {data} = yield axiosApi.put(`users/tariffEdit?id=${id}`, {group: group, tariff: tariff});
         yield put(editTariffSuccess());
         toast.success(data.message);
     } catch (e) {
