@@ -28,7 +28,6 @@ import {
     newPackageRegister,
     orderBuyouts,
     packageHistory,
-    packageInfo,
     processingTrackNumbersAdmin,
     userPage,
 } from "../../../../paths";
@@ -37,7 +36,6 @@ import FactCheckIcon from '@mui/icons-material/FactCheck';
 import EditIcon from '@mui/icons-material/Edit';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PaidIcon from '@mui/icons-material/Paid';
-import InfoIcon from '@mui/icons-material/Info';
 import HomeIcon from '@mui/icons-material/Home';
 import {makeStyles} from "@mui/styles";
 import {apiURL} from "../../../../config";
@@ -51,7 +49,7 @@ const userSettings = [
     {url: orderBuyouts, title: 'Заказать выкуп', icon: <ShoppingCartIcon/>},
     {url: listBuyouts, title: 'Список заказов', icon: <FactCheckIcon/>},
     {url: addUserPayment, title: 'Пополнить баланс', icon: <PaidIcon/>},
-    {url: packageInfo, title: 'Информация доставки', icon: <InfoIcon/>},
+    // {url: packageInfo, title: 'Информация доставки', icon: <InfoIcon/>},
 ];
 
 const superAdminSettings = [
@@ -62,7 +60,7 @@ const superAdminSettings = [
     {url: orderBuyouts, title: 'Заказать выкуп', icon: <ShoppingCartIcon/>},
     {url: listBuyouts, title: 'Список заказов', icon: <FactCheckIcon/>},
     {url: addUserPayment, title: 'Пополнить баланс', icon: <PaidIcon/>},
-    {url: packageInfo, title: 'Информация доставки', icon: <InfoIcon/>},
+    // {url: packageInfo, title: 'Информация доставки', icon: <InfoIcon/>},
     {url: adminPagePath, title: 'Администратор', icon: <ManageAccountsIcon/>},
     {url: listFlightAdmin, title: 'Рейсы', icon: <FlightIcon/>},
     {url: addFlightAdmin, title: 'Добавить рейс', icon: <AddIcon/>},
