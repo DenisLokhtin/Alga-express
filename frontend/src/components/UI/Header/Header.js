@@ -89,8 +89,9 @@ const Header = () => {
             <header className="header">
                 <div className="container" style={theme.relative}>
                     <div className="header__body">
-                        <Link to="/" className="header__logo">
+                        <Link to="/" className={`header__logo`}>
                             <img src={logo} alt="alga-express"/>
+                            <span className="header__logo-title">Alga-Express</span>
                         </Link>
                         {user && user.role ? (
                             <UserMenu user={user}/>
