@@ -114,11 +114,11 @@ const Carousel = () => {
                 {carousels && carousels.map(carousel => (
                     <Fragment key={carousel._id}>
                         <h3 className={classes.carouselTitle}>{carousel.info}</h3>
-                        <img width="80%" style={{margin: '0 auto'}} src={apiURL + '/' + carousel.picture} alt={carousel.info}
+                        <img width="70%" style={{margin: '0 auto'}} src={apiURL + '/' + carousel.picture} alt={carousel.info}
                              className={classes.carouselImage}/>
                         {user && (user.role === 'superAdmin' || user.role === 'admin') && (
                             <Grid container justifyContent="space-between" spacing={2} className={classes.test}>
-                                <Grid item xs={12} sm={4} md={4} lg={4} className={classes.gridCenter}>
+                                <Grid item xs={12} sm={4} md={4} lg={3} className={classes.gridCenter}>
                                     <ButtonWithProgress
                                         type="submit"
                                         startIcon={<AddBoxIcon/>}
@@ -133,7 +133,7 @@ const Carousel = () => {
                                         Добавить изображение
                                     </ButtonWithProgress>
                                 </Grid>
-                                <Grid item xs={12} sm={4} md={4} lg={4} className={classes.gridCenter}>
+                                <Grid item xs={12} sm={4} md={4} lg={3} className={classes.gridCenter}>
                                     <ButtonWithProgress
                                         type="submit"
                                         size={'medium'}
@@ -151,7 +151,7 @@ const Carousel = () => {
                                         Редактировать изображение
                                     </ButtonWithProgress>
                                 </Grid>
-                                <Grid item xs={12} sm={4} md={4} lg={4} className={classes.gridCenter}>
+                                <Grid item xs={12} sm={4} md={4} lg={3} className={classes.gridCenter}>
                                     <ButtonWithProgress
                                         type="submit"
                                         startIcon={<DeleteOutlinedIcon/>}
