@@ -93,7 +93,7 @@ const PackageRegister = () => {
         amount: '',
         price: '',
         country: '',
-        currency: '',
+        priceCurrency: '',
     });
 
     const [value, setValue] = React.useState({});
@@ -241,7 +241,7 @@ const PackageRegister = () => {
                             <Select
                                 labelId="demo-controlled-open-select-label"
                                 id="demo-controlled-open-select"
-                                value={packageRegister.currency}
+                                value={packageRegister.priceCurrency}
                                 label="Выберите валюту"
                                 name="currency"
                                 required
@@ -302,7 +302,7 @@ const PackageRegister = () => {
                     packageRegister.amount &&
                     packageRegister.price &&
                     packageRegister.trackNumber &&
-                    packageRegister.currency &&
+                    packageRegister.priceCurrency &&
                     packageRegister.title ? (
                         <ButtonWithProgress
                             loading={loading}
