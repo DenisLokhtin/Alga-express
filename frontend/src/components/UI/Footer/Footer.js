@@ -130,12 +130,6 @@ const Footer = () => {
             <section className="ft-legal">
                 <ul className="ft-legal-list">
                     <li>
-                        <Link to="/" className="ft-legal__terms" href="#">Terms &amp; Conditions</Link>
-                    </li>
-                    <li>
-                        <Link to="/" className="ft-legal__terms" href="#">Privacy Policy</Link>
-                    </li>
-                    <li>
                         &copy; Copyright 2022 - All rights reserved
                     </li>
                 </ul>
