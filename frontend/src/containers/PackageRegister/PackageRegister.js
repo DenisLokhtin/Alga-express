@@ -236,31 +236,31 @@ const PackageRegister = () => {
                         error={getFieldError('price')}
                     />
                     <Grid item xs={12} sm={8} md={7} lg={4.5}>
-                        <FormControl variant="outlined" fullWidth error={Boolean(getFieldError('currency'))}>
+                        <FormControl variant="outlined" fullWidth error={Boolean(getFieldError('priceCurrency'))}>
                             <InputLabel id="demo-controlled-open-select-label">Валюта</InputLabel>
                             <Select
                                 labelId="demo-controlled-open-select-label"
                                 id="demo-controlled-open-select"
                                 value={packageRegister.priceCurrency}
                                 label="Выберите валюту"
-                                name="currency"
+                                name="priceCurrency"
                                 required
                                 onChange={inputChangeHandler}
                             >
-                                <MenuItem value={'usd'}>
+                                <MenuItem value={'USE'}>
                                     Доллар
                                     <AttachMoneyIcon/>
                                 </MenuItem>
-                                <MenuItem value={'try'}>
+                                <MenuItem value={'TRY'}>
                                     Турецкая лира
                                     <CurrencyLiraIcon/>
                                 </MenuItem>
-                                <MenuItem value={'cny'}>
+                                <MenuItem value={'CNY'}>
                                     Юань
                                     <CurrencyYenIcon/>
                                 </MenuItem>
                             </Select>
-                            <FormHelperText error={true}>{error?.errors?.['currency']?.message}</FormHelperText>
+                            <FormHelperText error={true}>{error?.errors?.['priceCurrency']?.message}</FormHelperText>
                         </FormControl>
                     </Grid>
                 {user?.role === 'admin' && (
