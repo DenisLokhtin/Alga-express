@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchCurrencies} from "../../store/actions/currenciesActions";
 import CurrenciesCard from "../../components/CurrenciesCard/CurrenciesCard";
 import TableComponent from "../../components/TableComponent/TableComponent";
-import {countries, saleCountry, statuses} from "../../dataLocalization";
+import {countries, saleCountry, statuses, valueIcon} from "../../dataLocalization";
 import {getOrdersHistoryRequest, giveOutRequest} from "../../store/actions/packageRegisterActions";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
