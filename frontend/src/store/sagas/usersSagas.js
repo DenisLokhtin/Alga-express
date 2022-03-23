@@ -7,7 +7,7 @@
     changePasswordSuccess,
     editPassportFailure,
     editPassportRequest,
-    editPassportSuccess,
+    editPassportSuccess, editTariff, editTariffFailure, editTariffSuccess,
     editUserDataFailure,
     editUserDataRequest,
     editUserDataSuccess,
@@ -213,6 +213,20 @@ export function* logoutUserSaga() {
     }
 }
 
+export function* editTariffSagas({payload}) {
+    const id = payload.id;
+    const group = payload.group;
+    const tariff = payload.tariff;
+
+    try {
+        const {data} = yield axiosApi.put(`users/tariffEdit?id=${id}`, {group, tariff});
+        yield put(editTariffSuccess());
+        toast.success(data.message);
+    } catch (e) {
+        yield put(editTariffFailure(e));
+    }
+}
+
 const usersSaga = [
     takeEvery(registerUser, registerUserSaga),
     takeEvery(loginUser, loginUserSaga),
@@ -226,7 +240,7 @@ const usersSaga = [
     takeEvery(resetPasswordRequest, resetPasswordSaga),
     takeEvery(changePasswordRequest, changePasswordSaga),
     takeEvery(forgotPasswordRequest, forgotPasswordSaga),
-
+    takeEvery(editTariff, editTariffSagas)
 ];
 
 export default usersSaga;

@@ -38,7 +38,7 @@ router.get('/', auth, permit('user', 'admin', 'superAdmin'), async (req, res) =>
         const size = await Payment.find(findFilter);
         const response = await Payment.find(findFilter)
             .populate('user', 'name')
-            .select('image description date user')
+            .select('image description date user status')
             .limit(limit)
             .skip(page * limit);
 

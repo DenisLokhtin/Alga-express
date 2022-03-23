@@ -193,13 +193,5 @@ export const paymentsColumns = [
         minWidth: 150,
         headerAlign: 'center',
         align: 'center',
-    },
-    {
-        field: 'amount',
-        headerName: 'Сумма',
-        flex: 1,
-        minWidth: 150,
-        headerAlign: 'center',
-        align: 'center',
     }
 ]

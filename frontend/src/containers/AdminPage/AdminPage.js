@@ -37,6 +37,7 @@ import CurrencyYenIcon from "@mui/icons-material/CurrencyYen";
 import CurrencyLiraIcon from "@mui/icons-material/CurrencyLira";
 import DeliveryModal from "../../components/DeliveryModal/DeliveryModal";
 import {toast} from "react-toastify";
+import TariffCard from "../../components/TariffCard/TariffCard";
 
 function a11yProps(index) {
     return {
@@ -108,6 +109,8 @@ const AdminPage = () => {
         name: '',
         email: '',
         _id: '',
+        tariff: null,
+        group: ''
     });
     const [inputValueSelect, setInputValueSelect] = useState('');
 
@@ -203,8 +206,8 @@ const AdminPage = () => {
             image: apiURL + '/' + payment.image,
             user: payment.user.name,
             date: dayjs(payment.date).format('DD-MM-YYYY'),
-            amount: payment.amount,
-            pay: ''
+            pay: '',
+            status: payment.status
         }
     });
 
@@ -305,6 +308,8 @@ const AdminPage = () => {
             email: '',
             name: '',
             _id: '',
+            tariff: null,
+            group: ''
         }));
         setPeriodDate(prevState => ({
             ...prevState,
@@ -462,7 +467,6 @@ const AdminPage = () => {
                                 align: 'center',
                                 renderCell: params => {
                                     const order = packages.find(order => order._id === params.id);
-                                    console.log(params);
                                         return (
                                             <div style={{display: 'flex', alignItems: 'center'}}>
                                                 {order.price} {valueIcon(order.priceCurrency)}
@@ -602,7 +606,7 @@ const AdminPage = () => {
                                 ),
                                 headerName: 'Квитанция',
                                 flex: 1,
-                                minWidth: 150,
+                                minWidth: 120,
                                 headerAlign: 'center',
                                 align: 'center',
                             },
@@ -610,16 +614,18 @@ const AdminPage = () => {
                             {
                                 headerName: 'Оплата',
                                 field: 'pay',
-                                minWidth: 100,
+                                minWidth: 120,
+                                align: 'center',
                                 editable: true
                             },
                             {
                                 field: "actions",
                                 type: "actions",
-                                width: 250,
+                                width: 130,
                                 getActions: (params) => [
                                     <Button
                                         variant="outlined"
+                                        disabled={params.row.status}
                                         onClick={() => {
                                             if (params.row.pay.length !== 0) {
                                                 dispatch(paymentAcceptedRequest({
@@ -662,8 +668,22 @@ const AdminPage = () => {
                 </TabPanelComponent>
 
                 <TabPanelComponent value={value} index={3}>
-                    {currencies &&
-                    <CurrenciesCard currency={currencies}/>}
+                    <Grid container spacing={2} flexDirection={{xs: "column", md: "row"}}>
+                        <Grid item xs={12} md={6} lg={6}>
+                            {currencies &&
+                                <CurrenciesCard currency={currencies}/>}
+                        </Grid>
+
+                        <Grid item xs={12} md={6} lg={6}>
+                            {valueSelect.tariff
+                                && searchData.search
+                                && <TariffCard
+                                    tariff={valueSelect.tariff}
+                                    id={valueSelect._id}
+                                    group={valueSelect.group}
+                                />}
+                        </Grid>
+                    </Grid>
                 </TabPanelComponent>
             </Box>
             <AppWindow

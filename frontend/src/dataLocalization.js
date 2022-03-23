@@ -22,3 +22,10 @@ export const saleCountry = {
     Turkey: 'Турция',
     China: 'Китай',
 }
+
+export const groups = {
+    NEW: 'Новый',
+    ADVANCED: 'Продвинутый',
+    BUYER: 'Байер',
+    VIP: 'VIP'
+}
