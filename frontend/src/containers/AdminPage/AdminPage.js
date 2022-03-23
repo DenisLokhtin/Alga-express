@@ -376,6 +376,7 @@ const AdminPage = () => {
                             id="usersSelected"
                             options={users}
                             getOptionLabel={(option) => (option.name + ' ' + option.email)}
+                            sx={{width: 300}}
                             renderInput={(params) => <TextField {...params} label="Пользователи"/>}
                         />
                     </Grid>
@@ -682,7 +683,6 @@ const AdminPage = () => {
                     {currencies &&
                     <CurrenciesCard currency={currencies}/>}
                 </TabPanelComponent>
-            </Box>
             <Requisites/>
             <AppWindow
                 open={openDone.open}

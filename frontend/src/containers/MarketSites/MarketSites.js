@@ -22,7 +22,7 @@ const MarketSites = () => {
             ref={messagesEndRef}
             component="section"
             maxWidth="md"
-            style={{textAlign: "center", paddingTop: '160px', paddingBottom: '150px'}}>
+            style={{textAlign: "center", paddingTop: '160px', paddingBottom: '50px'}}>
             <Grid container justifyContent={"center"} direction={"column"}>
                 {user && (user.role === 'admin' || user.role === 'superAdmin') && (
                     <MarketAdmin/>
