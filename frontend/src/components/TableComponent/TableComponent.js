@@ -78,6 +78,8 @@ const TableComponent = (
 
     return (
         <DataGrid
+            sx={{padding: 0}}
+            style={{padding: 0}}
             rows={rows}
             columns={columns}
             pagination

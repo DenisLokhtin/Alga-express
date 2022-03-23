@@ -18,7 +18,7 @@ const HowItWorks = () => {
     }, [dispatch, messagesEndRef]);
 
     return (
-        <Container ref={messagesEndRef} component='div' style={{paddingTop: '150px', paddingBottom: '100px'}}>
+        <Container className="containerStyle" ref={messagesEndRef} component='div' style={{paddingTop: '150px', paddingBottom: '100px'}}>
             <div className="post__content" dangerouslySetInnerHTML={{__html: page.text}}/>
         </Container>
     )

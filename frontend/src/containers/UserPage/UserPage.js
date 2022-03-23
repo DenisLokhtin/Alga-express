@@ -10,7 +10,7 @@ import TableComponent from "../../components/TableComponent/TableComponent";
 import {buyoutsColumns, packagesColumns, paymentsColumns} from "../AdminPage/columns/tableColumns";
 import SwitchElement from "../../components/UI/SwitchElement/SwitchElement";
 import {useDispatch, useSelector} from "react-redux";
-import {countries, statuses} from "../../dataLocalization";
+import {countries, saleCountry, statuses} from "../../dataLocalization";
 import dayjs from "dayjs";
 import {apiURL} from "../../config";
 import {changeDeliveryStatusRequest, getOrdersHistoryRequest} from "../../store/actions/packageRegisterActions";
@@ -30,6 +30,7 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import CurrencyYenIcon from "@mui/icons-material/CurrencyYen";
 import CurrencyLiraIcon from "@mui/icons-material/CurrencyLira";
 import DeliveryModal from "../../components/DeliveryModal/DeliveryModal";
+import Requisites from "../../components/Requisites/Requisites";
 
 function a11yProps(index) {
     return {
@@ -134,11 +135,11 @@ const UserPage = () => {
         return {
             id: buyout._id,
             url: buyout.url,
-            country: buyout.country,
+            country: saleCountry[buyout.country],
             description: buyout.description,
             datetime: dayjs(buyout.datetime).format('DD-MM-YYYY'),
             user: buyout.user.name,
-            status: buyout.status,
+            status: statuses[buyout.status],
             price: buyout.price,
             commission: buyout.commission,
             value: buyout.value,
@@ -158,11 +159,7 @@ const UserPage = () => {
     })
 
     useEffect(() => {
-        if (!!messagesEndRef.current) {
-            messagesEndRef.current.scrollIntoView({
-                behavior: 'smooth'
-            }, 200);
-        }
+        window.scrollTo(0, 0);
 
         if (packagesHistory) {
             dispatch(getOrdersHistoryRequest({page: packagesPage, limit: packagesPageLimit, history: true, id: userId}));
@@ -397,6 +394,7 @@ const UserPage = () => {
                     <ImageModal open={openImg} onClose={() => setOpenImg(false)} data={img}/>
                 </TabPanelComponent>
             </Box>
+            <Requisites/>
 
         </Container>
     );

@@ -4,7 +4,6 @@ const path = require('path');
 const {nanoid} = require('nanoid');
 const config = require('../config');
 const News = require('../models/News');
-const dayjs = require("dayjs");
 const sendMail = require('../middleware/sendMail');
 const {newsTextTelegram} = require('../email-texts');
 const {newsText} = require('../email-texts');
@@ -54,12 +53,9 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', upload.single('image'), async (req, res) => {
     try {
-
-
         const newsData = {
             title: req.body.title,
             description: req.body.description,
-            datetime: dayjs().format('DD/MM/YYYY'),
         };
 
         if (req.file) {
@@ -71,7 +67,7 @@ router.post('/', upload.single('image'), async (req, res) => {
 
         const users = await User.find({role: 'user'});
         users.map(async user => {
-            await sendMail({email: user.email}, 'Alga-express: '+ newsData.title, newsTextTelegram(news?.description, user.name), newsText(news?.description, user.name));
+            await sendMail({email: user.email}, 'Alga-express: ' + newsData.title, newsTextTelegram(news?.description, user.name), newsText(news?.description, user.name));
         })
         res.send(news);
     } catch (error) {
@@ -96,9 +92,9 @@ router.delete('/:id', async (req, res) => {
 });
 
 
-router.put('/:id', async (req, res) => {
+router.put('/', async (req, res) => {
     try {
-        const updatedNews = await News.findByIdAndUpdate(req.params.id, {
+        const updatedNews = await News.findByIdAndUpdate(req.body.id, {
             title: req.body.title,
             description: req.body.description,
         }, {new: true, runValidators: true});

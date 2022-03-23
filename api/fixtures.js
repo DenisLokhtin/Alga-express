@@ -79,7 +79,7 @@ const run = async () => {
             token: nanoid(),
             role: "user",
             balance: 200,
-            name: "User",
+            name: "Акмарал Айтбековна",
             tariff: newGroup,
             group: 'NEW',
             avatar: 'fixtures/avatar1.jpeg',
@@ -148,7 +148,7 @@ const run = async () => {
 
     await Buyout.create(
         {
-            description: 'Zara kid dress',
+            description: 'Правильно подобранная фраза на фото позволит выделить почти любое изображение среди остальных, сделать акцент, кратко изложить суть публикации, чтобы пользователь как минимум заинтересовался и прочитал пост. Этим пользуются многие блогеры и коммерческие аккаунты, оформляя свою ленту и stories для Инстаграм.',
             user: user,
             status: "NEW",
             image: 'fixtures/zara_dress.png',
@@ -204,7 +204,7 @@ const run = async () => {
     const packagesArray = [
         {
             trackNumber: nanoid(),
-            currency: 'usd',
+            priceCurrency: 'USD',
             title: 'package 1',
             amount: 1,
             price: 2345,
@@ -219,7 +219,7 @@ const run = async () => {
         {
             trackNumber: nanoid(),
             title: 'package 2',
-            currency: 'try',
+            priceCurrency: 'TRY',
             amount: 1,
             price: 443,
             flight: flight1,
@@ -233,7 +233,7 @@ const run = async () => {
         {
             trackNumber: nanoid(),
             title: 'package 3',
-            currency: 'cny',
+            priceCurrency: 'CNY',
             amount: 1,
             price: 7564,
             flight: flight1,
@@ -248,7 +248,7 @@ const run = async () => {
             trackNumber: nanoid(),
             title: 'package 4',
             amount: 1,
-            currency: 'usd',
+            priceCurrency: 'USD',
             price: 678,
             flight: flight2,
             country: 'chinaGround',
@@ -261,7 +261,7 @@ const run = async () => {
         {
             trackNumber: nanoid(),
             title: 'package 5',
-            currency: 'try',
+            priceCurrency: 'TRY',
             amount: 1,
             price: 345,
             flight: flight2,
@@ -275,7 +275,7 @@ const run = async () => {
         {
             trackNumber: nanoid(),
             title: 'package 6',
-            currency: 'try',
+            priceCurrency: 'TRY',
             amount: 1,
             price: 345,
             flight: flight2,
@@ -327,22 +327,34 @@ const run = async () => {
 
     await Market.create(
         {
+            title: 'title 5',
+            image: 'fixtures/verizon.svg',
+            url: 'https://www.walmart.com/',
+            deleted: false,
+        },
+        {
+            title: 'title 2',
+            image: 'fixtures/ebay.svg',
+            url: 'https://www.ebay.com/?mkevt=1&siteid=1&mkcid=2&mkrid=711-153320-877174-6&source_name=google&mktype=brand&campaignid=9116265290&groupid=95976135767&crlp=414435097829&keyword=ebay&targeted=kwd-11021220&MT_ID=e&adpos=&device=c&googleloc=1009827&geo_id=212&gclid=Cj0KCQiArt6PBhCoARIsAMF5wajF7BGAA0hX1vUcvT3Vg0s2K130oqDDI0S1sR_Efg0S_99_pGC9w1IaApF6EALw_wcB',
+            deleted: false,
+        },
+        {
+            title: 'title 3',
+            image: 'fixtures/sears.svg',
+            url: 'https://www.sears.com/en_us/yikes.html',
+            deleted: false,
+        },
+        {
+            title: 'title 4',
+            image: 'fixtures/walmart.svg',
+            url: 'https://www.walmart.com/',
+            deleted: false,
+        },
+        {
             title: 'title 1',
-            image: 'fixtures/amazon.png',
+            image: 'fixtures/amazon.svg',
             url: 'https://www.amazon.com/',
             deleted: false,
-        },
-        {
-            title: 'title 2',
-            image: 'fixtures/ebay.png',
-            url: 'https://www.ebay.com/?mkevt=1&siteid=1&mkcid=2&mkrid=711-153320-877174-6&source_name=google&mktype=brand&campaignid=9116265290&groupid=95976135767&crlp=414435097829&keyword=ebay&targeted=kwd-11021220&MT_ID=e&adpos=&device=c&googleloc=1009827&geo_id=212&gclid=Cj0KCQiArt6PBhCoARIsAMF5wajF7BGAA0hX1vUcvT3Vg0s2K130oqDDI0S1sR_Efg0S_99_pGC9w1IaApF6EALw_wcB',
-            deleted: false,
-        },
-        {
-            title: 'title 2',
-            image: 'fixtures/ebay.png',
-            url: 'https://www.ebay.com/?mkevt=1&siteid=1&mkcid=2&mkrid=711-153320-877174-6&source_name=google&mktype=brand&campaignid=9116265290&groupid=95976135767&crlp=414435097829&keyword=ebay&targeted=kwd-11021220&MT_ID=e&adpos=&device=c&googleloc=1009827&geo_id=212&gclid=Cj0KCQiArt6PBhCoARIsAMF5wajF7BGAA0hX1vUcvT3Vg0s2K130oqDDI0S1sR_Efg0S_99_pGC9w1IaApF6EALw_wcB',
-            deleted: true,
         },
     );
 

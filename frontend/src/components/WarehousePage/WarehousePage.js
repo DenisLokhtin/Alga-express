@@ -21,7 +21,8 @@ const useStyles = makeStyles(theme => ({
     },
     tableContainer: {
         boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
-        marginBottom: '80px'
+        marginBottom: '80px',
+        borderRadius: '10px',
     },
     container: {
         paddingTop: '20px',
@@ -72,10 +73,10 @@ const WarehousePage = () => {
         <Container maxWidth="lg" className={classes.container}>
             <Grid container direction={"column"} justifyContent={"center"}>
                 <Grid>
-                    <div className={classes.countryFlag}></div>
+                    <div className={classes.countryFlag}/>
                 </Grid>
                 <Grid item>
-                    <Box ref={messagesEndRef} sx={{width: '100%', typography: 'body1'}} style={{paddingTop: '20px'}}
+                    <Box ref={messagesEndRef} sx={{width: '100%', typography: 'body1'}} style={{padding: '25px 25px 40px 25px'}}
                          className={classes.tableContainer}>
                         {user && user.role === 'admin' ?
                             <Grid item xs={5}>

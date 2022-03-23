@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {fetchUserPaymentRequest} from "../../store/actions/usersActions";
 import {Container, Grid} from "@mui/material";
@@ -162,7 +162,7 @@ const UserPayments = () => {
         messagesEndRef
     ]);
 
-    useMemo(() => {
+    useEffect(() => {
         if (paymentData) {
             setHeights(paymentData.data.length * 150 + 170);
         }

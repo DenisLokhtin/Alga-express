@@ -97,11 +97,12 @@ const Contacts = () => {
     };
 
     return (
-        <Container style={{'textAlign': 'center', paddingTop: '200px'}} component='div' ref={messagesEndRef}>
+        <Container style={{'textAlign': 'center', paddingTop: '200px'}} component='div' ref={messagesEndRef} className="containerStyle">
             <Container style={{
                 'borderRadius': '3px',
                 'margin': '10px 0 20px 0',
-                'textAlign': 'left'
+                'textAlign': 'left',
+                'paddingBottom': '40px',
             }}
                        component='div'>
 

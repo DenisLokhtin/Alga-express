@@ -63,7 +63,7 @@ router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) =>
 
         const packages = await Package.find(findFilter)
             .populate({path: 'flight user', select: 'name number description depart_date arrived_date'})
-            .select('title trackNumber country cargoNumber status description price currency delivery amount')
+            .select('title trackNumber country cargoNumber status description price priceCurrency delivery amount')
             .sort(query.sort)
             .limit(limit)
             .skip(page * limit);
@@ -80,7 +80,7 @@ router.get('/:id', auth, permit('admin', 'warehouseman', 'user', 'superAdmin'), 
         if (req.user.role === 'user') {
             const packageFind = await Package.findById(req.params.id)
                 .populate({path: 'flight user', select: 'name number description depart_date arrived_date'})
-                .select('trackNumber title amount price country status date cargoNumber currency urlPackage delivery');
+                .select('trackNumber title amount price country status date cargoNumber priceCurrency urlPackage delivery');
             if (packageFind.user._id.toString() === req.user._id.toString()) {
                 return res.send(packageFind);
             }
@@ -119,7 +119,7 @@ router.post('/', auth, packageValidate, permit('admin', 'superAdmin', 'user'), a
             amount: req.body.amount,
             price: price,
             user: req.user._id,
-            currency: req.body.currency,
+            priceCurrency: req.body.priceCurrency,
         };
 
         const packageAdmin = {
@@ -129,7 +129,7 @@ router.post('/', auth, packageValidate, permit('admin', 'superAdmin', 'user'), a
             amount: req.body.amount,
             price: price,
             user: req.body.userId,
-            currency: req.body.currency,
+            priceCurrency: req.body.priceCurrency,
         }
 
         const notFoundTrackNumber = await NotFoundTrackNumber.findOne({notFoundTrackNumber: packageData.trackNumber});

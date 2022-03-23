@@ -1,6 +1,7 @@
 export const statuses = {
+    NEW: 'Новый',
     REGISTERED: 'Оформлен',
-    DELIVERED: 'Доставлено',
+    DELIVERED: 'Прибыл',
     ON_WAREHOUSE: 'На складе',
     ON_WAY: 'В пути',
     PROCESSED: 'В процессе',
@@ -9,9 +10,15 @@ export const statuses = {
 };
 
 export const countries = {
-    usa: 'Америка',
-    turkey: 'Турция-Авиа',
-    turkeyGround: 'Турция (Наземная доставка)',
-    china: 'Китай-Авиа',
-    chinaGround: 'Китай (Наземная доставка)',
+    usa: 'Америка - Авиа',
+    turkey: 'Турция - Авиа',
+    turkeyGround: 'Турция',
+    china: 'Китай - Авиа',
+    chinaGround: 'Китай',
 };
+
+export const saleCountry = {
+    USA: 'Америка',
+    Turkey: 'Турция',
+    China: 'Китай',
+}

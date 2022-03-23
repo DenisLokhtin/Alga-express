@@ -16,13 +16,13 @@ const PackageSchema = new mongoose.Schema({
             message: 'Этот Трек-номер уже есть в базе!',
         },
     },
-
-    currency: {
-        type: String,
-        trim: true,
-        required: 'Поле Валюта обязательное',
-        enum: ['usd', 'try', 'cny']
-    },
+    //
+    // currency: {
+    //     type: String,
+    //     trim: true,
+    //     required: 'Поле Валюта обязательное',
+    //     enum: ['usd', 'try', 'cny']
+    // },
 
     title: {
         type: String,
@@ -43,8 +43,10 @@ const PackageSchema = new mongoose.Schema({
         required: 'Поле Цена обязательное',
         min: [0, 'Цена не может быть меньше нуля'],
     },
-    priceCurrency:{
+    priceCurrency: {
         type: String,
+        trim: true,
+        required: 'Поле Валюта обязательное',
         enum: ['USD', 'TRY', 'CNY'],
     },
     flight: {
@@ -72,7 +74,7 @@ const PackageSchema = new mongoose.Schema({
     status: {
         type: String,
         trim: true,
-        enum: ['REGISTERED', 'ON_WAREHOUSE', 'ON_WAY', 'PROCESSED','DELIVERED', 'DONE', 'ERASED'],
+        enum: ['REGISTERED', 'ON_WAREHOUSE', 'ON_WAY', 'PROCESSED', 'DELIVERED', 'DONE', 'ERASED'],
         default: 'REGISTERED',
     },
     deleted: {
@@ -123,14 +125,14 @@ const PackageSchema = new mongoose.Schema({
     }
 });
 
-PackageSchema.pre('save',  function (next) {
+PackageSchema.pre('save', function (next) {
     const packages = this;
     let numberPackage = '';
     Package.find({}, function (error, pack) {
         if (error) throw error;
         numberPackage = String(pack.length + 1);
         const loop = 6 - numberPackage.length;
-        for (let i = 0; i < loop; i++){
+        for (let i = 0; i < loop; i++) {
             numberPackage = 0 + numberPackage;
         }
         packages.cargoNumber = numberPackage;

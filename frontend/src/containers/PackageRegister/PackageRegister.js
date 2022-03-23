@@ -87,7 +87,6 @@ const PackageRegister = () => {
         }
     }, [dispatch, user]);
 
-
     const [packageRegister, setPackageRegister] = useState({
         trackNumber: '',
         title: '',
@@ -96,7 +95,6 @@ const PackageRegister = () => {
         country: '',
         currency: '',
     });
-
 
     const [value, setValue] = React.useState({});
     const [inputValue, setInputValue] = React.useState('');
@@ -167,7 +165,7 @@ const PackageRegister = () => {
                 justifyContent="center"
                 container
                 noValidate
-                spacing={5}
+                spacing={2}
             >
                 <Grid item xs={12} sm={8} md={7} lg={9}>
                     <FormControl variant="outlined" fullWidth error={Boolean(getFieldError('country'))}>
