@@ -81,8 +81,6 @@ const PackageRegister = () => {
     const data = useLocation();
     const buyoutUser = data?.state?.userProps;
 
-    console.log(error);
-
     useEffect(() => {
         if(user?.role !== 'user'){
             dispatch(fetchUsersRequest());
@@ -249,7 +247,7 @@ const PackageRegister = () => {
                                 required
                                 onChange={inputChangeHandler}
                             >
-                                <MenuItem value={'USD'}>
+                                <MenuItem value={'USE'}>
                                     Доллар
                                     <AttachMoneyIcon/>
                                 </MenuItem>
