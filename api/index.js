@@ -50,7 +50,7 @@ app.use('/userEdit', userEdit);
 app.use('/flights', flight);
 app.use('/buyouts', buyouts);
 app.use('/cargo', administration);
-app.use('/payments', userPayments);
+// app.use('/payments', userPayments);
 app.use('/warehouses', wareHouses);
 app.use('/pages', pages);
 app.use('/requisites', requisites);
