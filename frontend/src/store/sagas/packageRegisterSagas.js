@@ -33,12 +33,14 @@ import {
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
 import History from '../../History';
+import {root} from "../../paths";
+
 
 function* packageRegisterSagas({payload: packageData}) {
     try {
         yield axiosApi.post('/packages', packageData);
         yield put(createPackageSuccess());
-        History.push('/');
+            History.push(root);
         toast.success('Ваш заказ был успешно создан');
     } catch (e) {
         yield put(createPackageFailure(e.response.data));

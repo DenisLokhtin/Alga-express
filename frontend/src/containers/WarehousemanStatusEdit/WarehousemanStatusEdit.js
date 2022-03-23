@@ -19,12 +19,14 @@ import {createTheme} from "@mui/material/styles";
 
 const menuItems = [
     {value: 'REGISTERED', text: 'Оформлен'},
+    {value: 'DELIVERED', text: 'Прибыл'},
     {value: 'ON_WAREHOUSE', text: 'На складе'},
-    {value: 'ON_WAY', text: 'Вылетел'},
-    {value: 'PROCESSED', text: 'Обрабатывается'},
-    {value: 'DELIVERED', text: 'Готово к выдаче'},
-    {value: 'DONE', text: 'Выдано'},
+    {value: 'ON_WAY', text: 'В пути'},
+    {value: 'PROCESSED', text: 'В процессе'},
+    {value: 'DONE', text: 'Выдан'},
+    {value: 'ERASED', text: 'Удален'},
 ];
+
 
 const theme = createTheme({
     breakpoints: {
