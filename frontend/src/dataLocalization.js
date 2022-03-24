@@ -9,7 +9,6 @@ export const statuses = {
     DELIVERED: 'Прибыл',
     ON_WAREHOUSE: 'На складе',
     ON_WAY: 'В пути',
-    PROCESSED: 'В процессе',
     DONE: 'Выдан',
     ERASED: 'Удалён',
 };

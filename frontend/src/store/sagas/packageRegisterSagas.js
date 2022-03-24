@@ -33,6 +33,7 @@ import {
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
 import History from '../../History';
+import {adminPagePath} from "../../paths";
 
 function* packageRegisterSagas({payload: packageData}) {
     try {
@@ -79,6 +80,7 @@ function* packageEditAdminSagas({payload}) {
         yield axiosApi.put(`/packages/` + payload.id, payload.obj);
         yield put(editAdminPackageSuccess());
         toast.success('Заказ был успешно отредактирован');
+        History.push(adminPagePath);
     } catch (e) {
         yield put(changePackageFailure(e.response.data));
     }
@@ -154,14 +156,14 @@ function* changeDeliveryStatus({payload: data}) {
 }
 
 
-// export function* fetchNewPackagesSaga() {
+/*// export function* fetchNewPackagesSaga() {
 //     try {
 //         const {data} = yield axiosApi.get('/packages/newPackages');
 //         yield put(fetchNewPackagesSuccess(data));
 //     } catch (e) {
 //         yield put(fetchNewPackagesFailure(e));
 //     }
-// }
+// }*/
 
 
 export function* fetchNewPackagesSaga() {

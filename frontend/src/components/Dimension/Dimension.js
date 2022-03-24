@@ -8,7 +8,7 @@ const Dimension = (props) => {
     return (
         <Grid container justifyContent="space-between">
             <FormElement
-                xs={12} sm={4} md={4} lg={3}
+                xs={3.5} sm={3.5} md={3.5} lg={3.5}
                 name="width"
                 value={width}
                 onChange={packageHandler}
@@ -20,7 +20,7 @@ const Dimension = (props) => {
                 label="Ширина"
             />
             <FormElement
-                xs={12} sm={4} md={4} lg={3}
+                xs={3.5} sm={3.5} md={3.5} lg={3.5}
                 name="height"
                 value={height}
                 onChange={packageHandler}
@@ -32,7 +32,7 @@ const Dimension = (props) => {
                 label="Высота"
             />
             <FormElement
-                xs={12} sm={4} md={4} lg={3}
+                xs={3.5} sm={3.5} md={3.5} lg={3.5}
                 name="length"
                 value={length}
                 onChange={packageHandler}

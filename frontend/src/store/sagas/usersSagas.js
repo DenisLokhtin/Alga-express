@@ -1,4 +1,4 @@
- import {
+import {
     addUserPaymentFailure,
     addUserPaymentRequest,
     addUserPaymentSuccess,
@@ -7,7 +7,10 @@
     changePasswordSuccess,
     editPassportFailure,
     editPassportRequest,
-    editPassportSuccess, editTariff, editTariffFailure, editTariffSuccess,
+    editPassportSuccess,
+    editTariff,
+    editTariffFailure,
+    editTariffSuccess,
     editUserDataFailure,
     editUserDataRequest,
     editUserDataSuccess,
@@ -38,7 +41,7 @@ import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
 import History from '../../History';
 import {adminPagePath, processingTrackNumbersAdmin, userLogin, userPage} from "../../paths";
- import {put, takeEvery} from "redux-saga/effects";
+import {put, takeEvery} from "redux-saga/effects";
 
 export function* registerUserSaga({payload}) {
     try {
@@ -56,27 +59,17 @@ export function* registerUserSaga({payload}) {
         if (response.data.creator === 'superAdmin') {
             if (payload?.role === 'admin') {
                 toast.success('Вы успешно создали администратора');
+                History.push(adminPagePath);
                 yield put(registerUserSuccess());
             } else if (payload?.role === 'warehouseman') {
-                toast.success('Вы успешно создали складовщика');
                 yield put(registerUserSuccess());
+                toast.success('Вы успешно создали складовщика');
+                History.push(adminPagePath);
             }
         } else {
             yield put(registerUserSuccess(response.data));
-            switch (response.data.role) {
-                case 'admin' || 'superAdmin':
-                    History.push(adminPagePath);
-                    break;
-                case 'warehouseman':
-                    History.push(processingTrackNumbersAdmin);
-                    break;
-                case 'user':
-                    History.push(userPage);
-                    break;
-                default:
-                    return
-            }
             toast.success('Вы зарегистрированы');
+            History.push(userPage);
         }
     } catch (e) {
         toast.error(e.response.data.global);

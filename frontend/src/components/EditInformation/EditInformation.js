@@ -137,7 +137,7 @@ const EditPages = () => {
                 <h2 style={theme.title}>Отредактировать информацию</h2>
 
                 <Grid item xs={12} sm={8} md={7} lg={7}>
-                    <FormControl variant="standard" fullWidth>
+                    <FormControl variant="outlined" fullWidth>
                         <InputLabel id="demo-controlled-open-select-label">Информация</InputLabel>
                         <Select
                             labelId="demo-controlled-open-select-label"
