@@ -120,11 +120,13 @@ const Header = () => {
                                             Как это работает
                                         </Link>
                                     </li>
-                                    <li className="header__list-item" onClick={addClass}>
-                                        <Link className="menu__link hover" to={sitesCompany}>
-                                            Где покупать
-                                        </Link>
-                                    </li>
+                                    {user?.role === 'admin' || user?.role === 'superAdmin' ? (
+                                        <li className="header__list-item" onClick={addClass}>
+                                            <Link className="menu__link hover" to={sitesCompany}>
+                                                Где покупать
+                                            </Link>
+                                        </li>
+                                    ) : null}
                                     <li className="header__list-item" onClick={addClass}>
                                         <Link className="menu__link hover" to={contactsCompany}>
                                             Контакты

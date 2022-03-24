@@ -22,9 +22,13 @@ const menuItems = [
     {value: 'REGISTERED'},
     {value: 'ON_WAREHOUSE'},
     {value: 'ON_WAY'},
-    {value: 'PROCESSED'},
     {value: 'DELIVERED'},
     {value: 'DONE'},
+];
+
+const warehousemanMenuItems = [
+    {value: 'ON_WAREHOUSE'},
+    {value: 'ON_WAY'},
 ];
 
 const theme = createTheme({
@@ -44,7 +48,6 @@ const useStyles = makeStyles(() => ({
     },
 
     container: {
-        textAlign: 'center',
         paddingTop: '175px',
         marginBottom: '30px',
         [theme.breakpoints.down('sm')]: {
@@ -70,6 +73,7 @@ const useStyles = makeStyles(() => ({
 
 const WarehousemanStatusEdit = () => {
     const classes = useStyles();
+    const user = useSelector(state => state.users.user);
     const dispatch = useDispatch();
     const notFoundTrackNumbers = useSelector(state => state.package.notFoundTrackNumbers);
     const error = useSelector(state => state.package.changeStatusesError);
@@ -112,25 +116,50 @@ const WarehousemanStatusEdit = () => {
     }, [dispatch, messagesEndRef]);
 
     return (
-        <Container ref={messagesEndRef} className={classes.container} maxWidth="md" style={{textAlign: 'center'}}>
-            <Grid container component="form" onSubmit={submit} justifyContent="center" spacing={4}>
+        <Container ref={messagesEndRef} className={classes.container} maxWidth="md">
+            <Grid container component="form" onSubmit={submit} justifyContent="center" spacing={3}>
                 <Grid item xs={12} sm={8} md={7} lg={7}>
-                    <FormControl variant="standard" fullWidth>
+                    <Typography
+                        variant="h4"
+                        sx={{
+                            fontWeight: 'bold',
+                            textAlign: 'center',
+                            fontSize: {
+                                xs: '18px',
+                                sm: '20px',
+                                md: '22px',
+                                lg: '26px',
+                            }
+                        }}>
+                        Смена статуса посылок
+                    </Typography>
+                </Grid>
+                <Grid item xs={12} sm={8} md={7} lg={7}>
+                    <FormControl variant="outlined" fullWidth>
                         <InputLabel id="demo-controlled-open-select-label" required>Выберите статус
                             трек-номеров</InputLabel>
                         <Select
                             labelId="demo-controlled-open-select-label"
                             id="demo-controlled-open-select"
+                            label="Выберите статус трек-номеров"
                             value={packageStatus.status}
                             name="status"
                             required
                             onChange={onInputChange}
                         >
-                            {menuItems.map(menuItem => (
-                                <MenuItem key={menuItem.value} value={menuItem.value}>
-                                    {statuses[menuItem.value]}
-                                </MenuItem>
-                            ))}
+                            {user?.role === 'admin' || user?.role === 'superAdmin' ? (
+                                menuItems.map(menuItem => (
+                                    <MenuItem key={menuItem.value} value={menuItem.value}>
+                                        {statuses[menuItem.value]}
+                                    </MenuItem>
+                                ))
+                            ) : (
+                                warehousemanMenuItems.map(menuItem => (
+                                    <MenuItem key={menuItem.value} value={menuItem.value}>
+                                        {statuses[menuItem.value]}
+                                    </MenuItem>
+                                ))
+                            )}
                         </Select>
                     </FormControl>
                 </Grid>

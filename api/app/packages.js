@@ -11,7 +11,7 @@ const User = require("../models/User");
 const Currency = require('../models/Currency');
 const packageValidate = require("../middleware/packageValidate");
 const {packagesText} = require('../email-texts');
-const {packagesTextTelegram} = require('../email-texts')
+// const {packagesTextTelegram} = require('../email-texts')
 const sendMail = require("../middleware/sendMail");
 const status = require('../app/dataLocalization');
 
@@ -106,7 +106,7 @@ router.get('/:id', auth, permit('admin', 'warehouseman', 'user', 'superAdmin'), 
             const packageFind = await Package.findById(req.params.id)
                 .populate({path: 'flight user', select: 'name number description depart_date arrived_date'})
                 .select('trackNumber title amount price country status ' +
-                    'date cargoNumber width length height cargoWeight cargoPrice urlPackage delivery');
+                    'date cargoNumber width length height cargoWeight cargoPrice priceCurrency urlPackage delivery');
             return res.send(packageFind);
         }
 
@@ -127,7 +127,6 @@ router.post('/', auth, packageValidate, permit('admin', 'superAdmin', 'user'), a
     }
 
     try {
-
         const packageData = {
             country: req.body.country,
             title: req.body.title,
@@ -209,7 +208,8 @@ router.put('/', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req,
                 const userObj = await updatedStatuses.populate('user', 'email name');
                 await sendMail({email: userObj.user.email},
                     'Alga-express: Смена статуса у посылки',
-                    packagesTextTelegram(userObj.trackNumber, status[userObj.status], userObj.user.name),
+                    null,
+                    // packagesTextTelegram(userObj.trackNumber, status[userObj.status], userObj.user.name),
                     packagesText(userObj.trackNumber, status[userObj.status], userObj.user.name));
             }
 
@@ -288,7 +288,7 @@ router.put('/:id', auth, permit('admin', 'warehouseman', 'superAdmin', 'user'), 
         if (req.user.role === 'user')
             result = userEdit(req.user, packageFind, req.body);
 
-        if (req.user.role === 'admin' || req.user.role === 'warehouseman')
+        if (req.user.role === 'admin' || req.user.role === 'superAdmin')
             result = adminEdit(req.user, packageFind, req.body, prices);
 
         if (result.error)
@@ -321,6 +321,7 @@ router.put('/:id', auth, permit('admin', 'warehouseman', 'superAdmin', 'user'), 
 
         res.send(result.success);
     } catch (e) {
+        console.log(e.message);
         res.status(400).send(e);
     }
 });
