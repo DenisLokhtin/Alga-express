@@ -121,7 +121,7 @@ const Buyout = () => {
                            labelId="demo-controlled-open-select-label"
                            id="demo-controlled-open-select"
                            value={buyout.country}
-                           label="Из какой страны выкупить"
+                           label="Страна"
                            name="country"
                            required
                            onChange={inputChangeHandler}

@@ -99,10 +99,9 @@ const EditPages = () => {
                 onSubmit={submitFormHandler}
                 noValidate
             >
-                <h2 style={theme.title}>Отредактировать страницу</h2>
-
+                <h3 style={theme.title}>Отредактировать страницу</h3>
                 <Grid item xs={12} sm={8} md={7} lg={7}>
-                    <FormControl variant="standard" fullWidth>
+                    <FormControl variant="outlined" fullWidth>
                         <InputLabel id="demo-controlled-open-select-label">Страница</InputLabel>
                         <Select
                             labelId="demo-controlled-open-select-label"

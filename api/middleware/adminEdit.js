@@ -68,22 +68,22 @@ const adminEdit = (user, packageOrder, updateData, price) => {
             packageOrder.height = updateData.height;
 
             if (packageOrder.country === "usa") {
-                packageOrder.cargoPrice = comparisonValue(updateData.width, updateData.length, updateData.height, packageOrder.weight, price.usa);
+                packageOrder.cargoPrice = comparisonValue(updateData.width, updateData.length, updateData.height, packageOrder.cargoWeight, price.usa);
             }
 
             if (packageOrder.country === "turkey") {
-                packageOrder.cargoPrice = comparisonValue(updateData.width, updateData.length, updateData.height, packageOrder.weight, price.turkey);
+                packageOrder.cargoPrice = comparisonValue(updateData.width, updateData.length, updateData.height, packageOrder.cargoWeight, price.turkey);
             }
 
             if (packageOrder.country === "turkeyGround") {
-                packageOrder.cargoPrice = comparisonValue(updateData.width, updateData.length, updateData.height, packageOrder.weight, price.turkeyGround);
+                packageOrder.cargoPrice = comparisonValue(updateData.width, updateData.length, updateData.height, packageOrder.cargoWeight, price.turkeyGround);
             }
 
             if (packageOrder.country === "china") {
-                packageOrder.cargoPrice = comparisonValue(updateData.width, updateData.length, updateData.height, packageOrder.weight, price.china);
+                packageOrder.cargoPrice = comparisonValue(updateData.width, updateData.length, updateData.height, packageOrder.cargoWeight, price.china);
             }
             if (packageOrder.country === "chinaGround") {
-                packageOrder.cargoPrice = comparisonValue(updateData.width, updateData.length, updateData.height, packageOrder.weight, price.chinaGround);
+                packageOrder.cargoPrice = comparisonValue(updateData.width, updateData.length, updateData.height, packageOrder.cargoWeight, price.chinaGround);
             }
         }
 

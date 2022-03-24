@@ -10,7 +10,7 @@ const NotFoundTrackNumberSchema = new mongoose.Schema({
     status: {
         type: String,
         trim: true,
-        enum: ['REGISTERED', 'ON_WAREHOUSE', 'ON_WAY', 'PROCESSED', 'DELIVERED', 'DONE'],
+        enum: ['REGISTERED', 'ON_WAREHOUSE', 'ON_WAY', 'DELIVERED', 'DONE'],
         default: 'REGISTERED',
     },
 });
