@@ -13,7 +13,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {countries, saleCountry, statuses, valueIcon} from "../../dataLocalization";
 import dayjs from "dayjs";
 import {apiURL} from "../../config";
-import {changeDeliveryStatusRequest, getOrdersHistoryRequest} from "../../store/actions/packageRegisterActions";
+import {getOrdersHistoryRequest} from "../../store/actions/packageRegisterActions";
 import {fetchBuyoutsList} from "../../store/actions/buyoutActions";
 import {fetchPaymentRequest} from "../../store/actions/paymentActions";
 import Typography from "@mui/material/Typography";
@@ -24,13 +24,13 @@ import {makeStyles} from "@mui/styles";
 import EditIcon from "@mui/icons-material/Edit";
 import {Link} from "react-router-dom";
 import {editBuyout} from "../../paths";
-import {deleteDeliveryRequest} from "../../store/actions/deliveryAction";
-import Checkbox from "@mui/material/Checkbox";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import CurrencyYenIcon from "@mui/icons-material/CurrencyYen";
 import CurrencyLiraIcon from "@mui/icons-material/CurrencyLira";
 import DeliveryModal from "../../components/DeliveryModal/DeliveryModal";
 import Requisites from "../../components/Requisites/Requisites";
+import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
+
 
 function a11yProps(index) {
     return {
@@ -71,15 +71,7 @@ const UserPage = () => {
     const [update, setUpdate] = useState(false);
     const userId = useSelector(state => state.users.user._id);
     const [open, setOpen] = useState(false);
-    const [currentModal, setCurrentModal] = useState({
-        cargoNumber: "1",
-        country: "Китай-Авия",
-        delivery: "false",
-        id: "6220b025363a1780b6f28293",
-        status: "В пути",
-        title: "package 3",
-        trackNumber: "DnS5myCQv6H4H1_4YCtPM",
-    });
+    const [packageData, setPackageData] = useState(null);
     const [openImg, setOpenImg] = useState(false);
     const [img, setImg] = useState(null);
 
@@ -110,8 +102,6 @@ const UserPage = () => {
     const [buyoutsSelectionModel, setBuyoutsSelectionModel] = useState([]);
     const buyoutsPrevSelection = useRef(buyoutsSelectionModel);
 
-    const handleClose = () => setOpen(false);
-
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -128,6 +118,7 @@ const UserPage = () => {
             amount: order.amount,
             price: order.price,
             delivery: order.delivery,
+            user: order.user.name
         }
     });
 
@@ -218,13 +209,6 @@ const UserPage = () => {
                 </Box>
 
                 <TabPanelComponent value={value} index={0}>
-                    <DeliveryModal title={currentModal.title}
-                                   track={currentModal.trackNumber}
-                                   status={currentModal.status}
-                                   country={currentModal.country}
-                                   open={open} page={packagesPage}
-                                   pageLimit={packagesPageLimit}
-                                   close={handleClose}/>
                     <TableComponent
                         rows={packagesRows}
                         columns={[
@@ -267,22 +251,19 @@ const UserPage = () => {
                                 minWidth: 90,
                                 headerAlign: 'center',
                                 align: 'center',
-                                renderCell: (params) => {
-                                    const onClick = (e) => {
-                                        e.stopPropagation();
-                                        if (e.target.checked) {
+                                renderCell: (params) => (
+                                    <IconButton
+                                        disabled={params.row.delivery !== undefined}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setPackageData({...params.row});
                                             setOpen(true);
-                                            setCurrentModal({...params.row});
-                                        } else {
-                                            dispatch(changeDeliveryStatusRequest({...params.row}));
-                                            dispatch(deleteDeliveryRequest({...params.row}));
                                             setUpdate(!update);
-                                        }
-                                    };
-                                    return (
-                                        <Checkbox checked={params.row.delivery} onChange={(e) => onClick(e)}/>
-                                    );
-                                }
+                                        }}
+                                    >
+                                        <DeliveryDiningIcon/>
+                                    </IconButton>
+                                )
                             },
                         ]}
                         pageSize={packagesPageLimit}
@@ -305,6 +286,8 @@ const UserPage = () => {
                             />
                         }
                     />
+
+                    <DeliveryModal open={open} onClose={() => setOpen(false)} packageData={packageData}/>
                 </TabPanelComponent>
 
                 <TabPanelComponent value={value} index={1}>

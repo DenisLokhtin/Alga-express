@@ -1,28 +1,20 @@
 const express = require("express");
 const Delivery = require('../models/Delivery');
+const Package = require('../models/Package');
 const auth = require("../middleware/auth");
 const permit = require("../middleware/permit");
 
 const router = express.Router();
 
-router.get('/', auth, permit('admin'), async (req, res) => {
+router.put('/:id', auth, permit('user', 'admin', 'warehouseman', 'superAdmin'), async (req, res) => {
     try {
-        const delivery = await Delivery.find({});
-        res.send(delivery);
-    } catch (e) {
-        console.log(e);
-        res.sendStatus(400);
-    }
-});
-
-router.put('/', auth, permit('user', 'admin', 'warehouseman', 'superAdmin'), async (req, res) => {
-    try {
-        const updatedDelivery = await Delivery.findOneAndUpdate({_id: req.params._id}, {
+        const updatedDelivery = await Delivery.findByIdAndUpdate(req.params.id, {
             completed: req.body.completed,
         });
 
-        res.send(updatedDelivery);
+        if (!updatedDelivery) return res.status(404).send({message: 'Доставка не найдена!'});
 
+        res.send({message: 'Посылка доставлена!'});
     } catch (error) {
         res.status(400).send(error);
     }
@@ -32,27 +24,23 @@ router.post('/', auth, permit('user', 'admin', 'warehouseman', 'superAdmin'), as
     try {
         const deliveryData = {
             address: req.body.address,
-            user: req.user._id,
-            trackNumber: req.body.trackNumber,
         };
 
         const newDelivery = new Delivery(deliveryData);
 
-        await newDelivery.save();
-        return res.send(newDelivery);
+        const deliveryId = await newDelivery.save();
 
+        const package = await Package.findById(req.query.package);
+
+        if (package.delivery) return res.status(400).send({message: "У данной посылки доставка уже оформлена!"})
+
+        const deliveryBinding = await Package.findByIdAndUpdate(req.query.package, {delivery: deliveryId._id})
+
+        if (!deliveryBinding) return res.status(404).send({message: "Посылка не найдена"});
+
+        res.send({message: 'Доставка оформлена!'});
     } catch (error) {
-        console.log(error.message);
         res.status(400).send(error);
-    }
-});
-
-router.delete('/:trackNumber', auth, permit('user', 'admin', 'warehouseman', 'superAdmin'), async (req, res) => {
-    try {
-        await Delivery.findOneAndDelete({trackNumber: req.params.trackNumber});
-        res.send('Удалено');
-    } catch (error) {
-        res.status(404).send(error);
     }
 });
 

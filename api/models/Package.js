@@ -120,8 +120,8 @@ const PackageSchema = new mongoose.Schema({
         trim: true
     },
     delivery: {
-        type: Boolean,
-        default: false
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Delivery'
     }
 });
 

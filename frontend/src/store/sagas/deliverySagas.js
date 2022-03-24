@@ -2,66 +2,40 @@ import {put, takeEvery} from 'redux-saga/effects';
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
 import {
-    getDeliveryRequest,
-    getDeliverySuccess,
-    getDeliveryFailure,
     putDeliveryRequest,
     putDeliverySuccess,
     putDeliveryFailure,
     postDeliveryRequest,
     postDeliverySuccess,
     postDeliveryFailure,
-    deleteDeliveryRequest,
-    deleteDeliverySuccess,
-    deleteDeliveryFailure,
 } from '../actions/deliveryAction';
 
-function* postDelivery({payload: data}) {
+function* postDelivery({payload}) {
     try {
-        yield axiosApi.post('/delivery', data);
+        const {data} = yield axiosApi.post(`/delivery?package=${payload.package}`, payload.address);
         yield put(postDeliverySuccess());
-        toast.success('Заказ на доставку добавлен!');
+        toast.success(data.message);
+        payload.onClose();
     } catch (e) {
-        yield put(postDeliveryFailure(e.response.data));
+        yield put(postDeliveryFailure(e));
+        toast.error(e.response.data.errors.address.message);
     }
 }
 
-function* getDelivery() {
+function* putDelivery({payload: deliveryData}) {
     try {
-        const response = yield axiosApi.get(`/delivery`);
-        yield put(getDeliverySuccess(response.data));
-    } catch (e) {
-        yield put(getDeliveryFailure(e.response.data));
-    }
-}
-
-function* putDelivery({payload}) {
-    try {
-        yield axiosApi.put(`/delivery`, payload);
+        const {data} = yield axiosApi.put(`/delivery/${deliveryData.id}`, deliveryData.data);
         yield put(putDeliverySuccess());
-        toast.success('Заказ на доcтавку завершён!');
+        toast.success(data.message);
     } catch (e) {
         yield put(putDeliveryFailure(e.response.data.message));
         toast.error(e.response.data.message);
     }
 }
 
-function* deleteDelivery({payload}) {
-    try {
-        yield axiosApi.delete(`/delivery/${payload.trackNumber}`);
-        yield put(deleteDeliverySuccess());
-        toast.success('Заказ на доcтавку Удалён!');
-    } catch (e) {
-        yield put(deleteDeliveryFailure(e.response.data.message));
-        toast.error(e.response.data.message);
-    }
-}
-
 const deliverySagas = [
     takeEvery(postDeliveryRequest, postDelivery),
-    takeEvery(getDeliveryRequest, getDelivery),
     takeEvery(putDeliveryRequest, putDelivery),
-    takeEvery(deleteDeliveryRequest, deleteDelivery),
 ];
 
 export default deliverySagas;
