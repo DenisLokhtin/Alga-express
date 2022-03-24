@@ -39,6 +39,8 @@ export const {
     changeNotificationRequest,
     changeNotificationSuccess,
     changeNotificationFailure,
-
-  logout,
+    logout,
+    editTariffSuccess,
+    editTariff,
+    editTariffFailure
 } = usersSlice.actions;

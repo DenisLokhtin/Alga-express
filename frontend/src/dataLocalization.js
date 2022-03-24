@@ -9,7 +9,6 @@ export const statuses = {
     DELIVERED: 'Прибыл',
     ON_WAREHOUSE: 'На складе',
     ON_WAY: 'В пути',
-    PROCESSED: 'В процессе',
     DONE: 'Выдан',
     ERASED: 'Удалён',
 };
@@ -26,6 +25,13 @@ export const saleCountry = {
     USA: 'Америка',
     Turkey: 'Турция',
     China: 'Китай',
+}
+
+export const groups = {
+    NEW: 'Новый',
+    ADVANCED: 'Продвинутый',
+    BUYER: 'Байер',
+    VIP: 'VIP'
 }
 
 export const valueIcon = (value) => {

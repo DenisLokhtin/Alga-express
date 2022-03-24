@@ -252,7 +252,7 @@ const run = async () => {
             price: 678,
             flight: flight2,
             country: 'chinaGround',
-            status: 'PROCESSED',
+            status: 'REGISTERED',
             user: user,
             description: 'description 4',
             // cargoNumber: '000004',

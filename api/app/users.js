@@ -12,7 +12,7 @@ const router = express.Router();
 router.get('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
     try {
         const users = await User.find({role: 'user'})
-            .select('name email');
+            .select('name email tariff group');
         res.send(users);
     } catch (e) {
         res.status(500).send(e);
@@ -99,6 +99,23 @@ router.post('/sessions', async (req, res) => {
         .select('token role name balance phone avatar group');
 
     res.send(user);
+});
+
+router.put('/tariffEdit', auth, permit('admin', 'superAdmin'), async (req, res) => {
+    const id = req.query.id;
+    const change = {};
+
+    if (req.body.group !== "undefined") change.group = req.body.group;
+    if (req.body.tariff !== "undefined") change.tariff = req.body.tariff;
+    try {
+        const user = await User.findByIdAndUpdate(id, change);
+
+        if (!user) return res.status(404).send({message: "Пользователь не найден"});
+
+        res.send({message: 'Тариф обновлен'});
+    } catch (e) {
+        res.status(500).send(e)
+;    }
 });
 
 router.post('/forgot', async (req, res) => {

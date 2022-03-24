@@ -17,6 +17,8 @@ export const initialState = {
     forgotError:null,
     forgotLoading: false,
     notification: false,
+    editLoading: false,
+    editError: null,
 };
 
 const name = 'users';
@@ -159,6 +161,17 @@ const usersSlice = createSlice({
 
         logout(state) {
             state.user = null;
+        },
+
+        editTariff(state) {
+            state.editLoading = true;
+        },
+        editTariffSuccess(state) {
+            state.editLoading = false;
+        },
+        editTariffFailure(state, action) {
+            state.editLoading = false;
+            state.editError = action.payload;
         },
     },
 });
