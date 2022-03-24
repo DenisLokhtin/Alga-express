@@ -11,7 +11,7 @@ const User = require("../models/User");
 const Currency = require('../models/Currency');
 const packageValidate = require("../middleware/packageValidate");
 const {packagesText} = require('../email-texts');
-const {packagesTextTelegram} = require('../email-texts')
+// const {packagesTextTelegram} = require('../email-texts')
 const sendMail = require("../middleware/sendMail");
 const status = require('../app/dataLocalization');
 
@@ -209,7 +209,8 @@ router.put('/', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req,
                 const userObj = await updatedStatuses.populate('user', 'email name');
                 await sendMail({email: userObj.user.email},
                     'Alga-express: Смена статуса у посылки',
-                    packagesTextTelegram(userObj.trackNumber, status[userObj.status], userObj.user.name),
+                    null,
+                    // packagesTextTelegram(userObj.trackNumber, status[userObj.status], userObj.user.name),
                     packagesText(userObj.trackNumber, status[userObj.status], userObj.user.name));
             }
 

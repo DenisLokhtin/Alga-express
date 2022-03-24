@@ -16,14 +16,6 @@ const PackageSchema = new mongoose.Schema({
             message: 'Этот Трек-номер уже есть в базе!',
         },
     },
-    //
-    // currency: {
-    //     type: String,
-    //     trim: true,
-    //     required: 'Поле Валюта обязательное',
-    //     enum: ['usd', 'try', 'cny']
-    // },
-
     title: {
         type: String,
         trim: true,
