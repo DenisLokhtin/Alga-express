@@ -13,7 +13,7 @@ const packages = require('./app/packages');
 const flight = require('./app/flights');
 const buyouts = require('./app/buyouts');
 const administration = require('./app/administration');
-const userPayments = require('./app/userPayments');
+// const userPayments = require('./app/userPayments');
 const wareHouses = require('./app/wareHouses');
 const pages = require('./app/Pages');
 const requisites = require('./app/requisites');
@@ -95,10 +95,10 @@ app.use('/information', information);
 //         }
 //     }
 // });
-
-
+//
+//
 // bot.launch();
-
+//
 // process.once('SIGINT', () => bot.stop('SIGINT'));
 // process.once('SIGTERM', () => bot.stop('SIGTERM'));
 
