@@ -33,13 +33,14 @@ import {
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
 import History from '../../History';
+import {root} from "../../paths";
 import {adminPagePath} from "../../paths";
 
 function* packageRegisterSagas({payload: packageData}) {
     try {
         yield axiosApi.post('/packages', packageData);
         yield put(createPackageSuccess());
-        History.push('/');
+            History.push(root);
         toast.success('Ваш заказ был успешно создан');
     } catch (e) {
         yield put(createPackageFailure(e.response.data));
@@ -156,14 +157,14 @@ function* changeDeliveryStatus({payload: data}) {
 }
 
 
-/*// export function* fetchNewPackagesSaga() {
+// export function* fetchNewPackagesSaga() {
 //     try {
 //         const {data} = yield axiosApi.get('/packages/newPackages');
 //         yield put(fetchNewPackagesSuccess(data));
 //     } catch (e) {
 //         yield put(fetchNewPackagesFailure(e));
 //     }
-// }*/
+// }
 
 
 export function* fetchNewPackagesSaga() {

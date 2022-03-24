@@ -83,6 +83,7 @@ const PackageRegister = () => {
         priceCurrency: '',
     });
 
+    console.log(packageRegister)
     const [value, setValue] = React.useState({});
     const [inputValue, setInputValue] = React.useState('');
 
@@ -243,7 +244,7 @@ const PackageRegister = () => {
                                 required
                                 onChange={inputChangeHandler}
                             >
-                                <MenuItem value={'USE'}>
+                                <MenuItem value={'USD'}>
                                     Доллар
                                     <AttachMoneyIcon/>
                                 </MenuItem>
