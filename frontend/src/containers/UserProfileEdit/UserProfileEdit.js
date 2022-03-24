@@ -26,7 +26,7 @@ import AddCircleOutlineTwoToneIcon from '@mui/icons-material/AddCircleOutlineTwo
 import FormElement from "../../components/UI/Form/FormElement";
 import {
     clearError,
-    editPassportRequest,
+    editPassportRequest, editUserDataByAdminRequest,
     editUserDataRequest,
     fetchUsersRequest,
     userDateRequest
@@ -153,7 +153,7 @@ const UserProfileEdit = () => {
         return () => {
             dispatch(clearError());
         };
-    }, [dispatch, user._id, user.role]);
+    }, [dispatch, user]);
 
     useEffect(() => {
         value && dispatch(userDateRequest(value._id));
@@ -183,7 +183,7 @@ const UserProfileEdit = () => {
         ]);
 
         userData && setPassport([...userData.passport]);
-    }, [userData]);
+    }, [userData, user]);
 
     useEffect(() => {
         if (!(phone.length <= 3)) {
@@ -267,11 +267,12 @@ const UserProfileEdit = () => {
 
         if (user.role === 'admin') {
             id = value._id;
+            dispatch(editUserDataByAdminRequest({id, data: formData}));
         } else if (user.role === 'user') {
             id = user._id;
+            dispatch(editUserDataRequest({id, data: formData}));
         }
 
-        dispatch(editUserDataRequest({id, data: formData}));
     };
 
     const submitFormPassportHandler = e => {

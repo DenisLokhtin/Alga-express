@@ -73,10 +73,20 @@ const usersSlice = createSlice({
         },
         editUserDataSuccess(state, action) {
             state.loadUserDate = false;
-            state.userDate = action.payload;
-
+            state.user = action.payload;
         },
         editUserDataFailure(state, action) {
+            state.loadUserDate = false;
+            state.userError = action.payload;
+        },
+        editUserDataByAdminRequest(state) {
+            state.loadUserDate = true;
+        },
+        editUserDataByAdminSuccess(state, action) {
+            state.loadUserDate = false;
+            state.userDate = action.payload;
+        },
+        editUserDataByAdminFailure(state, action) {
             state.loadUserDate = false;
             state.userError = action.payload;
         },

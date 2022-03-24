@@ -10,7 +10,7 @@ import {
     editPassportSuccess,
     editTariff,
     editTariffFailure,
-    editTariffSuccess,
+    editTariffSuccess, editUserDataByAdminFailure, editUserDataByAdminRequest, editUserDataByAdminSuccess,
     editUserDataFailure,
     editUserDataRequest,
     editUserDataSuccess,
@@ -84,7 +84,10 @@ export function* loginUserSaga({payload: user}) {
         yield put(loginUserSuccess(response.data));
         toast.success('Вы авторизированы!');
         switch (response.data.role) {
-            case 'admin' || 'superAdmin':
+            case 'admin':
+                History.push(adminPagePath);
+                break;
+            case 'superAdmin':
                 History.push(adminPagePath);
                 break;
             case 'warehouseman':
@@ -120,6 +123,18 @@ export function* editUserSaga({payload}) {
     } catch (e) {
         toast.error(e.response.data.error);
         yield put(editUserDataFailure(e.response.data));
+    }
+}
+
+
+export function* editUserByAdminSaga({payload}) {
+    try {
+        const response = yield  axiosApi.put('/userEdit/' + payload.id, payload.data);
+        yield put(editUserDataByAdminSuccess(response.data));
+        toast.success('Редактирование успешно!');
+    } catch (e) {
+        toast.error(e.response.data.error);
+        yield put(editUserDataByAdminFailure(e.response.data));
     }
 }
 
@@ -238,6 +253,7 @@ const usersSaga = [
     takeEvery(logout, logoutUserSaga),
     takeEvery(userDateRequest, getUserSaga),
     takeEvery(editUserDataRequest, editUserSaga),
+    takeEvery(editUserDataByAdminRequest, editUserByAdminSaga),
     takeEvery(editPassportRequest, editPassportSaga),
     takeEvery(addUserPaymentRequest, userPaymentSaga),
     takeEvery(fetchUserPaymentRequest, fetchUserPaymentSaga),
