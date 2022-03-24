@@ -39,6 +39,7 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import {toast} from "react-toastify";
 import TariffCard from "../../components/TariffCard/TariffCard";
 import FormElement from "../../components/UI/Form/FormElement";
+import History from '../../History';
 
 function a11yProps(index) {
     return {
@@ -178,6 +179,8 @@ const AdminPage = () => {
             title: order.title,
             country: countries[order.country],
             status: statuses[order.status],
+            arrived_date: dayjs(order.flight.arrived_date).format('DD-MM-YYYY'),
+            amount: order.amount,
         }
     });
 
@@ -513,6 +516,7 @@ const AdminPage = () => {
                                pageLimit={packagesPageLimit}
                                close={handleClose}/>
                 <TableComponent
+                    onCellDoubleClick={packageData => History.push(`cargo/package/${packageData.id}`)}
                     rows={packagesRows}
                     columns={[
                         ...packagesColumns,

@@ -62,7 +62,8 @@ const TableComponent = (
         rowHeight,
         onRowClick,
         onCellClick,
-        toolbarElements
+        toolbarElements,
+        onCellDoubleClick
     }) => {
 
     return (
@@ -87,6 +88,7 @@ const TableComponent = (
                 NoRowsOverlay: CustomNoRowsOverlay,
             }}
             onCellClick={onCellClick}
+            onCellDoubleClick={onCellDoubleClick}
             onRowClick={onRowClick}
         />
     );
