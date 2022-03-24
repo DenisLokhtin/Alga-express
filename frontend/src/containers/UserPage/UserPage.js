@@ -26,9 +26,6 @@ import {Link} from "react-router-dom";
 import {editBuyout} from "../../paths";
 import {deleteDeliveryRequest} from "../../store/actions/deliveryAction";
 import Checkbox from "@mui/material/Checkbox";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import CurrencyYenIcon from "@mui/icons-material/CurrencyYen";
-import CurrencyLiraIcon from "@mui/icons-material/CurrencyLira";
 import DeliveryModal from "../../components/DeliveryModal/DeliveryModal";
 import Requisites from "../../components/Requisites/Requisites";
 
@@ -126,7 +123,7 @@ const UserPage = () => {
             status: statuses[order.status],
             name: order.user.name,
             amount: order.amount,
-            price: order.price,
+            price: order.price ? {price: order.price, icon: valueIcon(order.priceCurrency)} : {price: 'Нет'},
             delivery: order.delivery,
         }
     });
@@ -229,36 +226,50 @@ const UserPage = () => {
                         rows={packagesRows}
                         columns={[
                             ...packagesColumns,
+                            // {
+                            //     field: 'price',
+                            //     headerName: 'Цена товара',
+                            //     flex: 1,
+                            //     minWidth: 140,
+                            //     headerAlign: 'center',
+                            //     align: 'center',
+                            //     renderCell: (params => {
+                            //         const order = packages.find(order => order._id === params.id);
+                            //
+                            //         if (order.currency === 'usd') {
+                            //             return (
+                            //                 <div style={{display: 'flex', alignItems: 'center'}}>
+                            //                     {order.price} <AttachMoneyIcon/>
+                            //                 </div>
+                            //             )
+                            //         } else if (order.currency === 'cny') {
+                            //             return (
+                            //                 <div style={{display: 'flex', alignItems: 'center'}}>
+                            //                     {order.price} <CurrencyYenIcon/>
+                            //                 </div>
+                            //             )
+                            //         } else if (order.currency === 'try') {
+                            //             return (
+                            //                 <div style={{display: 'flex', alignItems: 'center'}}>
+                            //                     {order.price} <CurrencyLiraIcon/>
+                            //                 </div>
+                            //             )
+                            //         }
+                            //     })
+                            // },
                             {
                                 field: 'price',
-                                headerName: 'Цена товара',
+                                headerName: 'Стоимость Заказа',
                                 flex: 1,
-                                minWidth: 140,
+                                minWidth: 100,
                                 headerAlign: 'center',
                                 align: 'center',
-                                renderCell: (params => {
-                                    const order = packages.find(order => order._id === params.id);
+                                renderCell: params => {
+                                    return <p style={{display: 'flex', alignItems: 'center'}}
+                                    >{params.value.price} {params.value.icon}
+                                    </p>
+                                },
 
-                                    if (order.currency === 'usd') {
-                                        return (
-                                            <div style={{display: 'flex', alignItems: 'center'}}>
-                                                {order.price} <AttachMoneyIcon/>
-                                            </div>
-                                        )
-                                    } else if (order.currency === 'cny') {
-                                        return (
-                                            <div style={{display: 'flex', alignItems: 'center'}}>
-                                                {order.price} <CurrencyYenIcon/>
-                                            </div>
-                                        )
-                                    } else if (order.currency === 'try') {
-                                        return (
-                                            <div style={{display: 'flex', alignItems: 'center'}}>
-                                                {order.price} <CurrencyLiraIcon/>
-                                            </div>
-                                        )
-                                    }
-                                })
                             },
                             {
                                 field: 'delivery',

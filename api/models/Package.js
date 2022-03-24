@@ -16,7 +16,6 @@ const PackageSchema = new mongoose.Schema({
             message: 'Этот Трек-номер уже есть в базе!',
         },
     },
-
     title: {
         type: String,
         trim: true,
