@@ -275,7 +275,7 @@ const UserPage = () => {
                                             setUpdate(!update);
                                         }}
                                     >
-                                        <DeliveryDiningIcon/>
+                                        <DeliveryDiningIcon fontSize="large"/>
                                     </IconButton>
                                 )
                             },
