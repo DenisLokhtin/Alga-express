@@ -31,11 +31,11 @@ const paymentSlice = createSlice({
             state.fetchLoading = true;
         },
         paymentAcceptedSuccess(state) {
-            state.fetchLoading = true;
+            state.fetchLoading = false;
             state.status = !state.status;
         },
         paymentAcceptedFailure(state, action) {
-            state.fetchLoading = true;
+            state.fetchLoading = false;
             state.errorPayment = action.payload;
         },
         addPaymentAdminRequest(state) {

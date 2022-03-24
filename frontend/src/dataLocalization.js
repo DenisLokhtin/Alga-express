@@ -28,6 +28,13 @@ export const saleCountry = {
     China: 'Китай',
 }
 
+export const groups = {
+    NEW: 'Новый',
+    ADVANCED: 'Продвинутый',
+    BUYER: 'Байер',
+    VIP: 'VIP'
+}
+
 export const valueIcon = (value) => {
     switch (value) {
         case 'USD':
