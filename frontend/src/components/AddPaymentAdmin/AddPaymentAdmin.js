@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Grid, TextField, Autocomplete} from "@mui/material";
+import {Grid, TextField, Autocomplete, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchUsersRequest} from "../../store/actions/usersActions";
 import FormElement from "../UI/Form/FormElement";
@@ -87,6 +87,20 @@ const AddPaymentAdmin = () => {
                 spacing={3}
                 className={classes.container}
             >
+                <Grid item xs={12} sm={10} md={10} lg={10}>
+                    <Typography variant="h4" sx={{
+                        fontWeight: 'bold',
+                        textAlign: 'center',
+                        fontSize: {
+                            xs: '18px',
+                            sm: '20px',
+                            md: '22px',
+                            lg: '26px',
+                        }
+                    }}>
+                        Пополнение баланса пользователя
+                    </Typography>
+                </Grid>
                 <Grid item xs={12} sm={10} md={10} lg={10}>
                     <Autocomplete
                         disablePortal

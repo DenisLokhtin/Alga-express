@@ -1,4 +1,4 @@
-const express = require('express');
+    const express = require('express');
 const Warehouse = require('../models/WareHouse');
 const auth = require("../middleware/auth");
 const permit = require("../middleware/permit");

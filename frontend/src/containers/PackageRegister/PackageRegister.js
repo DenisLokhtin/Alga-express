@@ -43,32 +43,19 @@ const useStyles = makeStyles(() => ({
         paddingTop: '145px',
         marginBottom: '30px',
         [theme.breakpoints.down('sm')]: {
-            paddingTop: '90px',
+            paddingTop: '120px',
         },
     },
 
     packageMainTitle: {
         textAlign: 'center',
         paddingBottom: '30px',
-        '@media (max-width:600px)': {
-            padding: '15px',
-        },
     },
 
     checkboxContainer: {
         marginTop: '50px',
     },
 }));
-
-theme.typography.h4 = {
-    fontSize: '1.3rem',
-    '@media (min-width:600px)': {
-        fontSize: '1.6rem',
-    },
-    [theme.breakpoints.up('md')]: {
-        fontSize: '2rem',
-    },
-};
 
 const PackageRegister = () => {
     const classes = useStyles();
@@ -96,6 +83,7 @@ const PackageRegister = () => {
         priceCurrency: '',
     });
 
+    console.log(packageRegister)
     const [value, setValue] = React.useState({});
     const [inputValue, setInputValue] = React.useState('');
 
@@ -121,7 +109,7 @@ const PackageRegister = () => {
 
     const submitFormHandler = e => {
         e.preventDefault();
-        if(user?.role === 'admin'){
+        if(user?.role === 'admin' || user?.role === 'superAdmin'){
             if(buyoutUser){
                 dispatch(createPackageRequest({...packageRegister,userId:buyoutUser.id, navigate}));
                 dispatch(editBuyoutStatusRequest(buyoutUser.buyoutId));
@@ -155,6 +143,15 @@ const PackageRegister = () => {
             <Grid item>
                 <Typography
                     variant="h4"
+                    sx={{
+                        fontWeight: 'bold',
+                        fontSize: {
+                            xs: '18px',
+                            sm: '20px',
+                            md: '22px',
+                            lg: '26px',
+                        }
+                    }}
                     className={classes.packageMainTitle}>
                     Регистрация посылки
                 </Typography>
@@ -167,7 +164,7 @@ const PackageRegister = () => {
                 noValidate
                 spacing={2}
             >
-                <Grid item xs={12} sm={8} md={7} lg={9}>
+                <Grid item xs={12} sm={8} md={9} lg={9}>
                     <FormControl variant="outlined" fullWidth error={Boolean(getFieldError('country'))}>
                         <InputLabel id="demo-controlled-open-select-label">Страна</InputLabel>
                         <Select
@@ -189,7 +186,7 @@ const PackageRegister = () => {
                     </FormControl>
                 </Grid>
                 <FormElement
-                    xs={12} sm={8} md={7} lg={9}
+                    xs={12} sm={8} md={9} lg={9}
                     name="trackNumber"
                     value={packageRegister.trackNumber}
                     required
@@ -200,7 +197,7 @@ const PackageRegister = () => {
                     error={getFieldError('trackNumber')}
                 />
                 <FormElement
-                    xs={12} sm={8} md={7} lg={9}
+                    xs={12} sm={8} md={9} lg={9}
                     name="title"
                     value={packageRegister.title}
                     onChange={inputChangeHandler}
@@ -211,7 +208,7 @@ const PackageRegister = () => {
                     error={getFieldError('title')}
                 />
                     <FormElement
-                        xs={12} sm={8} md={7} lg={9}
+                        xs={12} sm={8} md={9} lg={9}
                         name="amount"
                         type="number"
                         value={packageRegister.amount}
@@ -223,7 +220,7 @@ const PackageRegister = () => {
                         error={getFieldError('amount')}
                     />
                     <FormElement
-                        xs={12} sm={8} md={7} lg={4.5}
+                        xs={12} sm={8} md={9} lg={4.5}
                         name="price"
                         type="number"
                         value={packageRegister.price}
@@ -235,7 +232,7 @@ const PackageRegister = () => {
                         label="Цена"
                         error={getFieldError('price')}
                     />
-                    <Grid item xs={12} sm={8} md={7} lg={4.5}>
+                    <Grid item xs={12} sm={8} md={9} lg={4.5}>
                         <FormControl variant="outlined" fullWidth error={Boolean(getFieldError('priceCurrency'))}>
                             <InputLabel id="demo-controlled-open-select-label">Валюта</InputLabel>
                             <Select
@@ -247,7 +244,7 @@ const PackageRegister = () => {
                                 required
                                 onChange={inputChangeHandler}
                             >
-                                <MenuItem value={'USE'}>
+                                <MenuItem value={'USD'}>
                                     Доллар
                                     <AttachMoneyIcon/>
                                 </MenuItem>
@@ -263,8 +260,8 @@ const PackageRegister = () => {
                             <FormHelperText error={true}>{error?.errors?.['priceCurrency']?.message}</FormHelperText>
                         </FormControl>
                     </Grid>
-                {user?.role === 'admin' && (
-                    <Grid item xs={12} sm={8} md={7} lg={7}>
+                {(user?.role === 'admin' || user?.role === 'superAdmin') && (
+                    <Grid item xs={12} sm={8} md={9} lg={9}>
 
                         {buyoutUser ? (
                             <TextField

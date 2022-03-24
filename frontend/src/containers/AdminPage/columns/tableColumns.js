@@ -61,6 +61,14 @@ export const packagesColumns = [
         align: 'center',
     },
     {
+        field: "arrived_date",
+        headerName: 'Дата прилёта',
+        flex: 1,
+        minWidth: 120,
+        headerAlign: 'center',
+        align: 'center',
+    },
+    {
         field: "actions",
         type: "actions",
         width: 150,
