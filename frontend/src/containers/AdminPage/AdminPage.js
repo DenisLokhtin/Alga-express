@@ -32,13 +32,13 @@ import Grid from "@mui/material/Grid";
 import ruLocale from "date-fns/locale/ru";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
 import AppWindow from "../../components/UI/AppWindow/AppWindow";
-import DeliveryModal from "../../components/DeliveryModal/DeliveryModal";
 import Requisites from "../../components/Requisites/Requisites";
 import SearchIcon from '@mui/icons-material/Search';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import {toast} from "react-toastify";
 import TariffCard from "../../components/TariffCard/TariffCard";
 import FormElement from "../../components/UI/Form/FormElement";
+// import DeliveryModal from "../../components/DeliveryModal/DeliveryModal";
 
 function a11yProps(index) {
     return {
@@ -95,16 +95,7 @@ const AdminPage = () => {
         open: false,
         id: '',
     });
-    const [open, setOpen] = useState(false);
-    const [currentModal, setCurrentModal] = useState({
-        cargoNumber: "1",
-        country: "Китай-Авия",
-        delivery: "false",
-        id: "6220b025363a1780b6f28293",
-        status: "В пути",
-        title: "package 3",
-        trackNumber: "DnS5myCQv6H4H1_4YCtPM",
-    });
+    // const [open, setOpen] = useState(false);
 
     const [img, setImg] = useState(null);
     const currencies = useSelector(state => state.currencies.currencies);
@@ -162,8 +153,6 @@ const AdminPage = () => {
     const [paymentsPageLimit, setPaymentsPageLimit] = useState(10);
     const [paymentsSelectionModel, setPaymentsSelectionModel] = useState([]);
     const paymentsPrevSelection = useRef(paymentsSelectionModel);
-
-    const handleClose = () => setOpen(false);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -520,13 +509,9 @@ const AdminPage = () => {
                 </Grid>
 
                 <TabPanelComponent value={value} index={0}>
-                    <DeliveryModal title={currentModal.title}
-                                   track={currentModal.trackNumber}
-                                   status={currentModal.status}
-                                   country={currentModal.country}
-                                   open={open} page={packagesPage}
-                                   pageLimit={packagesPageLimit}
-                                   close={handleClose}/>
+
+                    {/*<DeliveryModal />*/}
+
                     <TableComponent
                         rows={packagesRows}
                         columns={[
