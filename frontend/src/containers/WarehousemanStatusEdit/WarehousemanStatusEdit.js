@@ -17,6 +17,7 @@ import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWit
 import FormElement from "../../components/UI/Form/FormElement";
 import {createTheme} from "@mui/material/styles";
 import {statuses} from "../../dataLocalization";
+import {getFlightsRequest} from "../../store/actions/flightActions";
 
 const menuItems = [
     {value: 'REGISTERED'},
@@ -76,6 +77,7 @@ const WarehousemanStatusEdit = () => {
     const user = useSelector(state => state.users.user);
     const dispatch = useDispatch();
     const notFoundTrackNumbers = useSelector(state => state.package.notFoundTrackNumbers);
+    const flights = useSelector(state => state.flights.flights);
     const error = useSelector(state => state.package.changeStatusesError);
     const loading = useSelector(state => state.package.changeStatusesLoading);
 
@@ -110,6 +112,7 @@ const WarehousemanStatusEdit = () => {
                 behavior: 'smooth'
             }, 200);
         }
+        dispatch(getFlightsRequest({page: 0, limit: 100, status: 'ACTIVE'}));
         return () => {
             dispatch(clearTextFieldsErrors());
         };
