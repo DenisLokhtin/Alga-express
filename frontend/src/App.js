@@ -110,6 +110,7 @@ const App = () => {
                         <Route path={orderBuyouts} element={<OrderBuyout/>}/>
                         <Route path={listBuyouts} element={<BuyoutList/>}/>
                         <Route path={userPage} element={<UserPage/>}/>
+                        <Route path={editBuyout} element={<EditBuyout/>}/>
                         <Route path={addUserPayment} element={<UserPayment/>}/>
                     </Route>
 

@@ -7,7 +7,7 @@
     changePasswordSuccess,
     editPassportFailure,
     editPassportRequest,
-    editPassportSuccess,
+    editPassportSuccess, editTariff, editTariffFailure, editTariffSuccess,
     editUserDataFailure,
     editUserDataRequest,
     editUserDataSuccess,
@@ -37,7 +37,7 @@
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
 import History from '../../History';
-import {adminPagePath, processingTrackNumbersAdmin, root, userLogin, userPage} from "../../paths";
+import {adminPagePath, processingTrackNumbersAdmin, userLogin, userPage} from "../../paths";
  import {put, takeEvery} from "redux-saga/effects";
 
 export function* registerUserSaga({payload}) {
@@ -63,7 +63,19 @@ export function* registerUserSaga({payload}) {
             }
         } else {
             yield put(registerUserSuccess(response.data));
-            History.push(root);
+            switch (response.data.role) {
+                case 'admin' || 'superAdmin':
+                    History.push(adminPagePath);
+                    break;
+                case 'warehouseman':
+                    History.push(processingTrackNumbersAdmin);
+                    break;
+                case 'user':
+                    History.push(userPage);
+                    break;
+                default:
+                    return
+            }
             toast.success('Вы зарегистрированы');
         }
     } catch (e) {
@@ -213,6 +225,20 @@ export function* logoutUserSaga() {
     }
 }
 
+export function* editTariffSagas({payload}) {
+    const id = payload.id;
+    const group = payload.group;
+    const tariff = payload.tariff;
+
+    try {
+        const {data} = yield axiosApi.put(`users/tariffEdit?id=${id}`, {group: group, tariff: tariff});
+        yield put(editTariffSuccess());
+        toast.success(data.message);
+    } catch (e) {
+        yield put(editTariffFailure(e));
+    }
+}
+
 const usersSaga = [
     takeEvery(registerUser, registerUserSaga),
     takeEvery(loginUser, loginUserSaga),
@@ -226,7 +252,7 @@ const usersSaga = [
     takeEvery(resetPasswordRequest, resetPasswordSaga),
     takeEvery(changePasswordRequest, changePasswordSaga),
     takeEvery(forgotPasswordRequest, forgotPasswordSaga),
-
+    takeEvery(editTariff, editTariffSagas)
 ];
 
 export default usersSaga;

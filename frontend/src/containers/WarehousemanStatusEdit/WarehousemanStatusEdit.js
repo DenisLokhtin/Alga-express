@@ -16,17 +16,16 @@ import {changeStatusesRequest, clearTextFieldsErrors} from "../../store/actions/
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
 import FormElement from "../../components/UI/Form/FormElement";
 import {createTheme} from "@mui/material/styles";
+import {statuses} from "../../dataLocalization";
 
 const menuItems = [
-    {value: 'REGISTERED', text: 'Оформлен'},
-    {value: 'DELIVERED', text: 'Прибыл'},
-    {value: 'ON_WAREHOUSE', text: 'На складе'},
-    {value: 'ON_WAY', text: 'В пути'},
-    {value: 'PROCESSED', text: 'В процессе'},
-    {value: 'DONE', text: 'Выдан'},
-    {value: 'ERASED', text: 'Удален'},
+    {value: 'REGISTERED'},
+    {value: 'ON_WAREHOUSE'},
+    {value: 'ON_WAY'},
+    {value: 'PROCESSED'},
+    {value: 'DELIVERED'},
+    {value: 'DONE'},
 ];
-
 
 const theme = createTheme({
     breakpoints: {
@@ -129,7 +128,7 @@ const WarehousemanStatusEdit = () => {
                         >
                             {menuItems.map(menuItem => (
                                 <MenuItem key={menuItem.value} value={menuItem.value}>
-                                    {menuItem.text}
+                                    {statuses[menuItem.value]}
                                 </MenuItem>
                             ))}
                         </Select>

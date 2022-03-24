@@ -34,12 +34,28 @@ router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) =>
 
     let page = 0;
     let limit = 20;
+    let packageFind = null;
 
     if (req.query.page) {
         page = Number(req.query.page);
     }
     if (req.query.limit) {
         limit = Number(req.query.limit);
+    }
+    if (req.query.packageFind) {
+        packageFind = await Package.findOne({cargoNumber: req.query.packageFind});
+        if (packageFind) {
+            query.packageFind = req.query.packageFind;
+            query.category = 'cargoNumber';
+        } else {
+            packageFind = await Package.findOne({trackNumber: req.query.packageFind});
+            if (packageFind) {
+                query.packageFind = req.query.packageFind;
+                query.category = 'trackNumber';
+            } else {
+                return res.status(404).send({error: 'Данные введены не корректно, номер не найден'});
+            }
+        }
     }
     if (req.query.history) query.history = req.query.history;
     if (req.query.from) query.from = req.query.from;
@@ -59,6 +75,7 @@ router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) =>
     let findFilter = {};
     try {
         findFilter = filterPackage(query, 'packages');
+
         const size = await Package.find(findFilter);
 
         const packages = await Package.find(findFilter)
@@ -67,7 +84,6 @@ router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) =>
             .sort(query.sort)
             .limit(limit)
             .skip(page * limit);
-
         res.send({totalPage: Math.ceil(size.length), packages: packages});
     } catch (e) {
         res.status(400).send(e);
@@ -249,6 +265,7 @@ router.put('/giveout/:id', auth, permit('admin', 'warehouseman', 'superAdmin', '
         if (pack) {
             pack.status = "DONE";
             await Package.findByIdAndUpdate(req.params.id, pack, {new: true});
+
             res.send({message: "Статус посылки обновлен!"});
         } else {
             res.send({message: "Нет такой посылки"});

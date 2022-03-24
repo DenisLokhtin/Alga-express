@@ -45,11 +45,7 @@ const WarehousePage = () => {
     const messagesEndRef = useRef(null);
 
     useEffect(() => {
-        if (!!messagesEndRef.current) {
-            messagesEndRef.current.scrollIntoView({
-                behavior: 'smooth'
-            }, 200);
-        }
+        window.scrollTo(0, 0);
         dispatch(fetchWareHouseRequest());
     }, [dispatch, messagesEndRef]);
 

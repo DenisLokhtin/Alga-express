@@ -5,7 +5,7 @@ const Payment = require("../models/Payment");
 
 const router= express.Router();
 
-router.get ('/', auth, permit('user', 'superAdmin'), async(req,res) => {
+router.get ('/', auth, permit('user', 'superAdmin', 'admin'), async(req,res) => {
     try {
         const paymentLists = await Payment.find({user: req.user._id});
         if (paymentLists) {

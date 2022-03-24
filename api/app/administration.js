@@ -38,13 +38,25 @@ router.get('/', auth, permit('user', 'admin', 'superAdmin'), async (req, res) =>
         const size = await Payment.find(findFilter);
         const response = await Payment.find(findFilter)
             .populate('user', 'name')
-            .select('image description date user')
+            .select('image description date user status')
             .limit(limit)
             .skip(page * limit);
 
         res.send({totalElements: size.length, data: response});
     } catch (e) {
         res.status(400).send({error: e});
+    }
+});
+
+router.get('/payments', auth, permit('user', 'admin', 'superAdmin'), async (req, res) => {
+    // if (req.query.id)
+    console.log(req.query.id);
+    try {
+        const data = await PaymentMove.find({user: req.query.id})
+            // .populate('user payment', 'name amount')
+        res.send(data);
+    } catch (e) {
+        console.log(e)
     }
 });
 

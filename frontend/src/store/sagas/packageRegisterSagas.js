@@ -93,12 +93,14 @@ function* getOrdersHistorySagas({payload: pageData}) {
     const history = pageData.history;
     const from = pageData.from;
     const to = pageData.to;
+    const packageFind = pageData.packageFind;
     let url = `/packages?page=${page}&limit=${limit}`;
 
     if (id) url = url.concat(`&id=${id}`);
     if (history) url = url.concat(`&history=${true}`);
     if (from) url = url.concat(`&from=${from}`);
     if (to) url = url.concat(`&to=${to}`);
+    if (packageFind) url = url.concat(`&packageFind=${packageFind}`);
 
     try {
         const response = yield axiosApi.get(url);

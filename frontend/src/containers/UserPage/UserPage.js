@@ -10,7 +10,7 @@ import TableComponent from "../../components/TableComponent/TableComponent";
 import {buyoutsColumns, packagesColumns, paymentsColumns} from "../AdminPage/columns/tableColumns";
 import SwitchElement from "../../components/UI/SwitchElement/SwitchElement";
 import {useDispatch, useSelector} from "react-redux";
-import {countries, saleCountry, statuses} from "../../dataLocalization";
+import {countries, saleCountry, statuses, valueIcon} from "../../dataLocalization";
 import dayjs from "dayjs";
 import {apiURL} from "../../config";
 import {changeDeliveryStatusRequest, getOrdersHistoryRequest} from "../../store/actions/packageRegisterActions";
@@ -140,10 +140,9 @@ const UserPage = () => {
             datetime: dayjs(buyout.datetime).format('DD-MM-YYYY'),
             user: buyout.user.name,
             status: statuses[buyout.status],
-            price: buyout.price,
-            commission: buyout.commission,
-            value: buyout.value,
-            totalPrice: buyout.totalPrice
+            price: buyout.price ? {price: buyout.price, icon: valueIcon(buyout.value)} : {price: 'Нет'},
+            commission: `${buyout.commission} %`,
+            totalPrice: buyout.totalPrice ? `${buyout.totalPrice} сом` : 'Нет',
         }
     });
 
@@ -154,7 +153,7 @@ const UserPage = () => {
             image: apiURL + '/' + payment.image,
             user: payment.user.name,
             date: dayjs(payment.date).format('DD-MM-YYYY'),
-            amount: payment.amount
+            amount: payment.amount ? payment.amount : 'В обработке',
         }
     })
 
