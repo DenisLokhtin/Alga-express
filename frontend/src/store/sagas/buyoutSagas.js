@@ -84,6 +84,7 @@ function* editBuyoutSagas({payload}) {
         yield axiosApi.put(`/buyouts/` + payload.id, payload.obj);
         yield put(editBuyoutSuccess());
         toast.success('Успешно обновлен!');
+        History.push(listBuyouts);
     } catch (e) {
         yield put(editBuyoutFailure(e.response.data));
     }

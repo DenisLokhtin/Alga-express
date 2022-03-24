@@ -94,7 +94,7 @@ const Header = () => {
                             <span className="header__logo-title">Alga-Express</span>
                         </Link>
                         {user && user.role ? (
-                            <UserMenu user={user}/>
+                            <UserMenu/>
                         ) : (
                             <div className="header__btns">
                                 <div className="btn-cont">
