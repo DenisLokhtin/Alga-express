@@ -354,6 +354,7 @@ const AdminPage = () => {
         }));
     };
 
+    console.log(valueSelect.tariff);
     return (
         <Container ref={messagesEndRef} className={classes.container}>
             <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
@@ -792,8 +793,6 @@ const AdminPage = () => {
                         {currencies &&
                             <CurrenciesCard currency={currencies}/>}
                     </Grid>
-
-
                     {valueSelect.tariff
                         && searchData.search
                         && <Grid item xs={12} md={6} lg={6}>
