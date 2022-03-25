@@ -11,9 +11,9 @@ const User = require("../models/User");
 const Currency = require('../models/Currency');
 const packageValidate = require("../middleware/packageValidate");
 const {packagesText} = require('../email-texts');
+// const {packagesTextTelegram} = require('../email-texts')
 const sendMail = require("../middleware/sendMail");
-// const sendMail = require("../middleware/sendMail");
-// const {balanceText} = require("../email-texts");
+const status = require('../app/dataLocalization');
 
 const router = express.Router();
 
@@ -34,12 +34,28 @@ router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) =>
 
     let page = 0;
     let limit = 20;
+    let packageFind = null;
 
     if (req.query.page) {
         page = Number(req.query.page);
     }
     if (req.query.limit) {
         limit = Number(req.query.limit);
+    }
+    if (req.query.packageFind) {
+        packageFind = await Package.findOne({cargoNumber: req.query.packageFind});
+        if (packageFind) {
+            query.packageFind = req.query.packageFind;
+            query.category = 'cargoNumber';
+        } else {
+            packageFind = await Package.findOne({trackNumber: req.query.packageFind});
+            if (packageFind) {
+                query.packageFind = req.query.packageFind;
+                query.category = 'trackNumber';
+            } else {
+                return res.status(404).send({error: 'Данные введены не корректно, номер не найден'});
+            }
+        }
     }
     if (req.query.history) query.history = req.query.history;
     if (req.query.from) query.from = req.query.from;
@@ -59,15 +75,15 @@ router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) =>
     let findFilter = {};
     try {
         findFilter = filterPackage(query, 'packages');
+
         const size = await Package.find(findFilter);
 
         const packages = await Package.find(findFilter)
-            .populate({path: 'flight user', select: 'name number description depart_date arrived_date'})
-            .select('title trackNumber country cargoNumber status description price currency delivery amount')
+            .populate({path: 'flight user delivery', select: 'name number description depart_date arrived_date address'})
+            .select('title trackNumber country cargoNumber status description price priceCurrency delivery amount')
             .sort(query.sort)
             .limit(limit)
             .skip(page * limit);
-
         res.send({totalPage: Math.ceil(size.length), packages: packages});
     } catch (e) {
         res.status(400).send(e);
@@ -80,7 +96,7 @@ router.get('/:id', auth, permit('admin', 'warehouseman', 'user', 'superAdmin'), 
         if (req.user.role === 'user') {
             const packageFind = await Package.findById(req.params.id)
                 .populate({path: 'flight user', select: 'name number description depart_date arrived_date'})
-                .select('trackNumber title amount price country status date cargoNumber currency urlPackage delivery');
+                .select('trackNumber title amount price country status date cargoNumber priceCurrency urlPackage delivery');
             if (packageFind.user._id.toString() === req.user._id.toString()) {
                 return res.send(packageFind);
             }
@@ -90,7 +106,7 @@ router.get('/:id', auth, permit('admin', 'warehouseman', 'user', 'superAdmin'), 
             const packageFind = await Package.findById(req.params.id)
                 .populate({path: 'flight user', select: 'name number description depart_date arrived_date'})
                 .select('trackNumber title amount price country status ' +
-                    'date cargoNumber width length height cargoWeight cargoPrice urlPackage delivery');
+                    'date cargoNumber width length height cargoWeight cargoPrice priceCurrency urlPackage delivery');
             return res.send(packageFind);
         }
 
@@ -111,7 +127,6 @@ router.post('/', auth, packageValidate, permit('admin', 'superAdmin', 'user'), a
     }
 
     try {
-
         const packageData = {
             country: req.body.country,
             title: req.body.title,
@@ -119,7 +134,7 @@ router.post('/', auth, packageValidate, permit('admin', 'superAdmin', 'user'), a
             amount: req.body.amount,
             price: price,
             user: req.user._id,
-            currency: req.body.currency,
+            priceCurrency: req.body.priceCurrency,
         };
 
         const packageAdmin = {
@@ -129,7 +144,7 @@ router.post('/', auth, packageValidate, permit('admin', 'superAdmin', 'user'), a
             amount: req.body.amount,
             price: price,
             user: req.body.userId,
-            currency: req.body.currency,
+            priceCurrency: req.body.priceCurrency,
         }
 
         const notFoundTrackNumber = await NotFoundTrackNumber.findOne({notFoundTrackNumber: packageData.trackNumber});
@@ -169,9 +184,9 @@ router.put('/', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req,
     const filtered = trackNumbersData.filter(packageStatus => packageStatus.trackNumber !== '');
 
     const uniquePackages = filtered.filter((packageInfo, index, self) =>
-        index === self.findIndex((packageData) => (
-            packageData.trackNumber === packageInfo.trackNumber
-        ))
+            index === self.findIndex((packageData) => (
+                packageData.trackNumber === packageInfo.trackNumber
+            ))
     );
 
     try {
@@ -186,12 +201,18 @@ router.put('/', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req,
         for (const key of uniquePackages) {
             const updatedStatuses = await Package.findOneAndUpdate(
                 {trackNumber: key.trackNumber},
-                {status: key.status},
+                {status: key.status, flight: req.body.id},
                 {new: true, runValidators: true});
 
-            const userEmail = await updatedStatuses.populate('user', 'email')
+            if (updatedStatuses) {
+                const userObj = await updatedStatuses.populate('user', 'email name');
+                await sendMail({email: userObj.user.email},
+                    'Alga-express: Смена статуса у посылки',
+                    null,
+                    // packagesTextTelegram(userObj.trackNumber, status[userObj.status], userObj.user.name),
+                    packagesText(userObj.trackNumber, status[userObj.status], userObj.user.name));
+            }
 
-            await sendMail(userEmail.user.email, 'Alga-express: Баланс пополнен', null, packagesText(userEmail.trackNumber, userEmail.status));
 
             if (!updatedStatuses) {
                 const notFoundTrackNumbersData = {
@@ -244,6 +265,7 @@ router.put('/giveout/:id', auth, permit('admin', 'warehouseman', 'superAdmin', '
         if (pack) {
             pack.status = "DONE";
             await Package.findByIdAndUpdate(req.params.id, pack, {new: true});
+
             res.send({message: "Статус посылки обновлен!"});
         } else {
             res.send({message: "Нет такой посылки"});
@@ -266,7 +288,7 @@ router.put('/:id', auth, permit('admin', 'warehouseman', 'superAdmin', 'user'), 
         if (req.user.role === 'user')
             result = userEdit(req.user, packageFind, req.body);
 
-        if (req.user.role === 'admin' || req.user.role === 'warehouseman')
+        if (req.user.role === 'admin' || req.user.role === 'superAdmin')
             result = adminEdit(req.user, packageFind, req.body, prices);
 
         if (result.error)
@@ -299,6 +321,7 @@ router.put('/:id', auth, permit('admin', 'warehouseman', 'superAdmin', 'user'), 
 
         res.send(result.success);
     } catch (e) {
+        console.log(e.message);
         res.status(400).send(e);
     }
 });

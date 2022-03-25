@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import {newsCompany} from "../../paths";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchNewsRequest} from "../../store/actions/newsActions";
+import dayjs from "dayjs";
 
 const NewsPanel = () => {
     const dispatch = useDispatch();
@@ -17,9 +18,9 @@ const NewsPanel = () => {
             {news.length > 0 ? news.map(news => (
                 <Fragment key={news._id}>
                     <li style={{color: 'rgba(255,255,255, 0.3)', fontSize: '13px'}}>
-                        {news.datetime}
+                        {dayjs(news.createdAt).format('DD/MM/YYYY')}
                     </li>
-                    <li className="news-list__item" style={{fontSize: '26px'}}>
+                    <li className="news-list__item" style={{fontSize: '20px'}}>
                         {news.title}
                     </li>
                     <li className="news-list__item">

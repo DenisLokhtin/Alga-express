@@ -2,17 +2,6 @@ import React from 'react';
 import {Box, LinearProgress, Typography} from "@mui/material";
 import {DataGrid, GridOverlay, GridToolbarContainer, GridToolbarDensitySelector, ruRU} from "@mui/x-data-grid";
 import {styled} from "@mui/material/styles";
-import theme from "../../theme";
-
-theme.typography.h3 = {
-    fontSize: '1.2rem',
-    '@media (min-width:600px)': {
-        fontSize: '1.5rem',
-    },
-    [theme.breakpoints.up('md')]: {
-        fontSize: '1.4rem',
-    },
-};
 
 const StyledGridOverlay = styled(GridOverlay)(({theme}) => ({
     flexDirection: 'column',
@@ -73,7 +62,8 @@ const TableComponent = (
         rowHeight,
         onRowClick,
         onCellClick,
-        toolbarElements
+        toolbarElements,
+        onCellDoubleClick
     }) => {
 
     return (
@@ -98,6 +88,7 @@ const TableComponent = (
                 NoRowsOverlay: CustomNoRowsOverlay,
             }}
             onCellClick={onCellClick}
+            onCellDoubleClick={onCellDoubleClick}
             onRowClick={onRowClick}
         />
     );

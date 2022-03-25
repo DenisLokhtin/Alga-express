@@ -5,7 +5,6 @@ const name = 'delivery';
 const deliverySlice = createSlice({
     name,
     initialState: {
-        delivery: [],
         error: null,
         loading: false,
     },
@@ -20,17 +19,6 @@ const deliverySlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
-        getDeliveryRequest(state) {
-            state.loading = true;
-        },
-        getDeliverySuccess(state, action) {
-            state.loading = false;
-            state.delivery = action.payload.data;
-        },
-        getDeliveryFailure(state, action) {
-            state.loading = false;
-            state.error = action.payload;
-        },
         putDeliveryRequest(state) {
             state.loading = true;
         },
@@ -38,16 +26,6 @@ const deliverySlice = createSlice({
             state.loading = false;
         },
         putDeliveryFailure(state, action) {
-            state.loading = false;
-            state.error = action.payload;
-        },
-        deleteDeliveryRequest(state) {
-            state.loading = true;
-        },
-        deleteDeliverySuccess(state) {
-            state.loading = false;
-        },
-        deleteDeliveryFailure(state, action) {
             state.loading = false;
             state.error = action.payload;
         },

@@ -10,7 +10,7 @@ import TableComponent from "../../components/TableComponent/TableComponent";
 import {buyoutsColumns, packagesColumns, paymentsColumns} from "../AdminPage/columns/tableColumns";
 import SwitchElement from "../../components/UI/SwitchElement/SwitchElement";
 import {useDispatch, useSelector} from "react-redux";
-import {countries, statuses} from "../../dataLocalization";
+import {countries, saleCountry, statuses, valueIcon} from "../../dataLocalization";
 import dayjs from "dayjs";
 import {apiURL} from "../../config";
 import {getOrdersHistoryRequest} from "../../store/actions/packageRegisterActions";
@@ -24,6 +24,12 @@ import {makeStyles} from "@mui/styles";
 import EditIcon from "@mui/icons-material/Edit";
 import {Link} from "react-router-dom";
 import {editBuyout} from "../../paths";
+import DeliveryModal from "../../components/DeliveryModal/DeliveryModal";
+import Requisites from "../../components/Requisites/Requisites";
+import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
+import Button from "@mui/material/Button";
+import DeliveryInfo from "../../components/DeliveryInfo/DeliveryInfo";
+
 
 function a11yProps(index) {
     return {
@@ -61,18 +67,13 @@ const UserPage = () => {
     const dispatch = useDispatch();
     const messagesEndRef = useRef(null);
     const [value, setValue] = useState(0);
+    const [update, setUpdate] = useState(false);
     const userId = useSelector(state => state.users.user._id);
-
-    const [
-        openImg,
-        setOpenImg] = useState(false);
-    const [
-        img,
-        setImg] = useState(null);
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
+    const [openModal, setOpenModal] = useState(false);
+    const [openInfo, setOpenInfo] = useState(false);
+    const [packageData, setPackageData] = useState(null);
+    const [openImg, setOpenImg] = useState(false);
+    const [img, setImg] = useState(null);
 
     const packages = useSelector(state => state.package.orders);
     const [packagesHistory, setPackagesHistory] = useState(false);
@@ -101,6 +102,10 @@ const UserPage = () => {
     const [buyoutsSelectionModel, setBuyoutsSelectionModel] = useState([]);
     const buyoutsPrevSelection = useRef(buyoutsSelectionModel);
 
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+
     const packagesRows = packages.map(order => {
         return {
             id: order._id,
@@ -109,6 +114,12 @@ const UserPage = () => {
             title: order.title,
             country: countries[order.country],
             status: statuses[order.status],
+            name: order.user.name,
+            amount: order.amount,
+            price: order.price ? {price: order.price, icon: valueIcon(order.priceCurrency)} : {price: 'Нет'},
+            delivery: order.delivery || null,
+            user: order.user.name,
+            arrived_date: order.flight && order.flight.arrived_date ? dayjs(order.flight.arrived_date).format('DD-MM-YYYY') : 'Не назначен',
         }
     });
 
@@ -116,15 +127,14 @@ const UserPage = () => {
         return {
             id: buyout._id,
             url: buyout.url,
-            country: buyout.country,
+            country: saleCountry[buyout.country],
             description: buyout.description,
             datetime: dayjs(buyout.datetime).format('DD-MM-YYYY'),
             user: buyout.user.name,
-            status: buyout.status,
-            price: buyout.price,
-            commission: buyout.commission,
-            value: buyout.value,
-            totalPrice: buyout.totalPrice
+            status: statuses[buyout.status],
+            price: buyout.price ? {price: buyout.price, icon: valueIcon(buyout.value)} : {price: 'Нет'},
+            commission: `${buyout.commission} %`,
+            totalPrice: buyout.totalPrice ? `${buyout.totalPrice} сом` : 'Нет',
         }
     });
 
@@ -135,16 +145,12 @@ const UserPage = () => {
             image: apiURL + '/' + payment.image,
             user: payment.user.name,
             date: dayjs(payment.date).format('DD-MM-YYYY'),
-            amount: payment.amount
+            amount: payment.amount ? payment.amount : 'В обработке',
         }
     })
 
     useEffect(() => {
-        if (!!messagesEndRef.current) {
-            messagesEndRef.current.scrollIntoView({
-                behavior: 'smooth'
-            }, 200);
-        }
+        window.scrollTo(0, 0);
 
         if (packagesHistory) {
             dispatch(getOrdersHistoryRequest({page: packagesPage, limit: packagesPageLimit, history: true, id: userId}));
@@ -166,7 +172,8 @@ const UserPage = () => {
     }, [
         messagesEndRef, dispatch, packagesPage, paymentsPage,
         packagesPageLimit, userId, buyoutsPageLimit, paymentsPageLimit,
-        buyoutsHistory, buyoutsPage, packagesHistory, paymentsHistory
+        buyoutsHistory, buyoutsPage, packagesHistory, paymentsHistory,
+        update,
     ]);
 
     return (
@@ -206,7 +213,85 @@ const UserPage = () => {
                 <TabPanelComponent value={value} index={0}>
                     <TableComponent
                         rows={packagesRows}
-                        columns={packagesColumns}
+                        columns={[
+                            ...packagesColumns,
+                            // {
+                            //     field: 'price',
+                            //     headerName: 'Цена товара',
+                            //     flex: 1,
+                            //     minWidth: 140,
+                            //     headerAlign: 'center',
+                            //     align: 'center',
+                            //     renderCell: (params => {
+                            //         const order = packages.find(order => order._id === params.id);
+                            //
+                            //         if (order.currency === 'usd') {
+                            //             return (
+                            //                 <div style={{display: 'flex', alignItems: 'center'}}>
+                            //                     {order.price} <AttachMoneyIcon/>
+                            //                 </div>
+                            //             )
+                            //         } else if (order.currency === 'cny') {
+                            //             return (
+                            //                 <div style={{display: 'flex', alignItems: 'center'}}>
+                            //                     {order.price} <CurrencyYenIcon/>
+                            //                 </div>
+                            //             )
+                            //         } else if (order.currency === 'try') {
+                            //             return (
+                            //                 <div style={{display: 'flex', alignItems: 'center'}}>
+                            //                     {order.price} <CurrencyLiraIcon/>
+                            //                 </div>
+                            //             )
+                            //         }
+                            //     })
+                            // },
+                            {
+                                field: 'price',
+                                headerName: 'Стоимость Заказа',
+                                flex: 1,
+                                minWidth: 100,
+                                headerAlign: 'center',
+                                align: 'center',
+                                renderCell: params => {
+                                    return <p style={{display: 'flex', alignItems: 'center'}}
+                                    >{params.value.price} {params.value.icon}
+                                    </p>
+                                },
+                            },
+                            {
+                                field: 'delivery',
+                                headerName: 'Доставка',
+                                flex: 1,
+                                minWidth: 150,
+                                headerAlign: 'center',
+                                align: 'center',
+                                renderCell: (params) => (
+                                    !params.row.delivery ?
+                                        <Button
+                                            startIcon={<DeliveryDiningIcon fontSize="large"/>}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setPackageData({...params.row});
+                                                setOpenModal(true);
+                                            }}
+                                        >
+                                            Оформить
+                                        </Button> :
+
+                                        <Button
+                                            startIcon={<DeliveryDiningIcon fontSize="large"/>}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setPackageData({...params.row});
+                                                setOpenInfo(true);
+                                            }}
+                                        >
+                                            Изменить
+                                        </Button>
+                                )
+                            },
+                        ]}
                         pageSize={packagesPageLimit}
                         rowCount={packagesTotalRow}
                         rowHeight={70}
@@ -227,6 +312,22 @@ const UserPage = () => {
                             />
                         }
                     />
+
+                    {packageData && openInfo &&
+                        <DeliveryInfo
+                            open={openInfo}
+                            onClose={() => setOpenInfo(false)}
+                            packageData={packageData}
+                            update={() => setUpdate(!update)}
+                        />}
+
+                    {packageData && openModal &&
+                        <DeliveryModal
+                            open={openModal}
+                            onClose={() => setOpenModal(false)}
+                            packageData={packageData}
+                            update={() => setUpdate(!update)}
+                        />}
                 </TabPanelComponent>
 
                 <TabPanelComponent value={value} index={1}>
@@ -315,6 +416,7 @@ const UserPage = () => {
                     <ImageModal open={openImg} onClose={() => setOpenImg(false)} data={img}/>
                 </TabPanelComponent>
             </Box>
+            <Requisites/>
 
         </Container>
     );

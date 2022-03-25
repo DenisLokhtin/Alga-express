@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchCurrencies} from "../../store/actions/currenciesActions";
 import CurrenciesCard from "../../components/CurrenciesCard/CurrenciesCard";
 import TableComponent from "../../components/TableComponent/TableComponent";
-import {countries, statuses} from "../../dataLocalization";
+import {countries, saleCountry, statusBuyouts, statuses, valueIcon} from "../../dataLocalization";
 import {getOrdersHistoryRequest, giveOutRequest} from "../../store/actions/packageRegisterActions";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
@@ -13,7 +13,7 @@ import TabPanelComponent from "../../components/UI/TabPanelComponent/TabPanelCom
 import {buyoutsColumns, packagesColumns, paymentsColumns} from "./columns/tableColumns";
 import {fetchBuyoutsList} from "../../store/actions/buyoutActions";
 import dayjs from "dayjs";
-import {fetchPaymentRequest} from "../../store/actions/paymentActions";
+import {fetchPaymentRequest, paymentAcceptedRequest} from "../../store/actions/paymentActions";
 import {apiURL} from "../../config";
 import SwitchElement from "../../components/UI/SwitchElement/SwitchElement";
 import ImageModal from "../../components/UI/ImageModal/ImageModal";
@@ -31,8 +31,17 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import Grid from "@mui/material/Grid";
 import ruLocale from "date-fns/locale/ru";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
-
-// import ImageModal from "../../components/UI/ImageModal/ImageModal";
+import AppWindow from "../../components/UI/AppWindow/AppWindow";
+import Requisites from "../../components/Requisites/Requisites";
+import SearchIcon from '@mui/icons-material/Search';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import {toast} from "react-toastify";
+import TariffCard from "../../components/TariffCard/TariffCard";
+import FormElement from "../../components/UI/Form/FormElement";
+import History from '../../History';
+import DeliveryInfo from "../../components/DeliveryInfo/DeliveryInfo";
+import DeliveryModal from "../../components/DeliveryModal/DeliveryModal";
+import DeliveryDiningIcon from "@mui/icons-material/DeliveryDining";
 
 function a11yProps(index) {
     return {
@@ -56,14 +65,18 @@ const useStyles = makeStyles(() => ({
         },
     },
 
+    'MuiBox-root': {
+        padding: '0'
+    },
     container: {
+        maxWidth: '1230',
         textAlign: 'center',
         paddingTop: '155px',
         marginBottom: '30px',
         [theme.breakpoints.down('sm')]: {
             paddingTop: '90px',
         },
-    }
+    },
 }));
 
 const localeMap = {
@@ -81,11 +94,26 @@ const AdminPage = () => {
     const [update, setUpdate] = useState(false);
     const [value, setValue] = useState(0);
     const [openImg, setOpenImg] = useState(false);
+    const [openDone, setOpenDone] = useState({
+        open: false,
+        id: '',
+    });
+    const [openModal, setOpenModal] = useState(false);
+    const [openInfo, setOpenInfo] = useState(false);
+    const [packageData, setPackageData] = useState(null);
+
     const [img, setImg] = useState(null);
     const currencies = useSelector(state => state.currencies.currencies);
     const users = useSelector(state => state.users.users);
 
-    const [valueSelect, setValueSelect] = useState({_id: null});
+    const [valueSelect, setValueSelect] = useState({
+        name: '',
+        email: '',
+        _id: '',
+        tariff: null,
+        group: ''
+
+    });
     const [inputValueSelect, setInputValueSelect] = useState('');
 
     const [periodDate, setPeriodDate] = useState(
@@ -93,8 +121,17 @@ const AdminPage = () => {
             from: null,
             to: null,
         });
-    const [searchData, setSearchData] = useState(false);
-    console.log(valueSelect);
+    const [searchData, setSearchData] = useState({
+        user: false,
+        date: false,
+        search: true,
+    });
+
+    const [searchByNumber, setSearchByNumber] = useState({
+        number: '',
+        search: false,
+    });
+
     const buyouts = useSelector(state => state.buyouts.buyouts);
     const [buyoutsHistory, setBuyoutsHistory] = useState(false);
     const buyoutsLoading = useSelector(state => state.buyouts.fetchLoading);
@@ -135,6 +172,11 @@ const AdminPage = () => {
             title: order.title,
             country: countries[order.country],
             status: statuses[order.status],
+            arrived_date: order.flight && order.flight.arrived_date ? dayjs(order.flight.arrived_date).format('DD-MM-YYYY') : 'Не назначен',
+            amount: order.amount,
+            delivery: order.delivery || null,
+            user: order.user.name,
+            price: order.price ? {price: order.price, icon: valueIcon(order.priceCurrency)} : {price: 'Нет'},
         }
     });
 
@@ -142,15 +184,14 @@ const AdminPage = () => {
         return {
             id: buyout._id,
             url: buyout.url,
-            country: buyout.country,
+            country: saleCountry[buyout.country],
             description: buyout.description,
             datetime: dayjs(buyout.datetime).format('DD-MM-YYYY'),
             user: buyout.user.name,
-            status: buyout.status,
-            price: buyout.price,
-            commission: buyout.commission,
-            value: buyout.value,
-            totalPrice: buyout.totalPrice,
+            status: statusBuyouts[buyout.status],
+            price: buyout.price ? {price: buyout.price, icon: valueIcon(buyout.value)} : {price: 'Нет'},
+            commission: `${buyout.commission} %`,
+            totalPrice: buyout.totalPrice ? `${buyout.totalPrice} сом` : 'Нет',
             userData: buyout.user
         }
     });
@@ -162,23 +203,21 @@ const AdminPage = () => {
             image: apiURL + '/' + payment.image,
             user: payment.user.name,
             date: dayjs(payment.date).format('DD-MM-YYYY'),
-            amount: payment.amount,
+            amount: payment.amount ? payment.amount : 'В обработке',
+            pay: '',
+            status: payment.status
         }
     });
 
     useEffect(() => {
-        if (!!messagesEndRef.current) {
-            messagesEndRef.current.scrollIntoView({
-                behavior: 'smooth'
-            }, 250);
-        }
+        window.scrollTo(0, 0);
         dispatch(fetchUsersRequest());
         dispatch(fetchCurrencies());
     }, [dispatch, messagesEndRef]);
 
     useEffect(() => {
         const pageData = {};
-        if (searchData) {
+        if ((searchData.date) || (searchData.user)) {
             pageData.from = periodDate.from;
             pageData.to = periodDate.to;
             pageData.page = packagesPage;
@@ -189,49 +228,59 @@ const AdminPage = () => {
             pageData.limit = packagesPageLimit;
         }
 
-        switch (value) {
-            case 0:
-                if (packagesHistory) {
-                    pageData.history = true;
-                }
-                dispatch(getOrdersHistoryRequest({
-                    page: pageData.page,
-                    limit: pageData.limit,
-                    history: pageData.history,
-                    id: pageData.id,
-                    from: pageData.from,
-                    to: pageData.to
-                }));
-
-                break;
-            case 1:
-                if (buyoutsHistory) {
-                    pageData.history = true;
-                }
-                dispatch(fetchBuyoutsList({
-                    page: pageData.page,
-                    limit: pageData.limit,
-                    history: pageData.history,
-                    id: pageData.id,
-                    from: pageData.from,
-                    to: pageData.to
-                }));
-                break;
-            case 2:
-                if (paymentsHistory) {
-                    pageData.history = true;
-                }
-                dispatch(fetchPaymentRequest({
-                    page: pageData.page,
-                    limit: pageData.limit,
-                    history: pageData.history,
-                    id: pageData.id,
-                    from: pageData.from,
-                    to: pageData.to
-                }));
-                break;
-            default:
-                break;
+        if (((searchData.search) && (searchByNumber.number === '')) || searchByNumber.search) {
+            switch (value) {
+                case 0:
+                    if (packagesHistory) {
+                        pageData.history = true;
+                    }
+                    if (searchByNumber.search) {
+                        pageData.packageFind = searchByNumber.number;
+                        setSearchByNumber(prevState => ({
+                            ...prevState,
+                            number: '',
+                            search: false,
+                        }));
+                    }
+                    dispatch(getOrdersHistoryRequest({
+                        page: pageData.page,
+                        limit: pageData.limit,
+                        history: pageData.history,
+                        id: pageData.id,
+                        from: pageData.from,
+                        to: pageData.to,
+                        packageFind: pageData.packageFind,
+                    }));
+                    break;
+                case 1:
+                    if (buyoutsHistory) {
+                        pageData.history = true;
+                    }
+                    dispatch(fetchBuyoutsList({
+                        page: pageData.page,
+                        limit: pageData.limit,
+                        history: pageData.history,
+                        id: pageData.id,
+                        from: pageData.from,
+                        to: pageData.to
+                    }));
+                    break;
+                case 2:
+                    if (paymentsHistory) {
+                        pageData.history = true;
+                    }
+                    dispatch(fetchPaymentRequest({
+                        page: pageData.page,
+                        limit: pageData.limit,
+                        history: pageData.history,
+                        id: pageData.id,
+                        from: pageData.from,
+                        to: pageData.to
+                    }));
+                    break;
+                default:
+                    break;
+            }
         }
     }, [dispatch,
         value,
@@ -247,284 +296,537 @@ const AdminPage = () => {
         packagesHistory,
         paymentsHistory,
         valueSelect,
+        searchByNumber,
+        update,
     ]);
+
+    const submitFormByNumber = e => {
+        e.preventDefault();
+        setSearchByNumber(prevState => ({
+            ...prevState,
+            search: true,
+        }));
+    };
+
+    const changeSearchByNumber = e => {
+        const {name, value} = e.target;
+        setSearchByNumber(prevState => ({
+            ...prevState,
+            [name]: value,
+        }));
+
+    };
 
     const submitFormHandler = (e) => {
         e.preventDefault();
-        setSearchData(true);
+        setSearchData(prevState => ({
+            ...prevState,
+            user: true,
+            date: true,
+            search: true,
+        }));
     };
 
     const clearHandler = () => {
-        setValueSelect({_id: null});
-        setSearchData(false);
+        setValueSelect(prevState => ({
+            ...prevState,
+            email: '',
+            name: '',
+            _id: '',
+            tariff: null,
+            group: ''
+        }));
+        setPeriodDate(prevState => ({
+            ...prevState,
+            from: null,
+            to: null,
+        }));
+        setSearchData(prevState => ({
+            ...prevState,
+            user: false,
+            date: false,
+            search: true,
+        }));
+        setSearchByNumber(prevState => ({
+            ...prevState,
+            number: '',
+            search: false,
+        }));
     };
 
     return (
         <Container ref={messagesEndRef} className={classes.container}>
-            <Box sx={{ width: '100%'}}>
-                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                    <Tabs
-                        value={value}
-                        onChange={handleChange}
-                        variant="scrollable"
-                        scrollButtons="auto"
-                    >
-                        <Tab label="Посылки" {...a11yProps(0)} />
-                        <Tab label="Выкупы" {...a11yProps(1)} />
-                        <Tab label="Пополнения" {...a11yProps(3)} />
-                        <Tab label="Валюты" {...a11yProps(4)} />
-                    </Tabs>
-                </Box>
-                <Grid
-                    container
-                    component="form"
-                    onSubmit={submitFormHandler}
+            <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
+                <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    variant="scrollable"
+                    scrollButtons="auto"
                 >
-                    <Box item>
-                        <Autocomplete
-                            onChange={(event, newValue) => {
-                                if (newValue) {
-                                    setValueSelect(newValue);
-                                    setSearchData(false);
-                                } else {
-                                    setValueSelect({_id: null});
-                                }
+                    <Tab label="Посылки" {...a11yProps(0)} />
+                    <Tab label="Выкупы" {...a11yProps(1)} />
+                    <Tab label="Пополнения" {...a11yProps(3)} />
+                    <Tab label="Валюты" {...a11yProps(4)} />
+                </Tabs>
+            </Box>
+            <Grid
+                container
+                component='form'
+                justifyContent='center'
+                alignItems='center'
+                sx={{margin: '25px 0'}}
+                onSubmit={submitFormByNumber}
+            >
+                <Grid item xs={12} sm={6} md={5} sx={{margin: '20px'}}>
+                    <FormElement
+                        label='Поиск по Трек/Карго номеру'
+                        name='number' value={searchByNumber.number}
+                        autoComplete='off'
+                        onChange={changeSearchByNumber}
+                    />
+                </Grid>
+                <Grid item xs={7} sm={3} md={2}>
+                    <ButtonWithProgress
+                        startIcon={<SearchIcon/>}
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        // className={classes.submit}
+                        // loading={loading}
+                        disabled={!(searchByNumber.number)}
+                    >
+                        Найти
+                    </ButtonWithProgress>
+                </Grid>
+                <FormElement
+                    xs={12} sm={6} md={5}
+                    label='Поиск по Трек Карго номеру'
+                    name='number' value={searchByNumber.number}
+                    autoComplete='off'
+                    onChange={changeSearchByNumber}
+                />
+            </Grid>
+            <Grid
+                container
+                component="form"
+                justifyContent="space-between"
+                alignItems="center"
+                spacing={2}
+                onSubmit={submitFormHandler}
+            >
+                <Grid item xs={12} sm={4} md={3}>
+                    <Autocomplete
+                        value={valueSelect}
+                        isOptionEqualToValue={(option, value) => option.id === value.id}
+                        onChange={(event, newValue) => {
+                            if (newValue) {
+                                setValueSelect(newValue);
+                                setSearchData(prevState => ({
+                                    ...prevState,
+                                    user: true,
+                                    search: false,
+                                }));
+                            }
+                        }}
+                        inputValue={inputValueSelect}
+                        onInputChange={(event, newInputValue) => {
+                            setInputValueSelect(newInputValue);
+                        }}
+                        name={users}
+                        id="usersSelected"
+                        options={users}
+                        getOptionLabel={(option) => (option.name + ' ' + option.email)}
+                        renderInput={(params) => <TextField {...params} label="Пользователи"/>}
+                    />
+                </Grid>
+                <Grid item xs={12} sm={4} md={3}>
+                    <LocalizationProvider dateAdapter={AdapterDateFns} locale={localeMap['ru']}>
+                        <DatePicker
+                            mask={maskMap['ru']}
+                            label="от"
+                            openTo="month"
+                            views={['year', 'month', 'day']}
+                            value={periodDate.from}
+                            onChange={(newValue) => {
+                                setPeriodDate(prevState => ({
+                                    ...prevState,
+                                    from: newValue,
+                                }));
+                                setSearchData(prevState => ({
+                                    ...prevState,
+                                    date: true,
+                                    search: false,
+                                }));
                             }}
-                            inputValue={inputValueSelect}
-                            onInputChange={(event, newInputValue) => {
-                                setInputValueSelect(newInputValue);
-                            }}
-                            name={users}
-                            id="usersSelected"
-                            options={users}
-                            getOptionLabel={(option) => (option.name + ' ' + option.email)}
-                            sx={{width: 300}}
-                            renderInput={(params) => <TextField {...params} label="Пользователи"/>}
+                            renderInput={(params) => <TextField {...params}/>}
                         />
-                    </Box>
-
-                    <Box item>
-                        <LocalizationProvider dateAdapter={AdapterDateFns} locale={localeMap['ru']}>
-                            <DatePicker
-                                mask={maskMap['ru']}
-                                label="от"
-                                openTo="month"
-                                views={['year', 'month', 'day']}
-                                value={periodDate.from}
-                                onChange={(newValue) => {
-                                    setPeriodDate(prevState => ({
-                                        ...prevState,
-                                        from: newValue,
-                                    }));
-                                }}
-                                renderInput={(params) => <TextField {...params}/>}
-                            />
-                        </LocalizationProvider>
-                    </Box>
-                    <Box item>
-                        <LocalizationProvider dateAdapter={AdapterDateFns} locale={localeMap['ru']}>
-                            <DatePicker
-                                mask={maskMap['ru']}
-                                label="До"
-                                openTo="month"
-                                views={['year', 'month', 'day']}
-                                value={periodDate.to}
-                                onChange={(newValue) => {
-                                    setPeriodDate(prevState => ({
-                                        ...prevState,
-                                        to: newValue,
-                                    }));
-                                }}
-                                renderInput={(params) => <TextField {...params}/>}
-                            />
-                        </LocalizationProvider>
-                    </Box>
-                    <Grid item>
+                    </LocalizationProvider>
+                </Grid>
+                <Grid item xs={12} sm={4} md={3}>
+                    <LocalizationProvider dateAdapter={AdapterDateFns} locale={localeMap['ru']}>
+                        <DatePicker
+                            mask={maskMap['ru']}
+                            label="До"
+                            openTo="month"
+                            views={['year', 'month', 'day']}
+                            value={periodDate.to}
+                            onChange={(newValue) => {
+                                setPeriodDate(prevState => ({
+                                    ...prevState,
+                                    to: newValue,
+                                }));
+                                setSearchData(prevState => ({
+                                    ...prevState,
+                                    date: true,
+                                    search: false,
+                                }));
+                            }}
+                            disabled={Boolean(!periodDate.from)}
+                            renderInput={(params) => <TextField {...params}/>}
+                        />
+                    </LocalizationProvider>
+                </Grid>
+                <Grid container justifyContent="center" spacing={1}
+                      sx={{
+                          maxWidth: {
+                              md: '200px',
+                          }
+                      }}
+                >
+                    <Grid item xs={7} sm={5} sx={{
+                        margin: {
+                            xs: '15px 0 1px',
+                        }
+                    }}
+                          md={9}>
                         <ButtonWithProgress
+                            startIcon={<SearchIcon/>}
                             type="submit"
                             fullWidth
                             variant="contained"
                             color="primary"
                             // className={classes.submit}
                             // loading={loading}
-                            // disabled={!(permitPayment[index].pay !== undefined && permitPayment[index].pay !== '')}
+                            disabled={!(valueSelect.name || periodDate.from)}
                         >
                             Найти
                         </ButtonWithProgress>
+                    </Grid>
+                    <Grid item xs={7} sm={5} sx={{
+                        margin: {
+                            xs: '15px 0 1px',
+                        }
+                    }} md={9}>
                         <ButtonWithProgress
                             type="button"
                             fullWidth
                             variant="contained"
                             color="primary"
                             onClick={clearHandler}
+                            startIcon={<RestartAltIcon/>}
                             // className={classes.submit}
                             // loading={loading}
-                            // disabled={!(permitPayment[index].pay !== undefined && permitPayment[index].pay !== '')}
                         >
                             Сброс
                         </ButtonWithProgress>
                     </Grid>
                 </Grid>
+            </Grid>
+            <TabPanelComponent value={value} index={0}>
+                <TableComponent
+                    onCellDoubleClick={packageData => History.push(`cargo/package/${packageData.id}`)}
+                    rows={packagesRows}
+                    columns={[
+                        ...packagesColumns,
+                        {
+                            field: 'price',
+                            headerName: 'Цена товара',
+                            flex: 1,
+                            minWidth: 110,
+                            headerAlign: 'center',
+                            align: 'center',
+                            renderCell: params => {
+                                const order = packages.find(order => order._id === params.id);
 
-                <TabPanelComponent value={value} index={0}>
-                    <TableComponent
-                        rows={packagesRows}
-                        columns={[
-                            ...packagesColumns,
-                            {
-                                field: "actions",
-                                type: "actions",
-                                width: 100,
-                                getActions: (params) => [
-                                    <Button
-                                        variant="outlined"
-                                        disabled={params.row.status !== "Доставлено"}
-                                        onClick={() => {
-                                            dispatch(giveOutRequest({id: params.row.id, data: null}));
-                                            setUpdate(!update);
-                                        }}
-                                    >
-                                        Выдать
-                                    </Button>
-                                ]
+                                return (
+                                    <div style={{display: 'flex', alignItems: 'center'}}>
+                                        {order.price} {valueIcon(order.priceCurrency)}
+                                    </div>
+                                )
                             }
-                        ]}
-                        pageSize={packagesPageLimit}
-                        rowCount={packagesTotalRow}
-                        rowHeight={70}
-                        onPageSizeChange={newRowsLimit => setPackagesPageLimit(newRowsLimit)}
-                        onPageChange={(newPage) => {
-                            packagesPrevSelectionModel.current = packagesSelectionModel;
-                            setPackagesPage(newPage);
-                        }}
-                        selectionModel={packagesSelectionModel}
-                        onSelectionModelChange={(newSelectionModel) => {
-                            setPackagesSelectionModel(newSelectionModel);
-                        }}
-                        loading={packagesLoading}
-                        toolbarElements={
-                            <SwitchElement
-                                checked={packagesHistory}
-                                onChange={(e) => setPackagesHistory(e.target.checked)}
-                            />
-                        }
-                    />
-                </TabPanelComponent>
-
-                <TabPanelComponent value={value} index={1}>
-                    <TableComponent
-                        rows={buyoutsRows}
-                        columns={[
-                            ...buyoutsColumns,
-                            {
-                                field: "actions",
-                                type: "actions",
-                                width: 200,
-                                getActions: (params) => [
+                        },
+                        {
+                            field: 'delivery',
+                            headerName: 'Доставка',
+                            flex: 1,
+                            minWidth: 150,
+                            headerAlign: 'center',
+                            align: 'center',
+                            renderCell: (params) => (
+                                !params.row.delivery ?
                                     <Button
-                                        variant="outlined"
-                                        component={Link}
-                                        to={newPackageRegister}
-                                        state={{
-                                            userProps: {
-                                                id: params.row.userData._id,
-                                                name: params.row.userData.name,
-                                                email: params.row.userData.email,
-                                                buyoutId: params.row.id
-                                            }
+                                        startIcon={<DeliveryDiningIcon fontSize="large"/>}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setPackageData({...params.row});
+                                            setOpenModal(true);
                                         }}
                                     >
                                         Оформить
-                                    </Button>,
+                                    </Button> :
 
-                                    <IconButton
-                                        component={Link}
-                                        to={editBuyout.slice(0, editBuyout.length - 3) + params.row.id}
+                                    <Button
+                                        startIcon={<DeliveryDiningIcon fontSize="large"/>}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setPackageData({...params.row});
+                                            setOpenInfo(true);
+                                        }}
                                     >
-                                        <EditIcon/>
+                                        Изменить
+                                    </Button>
+                            )
+                        },
+                        {
+                            field: "actions",
+                            type: "actions",
+                            width: 100,
+                            getActions: (params) => [
+                                <Button
+                                    variant="outlined"
+                                    disabled={params.row.status !== "Доставлено"}
+                                    onClick={() => {
+                                        setOpenDone(prevState => ({
+                                            ...prevState,
+                                            open: true,
+                                            id: params.row.id
+                                        }))
+                                        setUpdate(!update);
+                                    }}
+                                >
+                                    Выдать
+                                </Button>
+                            ]
+                        }
+                    ]}
+                    pageSize={packagesPageLimit}
+                    rowCount={packagesTotalRow}
+                    rowHeight={70}
+                    onPageSizeChange={newRowsLimit => setPackagesPageLimit(newRowsLimit)}
+                    onPageChange={(newPage) => {
+                        packagesPrevSelectionModel.current = packagesSelectionModel;
+                        setPackagesPage(newPage);
+                    }}
+                    selectionModel={packagesSelectionModel}
+                    onSelectionModelChange={(newSelectionModel) => {
+                        setPackagesSelectionModel(newSelectionModel);
+                    }}
+                    loading={packagesLoading}
+                    toolbarElements={
+                        <SwitchElement
+                            checked={packagesHistory}
+                            onChange={(e) => setPackagesHistory(e.target.checked)}
+                        />
+                    }
+                />
+
+                {packageData && openInfo &&
+                    <DeliveryInfo
+                        open={openInfo}
+                        onClose={() => setOpenInfo(false)}
+                        packageData={packageData}
+                        update={() => setUpdate(!update)}
+                    />}
+
+                {packageData && openModal &&
+                    <DeliveryModal
+                        open={openModal}
+                        onClose={() => setOpenModal(false)}
+                        packageData={packageData}
+                        update={() => setUpdate(!update)}
+                    />}
+            </TabPanelComponent>
+
+            <TabPanelComponent value={value} index={1}>
+                <TableComponent
+                    rows={buyoutsRows}
+                    columns={[
+                        ...buyoutsColumns,
+                        {
+                            field: "actions",
+                            type: "actions",
+                            width: 200,
+                            getActions: (params) => [
+                                <Button
+                                    variant="outlined"
+                                    component={Link}
+                                    to={newPackageRegister}
+                                    state={{
+                                        userProps: {
+                                            id: params.row.userData._id,
+                                            name: params.row.userData.name,
+                                            email: params.row.userData.email,
+                                            buyoutId: params.row.id
+                                        }
+                                    }}
+                                >
+                                    Оформить
+                                </Button>,
+
+                                <IconButton
+                                    component={Link}
+                                    to={editBuyout.slice(0, editBuyout.length - 3) + params.row.id}
+                                >
+                                    <EditIcon/>
+                                </IconButton>
+                            ]
+                        }
+                    ]}
+                    pageSize={buyoutsPageLimit}
+                    rowCount={buyoutsTotalRow}
+                    rowHeight={70}
+                    onPageSizeChange={newRowsLimit => setBuyoutsPageLimit(newRowsLimit)}
+                    onPageChange={(newPage) => {
+                        buyoutsPrevSelection.current = buyoutsSelectionModel;
+                        setBuyoutsPage(newPage);
+                    }}
+                    selectionModel={buyoutsSelectionModel}
+                    onSelectionModelChange={(newSelectionModel) => {
+                        setBuyoutsSelectionModel(newSelectionModel);
+                    }}
+                    loading={buyoutsLoading}
+                    toolbarElements={
+                        <SwitchElement
+                            checked={buyoutsHistory}
+                            onChange={(e) => setBuyoutsHistory(e.target.checked)}
+                        />
+                    }
+                />
+            </TabPanelComponent>
+
+            <TabPanelComponent value={value} index={2}>
+                <TableComponent
+                    rows={paymentsRows}
+                    columns={[
+                        {
+                            field: 'image',
+                            renderCell: (params => (
+                                    <IconButton
+                                        onClick={() => {
+                                            setOpenImg(true);
+                                            setImg(params.row);
+                                        }}
+                                        sx={{cursor: 'pointer'}}
+                                    >
+                                        <ImageIcon sx={{fontSize: "48px"}}/>
                                     </IconButton>
-                                ]
-                            }
-                        ]}
-                        pageSize={buyoutsPageLimit}
-                        rowCount={buyoutsTotalRow}
-                        rowHeight={70}
-                        onPageSizeChange={newRowsLimit => setBuyoutsPageLimit(newRowsLimit)}
-                        onPageChange={(newPage) => {
-                            buyoutsPrevSelection.current = buyoutsSelectionModel;
-                            setBuyoutsPage(newPage);
-                        }}
-                        selectionModel={buyoutsSelectionModel}
-                        onSelectionModelChange={(newSelectionModel) => {
-                            setBuyoutsSelectionModel(newSelectionModel);
-                        }}
-                        loading={buyoutsLoading}
-                        toolbarElements={
-                            <SwitchElement
-                                checked={buyoutsHistory}
-                                onChange={(e) => setBuyoutsHistory(e.target.checked)}
-                            />
+                                )
+                            ),
+                            headerName: 'Квитанция',
+                            flex: 1,
+                            minWidth: 120,
+                            headerAlign: 'center',
+                            align: 'center',
+                        },
+                        ...paymentsColumns,
+                        {
+                            headerName: 'Оплата',
+                            field: 'pay',
+                            minWidth: 120,
+                            align: 'center',
+                            editable: true,
+                        },
+                        {
+                            field: "actions",
+                            type: "actions",
+                            width: 130,
+                            getActions: (params) => [
+                                <Button
+                                    variant="outlined"
+                                    disabled={params.row.status}
+                                    onClick={() => {
+                                        if (params.row.pay.length !== 0) {
+                                            dispatch(paymentAcceptedRequest({
+                                                pay: params.row.pay,
+                                                id: params.row.id,
+                                            }));
+                                        } else {
+                                            toast.error('Укажите сумму!');
+                                        }
+                                        setUpdate(!update);
+                                    }}
+                                >
+                                    Принять
+                                </Button>
+                            ]
                         }
-                    />
-                </TabPanelComponent>
+                    ]}
+                    pageSize={paymentsPageLimit}
+                    rowCount={paymentsTotalRow}
+                    rowHeight={70}
+                    onPageSizeChange={newRowsLimit => setPaymentsPageLimit(newRowsLimit)}
+                    onPageChange={(newPage) => {
+                        paymentsPrevSelection.current = paymentsSelectionModel;
+                        setPaymentsPage(newPage);
+                    }}
+                    selectionModel={paymentsSelectionModel}
+                    onSelectionModelChange={(newSelectionModel) => {
+                        setPaymentsSelectionModel(newSelectionModel);
+                    }}
+                    loading={paymentsLoading}
+                    toolbarElements={
+                        <SwitchElement
+                            checked={paymentsHistory}
+                            onChange={(e) => setPaymentsHistory(e.target.checked)}
+                        />
+                    }
+                />
 
-                <TabPanelComponent value={value} index={2}>
-                    <TableComponent
-                        rows={paymentsRows}
-                        columns={[
-                            {
-                                field: 'image',
-                                renderCell: (params => (
-                                        <IconButton
-                                            onClick={() => {
-                                                setOpenImg(true);
-                                                setImg(params.row);
-                                            }}
-                                            sx={{cursor: 'pointer'}}
-                                        >
-                                            <ImageIcon sx={{fontSize: "48px"}}/>
-                                        </IconButton>
-                                    )
-                                ),
-                                headerName: 'Квитанция',
-                                flex: 1,
-                                minWidth: 150,
-                                headerAlign: 'center',
-                                align: 'center',
-                            },
-                            ...paymentsColumns,
-                        ]}
-                        pageSize={paymentsPageLimit}
-                        rowCount={paymentsTotalRow}
-                        rowHeight={70}
-                        onPageSizeChange={newRowsLimit => setPaymentsPageLimit(newRowsLimit)}
-                        onPageChange={(newPage) => {
-                            paymentsPrevSelection.current = paymentsSelectionModel;
-                            setPaymentsPage(newPage);
-                        }}
-                        selectionModel={paymentsSelectionModel}
-                        onSelectionModelChange={(newSelectionModel) => {
-                            setPaymentsSelectionModel(newSelectionModel);
-                        }}
-                        loading={paymentsLoading}
-                        toolbarElements={
-                            <SwitchElement
-                                checked={paymentsHistory}
-                                onChange={(e) => setPaymentsHistory(e.target.checked)}
+                <ImageModal open={openImg} onClose={() => setOpenImg(false)} data={img}/>
+            </TabPanelComponent>
+
+            <TabPanelComponent value={value} index={3}>
+                <Grid container spacing={2} flexDirection={{xs: "column", md: "row"}}>
+                    <Grid item xs={12} md={6} lg={6}>
+                        {currencies &&
+                            <CurrenciesCard currency={currencies}/>}
+                    </Grid>
+
+
+                    {valueSelect.tariff
+                        && searchData.search
+                        && <Grid item xs={12} md={6} lg={6}>
+                            <TariffCard
+                                tariff={valueSelect.tariff}
+                                id={valueSelect._id}
+                                group={valueSelect.group}
                             />
-                        }
-                    />
-
-                    <ImageModal open={openImg} onClose={() => setOpenImg(false)} data={img}/>
-                </TabPanelComponent>
-
-                <TabPanelComponent value={value} index={3}>
-                    {currencies &&
-                        <CurrenciesCard currency={currencies}/>}
-                </TabPanelComponent>
-            </Box>
+                        </Grid>}
+                </Grid>
+            </TabPanelComponent>
+            <Requisites/>
+            <AppWindow
+                open={openDone.open}
+                onClose={() => setOpenDone(prevState => ({
+                    ...prevState,
+                    open: false,
+                    id: '',
+                }))}
+                confirm={() => {
+                    dispatch(giveOutRequest({id: openDone.id, data: null}));
+                    setUpdate(prevState => {
+                        prevState = !prevState;
+                        return prevState
+                    });
+                    setOpenDone(prevState => ({
+                        ...prevState,
+                        open: false,
+                        id: '',
+                    }))
+                }}
+            />
         </Container>
     );
 };
-
 export default AdminPage;

@@ -36,8 +36,10 @@ const flightSlice = createSlice({
         putFlightRequest(state) {
             state.loading = true;
         },
-        putFlightSuccess(state) {
+        putFlightSuccess(state, action) {
             state.loading = false;
+            state.flights = action.payload.data;
+            state.flightsCount = action.payload.totalElements;
         },
         putFlightFailure(state, action) {
             state.loading = false;

@@ -96,6 +96,7 @@ const Carousel = () => {
     const loading = useSelector(state => state.carousels.carouselsLoading);
     const carousels = useSelector(state => state.carousels.carousels);
     const [open, setOpen] = useState(false);
+    const [deleteElement, setDeleteElement] = useState('');
 
     useEffect(() => {
         dispatch(fetchCarouselsRequest());
@@ -104,6 +105,7 @@ const Carousel = () => {
     const deleteCarousel = (id) => {
         dispatch(deleteCarouselsRequest(id));
         setOpen(false);
+        setDeleteElement(prevState => {prevState = ''; return prevState});
     };
 
     return (
@@ -111,18 +113,16 @@ const Carousel = () => {
             <Slider {...settings}>
                 {carousels && carousels.map(carousel => (
                     <Fragment key={carousel._id}>
-                        <AppWindow open={open} onClose={() => setOpen(false)}
-                                   confirm={() => deleteCarousel(carousel._id)}/>
                         <h3 className={classes.carouselTitle}>{carousel.info}</h3>
-                        <img width="80%" style={{margin: '0 auto'}} src={apiURL + '/' + carousel.picture} alt={carousel.info}
+                        <img width="70%" style={{margin: '0 auto'}} src={apiURL + '/' + carousel.picture} alt={carousel.info}
                              className={classes.carouselImage}/>
                         {user && (user.role === 'superAdmin' || user.role === 'admin') && (
                             <Grid container justifyContent="space-between" spacing={2} className={classes.test}>
-                                <Grid item xs={12} sm={4} md={4} lg={4} className={classes.gridCenter}>
+                                <Grid item xs={12} sm={4} md={4} lg={3} className={classes.gridCenter}>
                                     <ButtonWithProgress
                                         type="submit"
                                         startIcon={<AddBoxIcon/>}
-                                        variant="contained"
+                                        variant="outlined"
                                         size={'medium'}
                                         loading={loading}
                                         disabled={loading}
@@ -133,7 +133,7 @@ const Carousel = () => {
                                         Добавить изображение
                                     </ButtonWithProgress>
                                 </Grid>
-                                <Grid item xs={12} sm={4} md={4} lg={4} className={classes.gridCenter}>
+                                <Grid item xs={12} sm={4} md={4} lg={3} className={classes.gridCenter}>
                                     <ButtonWithProgress
                                         type="submit"
                                         size={'medium'}
@@ -141,7 +141,7 @@ const Carousel = () => {
                                         className={classes.mediaQueriesEditBtn}
                                         fullWidth
                                         sx={{padding: '6px 10px'}}
-                                        variant="contained"
+                                        variant="outlined"
                                         color="success"
                                         loading={loading}
                                         disabled={loading}
@@ -151,24 +151,31 @@ const Carousel = () => {
                                         Редактировать изображение
                                     </ButtonWithProgress>
                                 </Grid>
-                                <Grid item xs={12} sm={4} md={4} lg={4} className={classes.gridCenter}>
+                                <Grid item xs={12} sm={4} md={4} lg={3} className={classes.gridCenter}>
                                     <ButtonWithProgress
                                         type="submit"
                                         startIcon={<DeleteOutlinedIcon/>}
                                         className={classes.mediaQueriesDeleteBtn}
                                         fullWidth
                                         size={'medium'}
-                                        variant="contained"
+                                        variant="outlined"
                                         color="error"
                                         loading={loading}
                                         disabled={loading}
-                                        onClick={() => setOpen(true)}
+                                        onClick={() => {
+                                            setOpen(true);
+                                            setDeleteElement(prevState => {prevState = carousel._id; return prevState});
+                                        }}
                                     >
                                         Удалить изображение
                                     </ButtonWithProgress>
                                 </Grid>
                             </Grid>
                         )}
+                        <AppWindow open={open} onClose={() => {
+                            setOpen(false);
+                            setDeleteElement(prevState => {prevState = ''; return prevState});
+                        }} confirm={() => deleteCarousel(deleteElement)}/>
                     </Fragment>
                 ))}
             </Slider>

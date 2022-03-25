@@ -1,12 +1,14 @@
 import Button from "@mui/material/Button";
 import LinkIcon from '@mui/icons-material/Link';
+import {Link} from "react-router-dom";
+import React from "react";
 
 export const packagesColumns = [
     {
         field: 'cargoNumber',
         headerName: 'Карго-номер',
         flex: 1,
-        minWidth: 150,
+        minWidth: 100,
         headerAlign: 'center',
         align: 'center',
     },
@@ -22,7 +24,7 @@ export const packagesColumns = [
         field: 'country',
         headerName: 'Страна',
         flex: 1,
-        minWidth: 200,
+        minWidth: 150,
         headerAlign: 'center',
         align: 'center',
     },
@@ -46,10 +48,42 @@ export const packagesColumns = [
         field: "status",
         headerName: 'Статус',
         flex: 1,
+        minWidth: 100,
+        headerAlign: 'center',
+        align: 'center',
+    },
+    {
+        field: "amount",
+        headerName: 'Кол-во',
+        flex: 1,
+        minWidth: 100,
+        headerAlign: 'center',
+        align: 'center',
+    },
+    {
+        field: "arrived_date",
+        headerName: 'Дата прилёта',
+        flex: 1,
         minWidth: 120,
         headerAlign: 'center',
         align: 'center',
     },
+    {
+        field: "actions",
+        type: "actions",
+        width: 150,
+        getActions: (params) => [
+            <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                disabled={params.row.status !== 'Оформлен'}
+            >
+                <Link to={`/user/package/edit/${params.id}`}
+                      style={{textDecoration: 'none', color: 'inherit'}}>Редактировать</Link>
+            </Button>
+        ]
+    }
 ];
 
 export const buyoutsColumns = [
@@ -83,7 +117,7 @@ export const buyoutsColumns = [
         field: 'country',
         headerName: 'Страна',
         flex: 1,
-        minWidth: 150,
+        minWidth: 100,
         headerAlign: 'center',
         align: 'center',
     },
@@ -91,7 +125,7 @@ export const buyoutsColumns = [
         field: 'datetime',
         headerName: 'Дата',
         flex: 1,
-        minWidth: 150,
+        minWidth: 100,
         headerAlign: 'center',
         align: 'center',
     },
@@ -115,23 +149,21 @@ export const buyoutsColumns = [
         field: 'price',
         headerName: 'Цена',
         flex: 1,
-        minWidth: 150,
+        minWidth: 100,
         headerAlign: 'center',
         align: 'center',
+        renderCell: params => {
+            return <p style={{display: 'flex', alignItems: 'center'}}
+            >{params.value.price} {params.value.icon}
+            </p>
+        },
+
     },
     {
         field: 'commission',
         headerName: 'Комиссия',
         flex: 1,
-        minWidth: 150,
-        headerAlign: 'center',
-        align: 'center',
-    },
-    {
-        field: 'value',
-        headerName: 'Валюта',
-        flex: 1,
-        minWidth: 150,
+        minWidth: 90,
         headerAlign: 'center',
         align: 'center',
     },
@@ -139,7 +171,7 @@ export const buyoutsColumns = [
         field: 'totalPrice',
         headerName: 'Цена с учетом комиссии',
         flex: 1,
-        minWidth: 150,
+        minWidth: 120,
         headerAlign: 'center',
         align: 'center',
     },
@@ -165,14 +197,6 @@ export const paymentsColumns = [
     {
         field: 'date',
         headerName: 'Дата',
-        flex: 1,
-        minWidth: 150,
-        headerAlign: 'center',
-        align: 'center',
-    },
-    {
-        field: 'amount',
-        headerName: 'Сумма',
         flex: 1,
         minWidth: 150,
         headerAlign: 'center',

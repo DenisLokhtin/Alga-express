@@ -13,7 +13,6 @@ import MarketSites from "./containers/MarketSites/MarketSites";
 import SingleNews from "./containers/SingleNews/SingleNews";
 import HomePage from "./containers/HomePage/HomePage";
 import FAQ from "./containers/FAQ/FAQ";
-import EditNews from "./containers/EditNews/EditNews";
 import AdminEditPackagePage from "./containers/AdminEditPackagePage/AdminEditPackagePage";
 import OrderHistory from "./containers/OrderHistory/OrderHistory";
 import SpecificPackage from "./containers/SpecificPackage/SpecificPackage";
@@ -21,7 +20,6 @@ import AddFlight from "./containers/AddFlight/AddFlight";
 import FlightsList from "./containers/FlightsList/FlightsList";
 import UserProfileEdit from "./containers/UserProfileEdit/UserProfileEdit";
 import UserPayment from "./components/UserPayment/UserPayment";
-import UserPayments from "./components/UserPayments/UserPayments";
 import WarehousemanStatusEdit from "./containers/WarehousemanStatusEdit/WarehousemanStatusEdit";
 import AdminPaymentsProcessing from "./components/AdminPaymentsProcessing/AdminPaymentsProcessing";
 import {
@@ -53,7 +51,6 @@ import {
     listPaymentsAdmin,
     newPackageRegister,
     newsCompany,
-    newsEditCompany,
     newsIdCompany,
     newUserRegister,
     orderBuyouts,
@@ -67,7 +64,6 @@ import {
     tariffs,
     userLogin,
     userPage,
-    userPaymentsList,
     wareHouseCompany,
 } from "./paths";
 import OrderBuyout from "./containers/OrderBuyout/OrderBuyout";
@@ -107,7 +103,6 @@ const App = () => {
                     <Route element={<ProtectedRoutesForUser/>}>
                         {/* Routes for registered user admin and superAdmin*/}
                         <Route path={packageHistory} element={<OrderHistory/>}/>
-                        <Route path={userPaymentsList} element={<UserPayments/>}/>
                         <Route path={newPackageRegister} element={<PackageRegister/>}/>
                         <Route path={editUserProfile} element={<UserProfileEdit/>}/>
                         <Route path={editPackageUser} element={<UserEditPackage/>}/>
@@ -115,13 +110,13 @@ const App = () => {
                         <Route path={orderBuyouts} element={<OrderBuyout/>}/>
                         <Route path={listBuyouts} element={<BuyoutList/>}/>
                         <Route path={userPage} element={<UserPage/>}/>
+                        <Route path={editBuyout} element={<EditBuyout/>}/>
                         <Route path={addUserPayment} element={<UserPayment/>}/>
                     </Route>
 
                     <Route element={<ProtectedRoutesForAdmin/>}>
                         {/* Routes for admin and superAdmin*/}
                         <Route path={adminPagePath} element={<AdminPage/>}/>
-                        <Route path={newsEditCompany} element={<EditNews/>}/>
                         <Route path={editPages} element={<EditPages/>}/>
                         <Route path={editPackageAdmin} element={<AdminEditPackagePage/>}/>
                         <Route path={addPaymentHandler} element={<AddPaymentAdmin/>}/>
@@ -131,7 +126,6 @@ const App = () => {
                         <Route path={editWareHouseAddress} element={<EditWareHouseAdmin/>}/>
                         <Route path={listPaymentsAdmin} element={<AdminPaymentsProcessing/>}/>
                         <Route path={addUserPayment} element={<UserPayment/>}/>
-                        <Route path={addWareHouseAddress} element={<AddWareHouseAdmin/>}/>
                         <Route path={addCarousel} element={<AddCarouselAdmin/>}/>
                         <Route path={editCarousel} element={<EditCarouselAdmin/>}/>
                         <Route path={addPlayer} element={<AddPlayerAdmin/>}/>

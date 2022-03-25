@@ -14,6 +14,9 @@ export const {
     editUserDataRequest,
     editUserDataSuccess,
     editUserDataFailure,
+    editUserDataByAdminRequest,
+    editUserDataByAdminSuccess,
+    editUserDataByAdminFailure,
     editPassportRequest,
     editPassportSuccess,
     editPassportFailure,
@@ -39,6 +42,8 @@ export const {
     changeNotificationRequest,
     changeNotificationSuccess,
     changeNotificationFailure,
-
-  logout,
+    logout,
+    editTariffSuccess,
+    editTariff,
+    editTariffFailure
 } = usersSlice.actions;

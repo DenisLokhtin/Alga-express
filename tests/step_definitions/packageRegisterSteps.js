@@ -23,6 +23,6 @@ Then('Нажимаю на select выбора валют', async () => {
 });
 
 Then('выбираю валюту из списка валют', async () => {
-    I.click(`//*[@id="menu-currency"]/div[3]/ul/li[1]`);
+    I.click(`//*[@id="menu-priceCurrency"]/div[3]/ul/li[1]`);
     I.wait(3);
 });

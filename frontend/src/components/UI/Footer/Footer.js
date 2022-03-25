@@ -70,11 +70,6 @@ const Footer = () => {
                             <li className="ft-main-list__item">
                                 <Link className="ft-main-list__link" to={newsCompany}>Новости</Link>
                             </li>
-                        </ul>
-                    </div>
-                    <div className="ft-main-item">
-                        <h4 className="ft-title">Полезные ссылки</h4>
-                        <ul className="ft-main-list">
                             <li className="ft-main-list__item">
                                 <Link className="ft-main-list__link" to={contactsCompany}>Контакты</Link>
                             </li>
@@ -134,12 +129,6 @@ const Footer = () => {
             </div>
             <section className="ft-legal">
                 <ul className="ft-legal-list">
-                    <li>
-                        <Link to="/" className="ft-legal__terms" href="#">Terms &amp; Conditions</Link>
-                    </li>
-                    <li>
-                        <Link to="/" className="ft-legal__terms" href="#">Privacy Policy</Link>
-                    </li>
                     <li>
                         &copy; Copyright 2022 - All rights reserved
                     </li>

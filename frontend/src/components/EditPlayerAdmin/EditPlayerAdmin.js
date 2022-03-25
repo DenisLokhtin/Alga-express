@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate, useParams} from "react-router-dom";
 import Grid from "@mui/material/Grid";
@@ -46,7 +46,7 @@ const EditPlayerAdmin = () => {
 
     }, [dispatch, params.id, onePlayer.urlYoutube]);
 
-    useMemo(() => {
+    useEffect(() => {
         setSinglePlayer({
             urlYoutube: onePlayer.urlYoutube,
         });
@@ -78,7 +78,9 @@ const EditPlayerAdmin = () => {
             <Container
                 component="section"
                 maxWidth="md"
-                className={classes.container}>
+                className={classes.container}
+                style={{paddingTop: '150px'}}
+            >
                 <h3>Изменить ссылку на видео из Youtube</h3>
                 <Grid item xs={12} sm={8} md={7} lg={7}>
                 </Grid>

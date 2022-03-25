@@ -13,9 +13,6 @@ import ReactPlayer from "react-player";
 import AppWindow from "../UI/AppWindow/AppWindow";
 
 const useStyles = makeStyles(theme => ({
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
     tableContainer: {
         boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
         marginBottom: '80px'
@@ -47,8 +44,55 @@ const useStyles = makeStyles(theme => ({
         },
     },
     videoMain: {
-        border: '1px solid',
-        borderColor: 'rgba(0, 0, 0, 0.12)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+    gridCenter: {
+        [theme.breakpoints.down('md')]: {
+            display: 'flex',
+        },
+        [theme.breakpoints.down('sm')]: {
+            margin: '0 auto',
+        },
+    },
+    mediaQueriesDeleteBtn: {
+        [theme.breakpoints.down('lg')]: {
+            fontSize: '12px',
+            padding: '8px 16px',
+            textAlign: 'center',
+        },
+        [theme.breakpoints.down('md')]: {
+            padding: '8px 37px',
+        },
+        [theme.breakpoints.down('sm')]: {
+            fontSize: '10px',
+        },
+    },
+
+    mediaQueriesAddBtn: {
+        [theme.breakpoints.down('lg')]: {
+            fontSize: '12px',
+            padding: '8px 16px',
+        },
+        [theme.breakpoints.down('md')]: {
+            padding: '8px 35px',
+            display: 'flex',
+            justifyContent: 'center',
+        },
+        [theme.breakpoints.down('sm')]: {
+            fontSize: '10px',
+        },
+    },
+
+    mediaQueriesEditBtn: {
+        [theme.breakpoints.down('lg')]: {
+            fontSize: '80px',
+            padding: '8px 20px',
+        },
+        [theme.breakpoints.down('sm')]: {
+            fontSize: '10px',
+        },
     },
 }));
 
@@ -78,14 +122,14 @@ const Player = () => {
     const IdFromYoutube = players && players[0] ? players[0]._id : '';
 
     return (
-        <div className={classes.videoMain}>
+        <div className={classes.videoMain} style={{paddingTop: '50px'}}>
 
             {user && (user.role === 'admin' || user.role === 'superAdmin') && !urlFromYoutube ?
-                <Grid item xs={5}>
+                <Grid item xs={12} sm={4} md={4} lg={3} className={classes.gridCenter}>
                     <ButtonWithProgress
                         type="submit"
-                        variant="contained"
-                        className={classes.submit}
+                        variant="outlined"
+                        className={classes.mediaQueriesAddBtn}
                         loading={loading}
                         disabled={loading}
                         component={Link}
@@ -93,39 +137,6 @@ const Player = () => {
                     >
                         <AddBoxIcon/> Добавить новое видео
                     </ButtonWithProgress>
-                </Grid> : ''}
-
-            {user && (user.role === 'admin' || user.role === 'superAdmin') && urlFromYoutube ?
-                <Grid item xs={5}>
-                    <ButtonWithProgress
-                        type="submit"
-                        variant="contained"
-                        color="success"
-                        className={classes.submit}
-                        loading={loading}
-                        disabled={loading}
-                        component={Link}
-                        to={editingSinglePlayer + IdFromYoutube}
-                    >
-                        <EditIcon/> Редактировать текущее видео
-                    </ButtonWithProgress>
-                </Grid> : ''}
-
-            {user && (user.role === 'admin' || user.role === 'superAdmin') && urlFromYoutube ?
-                <Grid item xs={5}>
-                    <ButtonWithProgress
-                        type="submit"
-                        variant="contained"
-                        color="error"
-                        className={classes.submit}
-                        loading={loading}
-                        disabled={loading}
-                        onClick={() => setOpen(true)}
-                    >
-                        <DeleteForeverIcon/> Удалить текущее видео
-                    </ButtonWithProgress>
-                    <AppWindow open={open} onClose={() => setOpen(false)}
-                               confirm={() => deletePlayer(IdFromYoutube)}/>
                 </Grid> : ''}
 
             <ReactPlayer
@@ -141,7 +152,45 @@ const Player = () => {
                 playing={false}
                 controls={true}
                 url={urlFromYoutube}
+                width='50%'
             />
+
+            <Grid container justifyContent={"center"} sx={{mt: '20px'}}>
+                {user && (user.role === 'admin' || user.role === 'superAdmin') && urlFromYoutube ?
+                    <Grid item xs={12} sm={4} md={4} lg={3} className={classes.gridCenter}>
+                        <ButtonWithProgress
+                            type="submit"
+                            variant="outlined"
+                            color="success"
+                            className={classes.mediaQueriesEditBtn}
+                            loading={loading}
+                            disabled={loading}
+                            component={Link}
+                            to={editingSinglePlayer + IdFromYoutube}
+                            startIcon={<EditIcon/>}
+                        >
+                            Редактировать видео
+                        </ButtonWithProgress>
+                    </Grid> : ''}
+
+                {user && (user.role === 'admin' || user.role === 'superAdmin') && urlFromYoutube ?
+                    <Grid item xs={12} sm={4} md={4} lg={3} className={classes.gridCenter}>
+                        <ButtonWithProgress
+                            type="submit"
+                            variant="outlined"
+                            color="error"
+                            className={classes.mediaQueriesDeleteBtn}
+                            loading={loading}
+                            disabled={loading}
+                            onClick={() => setOpen(true)}
+                            startIcon={<DeleteForeverIcon/> }
+                        >
+                           Удалить видео
+                        </ButtonWithProgress>
+                        <AppWindow open={open} onClose={() => setOpen(false)}
+                                   confirm={() => deletePlayer(IdFromYoutube)}/>
+                    </Grid> : ''}
+            </Grid>
         </div>
     );
 };

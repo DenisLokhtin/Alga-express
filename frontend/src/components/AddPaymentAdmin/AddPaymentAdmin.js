@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Grid, TextField, Autocomplete} from "@mui/material";
+import {Grid, TextField, Autocomplete, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchUsersRequest} from "../../store/actions/usersActions";
 import FormElement from "../UI/Form/FormElement";
@@ -7,6 +7,7 @@ import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {addPaymentAdminRequest} from "../../store/actions/paymentActions";
 import {createTheme} from "@mui/material/styles";
 import {makeStyles} from "@mui/styles";
+import Container from "@mui/material/Container";
 
 const theme = createTheme({
     breakpoints: {
@@ -60,7 +61,6 @@ const AddPaymentAdmin = () => {
                 id: val._id,
             }));
         }
-
     };
 
     const getFieldError = fieldName => {
@@ -77,17 +77,31 @@ const AddPaymentAdmin = () => {
     };
 
     return (
-        <>
+        <Container maxWidth="sm">
             <Grid
                 component="form"
                 onSubmit={submitFormHandler}
                 justifyContent="center"
                 container
                 noValidate
-                spacing={5}
+                spacing={3}
                 className={classes.container}
             >
-                <Grid item xs={12} sm={8} md={7} lg={7}>
+                <Grid item xs={12} sm={10} md={10} lg={10}>
+                    <Typography variant="h4" sx={{
+                        fontWeight: 'bold',
+                        textAlign: 'center',
+                        fontSize: {
+                            xs: '18px',
+                            sm: '20px',
+                            md: '22px',
+                            lg: '26px',
+                        }
+                    }}>
+                        Пополнение баланса пользователя
+                    </Typography>
+                </Grid>
+                <Grid item xs={12} sm={10} md={10} lg={10}>
                     <Autocomplete
                         disablePortal
                         id='userList'
@@ -98,8 +112,8 @@ const AddPaymentAdmin = () => {
                         renderInput={(params) => <TextField {...params} label="Пользователи"/>}
                     />
                 </Grid>
-                <Grid item xs={12} sm={8} md={7} lg={7}>
                     <FormElement
+                        xs={12} sm={10} md={10} lg={10}
                         name="price"
                         type='number'
                         value={payment.price}
@@ -110,7 +124,6 @@ const AddPaymentAdmin = () => {
                         label="Сумма оплаты"
                         error={getFieldError('price')}
                     />
-                </Grid>
                 <Grid container item
                       justifyContent="center"
                       alignItems="center"
@@ -137,9 +150,7 @@ const AddPaymentAdmin = () => {
                         )}
                 </Grid>
             </Grid>
-
-
-        </>
+        </Container>
     );
 };
 

@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Container, Grid, Typography} from "@mui/material";
+import {Container, Grid, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {addUserPaymentRequest} from "../../store/actions/usersActions";
 import FormElement from "../UI/Form/FormElement";
@@ -73,7 +73,11 @@ const useStyles = makeStyles(() => ({
     padding: {
         padding: '15px',
         marginTop: '20px',
-    }
+    },
+
+    label: {
+        fontSize: '24px',
+    },
 }));
 
 const UserPayment = () => {
@@ -81,7 +85,6 @@ const UserPayment = () => {
     const dispatch = useDispatch();
 
     const error = useSelector(state => state.users.userError);
-
 
     const [pay, setPay] = useState({
         description: '',
@@ -137,7 +140,7 @@ const UserPayment = () => {
         <Container
             ref={messagesEndRef}
             component="section"
-            maxWidth="md"
+            maxWidth="sm"
             className={classes.container}
         >
             <Grid
@@ -147,6 +150,7 @@ const UserPayment = () => {
             >
                 <Typography
                     variant="h4"
+                    sx={{marginBottom: '15px'}}
                     className={classes.packageMainTitle}
                 >
                     Оплата Пользователя
@@ -157,9 +161,9 @@ const UserPayment = () => {
                     justifyContent="center"
                     container
                     noValidate
-                    spacing={5}
+                    spacing={3}
                 >
-                    <Grid item xs={12} sm={9} md={8} lg={8}>
+                    <Grid item xs={12} sm={9.5} md={9.5} lg={9.5}>
                         <FormElement
                             name="description"
                             type="text"
@@ -174,9 +178,9 @@ const UserPayment = () => {
                     </Grid>
                     <Grid
                         item
-                        xs={12} sm={8} md={7} lg={7}
+                        xs={12} sm={9.5} md={9.5} lg={9.5}
                     >
-                        <label>
+                        <label className={classes.label}>
                             Оплата
                             <FileInput
                                 name="payment"
@@ -186,7 +190,6 @@ const UserPayment = () => {
                                 onChange={fileChangeHandler}
                                 // error={getFieldError('payment')}
                             >
-                                <Button>Text</Button>
                             </FileInput>
                         </label>
                     </Grid>

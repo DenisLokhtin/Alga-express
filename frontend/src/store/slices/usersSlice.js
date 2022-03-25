@@ -17,6 +17,8 @@ export const initialState = {
     forgotError:null,
     forgotLoading: false,
     notification: false,
+    editLoading: false,
+    editError: null,
 };
 
 const name = 'users';
@@ -71,10 +73,20 @@ const usersSlice = createSlice({
         },
         editUserDataSuccess(state, action) {
             state.loadUserDate = false;
-            state.userDate = action.payload;
-
+            state.user = action.payload;
         },
         editUserDataFailure(state, action) {
+            state.loadUserDate = false;
+            state.userError = action.payload;
+        },
+        editUserDataByAdminRequest(state) {
+            state.loadUserDate = true;
+        },
+        editUserDataByAdminSuccess(state, action) {
+            state.loadUserDate = false;
+            state.userDate = action.payload;
+        },
+        editUserDataByAdminFailure(state, action) {
             state.loadUserDate = false;
             state.userError = action.payload;
         },
@@ -159,6 +171,17 @@ const usersSlice = createSlice({
 
         logout(state) {
             state.user = null;
+        },
+
+        editTariff(state) {
+            state.editLoading = true;
+        },
+        editTariffSuccess(state) {
+            state.editLoading = false;
+        },
+        editTariffFailure(state, action) {
+            state.editLoading = false;
+            state.editError = action.payload;
         },
     },
 });

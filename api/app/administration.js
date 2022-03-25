@@ -4,9 +4,9 @@ const permit = require("../middleware/permit");
 const Payment = require("../models/Payment");
 const PaymentMove = require("../models/PaymentMove");
 const User = require("../models/User");
-const TariffGroup = require("../models/TariffGroup");
 const sendMail = require('../middleware/sendMail');
 const {balanceText} = require('../email-texts');
+const {balanceTextTelegram} = require('../email-texts');
 const filter = require("../middleware/filter");
 
 const router = express.Router();
@@ -39,7 +39,7 @@ router.get('/', auth, permit('user', 'admin', 'superAdmin'), async (req, res) =>
         const size = await Payment.find(findFilter);
         const response = await Payment.find(findFilter)
             .populate('user', 'name')
-            .select('image description date user')
+            .select('image description date user status')
             .limit(limit)
             .skip(page * limit);
 
@@ -49,12 +49,15 @@ router.get('/', auth, permit('user', 'admin', 'superAdmin'), async (req, res) =>
     }
 });
 
-router.get('/tariff', auth, permit('admin', 'superAdmin'), async (req, res) => {
+router.get('/payments', auth, permit('user', 'admin', 'superAdmin'), async (req, res) => {
+    // if (req.query.id)
+    console.log(req.query.id);
     try {
-        const tariff = await TariffGroup.findOne();
-        res.send(tariff);
+        const data = await PaymentMove.find({user: req.query.id})
+            // .populate('user payment', 'name amount')
+        res.send(data);
     } catch (e) {
-        res.status(500).send({error: e});
+        console.log(e)
     }
 });
 
@@ -88,8 +91,7 @@ router.post('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
 
                 await sendMail({email: user.email, telegram: user.idChat},
                     'Alga-express: Баланс пополнен',
-                    null,
-                    // balanceTextTelegram(pay, user.balance, user.name),
+                    balanceTextTelegram(pay, user.balance, user.name),
                     balanceText(pay, user.balance, user.name));
 
                 return res.status(200).send({status: true});
@@ -164,9 +166,13 @@ router.post('/cash', auth, permit('admin', 'superAdmin'), async (req, res) => {
         await paySave.save();
         const updatedUser = await User.findById(req.body.id);
 
+        // await sendMail({email: updatedUser.email, telegram: updatedUser.idChat},
+        //     'Alga-express: Баланс пополнен',
+        //     balanceTextTelegram(price, updatedUser.balance, updatedUser.name),
+        //     balanceText(price, updatedUser.balance, updatedUser.name));
         await sendMail({email: updatedUser.email},
             'Alga-express: Баланс пополнен',
-            null.
+            null,
             // balanceTextTelegram(price, updatedUser.balance, updatedUser.name),
             balanceText(price, updatedUser.balance, updatedUser.name));
 

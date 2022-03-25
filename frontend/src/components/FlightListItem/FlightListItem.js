@@ -6,6 +6,7 @@ import {useDispatch} from "react-redux";
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import {putFlightRequest} from "../../store/actions/flightActions";
 import ruLocale from 'date-fns/locale/ru';
+import {flightStatuses} from "../../dataLocalization";
 
 const localeMap = {
     ru: ruLocale,
@@ -15,7 +16,7 @@ const maskMap = {
     ru: '__.__.____',
 };
 
-const FlightListItem = ({flight, id, update}) => {
+const FlightListItem = ({flight, id, page, limit}) => {
     const dispatch = useDispatch();
     const [editStatus, setEditStatus] = useState(true);
     const [flightData, setFlightData] = useState({
@@ -42,9 +43,9 @@ const FlightListItem = ({flight, id, update}) => {
     };
 
     const saveAfterEdit = () => {
-        dispatch(putFlightRequest({id, flightData}));
+        dispatch(putFlightRequest({id, flightData, page: page, limit: limit, status: 'ACTIVE'}));
         setEditStatus(!editStatus);
-        update();
+        // update();
     };
 
     const statusChanger = () => {
@@ -170,7 +171,7 @@ const FlightListItem = ({flight, id, update}) => {
                                 onClick={statusChanger}
                                 color={flightData.status === 'ACTIVE' ? "success" : "secondary"}
                             >
-                                {flightData.status}
+                                {flightStatuses[flightData.status]}
                             </Button>
                         </Grid>
 

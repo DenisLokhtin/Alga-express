@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {clearBuyoutsError, editBuyoutRequest, fetchSingleBuyoutRequest} from "../../store/actions/buyoutActions";
 import {useParams} from "react-router-dom";
@@ -10,25 +10,36 @@ import CurrencyLiraIcon from '@mui/icons-material/CurrencyLira';
 import CurrencyYuanIcon from '@mui/icons-material/CurrencyYuan';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import {makeStyles} from "@mui/styles";
-import theme from "../../theme";
+import {createTheme} from "@mui/material/styles";
 
+const theme = createTheme({
+    breakpoints: {
+        values: {
+            sm: 767,
+        },
+    },
+});
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
+    breakpoints: {
+        values: {
+            sm: 767,
+        },
+    },
+
     submit: {
-        margin: theme.spacing(3, 0, 2),
+        margin: '24px 0 16px',
     },
     container: {
-        width: "90%",
-        margin: "0 auto",
-        marginTop: theme.spacing(2),
-        [theme.breakpoints.up('sm')]: {
-            width: '60%',
-        },
-        [theme.breakpoints.up('md')]: {
-            width: '50%',
+        textAlign: 'center',
+        paddingTop: '175px',
+        marginBottom: '30px',
+        [theme.breakpoints.down('sm')]: {
+            paddingTop: '115px',
         },
     },
-    item:{
+
+    item: {
         width: '30%',
     }
 }));
@@ -56,7 +67,7 @@ const EditBuyout = () => {
         dispatch(fetchSingleBuyoutRequest(id));
     }, [dispatch, id]);
 
-    useMemo(() => {
+    useEffect(() => {
         oneBuyout && setBuyout(prevState => ({
             ...prevState,
             description: oneBuyout.description,
@@ -82,7 +93,6 @@ const EditBuyout = () => {
         setBuyout(prevState => ({...prevState, [name]: value}))
     };
 
-
     const submitFormHandler = e => {
         e.preventDefault();
         if (user.role === 'user') {
@@ -95,7 +105,6 @@ const EditBuyout = () => {
             dispatch(editBuyoutRequest({id, obj: buyout}));
         }
 
-
         setBuyout({
             description: "",
             image: null,
@@ -106,7 +115,6 @@ const EditBuyout = () => {
             value: '',
         })
     };
-
 
     const fileChangeHandler = e => {
         const name = e.target.name;
@@ -133,37 +141,39 @@ const EditBuyout = () => {
     return (
         <Container
             component="section"
-            maxWidth="md"
+            maxWidth="sm"
             className={classes.container}>
             <Grid
                 container
                 direction="column"
-                spacing={2}
+                spacing={3}
                 component="form"
                 autoComplete="off"
                 onSubmit={submitFormHandler}
                 noValidate
             >
                 <h3 style={theme.title}>Заказать выкуп</h3>
-                <FormControl variant="standard" fullWidth error={Boolean(getFieldError('country'))}>
-                    <InputLabel id="demo-controlled-open-select-label">Страна</InputLabel>
-                    <Select
-                        labelId="demo-controlled-open-select-label"
-                        id="demo-controlled-open-select"
-                        value={buyout?.country}
-                        label="Из какой страны выкупить"
-                        name="country"
-                        required
-                        onChange={inputChangeHandler}
-                    >
-                        <MenuItem value={'USA'}>Америка</MenuItem>
-                        <MenuItem value={'Turkey'}>Турция</MenuItem>
-                        <MenuItem value={'China'}>Китай</MenuItem>
-                    </Select>
-                    <FormHelperText error={true}>{error?.errors?.['country']?.message}</FormHelperText>
-                </FormControl>
-
+                <Grid item xs={12} sm={8} md={7} lg={9}>
+                    <FormControl variant="outlined" fullWidth error={Boolean(getFieldError('country'))}>
+                        <InputLabel id="demo-controlled-open-select-label">Страна</InputLabel>
+                        <Select
+                            labelId="demo-controlled-open-select-label"
+                            id="demo-controlled-open-select"
+                            value={buyout?.country}
+                            label="Страна"
+                            name="country"
+                            required
+                            onChange={inputChangeHandler}
+                        >
+                            <MenuItem value={'USA'}>Америка</MenuItem>
+                            <MenuItem value={'Turkey'}>Турция</MenuItem>
+                            <MenuItem value={'China'}>Китай</MenuItem>
+                        </Select>
+                        <FormHelperText error={true}>{error?.errors?.['country']?.message}</FormHelperText>
+                    </FormControl>
+                </Grid>
                 <FormElement
+                    xs={12} sm={8} md={7} lg={9}
                     disabled={Boolean(user?.role)}
                     required
                     label="Описание товара (размер, цвет и тд.)"
@@ -172,8 +182,8 @@ const EditBuyout = () => {
                     onChange={inputChangeHandler}
                     error={getFieldError('description')}
                 />
-
                 <FormElement
+                    xs={12} sm={8} md={7} lg={9}
                     required
                     label="Ссылка"
                     name="url"
@@ -182,8 +192,7 @@ const EditBuyout = () => {
                     error={getFieldError('url')}
 
                 />
-
-                <Grid item xs>
+                <Grid item xs={12} sm={8} md={7} lg={9}>
                     <FileInput
                         // disabled={show}
                         required
@@ -195,9 +204,10 @@ const EditBuyout = () => {
                     />
                 </Grid>
                 {(user?.role === 'admin' || user?.role === 'superAdmin') && (
-                    <Grid container direction={"row"} spacing={2} justifyContent={"space-between"}>
-                        <Grid item className={classes.item}>
+                    <Grid  item xs={12} sm={8} md={7} lg={9}>
+                        <Grid container sx={{marginTop: '5px'}} spacing={2}>
                             <FormElement
+                                xs={6} sm={4} md={4} lg={4}
                                 type="number"
                                 required
                                 label="Цена за выкуп"
@@ -206,9 +216,8 @@ const EditBuyout = () => {
                                 onChange={inputChangeHandler}
                                 error={getFieldError('price')}
                             />
-                        </Grid>
-                        <Grid item className={classes.item}>
                             <FormElement
+                                xs={6} sm={4} md={4} lg={4}
                                 type="number"
                                 required
                                 label="Комиссия"
@@ -217,33 +226,30 @@ const EditBuyout = () => {
                                 onChange={inputChangeHandler}
                                 error={getFieldError('commission')}
                             />
-                        </Grid>
-                        <Grid item className={classes.item}>
-                        <FormControl variant="standard" fullWidth error={Boolean(getFieldError('value'))}>
-                            <InputLabel id="demo-controlled-open-select-label">Валюта</InputLabel>
-                            <Select
-                                labelId="demo-controlled-open-select-label"
-                                id="demo-controlled-open-select"
-                                value={buyout.value}
-                                label="Валюта"
-                                name="value"
-                                required
-                                onChange={inputChangeHandler}
-                            >
-                                <MenuItem defaultValue="">
-                                    <em>None</em>
-                                </MenuItem>
-                                <MenuItem value={'USD'}><AttachMoneyIcon/>Доллар</MenuItem>
-                                <MenuItem value={'TRY'}><CurrencyLiraIcon/>Лира</MenuItem>
-                                <MenuItem value={'CNY'}><CurrencyYuanIcon/>Юань</MenuItem>
-                            </Select>
-                            <FormHelperText error={true}>{error?.errors?.['value']?.message}</FormHelperText>
-                        </FormControl>
+                            <Grid item xs={12} sm={4} md={4} lg={4}>
+                                <FormControl variant="outlined" fullWidth error={Boolean(getFieldError('value'))}>
+                                    <InputLabel id="demo-controlled-open-select-label">Валюта</InputLabel>
+                                    <Select
+                                        labelId="demo-controlled-open-select-label"
+                                        id="demo-controlled-open-select"
+                                        value={buyout.value}
+                                        label="Валюта"
+                                        name="value"
+                                        required
+                                        onChange={inputChangeHandler}
+                                    >
+                                        <MenuItem defaultValue=""/>
+                                        <MenuItem value={'USD'}><AttachMoneyIcon/>Доллар</MenuItem>
+                                        <MenuItem value={'TRY'}><CurrencyLiraIcon/>Лира</MenuItem>
+                                        <MenuItem value={'CNY'}><CurrencyYuanIcon/>Юань</MenuItem>
+                                    </Select>
+                                    <FormHelperText error={true}>{error?.errors?.['value']?.message}</FormHelperText>
+                                </FormControl>
+                            </Grid>
                         </Grid>
                     </Grid>
                 )}
-
-                <Grid item xs={12}>
+                <Grid item xs={12} sm={8} md={7} lg={9}>
                     <ButtonWithProgress
                         type="submit"
                         fullWidth

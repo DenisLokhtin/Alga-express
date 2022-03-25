@@ -14,20 +14,37 @@ import {
 import {makeStyles} from "@mui/styles";
 import Dimension from "../../components/Dimension/Dimension";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
-import theme from "../../theme";
 import FormElement from "../UI/Form/FormElement";
+import {createTheme} from "@mui/material/styles";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import CurrencyLiraIcon from "@mui/icons-material/CurrencyLira";
+import CurrencyYenIcon from "@mui/icons-material/CurrencyYen";
+
+const theme = createTheme({
+    breakpoints: {
+        values: {
+            sm: 768,
+        },
+    },
+});
 
 const useStyles = makeStyles(() => ({
+    breakpoints: {
+        values: {
+            sm: 768,
+        },
+    },
+
     container: {
-        marginTop: '50px',
+        paddingTop: '145px',
+        [theme.breakpoints.down('sm')]: {
+            paddingTop: '120px',
+        },
     },
 
     packageMainTitle: {
         textAlign: 'center',
         paddingBottom: '50px',
-        '@media (max-width:600px)': {
-            padding: '10px',
-        },
     },
 
     textField: {
@@ -36,16 +53,6 @@ const useStyles = makeStyles(() => ({
         },
     },
 }));
-
-theme.typography.h4 = {
-    fontSize: '1.3rem',
-    '@media (min-width:600px)': {
-        fontSize: '1.6rem',
-    },
-    [theme.breakpoints.up('md')]: {
-        fontSize: '2rem',
-    },
-};
 
 const AdminEditPackage = ({packageAdmin, id}) => {
     const classes = useStyles();
@@ -66,6 +73,7 @@ const AdminEditPackage = ({packageAdmin, id}) => {
         cargoPrice: '',
         cargoWeight: '',
         status: packageAdmin.status,
+        priceCurrency: packageAdmin.priceCurrency,
     });
 
     const inputChangeHandler = event => {
@@ -103,11 +111,20 @@ const AdminEditPackage = ({packageAdmin, id}) => {
     return (
         <Container
             component="section"
-            maxWidth="md"
+            maxWidth="sm"
             className={classes.container}>
             <Grid item>
                 <Typography
                     variant="h4"
+                    sx={{
+                        fontWeight: 'bold',
+                        fontSize: {
+                            xs: '18px',
+                            sm: '20px',
+                            md: '22px',
+                            lg: '26px',
+                        }
+                    }}
                     className={classes.packageMainTitle}>
                     Редактирование посылки
                 </Typography>
@@ -118,9 +135,9 @@ const AdminEditPackage = ({packageAdmin, id}) => {
                 justifyContent="center"
                 container
                 noValidate
-                spacing={5}
+                spacing={3}
             >
-                <Grid item xs={12} sm={8} md={7} lg={7}>
+                <Grid item xs={11} sm={9} md={9} lg={9}>
                     <FormControl variant="outlined" fullWidth error={Boolean(getFieldError('country'))}>
                         <InputLabel id="demo-controlled-open-select-label">Country</InputLabel>
                         <Select
@@ -132,14 +149,16 @@ const AdminEditPackage = ({packageAdmin, id}) => {
                             required
                             onChange={inputChangeHandler}
                         >
-                            <MenuItem value={'USA'}>USA</MenuItem>
-                            <MenuItem value={'Turkey'}>Turkey</MenuItem>
-                            <MenuItem value={'China'}>China</MenuItem>
+                            <MenuItem value={'usa'}>Америка</MenuItem>
+                            <MenuItem value={'turkey'}>Турция (Авия доставка)</MenuItem>
+                            <MenuItem value={'turkeyGround'}>Турция (Наземная доставка)</MenuItem>
+                            <MenuItem value={'china'}>Китай (Авия доставка)</MenuItem>
+                            <MenuItem value={'chinaGround'}>Китай (Наземная доставка)</MenuItem>
                         </Select>
                         <FormHelperText error={true}>{error?.errors?.['country']?.message}</FormHelperText>
                     </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={8} md={7} lg={7}>
+                <Grid item xs={11} sm={9} md={9} lg={9}>
                     <FormControl variant="outlined" fullWidth error={Boolean(getFieldError('status'))}>
                         <InputLabel id="demo-controlled-open-select-label">Status</InputLabel>
                         <Select
@@ -162,7 +181,7 @@ const AdminEditPackage = ({packageAdmin, id}) => {
                     </FormControl>
                 </Grid>
                 <FormElement
-                    xs={12} sm={8} md={7} lg={7}
+                    xs={11} sm={9} md={9} lg={9}
                     name="trackNumber"
                     value={packageEdit.trackNumber}
                     required
@@ -173,7 +192,7 @@ const AdminEditPackage = ({packageAdmin, id}) => {
                     error={getFieldError('trackNumber')}
                 />
                 <FormElement
-                    xs={12} sm={8} md={7} lg={7}
+                    xs={11} sm={9} md={9} lg={9}
                     name="title"
                     value={packageEdit.title}
                     onChange={inputChangeHandler}
@@ -184,7 +203,7 @@ const AdminEditPackage = ({packageAdmin, id}) => {
                     error={getFieldError('title')}
                 />
                 <FormElement
-                    xs={12} sm={8} md={7} lg={7}
+                    xs={11} sm={9} md={9} lg={9}
                     name="amount"
                     type="number"
                     value={packageEdit.amount}
@@ -196,7 +215,7 @@ const AdminEditPackage = ({packageAdmin, id}) => {
                     error={getFieldError('amount')}
                 />
                 <FormElement
-                    xs={12} sm={8} md={7} lg={7}
+                    xs={11} sm={9} md={9} lg={9}
                     name="cargoPrice"
                     type="number"
                     value={packageEdit.cargoPrice}
@@ -208,7 +227,7 @@ const AdminEditPackage = ({packageAdmin, id}) => {
                     error={getFieldError('amount')}
                 />
                 <FormElement
-                    xs={12} sm={8} md={7} lg={7}
+                    xs={11} sm={9} md={9} lg={9}
                     name="cargoWeight"
                     type="number"
                     value={packageEdit.cargoWeight}
@@ -220,7 +239,7 @@ const AdminEditPackage = ({packageAdmin, id}) => {
                     error={getFieldError('amount')}
                 />
                 <FormElement
-                    xs={12} sm={8} md={7} lg={7}
+                    xs={11} sm={9} md={9} lg={9}
                     name="urlPackage"
                     type="text"
                     value={packageEdit?.urlPackage}
@@ -230,10 +249,10 @@ const AdminEditPackage = ({packageAdmin, id}) => {
                     required
                     variant="outlined"
                     label="Ссылка"
-                    error={getFieldError('price')}
+                    error={getFieldError('urlPackage')}
                 />
                 <FormElement
-                    xs={12} sm={8} md={7} lg={7}
+                    xs={11} sm={4.5} md={4.5} lg={4.5}
                     name="price"
                     type="number"
                     value={packageEdit.price}
@@ -245,8 +264,35 @@ const AdminEditPackage = ({packageAdmin, id}) => {
                     label="Цена"
                     error={getFieldError('price')}
                 />
-
-                <Grid item xs={12} sm={8} md={7} lg={7}>
+                <Grid item xs={11} sm={4.5} md={4.5} lg={4.5}>
+                    <FormControl variant="outlined" fullWidth error={Boolean(getFieldError('priceCurrency'))}>
+                        <InputLabel id="demo-controlled-open-select-label">Выберите Валюту</InputLabel>
+                        <Select
+                            labelId="demo-controlled-open-select-label"
+                            id="demo-controlled-open-select"
+                            value={packageEdit.priceCurrency}
+                            label="Выберите валюту"
+                            name="priceCurrency"
+                            required
+                            onChange={inputChangeHandler}
+                        >
+                            <MenuItem value={'USD'}>
+                                Доллар
+                                <AttachMoneyIcon/>
+                            </MenuItem>
+                            <MenuItem value={'TRY'}>
+                                Турецкая лира
+                                <CurrencyLiraIcon/>
+                            </MenuItem>
+                            <MenuItem value={'CNY'}>
+                                Юань
+                                <CurrencyYenIcon/>
+                            </MenuItem>
+                        </Select>
+                        <FormHelperText error={true}>{error?.errors?.['priceCurrency']?.message}</FormHelperText>
+                    </FormControl>
+                </Grid>
+                <Grid item xs={11} sm={9} md={9} lg={9}>
                     <Dimension
                         width={packageEdit.width}
                         height={packageEdit.height}
@@ -255,7 +301,7 @@ const AdminEditPackage = ({packageAdmin, id}) => {
                         packageHandler={inputChangeHandler}
                     />
                 </Grid>
-                <Grid item xs={12} sm={8} md={7} lg={7} sx={{my: '3em', py: '1em'}}>
+                <Grid item xs={11} sm={9} md={9} lg={9} sx={{my: '1em'}}>
                     <ButtonWithProgress
                         loading={loading}
                         disabled={loading}

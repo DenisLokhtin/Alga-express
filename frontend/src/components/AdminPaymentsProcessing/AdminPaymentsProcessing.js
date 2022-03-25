@@ -37,7 +37,12 @@ const useStyles = makeStyles(() => ({
         [theme.breakpoints.down('sm')]: {
             paddingTop: '110px',
         },
-    }
+    },
+
+    tableImg: {
+        maxWidth: '100%',
+        height: 'auto',
+    },
 }));
 
 const AdminPaymentsProcessing = () => {
@@ -127,16 +132,16 @@ const AdminPaymentsProcessing = () => {
                 item
                 justifyContent='center'
             >
-                <Grid item>
+                <Grid item sx={{overflow: 'auto'}}>
                     <TableContainer component={Paper}>
                         <Table sx={{minWidth: 700}} aria-label="simple table">
                             <TableHead>
                                 <TableRow>
                                     <TableCell>Дата</TableCell>
-                                    <TableCell align="right">Описание</TableCell>
-                                    <TableCell align="right">Фото</TableCell>
-                                    <TableCell align="right">Статус оплаты</TableCell>
-                                    <TableCell align="right">Принять</TableCell>
+                                    <TableCell align="center">Описание</TableCell>
+                                    <TableCell align="center">Фото</TableCell>
+                                    <TableCell align="center">Статус оплаты</TableCell>
+                                    <TableCell align="center">Принять</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -148,14 +153,14 @@ const AdminPaymentsProcessing = () => {
                                         <TableCell component="th" scope="row">
                                             {dayjs(key.date).format('DD/MM/YYYY')}
                                         </TableCell>
-                                        <TableCell align="right">
+                                        <TableCell align="center">
                                             {key.description}
                                         </TableCell>
-                                        <TableCell align="right">
-                                            <img src={apiURL + '/' + key.image} width={200} alt='test'/>
+                                        <TableCell align="center" style={{width: '200px'}}>
+                                            <img src={apiURL + '/' + key.image} className={classes.tableImg} alt='test'/>
                                         </TableCell>
-                                        <TableCell align="right">
-                                            {key && key.status ? (<p>Принят</p>) : (<p>В обработке</p>)}
+                                        <TableCell align="center">
+                                            {key && key.status ? (<p>Принят</p>) : (<span>В обработке</span>)}
                                         </TableCell>
                                         <TableCell align="right">
                                             <Grid

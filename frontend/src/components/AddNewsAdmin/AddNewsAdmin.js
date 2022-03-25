@@ -8,7 +8,6 @@ import {makeStyles} from "@mui/styles";
 import {addNewsRequest} from "../../store/actions/newsActions";
 import {Editor} from "@tinymce/tinymce-react";
 import Resizer from "react-image-file-resizer";
-import theme from "../../theme";
 
 const useStyles = makeStyles(theme => ({
     submit: {
@@ -30,7 +29,7 @@ const useStyles = makeStyles(theme => ({
 const AddNewsAdmin = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const loading = useSelector(state => state.news.createLoading);
+    const loading = useSelector(state => state.news.addLoading);
     const error = useSelector(state => state.news.addError);
 
     const [news, setNews] = useState({
@@ -130,7 +129,6 @@ const AddNewsAdmin = () => {
                 onSubmit={submitFormHandler}
                 noValidate
             >
-                <h3 style={theme.title}>Добавить новость</h3>
                 <FormElement
                     required
                     label="Название"

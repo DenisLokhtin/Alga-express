@@ -26,14 +26,32 @@ const run = async () => {
         await mongoose.connection.db.dropCollection(coll.name);
     }
 
-    const tariff = await TariffGroup.create({
-        new: {
+    const [newGroup, advancedGroup] = await TariffGroup.create(
+        {
             usa: 12,
             turkey: 4.3,
+            turkeyGround: 4,
             china: 15,
             chinaGround: 5,
-        }
-    });
+            name: 'new',
+        },
+        {
+            usa: 11.5,
+            turkey: 4.1,
+            china: 14,
+            turkeyGround: 4,
+            chinaGround: 4.5,
+            name: 'advanced',
+        },
+        {
+            usa: 11,
+            turkey: 4,
+            china: 13,
+            turkeyGround: 4,
+            chinaGround: 4,
+            name: 'buyer',
+        },
+    );
 
     await Currency.create({
         usd: 86
@@ -61,8 +79,9 @@ const run = async () => {
             token: nanoid(),
             role: "user",
             balance: 200,
-            name: "User",
-            tariff: tariff.new,
+            name: "Акмарал Айтбековна",
+            tariff: newGroup,
+            group: 'NEW',
             avatar: 'fixtures/avatar1.jpeg',
             phone: {number: '786677899', type: 'PHONE'},
             passport: {image: 'fixtures/passport.jpg'}
@@ -74,7 +93,8 @@ const run = async () => {
             role: "user",
             balance: 200,
             name: "User user",
-            tariff: tariff.new,
+            tariff: advancedGroup,
+            group: 'ADVANCED',
             avatar: 'fixtures/avatar1.jpeg',
             phone: {number: '996555222111', type: 'PHONE'},
             passport: {image: 'fixtures/passport.jpg'}
@@ -86,6 +106,7 @@ const run = async () => {
             role: "admin",
             balance: 0,
             name: "Admin",
+            group: 'NONE',
             avatar: 'fixtures/avatar2.jpeg',
             phone: {number: '754 76 45 54', type: 'PHONE'},
             passport: {image: 'passport.jpg'}
@@ -96,6 +117,7 @@ const run = async () => {
             token: nanoid(),
             role: "warehouseman",
             name: "Warehouseman",
+            group: 'NONE',
             avatar: 'fixtures/avatar2.jpeg',
         },
         {
@@ -104,6 +126,7 @@ const run = async () => {
             token: nanoid(),
             role: "superAdmin",
             name: "superAdmin",
+            group: 'NONE',
             avatar: 'fixtures/avatar2.jpeg',
         },
     );
@@ -125,7 +148,7 @@ const run = async () => {
 
     await Buyout.create(
         {
-            description: 'Zara kid dress',
+            description: 'Правильно подобранная фраза на фото позволит выделить почти любое изображение среди остальных, сделать акцент, кратко изложить суть публикации, чтобы пользователь как минимум заинтересовался и прочитал пост. Этим пользуются многие блогеры и коммерческие аккаунты, оформляя свою ленту и stories для Инстаграм.',
             user: user,
             status: "NEW",
             image: 'fixtures/zara_dress.png',
@@ -181,7 +204,7 @@ const run = async () => {
     const packagesArray = [
         {
             trackNumber: nanoid(),
-            currency: 'usd',
+            priceCurrency: 'USD',
             title: 'package 1',
             amount: 1,
             price: 2345,
@@ -196,7 +219,7 @@ const run = async () => {
         {
             trackNumber: nanoid(),
             title: 'package 2',
-            currency: 'try',
+            priceCurrency: 'TRY',
             amount: 1,
             price: 443,
             flight: flight1,
@@ -210,7 +233,7 @@ const run = async () => {
         {
             trackNumber: nanoid(),
             title: 'package 3',
-            currency: 'cny',
+            priceCurrency: 'CNY',
             amount: 1,
             price: 7564,
             flight: flight1,
@@ -225,11 +248,11 @@ const run = async () => {
             trackNumber: nanoid(),
             title: 'package 4',
             amount: 1,
-            currency: 'usd',
+            priceCurrency: 'USD',
             price: 678,
             flight: flight2,
             country: 'chinaGround',
-            status: 'PROCESSED',
+            status: 'REGISTERED',
             user: user,
             description: 'description 4',
             // cargoNumber: '000004',
@@ -238,7 +261,7 @@ const run = async () => {
         {
             trackNumber: nanoid(),
             title: 'package 5',
-            currency: 'try',
+            priceCurrency: 'TRY',
             amount: 1,
             price: 345,
             flight: flight2,
@@ -252,7 +275,7 @@ const run = async () => {
         {
             trackNumber: nanoid(),
             title: 'package 6',
-            currency: 'try',
+            priceCurrency: 'TRY',
             amount: 1,
             price: 345,
             flight: flight2,
@@ -271,46 +294,67 @@ const run = async () => {
 
     await News.create(
         {
-            title: 'title 1',
-            description: 'description 1',
+            title: 'Кыргызстан: грузовые перевозки в условиях борьбы с коронавирусом',
+            description: 'Разрешен въезд/выезд грузовых транспортных средств с соблюдением повышенных мер противоэпидемической безопасности.\n' +
+                '\n' +
+                'По неофициальным данным (оперативная информация от руководства Агентства автомобильного, водного транспорта и весогабаритного контроля Кыргызстана) в ближайшее время могут быть введены нормы, предусматривающие помещение международных перевозчиков при пересечении границы на 3-х дневный карантин.',
             image: 'fixtures/container1.jpeg',
             deleted: false,
-            datetime: '2222-12-22',
+            datetime: '2022/7/1',
         },
         {
-            title: 'title 2',
-            description: 'description 2',
+            title: 'Кыргызстан. До 1 сентября действуют ограничения на проезд крупногабаритных автопоездов.',
+            description: 'В нем указано, что в дневное время по дорогам общего пользования запрещено передвигаться большегрузам с общей массой от 18 тонн. Ограничения вступили в силу с 1 июня и будут действовать до 1 сентября с 10 часов утра до 8 часов вечера, при условии температурного режима выше 28 градусов.',
             image: 'fixtures/container2.jpeg',
             deleted: false,
-            datetime: '2322-12-22',
+            datetime: '2022/5/8',
         },
         {
-            title: 'title 2',
-            description: 'description 2',
+            title: 'Россия ограничивает украинский транзит через свою территорию',
+            description: 'Президент России Владимир Путин внес изменения в указ об обеспечении экономической безопасности и национальных интересов России при транзитных перевозках с Украины в Казахстан, распространив существующие требования на Киргизию, документ опубликован на официальном интернет-портале правовой информации. Также российский президент продлил действие указа до 31 декабря 2017 года.',
             image: 'fixtures/container2.jpeg',
-            deleted: true,
-            datetime: '2322-12-22',
-        }
+            deleted: false,
+            datetime: '2021/12/22',
+        },
+        {
+            title: 'В Кыргызстане решается вопрос логистики в сельском хозяйстве',
+            description: 'Международные компании помогут Кыргызстану полноправно войти на рынок ЕАЭС. В 2017-ом частные транспортно-логистические компании, в орбиту которых входят более 200 стран по всему миру, планируют открытие филиалов в центральных городах всех 7 областей республики. Сейчас такие центры работают только в Бишкеке и Оше.',
+            image: 'fixtures/container2.jpeg',
+            deleted: false,
+            datetime: '2021/12/22',
+        },
     );
 
     await Market.create(
         {
+            title: 'title 5',
+            image: 'fixtures/verizon.svg',
+            url: 'https://www.walmart.com/',
+            deleted: false,
+        },
+        {
+            title: 'title 2',
+            image: 'fixtures/ebay.svg',
+            url: 'https://www.ebay.com/?mkevt=1&siteid=1&mkcid=2&mkrid=711-153320-877174-6&source_name=google&mktype=brand&campaignid=9116265290&groupid=95976135767&crlp=414435097829&keyword=ebay&targeted=kwd-11021220&MT_ID=e&adpos=&device=c&googleloc=1009827&geo_id=212&gclid=Cj0KCQiArt6PBhCoARIsAMF5wajF7BGAA0hX1vUcvT3Vg0s2K130oqDDI0S1sR_Efg0S_99_pGC9w1IaApF6EALw_wcB',
+            deleted: false,
+        },
+        {
+            title: 'title 3',
+            image: 'fixtures/sears.svg',
+            url: 'https://www.sears.com/en_us/yikes.html',
+            deleted: false,
+        },
+        {
+            title: 'title 4',
+            image: 'fixtures/walmart.svg',
+            url: 'https://www.walmart.com/',
+            deleted: false,
+        },
+        {
             title: 'title 1',
-            image: 'fixtures/amazon.png',
+            image: 'fixtures/amazon.svg',
             url: 'https://www.amazon.com/',
             deleted: false,
-        },
-        {
-            title: 'title 2',
-            image: 'fixtures/ebay.png',
-            url: 'https://www.ebay.com/?mkevt=1&siteid=1&mkcid=2&mkrid=711-153320-877174-6&source_name=google&mktype=brand&campaignid=9116265290&groupid=95976135767&crlp=414435097829&keyword=ebay&targeted=kwd-11021220&MT_ID=e&adpos=&device=c&googleloc=1009827&geo_id=212&gclid=Cj0KCQiArt6PBhCoARIsAMF5wajF7BGAA0hX1vUcvT3Vg0s2K130oqDDI0S1sR_Efg0S_99_pGC9w1IaApF6EALw_wcB',
-            deleted: false,
-        },
-        {
-            title: 'title 2',
-            image: 'fixtures/ebay.png',
-            url: 'https://www.ebay.com/?mkevt=1&siteid=1&mkcid=2&mkrid=711-153320-877174-6&source_name=google&mktype=brand&campaignid=9116265290&groupid=95976135767&crlp=414435097829&keyword=ebay&targeted=kwd-11021220&MT_ID=e&adpos=&device=c&googleloc=1009827&geo_id=212&gclid=Cj0KCQiArt6PBhCoARIsAMF5wajF7BGAA0hX1vUcvT3Vg0s2K130oqDDI0S1sR_Efg0S_99_pGC9w1IaApF6EALw_wcB',
-            deleted: true,
         },
     );
 

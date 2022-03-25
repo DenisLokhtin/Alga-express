@@ -1,4 +1,3 @@
-import {put, takeEvery} from "redux-saga/effects";
 import {
     addUserPaymentFailure,
     addUserPaymentRequest,
@@ -9,6 +8,12 @@ import {
     editPassportFailure,
     editPassportRequest,
     editPassportSuccess,
+    editTariff,
+    editTariffFailure,
+    editTariffSuccess,
+    editUserDataByAdminFailure,
+    editUserDataByAdminRequest,
+    editUserDataByAdminSuccess,
     editUserDataFailure,
     editUserDataRequest,
     editUserDataSuccess,
@@ -38,7 +43,8 @@ import {
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
 import History from '../../History';
-import {adminPagePath, processingTrackNumbersAdmin, root, userLogin, userPage, userPaymentsList} from "../../paths";
+import {adminPagePath, processingTrackNumbersAdmin, root, userLogin, userPage} from "../../paths";
+import {put, takeEvery} from "redux-saga/effects";
 
 export function* registerUserSaga({payload}) {
     try {
@@ -56,15 +62,17 @@ export function* registerUserSaga({payload}) {
         if (response.data.creator === 'superAdmin') {
             if (payload?.role === 'admin') {
                 toast.success('Вы успешно создали администратора');
+                History.push(adminPagePath);
                 yield put(registerUserSuccess());
             } else if (payload?.role === 'warehouseman') {
-                toast.success('Вы успешно создали складовщика');
                 yield put(registerUserSuccess());
+                toast.success('Вы успешно создали складовщика');
+                History.push(adminPagePath);
             }
         } else {
             yield put(registerUserSuccess(response.data));
-            History.push(root);
             toast.success('Вы зарегистрированы');
+            History.push(userPage);
         }
     } catch (e) {
         toast.error(e.response.data.global);
@@ -79,7 +87,10 @@ export function* loginUserSaga({payload: user}) {
         yield put(loginUserSuccess(response.data));
         toast.success('Вы авторизированы!');
         switch (response.data.role) {
-            case 'admin' || 'superAdmin':
+            case 'admin':
+                History.push(adminPagePath);
+                break;
+            case 'superAdmin':
                 History.push(adminPagePath);
                 break;
             case 'warehouseman':
@@ -112,9 +123,22 @@ export function* editUserSaga({payload}) {
         const response = yield  axiosApi.put('/userEdit/' + payload.id, payload.data);
         yield put(editUserDataSuccess(response.data));
         toast.success('Редактирование успешно!');
+        History.push(root);
     } catch (e) {
         toast.error(e.response.data.error);
         yield put(editUserDataFailure(e.response.data));
+    }
+}
+
+
+export function* editUserByAdminSaga({payload}) {
+    try {
+        const response = yield  axiosApi.put('/userEdit/' + payload.id, payload.data);
+        yield put(editUserDataByAdminSuccess(response.data));
+        toast.success('Редактирование успешно!');
+    } catch (e) {
+        toast.error(e.response.data.error);
+        yield put(editUserDataByAdminFailure(e.response.data));
     }
 }
 
@@ -133,7 +157,7 @@ export function* userPaymentSaga({payload}) {
     try {
         const response = yield  axiosApi.post('/userEdit/payment/', payload);
         yield put(addUserPaymentSuccess(response.data));
-        History.push(userPaymentsList);
+        History.push(userPage);
         toast.success('Оплата отправлена');
     } catch (e) {
         toast.error(e.response.data.error);
@@ -213,12 +237,27 @@ export function* logoutUserSaga() {
     }
 }
 
+export function* editTariffSagas({payload}) {
+    const id = payload.id;
+    const group = payload.group;
+    const tariff = payload.tariff;
+
+    try {
+        const {data} = yield axiosApi.put(`users/tariffEdit?id=${id}`, {group: group, tariff: tariff});
+        yield put(editTariffSuccess());
+        toast.success(data.message);
+    } catch (e) {
+        yield put(editTariffFailure(e));
+    }
+}
+
 const usersSaga = [
     takeEvery(registerUser, registerUserSaga),
     takeEvery(loginUser, loginUserSaga),
     takeEvery(logout, logoutUserSaga),
     takeEvery(userDateRequest, getUserSaga),
     takeEvery(editUserDataRequest, editUserSaga),
+    takeEvery(editUserDataByAdminRequest, editUserByAdminSaga),
     takeEvery(editPassportRequest, editPassportSaga),
     takeEvery(addUserPaymentRequest, userPaymentSaga),
     takeEvery(fetchUserPaymentRequest, fetchUserPaymentSaga),
@@ -226,7 +265,7 @@ const usersSaga = [
     takeEvery(resetPasswordRequest, resetPasswordSaga),
     takeEvery(changePasswordRequest, changePasswordSaga),
     takeEvery(forgotPasswordRequest, forgotPasswordSaga),
-
+    takeEvery(editTariff, editTariffSagas)
 ];
 
 export default usersSaga;

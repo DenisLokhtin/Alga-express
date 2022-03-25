@@ -1,7 +1,7 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {fetchPaymentRequest} from "../../../store/actions/paymentActions";
-import {fetchBuyoutsRequest} from "../../../store/actions/buyoutActions";
+import {fetchBuyoutsList} from "../../../store/actions/buyoutActions";
 import {totalSend} from "../../../store/actions/usersActions";
 
 const UpdateDates = ({children}) => {
@@ -12,15 +12,15 @@ const UpdateDates = ({children}) => {
     const [totalCounts, setTotalCounts] = useState(0);
     const [nowCounts, setNowCounts] = useState(0);
 
-    useMemo(() => {
-        if (user && user.role === 'admin') {
+    useEffect(() => {
+        if (user && ((user.role === 'admin') || (user.role === 'superAdmin'))) {
             dispatch(fetchPaymentRequest({page: 0, limit: 0}));
-            dispatch(fetchBuyoutsRequest());
+            dispatch(fetchBuyoutsList({page: 0, limit: 100}));
         }
     }, [dispatch, user]);
 
     useEffect(() => {
-        if (user && user.role === 'admin' && paymentCount) {
+        if (user && ((user.role === 'admin') || (user.role === 'superAdmin')) && paymentCount) {
             const total = paymentCount.totalElements + buyouts;
             setNowCounts(total);
 

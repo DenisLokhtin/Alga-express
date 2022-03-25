@@ -1,4 +1,5 @@
 import {createTheme} from "@mui/material/styles";
+import zIndex from "@mui/material/styles/zIndex";
 
 const theme = createTheme({
     components: {
@@ -127,6 +128,16 @@ const theme = createTheme({
         padding: "10px 0",
         alignItems: "flex-end"
     },
+    progress: {
+        width: '100%',
+        position: "absolute",
+        marginLeft: '-10px',
+        bottom: 0,
+        zIndex: zIndex.drawer + 1,
+    },
+    relative: {
+        position:'relative',
+    }
 });
 
 export default theme;

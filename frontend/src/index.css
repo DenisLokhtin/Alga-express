@@ -3,3 +3,9 @@ html, body {
     min-height: 100vh;
     word-wrap: break-word;
 }
+
+.containerStyle {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    margin-bottom: 80px;
+    border-radius: 10px;
+}

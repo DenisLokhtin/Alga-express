@@ -20,13 +20,15 @@ const tariffSlice = createSlice({
             state.fetchLoading = false;
         },
         changeTariffRequest(state) {
+            state.fetchLoading = true;
 
         },
         changeTariffSuccess(state, {payload: tariffs}) {
-            console.log(tariffs);
+            state.fetchLoading = false;
             state.tariffs = tariffs;
         },
         changeTariffFailure(state) {
+            state.fetchLoading = false;
 
         },
     }

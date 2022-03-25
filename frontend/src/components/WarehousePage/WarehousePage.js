@@ -10,14 +10,75 @@ import {deleteWareHouseRequest, fetchWareHouseRequest} from "../../store/actions
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import Player from "../Player/Player";
 import AppWindow from "../UI/AppWindow/AppWindow";
+import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import Container from "@mui/material/Container";
+import countryPicture from "../../assets/images/country-flags.jpg";
 
 const useStyles = makeStyles(theme => ({
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
     tableContainer: {
         boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
-        marginBottom: '80px'
+        marginBottom: '80px',
+        borderRadius: '10px',
+    },
+    container: {
+        paddingTop: '20px',
+        [theme.breakpoints.down('sm')]: {
+            paddingTop: '60px',
+        },
+    },
+    countryFlag: {
+        background: `url(${countryPicture})`,
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        minHeight: '30vh',
+    },
+    gridCenter: {
+        [theme.breakpoints.down('md')]: {
+            display: 'flex',
+        },
+        [theme.breakpoints.down('sm')]: {
+            margin: '0 auto',
+        },
+    },
+    mediaQueriesDeleteBtn: {
+        [theme.breakpoints.down('lg')]: {
+            fontSize: '12px',
+            padding: '8px 16px',
+            textAlign: 'center',
+        },
+        [theme.breakpoints.down('md')]: {
+            padding: '8px 37px',
+        },
+        [theme.breakpoints.down('sm')]: {
+            fontSize: '10px',
+        },
+    },
+
+    mediaQueriesAddBtn: {
+        [theme.breakpoints.down('lg')]: {
+            fontSize: '12px',
+            padding: '8px 16px',
+        },
+        [theme.breakpoints.down('md')]: {
+            padding: '8px 35px',
+            display: 'flex',
+            justifyContent: 'center',
+        },
+        [theme.breakpoints.down('sm')]: {
+            fontSize: '10px',
+        },
+    },
+
+    mediaQueriesEditBtn: {
+        [theme.breakpoints.down('lg')]: {
+            fontSize: '80px',
+            padding: '8px 20px',
+        },
+        [theme.breakpoints.down('sm')]: {
+            fontSize: '10px',
+        },
     },
 }));
 
@@ -27,11 +88,7 @@ const WarehousePage = () => {
     const messagesEndRef = useRef(null);
 
     useEffect(() => {
-        if (!!messagesEndRef.current) {
-            messagesEndRef.current.scrollIntoView({
-                behavior: 'smooth'
-            }, 200);
-        }
+        window.scrollTo(0, 0);
         dispatch(fetchWareHouseRequest());
     }, [dispatch, messagesEndRef]);
 
@@ -52,126 +109,139 @@ const WarehousePage = () => {
     const [open, setOpen] = useState(false);
 
     return (
-        <Box ref={messagesEndRef} sx={{width: '100%', typography: 'body1'}} style={{paddingTop: '150px'}} className={classes.tableContainer}>
-            {user && user.role === 'admin' ?
-                <Grid item xs={5}>
-                    <ButtonWithProgress
-                        type="submit"
-                        variant="contained"
-                        color="error"
-                        className={classes.submit}
-                        loading={loading}
-                        disabled={loading}
-                        component={Link}
-                        to={addWareHouseAddress}
-                    >
-                        <AddBoxIcon/> Добавить новую страну
-                    </ButtonWithProgress>
-                </Grid> : ''}
-            {user && user.role === 'superAdmin' ?
-                <Grid item xs={5}>
-                    <ButtonWithProgress
-                        type="submit"
-                        variant="contained"
-                        color="error"
-                        className={classes.submit}
-                        loading={loading}
-                        disabled={loading}
-                        component={Link}
-                        to={addWareHouseAddress}
-                    >
-                        <AddBoxIcon/> Добавить новую страну
-                    </ButtonWithProgress>
-                </Grid> : ''}
-            <TabContext value={value}>
-                <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
-                    <Grid container>
-                        <Grid item xs={8}>
-                            <TabList onChange={handleChange} aria-label="lab API tabs example">
-                                {wareHouses.map((warehouse, i) => (
-                                    <Tab key={warehouse._id} value={String(i)} label={warehouse.country}/>
-                                ))}
-                            </TabList>
-                        </Grid>
-                    </Grid>
-                </Box>
-
-                {wareHouses.length !== 0 && wareHouses?.map((warehouse, i) => (
-                    <TabPanel key={warehouse._id} value={i.toString()}>
-                        {content?.map((info, index) => (
-                            <div key={index} className="post__content" dangerouslySetInnerHTML={{__html: info.info}}/>
-                        ))}
+        <Container maxWidth="lg" className={classes.container}>
+            <Grid container direction={"column"} justifyContent={"center"}>
+                <Grid>
+                    <div className={classes.countryFlag}/>
+                </Grid>
+                <Grid item>
+                    <Box ref={messagesEndRef} sx={{width: '100%', typography: 'body1'}} style={{padding: '25px 25px 40px 25px'}}
+                         className={classes.tableContainer}>
                         {user && user.role === 'admin' ?
-                            <Grid container>
-                                <Grid item xs={3}>
-                                    <ButtonWithProgress
-                                        type="submit"
-                                        fullWidth
-                                        variant="contained"
-                                        color="success"
-                                        className={classes.submit}
-                                        loading={loading}
-                                        disabled={loading}
-                                        component={Link}
-                                        to={editingSingleWareHouse + warehouse._id}
-                                    >
-                                        Редактировать
-                                    </ButtonWithProgress>
-                                </Grid>
-                                <Grid item xs={3}>
-                                    <ButtonWithProgress
-                                        type="submit"
-                                        fullWidth
-                                        variant="contained"
-                                        color="inherit"
-                                        className={classes.submit}
-                                        loading={loading}
-                                        disabled={loading}
-                                        onClick={() => setOpen(true)}
-                                    >
-                                        Удалить страну
-                                    </ButtonWithProgress>
-                                </Grid>
+                            <Grid item xs={12} sm={4} md={4} lg={3} className={classes.gridCenter}>
+                                <ButtonWithProgress
+                                    type="submit"
+                                    variant="outlined"
+                                    className={classes.mediaQueriesAddBtn}
+                                    loading={loading}
+                                    disabled={loading}
+                                    component={Link}
+                                    to={addWareHouseAddress}
+                                >
+                                    <AddBoxIcon/> Добавить новую страну
+                                </ButtonWithProgress>
                             </Grid> : ''}
                         {user && user.role === 'superAdmin' ?
-                            <Grid container>
-                                <Grid item xs={3}>
-                                    <ButtonWithProgress
-                                        type="submit"
-                                        fullWidth
-                                        variant="contained"
-                                        color="success"
-                                        className={classes.submit}
-                                        loading={loading}
-                                        disabled={loading}
-                                        component={Link}
-                                        to={editingSingleWareHouse + warehouse._id}
-                                    >
-                                        Редактировать
-                                    </ButtonWithProgress>
+                            <Grid item xs={12} sm={4} md={4} lg={3} className={classes.gridCenter}>
+                                <ButtonWithProgress
+                                    type="submit"
+                                    variant="outlined"
+                                    className={classes.mediaQueriesAddBtn}
+                                    loading={loading}
+                                    disabled={loading}
+                                    component={Link}
+                                    to={addWareHouseAddress}
+                                >
+                                    <AddBoxIcon/> Добавить новую страну
+                                </ButtonWithProgress>
+                            </Grid> : ''}
+                        <TabContext value={value}>
+                            <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
+                                <Grid container>
+                                    <Grid item xs={12} sm={12} md={12} lg={12} className={classes.gridCenter}>
+                                        <TabList onChange={handleChange} aria-label="lab API tabs example">
+                                            {wareHouses.map((warehouse, i) => (
+                                                <Tab key={warehouse._id} value={String(i)} label={warehouse.country}/>
+                                            ))}
+                                        </TabList>
+                                    </Grid>
                                 </Grid>
-                                <Grid item xs={3}>
-                                    <ButtonWithProgress
-                                        type="submit"
-                                        fullWidth
-                                        variant="contained"
-                                        color="inherit"
-                                        className={classes.submit}
-                                        loading={loading}
-                                        disabled={loading}
-                                        onClick={() => setOpen(true)}
-                                    >
-                                        Удалить страну
-                                    </ButtonWithProgress>
-                                </Grid>
-                            </Grid> : null}
-                        <AppWindow open={open} onClose={() => setOpen(false)}
-                                   confirm={() => deleteWareHouse(warehouse._id)}/>
-                    </TabPanel>
-                ))}
-            </TabContext>
-            <Player/>
-        </Box>
+                            </Box>
+
+                            {wareHouses.length !== 0 && wareHouses?.map((warehouse, i) => (
+                                <TabPanel key={warehouse._id} value={i.toString()}>
+                                    {content?.map((info, index) => (
+                                        <div key={index} className="post__content"
+                                             dangerouslySetInnerHTML={{__html: info.info}}/>
+                                    ))}
+                                    {user && user.role === 'admin' ?
+                                        <Grid container>
+                                            <Grid item xs={12} sm={4} md={4} lg={3} className={classes.gridCenter}>
+                                                <ButtonWithProgress
+                                                    type="submit"
+                                                    fullWidth
+                                                    variant="outlined"
+                                                    startIcon={<ModeEditOutlinedIcon/>}
+                                                    color="success"
+                                                    className={classes.mediaQueriesEditBtn}
+                                                    loading={loading}
+                                                    disabled={loading}
+                                                    component={Link}
+                                                    to={editingSingleWareHouse + warehouse._id}
+                                                >
+                                                    Редактировать
+                                                </ButtonWithProgress>
+                                            </Grid>
+                                            <Grid item xs={12} sm={4} md={4} lg={3} className={classes.gridCenter}>
+                                                <ButtonWithProgress
+                                                    type="submit"
+                                                    fullWidth
+                                                    variant="outlined"
+                                                    startIcon={<DeleteOutlinedIcon/>}
+                                                    color="error"
+                                                    className={classes.mediaQueriesDeleteBtn}
+                                                    loading={loading}
+                                                    disabled={loading}
+                                                    onClick={() => setOpen(true)}
+                                                >
+                                                    Удалить страну
+                                                </ButtonWithProgress>
+                                            </Grid>
+                                        </Grid> : ''}
+                                    {user && user.role === 'superAdmin' ?
+                                        <Grid container>
+                                            <Grid item xs={12} sm={4} md={4} lg={3} className={classes.gridCenter}>
+                                                <ButtonWithProgress
+                                                    type="submit"
+                                                    fullWidth
+                                                    variant="outlined"
+                                                    startIcon={<ModeEditOutlinedIcon/>}
+                                                    color="success"
+                                                    className={classes.mediaQueriesEditBtn}
+                                                    loading={loading}
+                                                    disabled={loading}
+                                                    component={Link}
+                                                    to={editingSingleWareHouse + warehouse._id}
+                                                >
+                                                    Редактировать
+                                                </ButtonWithProgress>
+                                            </Grid>
+                                            <Grid item xs={12} sm={4} md={4} lg={3} className={classes.gridCenter}>
+                                                <ButtonWithProgress
+                                                    type="submit"
+                                                    fullWidth
+                                                    variant="outlined"
+                                                    startIcon={<DeleteOutlinedIcon/>}
+                                                    color="error"
+                                                    className={classes.mediaQueriesDeleteBtn}
+                                                    loading={loading}
+                                                    disabled={loading}
+                                                    onClick={() => setOpen(true)}
+                                                >
+                                                    Удалить страну
+                                                </ButtonWithProgress>
+                                            </Grid>
+                                        </Grid> : null}
+                                    <AppWindow open={open} onClose={() => setOpen(false)}
+                                               confirm={() => deleteWareHouse(warehouse._id)}/>
+                                </TabPanel>
+                            ))}
+                        </TabContext>
+                        <Player/>
+                    </Box>
+                </Grid>
+            </Grid>
+        </Container>
     );
 };
 
