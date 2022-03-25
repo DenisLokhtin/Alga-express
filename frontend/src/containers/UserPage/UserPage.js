@@ -124,7 +124,7 @@ const UserPage = () => {
             name: order.user.name,
             amount: order.amount,
             price: order.price ? {price: order.price, icon: valueIcon(order.priceCurrency)} : {price: 'Нет'},
-            arrived_date: dayjs(order.flight.arrived_date).format('DD-MM-YYYY'),
+            arrived_date: order.flight && order.flight.arrived_date ? dayjs(order.flight.arrived_date).format('DD-MM-YYYY') : 'Не назначен',
             delivery: order.delivery,
         }
     });

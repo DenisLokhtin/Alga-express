@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {fetchPaymentRequest} from "../../../store/actions/paymentActions";
-import {fetchBuyoutsList, fetchBuyoutsRequest} from "../../../store/actions/buyoutActions";
+import {fetchBuyoutsList} from "../../../store/actions/buyoutActions";
 import {totalSend} from "../../../store/actions/usersActions";
 
 const UpdateDates = ({children}) => {

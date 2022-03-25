@@ -6,10 +6,10 @@ import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import {Logout} from "@mui/icons-material";
 import Badge from "@mui/material/Badge";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import HistoryIcon from "@mui/icons-material/History";
 import AddIcon from "@mui/icons-material/Add";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import FlightIcon from "@mui/icons-material/Flight";
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import {logout} from "../../../../store/actions/usersActions";
 import {useDispatch, useSelector} from "react-redux";
 import Fade from '@mui/material/Fade';
@@ -22,17 +22,14 @@ import {
     editInformation,
     editPages,
     editUserProfile,
-    listBuyouts,
     listFlightAdmin,
-    listPaymentsAdmin,
     newPackageRegister,
     orderBuyouts,
-    packageHistory,
     processingTrackNumbersAdmin,
+    root,
     userPage,
 } from "../../../../paths";
 import Avatar from "@mui/material/Avatar";
-import FactCheckIcon from '@mui/icons-material/FactCheck';
 import EditIcon from '@mui/icons-material/Edit';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PaidIcon from '@mui/icons-material/Paid';
@@ -44,31 +41,31 @@ import {createTheme} from "@mui/material/styles";
 const userSettings = [
     {url: editUserProfile, title: 'Личный кабинет', icon: <ManageAccountsIcon/>},
     {url: userPage, title: 'Моя страница', icon: <HomeIcon/>},
-    {url: packageHistory, title: 'История заказов', icon: <HistoryIcon/>},
+    // {url: packageHistory, title: 'История заказов', icon: <HistoryIcon/>},
     {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon/>},
     {url: orderBuyouts, title: 'Заказать выкуп', icon: <ShoppingCartIcon/>},
-    {url: listBuyouts, title: 'Список заказов', icon: <FactCheckIcon/>},
+    // {url: listBuyouts, title: 'Список заказов', icon: <FactCheckIcon/>},
     {url: addUserPayment, title: 'Пополнить баланс', icon: <PaidIcon/>},
     // {url: packageInfo, title: 'Информация доставки', icon: <InfoIcon/>},
 ];
 
 const superAdminSettings = [
-    {url: editUserProfile, title: 'Личный кабинет', icon: <ManageAccountsIcon/>},
-    {url: packageHistory, title: 'История всех заказов', icon: <HistoryIcon/>},
-    {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon/>},
-    {url: cargoCreateUser, title: 'Создать пользователя', icon: <AddIcon/>},
-    {url: orderBuyouts, title: 'Заказать выкуп', icon: <ShoppingCartIcon/>},
-    {url: listBuyouts, title: 'Список заказов', icon: <FactCheckIcon/>},
-    {url: addUserPayment, title: 'Пополнить баланс', icon: <PaidIcon/>},
-    // {url: packageInfo, title: 'Информация доставки', icon: <InfoIcon/>},
     {url: adminPagePath, title: 'Администратор', icon: <ManageAccountsIcon/>},
+    {url: editUserProfile, title: 'Личный кабинет', icon: <ManageAccountsIcon/>},
+    // {url: packageHistory, title: 'История всех заказов', icon: <HistoryIcon/>},
+    // {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon/>},
+    // {url: orderBuyouts, title: 'Заказать выкуп', icon: <ShoppingCartIcon/>},
+    // {url: listBuyouts, title: 'Список заказов', icon: <FactCheckIcon/>},
+    // {url: addUserPayment, title: 'Пополнить баланс', icon: <PaidIcon/>},
+    // {url: packageInfo, title: 'Информация доставки', icon: <InfoIcon/>},
     {url: listFlightAdmin, title: 'Рейсы', icon: <FlightIcon/>},
     {url: addFlightAdmin, title: 'Добавить рейс', icon: <AddIcon/>},
-    {url: listPaymentsAdmin, title: 'Список пополнений', icon: <FactCheckIcon/>},
+    // {url: listPaymentsAdmin, title: 'Список пополнений', icon: <FactCheckIcon/>},
     {url: editPages, title: 'Редактировать страницы', icon: <EditIcon/>},
-    {url: addPaymentHandler, title: 'Пополнение баланса пользователя', icon: <PaidIcon/>},
     {url: processingTrackNumbersAdmin, title: 'Смена статуса посылок', icon: <EditIcon/>},
     {url: editInformation, title: 'Редактировать информацию', icon: <EditIcon/>},
+    {url: addPaymentHandler, title: 'Пополнение баланса пользователя', icon: <PaidIcon/>},
+    {url: cargoCreateUser, title: 'Создать пользователя', icon: <PersonAddAlt1Icon/>},
 ];
 
 const warehousemanSetting = [
@@ -76,18 +73,18 @@ const warehousemanSetting = [
 ];
 
 const adminSettings = [
-    {url: editUserProfile, title: 'Личный кабинет пользователей', icon: <ManageAccountsIcon/>},
     {url: adminPagePath, title: 'Администратор', icon: <ManageAccountsIcon/>},
-    {url: packageHistory, title: 'История всех заказов', icon: <HistoryIcon/>},
-    {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon/>},
+    {url: editUserProfile, title: 'Личный кабинет пользователей', icon: <ManageAccountsIcon/>},
+    // {url: packageHistory, title: 'История всех заказов', icon: <HistoryIcon/>},
+    // {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon/>},
     {url: listFlightAdmin, title: 'Рейсы', icon: <FlightIcon/>},
     {url: addFlightAdmin, title: 'Добавить рейс', icon: <AddIcon/>},
-    {url: listPaymentsAdmin, title: 'Список пополнений', icon: <FactCheckIcon/>},
+    // {url: listPaymentsAdmin, title: 'Список пополнений', icon: <FactCheckIcon/>},
     {url: editPages, title: 'Редактировать страницы', icon: <EditIcon/>},
-    {url: addPaymentHandler, title: 'Пополнение баланса пользователя', icon: <PaidIcon/>},
-    {url: listBuyouts, title: 'Список заказов', icon: <FactCheckIcon/>},
     {url: processingTrackNumbersAdmin, title: 'Смена статуса посылок', icon: <EditIcon/>},
+    // {url: listBuyouts, title: 'Список заказов', icon: <FactCheckIcon/>},
     {url: editInformation, title: 'Редактировать информацию', icon: <EditIcon/>},
+    {url: addPaymentHandler, title: 'Пополнение баланса пользователя', icon: <PaidIcon/>},
 ];
 
 const theme = createTheme({
@@ -132,7 +129,7 @@ const UserMenu = () => {
     const toLogOut = () => {
         setAnchorEl(false);
         dispatch(logout());
-        navigate('/');
+        navigate(root);
     };
 
     return (
@@ -185,7 +182,7 @@ const UserMenu = () => {
                     }}
                 >
                     <Box sx={{padding: "6px 16px", display: "flex", alignItems: "center", alignContent: "start"}}>
-                        <Avatar src={apiURL + '/' + users?.avatar}/>
+                        <Avatar src={users.avatar && apiURL + '/' + users?.avatar}/>
                         <Box marginLeft={2}>
                             <Typography>
                                 {users.name}

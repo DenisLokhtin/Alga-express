@@ -85,7 +85,7 @@ const maskMap = {
     ru: '__.__.____',
 };
 
-const AdminPage = ({tabSelect}) => {
+const AdminPage = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const messagesEndRef = useRef(null);
@@ -212,10 +212,6 @@ const AdminPage = ({tabSelect}) => {
             status: payment.status
         }
     });
-
-    useEffect(() => {
-        tabSelect && setValue(tabSelect);
-    }, [tabSelect]);
 
     useEffect(() => {
         window.scrollTo(0, 0);
