@@ -310,7 +310,6 @@ const AdminPage = ({tabSelect}) => {
 
     const submitFormByNumber = e => {
         e.preventDefault();
-        console.log('in submit');
         setSearchByNumber(prevState => ({
             ...prevState,
             search: true,
@@ -382,11 +381,11 @@ const AdminPage = ({tabSelect}) => {
                 container
                 component='form'
                 justifyContent='center'
+                alignItems='center'
                 sx={{margin: '25px 0'}}
                 onSubmit={submitFormByNumber}
             >
-                <Grid item xs={12} sm={6} md={5}
-                >
+                <Grid item xs={12} sm={6} md={5} sx={{margin: '20px'}}>
                     <FormElement
                         label='Поиск по Трек/Карго номеру'
                         name='number' value={searchByNumber.number}
@@ -394,8 +393,7 @@ const AdminPage = ({tabSelect}) => {
                         onChange={changeSearchByNumber}
                     />
                 </Grid>
-                <Grid item xs={1} sm={1}
-                      md={1}>
+                <Grid item xs={7} sm={3} md={2}>
                     <ButtonWithProgress
                         startIcon={<SearchIcon/>}
                         type="submit"
