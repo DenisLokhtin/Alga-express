@@ -172,7 +172,8 @@ const UserPage = () => {
     }, [
         messagesEndRef, dispatch, packagesPage, paymentsPage,
         packagesPageLimit, userId, buyoutsPageLimit, paymentsPageLimit,
-        buyoutsHistory, buyoutsPage, packagesHistory, paymentsHistory
+        buyoutsHistory, buyoutsPage, packagesHistory, paymentsHistory,
+        update,
     ]);
 
     return (
@@ -266,7 +267,7 @@ const UserPage = () => {
                                 headerAlign: 'center',
                                 align: 'center',
                                 renderCell: (params) => (
-                                    params.row.delivery === undefined ?
+                                    !params.row.delivery ?
                                         <Button
                                             startIcon={<DeliveryDiningIcon fontSize="large"/>}
                                             onClick={(e) => {
@@ -283,7 +284,7 @@ const UserPage = () => {
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 setPackageData({...params.row});
-                                                setUpdate(!update);
+                                                setOpenInfo(true);
                                             }}
                                         >
                                             Изменить
