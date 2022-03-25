@@ -167,7 +167,7 @@ router.put('/:id', auth, upload.single('image'), permit('admin', 'user'), async 
     const price = Number(req.body.price);
     const commission = Number(req.body.commission);
     const value = req.body.value;
-
+    console.log(req.body);
     try {
         if (req.user.role === 'admin') {
             const updatedPrice = await Buyout.findById(req.params.id);

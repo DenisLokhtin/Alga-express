@@ -687,6 +687,7 @@ const AdminPage = () => {
                             minWidth: 120,
                             headerAlign: 'center',
                             align: 'center',
+
                         },
                         ...paymentsColumns,
                         {
@@ -694,7 +695,7 @@ const AdminPage = () => {
                             field: 'pay',
                             minWidth: 120,
                             align: 'center',
-                            editable: true
+                            editable: true,
                         },
                         {
                             field: "actions",

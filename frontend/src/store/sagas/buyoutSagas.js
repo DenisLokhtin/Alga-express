@@ -24,7 +24,7 @@ import {
     fetchSingleBuyoutRequest,
     fetchSingleBuyoutSuccess
 } from "../actions/buyoutActions";
-import {adminPagePath, listBuyouts, userPage} from "../../paths";
+import {adminPagePath, userPage} from "../../paths";
 import History from "../../History";
 
 
@@ -53,7 +53,7 @@ export function* addBuyoutSaga({payload}) {
     try {
         yield axiosApi.post( '/buyouts', payload);
         yield put(addBuyoutSuccess());
-        History.push(listBuyouts);
+        History.push(userPage);
         toast.success('Новый заказ выкупа добавлен!');
 
     } catch (error) {
