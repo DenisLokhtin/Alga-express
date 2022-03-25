@@ -18,7 +18,7 @@ const style = {
     p: 2,
 }
 
-const DeliveryModal = ({packageData, open, onClose}) => {
+const DeliveryModal = ({packageData, open, onClose, update}) => {
     const dispatch = useDispatch();
     const [address, setAddress] = useState({
         address: ''
@@ -35,6 +35,7 @@ const DeliveryModal = ({packageData, open, onClose}) => {
     const handleClick = (e) => {
         e.preventDefault();
         dispatch(postDeliveryRequest({package: packageData.id, address, onClose}));
+        update();
     }
 
     return (
@@ -86,7 +87,6 @@ const DeliveryModal = ({packageData, open, onClose}) => {
 
                             <Grid item xs={12} md={12} lg={12}>
                                 <Button
-                                    disabled={packageData.delivery !== undefined}
                                     startIcon={<DeliveryDiningIcon/>}
                                     onClick={handleClick}
                                     fullWidth

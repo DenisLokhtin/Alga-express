@@ -38,8 +38,10 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import {toast} from "react-toastify";
 import TariffCard from "../../components/TariffCard/TariffCard";
 import FormElement from "../../components/UI/Form/FormElement";
-// import DeliveryModal from "../../components/DeliveryModal/DeliveryModal";
 import History from '../../History';
+import DeliveryInfo from "../../components/DeliveryInfo/DeliveryInfo";
+import DeliveryModal from "../../components/DeliveryModal/DeliveryModal";
+import DeliveryDiningIcon from "@mui/icons-material/DeliveryDining";
 
 function a11yProps(index) {
     return {
@@ -96,7 +98,9 @@ const AdminPage = () => {
         open: false,
         id: '',
     });
-    // const [open, setOpen] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
+    const [openInfo, setOpenInfo] = useState(false);
+    const [packageData, setPackageData] = useState(null);
 
     const [img, setImg] = useState(null);
     const currencies = useSelector(state => state.currencies.currencies);
@@ -170,6 +174,9 @@ const AdminPage = () => {
             status: statuses[order.status],
             arrived_date: dayjs(order.flight.arrived_date).format('DD-MM-YYYY'),
             amount: order.amount,
+            delivery: order.delivery || null,
+            user: order.user.name,
+            price: order.price ? {price: order.price, icon: valueIcon(order.priceCurrency)} : {price: 'Нет'},
         }
     });
 
@@ -497,7 +504,6 @@ const AdminPage = () => {
                 </Grid>
             </Grid>
             <TabPanelComponent value={value} index={0}>
-                {/*<DeliveryModal />*/}
                 <TableComponent
                     onCellDoubleClick={packageData => History.push(`cargo/package/${packageData.id}`)}
                     rows={packagesRows}
@@ -524,12 +530,33 @@ const AdminPage = () => {
                             field: 'delivery',
                             headerName: 'Доставка',
                             flex: 1,
-                            minWidth: 90,
+                            minWidth: 150,
                             headerAlign: 'center',
                             align: 'center',
-                            renderCell: (params) => {
+                            renderCell: (params) => (
+                                !params.row.delivery ?
+                                    <Button
+                                        startIcon={<DeliveryDiningIcon fontSize="large"/>}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setPackageData({...params.row});
+                                            setOpenModal(true);
+                                        }}
+                                    >
+                                        Оформить
+                                    </Button> :
 
-                            }
+                                    <Button
+                                        startIcon={<DeliveryDiningIcon fontSize="large"/>}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setPackageData({...params.row});
+                                            setOpenInfo(true);
+                                        }}
+                                    >
+                                        Изменить
+                                    </Button>
+                            )
                         },
                         {
                             field: "actions",
@@ -573,6 +600,22 @@ const AdminPage = () => {
                         />
                     }
                 />
+
+                {packageData && openInfo &&
+                    <DeliveryInfo
+                        open={openInfo}
+                        onClose={() => setOpenInfo(false)}
+                        packageData={packageData}
+                        update={() => setUpdate(!update)}
+                    />}
+
+                {packageData && openModal &&
+                    <DeliveryModal
+                        open={openModal}
+                        onClose={() => setOpenModal(false)}
+                        packageData={packageData}
+                        update={() => setUpdate(!update)}
+                    />}
             </TabPanelComponent>
 
             <TabPanelComponent value={value} index={1}>

@@ -31,6 +31,8 @@ import {editBuyout} from "../../paths";
 import DeliveryModal from "../../components/DeliveryModal/DeliveryModal";
 import Requisites from "../../components/Requisites/Requisites";
 import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
+import Button from "@mui/material/Button";
+import DeliveryInfo from "../../components/DeliveryInfo/DeliveryInfo";
 
 
 function a11yProps(index) {
@@ -71,7 +73,8 @@ const UserPage = () => {
     const [value, setValue] = useState(0);
     const [update, setUpdate] = useState(false);
     const userId = useSelector(state => state.users.user._id);
-    const [open, setOpen] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
+    const [openInfo, setOpenInfo] = useState(false);
     const [packageData, setPackageData] = useState(null);
     const [openImg, setOpenImg] = useState(false);
     const [img, setImg] = useState(null);
@@ -118,7 +121,7 @@ const UserPage = () => {
             name: order.user.name,
             amount: order.amount,
             price: order.price ? {price: order.price, icon: valueIcon(order.priceCurrency)} : {price: 'Нет'},
-            delivery: order.delivery,
+            delivery: order.delivery || null,
             user: order.user.name
         }
     });
@@ -262,21 +265,32 @@ const UserPage = () => {
                                 field: 'delivery',
                                 headerName: 'Доставка',
                                 flex: 1,
-                                minWidth: 90,
+                                minWidth: 150,
                                 headerAlign: 'center',
                                 align: 'center',
                                 renderCell: (params) => (
-                                    <IconButton
-                                        disabled={params.row.delivery !== undefined}
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            setPackageData({...params.row});
-                                            setOpen(true);
-                                            setUpdate(!update);
-                                        }}
-                                    >
-                                        <DeliveryDiningIcon fontSize="large"/>
-                                    </IconButton>
+                                    params.row.delivery === undefined ?
+                                        <Button
+                                            startIcon={<DeliveryDiningIcon fontSize="large"/>}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setPackageData({...params.row});
+                                                setOpenModal(true);
+                                            }}
+                                        >
+                                            Оформить
+                                        </Button> :
+
+                                        <Button
+                                            startIcon={<DeliveryDiningIcon fontSize="large"/>}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setPackageData({...params.row});
+                                                setUpdate(!update);
+                                            }}
+                                        >
+                                            Изменить
+                                        </Button>
                                 )
                             },
                         ]}
@@ -301,7 +315,21 @@ const UserPage = () => {
                         }
                     />
 
-                    <DeliveryModal open={open} onClose={() => setOpen(false)} packageData={packageData}/>
+                    {packageData && openInfo &&
+                        <DeliveryInfo
+                            open={openInfo}
+                            onClose={() => setOpenInfo(false)}
+                            packageData={packageData}
+                            update={() => setUpdate(!update)}
+                        />}
+
+                    {packageData && openModal &&
+                        <DeliveryModal
+                            open={openModal}
+                            onClose={() => setOpenModal(false)}
+                            packageData={packageData}
+                            update={() => setUpdate(!update)}
+                        />}
                 </TabPanelComponent>
 
                 <TabPanelComponent value={value} index={1}>

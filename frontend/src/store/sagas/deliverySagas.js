@@ -22,14 +22,14 @@ function* postDelivery({payload}) {
     }
 }
 
-function* putDelivery({payload: deliveryData}) {
+function* putDelivery({payload}) {
     try {
-        const {data} = yield axiosApi.put(`/delivery/${deliveryData.id}`, deliveryData.data);
+        const {data} = yield axiosApi.put(`/delivery/${payload.id}`, payload.address);
         yield put(putDeliverySuccess());
         toast.success(data.message);
     } catch (e) {
-        yield put(putDeliveryFailure(e.response.data.message));
-        toast.error(e.response.data.message);
+        yield put(putDeliveryFailure(e));
+        toast.error(e.response.data.errors.address.message);
     }
 }
 
