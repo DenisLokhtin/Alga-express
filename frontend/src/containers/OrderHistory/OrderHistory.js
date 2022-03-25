@@ -10,7 +10,6 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import CurrencyLiraIcon from "@mui/icons-material/CurrencyLira";
 import CurrencyYenIcon from "@mui/icons-material/CurrencyYen";
 import Checkbox from "@mui/material/Checkbox";
-import {deleteDeliveryRequest} from "../../store/actions/deliveryAction";
 import {createTheme} from "@mui/material/styles";
 import {makeStyles} from "@mui/styles";
 
@@ -167,7 +166,6 @@ const OrderHistory = () => {
                         setCurrentModal({...params.row});
                     } else {
                         dispatch(changeDeliveryStatusRequest({...params.row}));
-                        dispatch(deleteDeliveryRequest({...params.row}));
                         dispatch(getOrdersHistoryRequest({page, limit: pageLimit}));
                     }
                 };
