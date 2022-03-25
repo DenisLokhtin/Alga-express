@@ -57,14 +57,13 @@ const EditPackage = ({packageData, params}) => {
     const error = useSelector(state => state.package.changePackageError);
     const loading = useSelector(state => state.package.editUserPackageLoading);
 
-
     const [editPackage, setEditPackage] = useState({
         trackNumber: packageData.trackNumber,
         title: packageData.title,
         amount: packageData.amount,
         price: packageData.price,
         country: packageData.country,
-        currency: packageData.currency,
+        priceCurrency: packageData.priceCurrency,
     });
 
     const inputChangeHandler = event => {
@@ -128,14 +127,11 @@ const EditPackage = ({packageData, params}) => {
                                 required
                                 onChange={inputChangeHandler}
                             >
-                                <MenuItem value={'usa'}>USA</MenuItem>
-                                <MenuItem value={'turkey'}>Turkey</MenuItem>
-                                {editPackage.country === 'china' ? (
-                                    <MenuItem value={'china'}>China</MenuItem>
-                                ) : (
-                                    <MenuItem value={'chinaGround'}>China</MenuItem>
-                                )}
-
+                                <MenuItem value={'usa'}>Америка</MenuItem>
+                                <MenuItem value={'turkey'}>Турция (Авия доставка)</MenuItem>
+                                <MenuItem value={'turkeyGround'}>Турция (Наземная доставка)</MenuItem>
+                                <MenuItem value={'china'}>Китай (Авия доставка)</MenuItem>
+                                <MenuItem value={'chinaGround'}>Китай (Наземная доставка)</MenuItem>
                             </Select>
                             <FormHelperText error={true}>{error?.errors?.['country']?.message}</FormHelperText>
                         </FormControl>
@@ -188,35 +184,35 @@ const EditPackage = ({packageData, params}) => {
                     />
 
                     <Grid item xs={12} sm={8} md={7} lg={4.5}>
-                        <FormControl variant="outlined" fullWidth error={Boolean(getFieldError('currency'))}>
-                            <InputLabel id="demo-controlled-open-select-label">Валюта</InputLabel>
+                        <FormControl variant="outlined" fullWidth error={Boolean(getFieldError('priceCurrency'))}>
+                            <InputLabel id="demo-controlled-open-select-label">Выберите Валюту</InputLabel>
                             <Select
                                 labelId="demo-controlled-open-select-label"
                                 id="demo-controlled-open-select"
-                                value={editPackage.currency}
+                                value={editPackage.priceCurrency}
                                 label="Выберите валюту"
-                                name="currency"
+                                name="priceCurrency"
                                 required
                                 onChange={inputChangeHandler}
                             >
-                                <MenuItem value={'usd'}>
+                                <MenuItem value={'USD'}>
                                     Доллар
                                     <AttachMoneyIcon/>
                                 </MenuItem>
-                                <MenuItem value={'try'}>
+                                <MenuItem value={'TRY'}>
                                     Турецкая лира
                                     <CurrencyLiraIcon/>
                                 </MenuItem>
-                                <MenuItem value={'cny'}>
+                                <MenuItem value={'CNY'}>
                                     Юань
                                     <CurrencyYenIcon/>
                                 </MenuItem>
                             </Select>
-                            <FormHelperText error={true}>{error?.errors?.['currency']?.message}</FormHelperText>
+                            <FormHelperText error={true}>{error?.errors?.['priceCurrency']?.message}</FormHelperText>
                         </FormControl>
                     </Grid>
 
-                    <Grid item xs={12} sm={8} md={7} lg={7}
+                    <Grid item xs={12} sm={8} md={7} lg={7} sx={{marginBottom: '25px'}}
                           className={classes.packageBtnContainer}>
                         <ButtonWithProgress
                             loading={loading}

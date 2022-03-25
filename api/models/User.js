@@ -49,9 +49,9 @@ const UserSchema = new mongoose.Schema({
         trim: true,
         validate: {
             validator: function (value) {
-                if (value.length < 8) return false;
+                if (value.length < 6) return false;
             },
-            message: 'Пароль не должен быть меньше чем 8 символов',
+            message: 'Пароль не должен быть меньше чем 6 символов',
         }
     },
     resetCode:{
