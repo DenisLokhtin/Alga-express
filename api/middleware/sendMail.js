@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 // const { Telegram } = require ('telegraf');
-
+//
 // const telegramBot = new Telegram(process.env.BOT_TOKEN);
 
 const transporter = nodemailer.createTransport({
@@ -8,15 +8,15 @@ const transporter = nodemailer.createTransport({
     port: 587,
     secure: false,
     auth: {
-        user: 'timetotestmail@gmail.com',
-        pass: 'timetotestmail11'
+        user: 'algaepxresskargo@gmail.com',
+        pass: 'alga2022'
     }
 });
 
 
 const mailData = (sendTo, subject, text, html) => {
     return {
-        from: "timetotestmail@gmail.com",
+        from: "algaepxresskargo@gmail.com",
         to: sendTo,
         subject: subject,
         text: text,
