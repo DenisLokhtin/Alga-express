@@ -175,7 +175,6 @@ router.post('/change', auth, async (req, res) => {
 
         res.send({message: " Пароль успешно изменен"});
     } catch (e) {
-        console.log(e.message)
         res.status(500).send(e);
     }
 })
