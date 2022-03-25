@@ -18,6 +18,7 @@ import FormElement from "../../components/UI/Form/FormElement";
 import {createTheme} from "@mui/material/styles";
 import {statuses} from "../../dataLocalization";
 import {getFlightsRequest} from "../../store/actions/flightActions";
+import dayjs from "dayjs";
 
 const menuItems = [
     {value: 'REGISTERED'},
@@ -86,6 +87,8 @@ const WarehousemanStatusEdit = () => {
         trackNumbers: '',
     });
 
+    const [flightSelect, setFlightSelect] = useState({id: ''});
+
     const getFieldError = fieldName => {
         try {
             return error.errors[fieldName].message;
@@ -99,9 +102,14 @@ const WarehousemanStatusEdit = () => {
         setPackageStatus(prevState => ({...prevState, [name]: value}));
     };
 
+    const onFlightChange = e => {
+        const {name, value} = e.target;
+        setFlightSelect(prevState => ({...prevState, [name]: value}));
+    };
+
     const submit = e => {
         e.preventDefault();
-        dispatch(changeStatusesRequest(packageStatus));
+        dispatch(changeStatusesRequest({...packageStatus, ...flightSelect}));
     };
 
     const messagesEndRef = useRef(null);
@@ -151,11 +159,13 @@ const WarehousemanStatusEdit = () => {
                             onChange={onInputChange}
                         >
                             {user?.role === 'admin' || user?.role === 'superAdmin' ? (
-                                menuItems.map(menuItem => (
-                                    <MenuItem key={menuItem.value} value={menuItem.value}>
-                                        {statuses[menuItem.value]}
-                                    </MenuItem>
-                                ))
+                                menuItems.map(menuItem => {
+                                    return (
+                                        <MenuItem key={menuItem.value} value={menuItem.value}>
+                                            {statuses[menuItem.value]}
+                                        </MenuItem>
+                                    )
+                                })
                             ) : (
                                 warehousemanMenuItems.map(menuItem => (
                                     <MenuItem key={menuItem.value} value={menuItem.value}>
@@ -165,6 +175,27 @@ const WarehousemanStatusEdit = () => {
                             )}
                         </Select>
                     </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={8} md={7} lg={7}>
+                    {packageStatus.status === 'ON_WAY' ? (
+                        <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label">Номер Рейса</InputLabel>
+                            <Select
+                                name="id"
+                                label="Номер Рейса"
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={flightSelect.id}
+                                onChange={onFlightChange}
+                            >
+                                {flights.map(flight => (
+                                    <MenuItem key={flight._id} value={flight._id}>
+                                        {`"Номер Рейса": ${flight.number} | "Дата Вылета": ${dayjs(flight.depart_date).format('DD-MM-YYYY')}`}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    ) : null}
                 </Grid>
                 <Grid item xs={12} sm={8} md={7} lg={7}>
                     <FormElement

@@ -13,9 +13,6 @@ import ReactPlayer from "react-player";
 import AppWindow from "../UI/AppWindow/AppWindow";
 
 const useStyles = makeStyles(theme => ({
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
     tableContainer: {
         boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
         marginBottom: '80px'
@@ -51,6 +48,52 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         alignItems: 'center',
     },
+    gridCenter: {
+        [theme.breakpoints.down('md')]: {
+            display: 'flex',
+        },
+        [theme.breakpoints.down('sm')]: {
+            margin: '0 auto',
+        },
+    },
+    mediaQueriesDeleteBtn: {
+        [theme.breakpoints.down('lg')]: {
+            fontSize: '12px',
+            padding: '8px 16px',
+            textAlign: 'center',
+        },
+        [theme.breakpoints.down('md')]: {
+            padding: '8px 37px',
+        },
+        [theme.breakpoints.down('sm')]: {
+            fontSize: '10px',
+        },
+    },
+
+    mediaQueriesAddBtn: {
+        [theme.breakpoints.down('lg')]: {
+            fontSize: '12px',
+            padding: '8px 16px',
+        },
+        [theme.breakpoints.down('md')]: {
+            padding: '8px 35px',
+            display: 'flex',
+            justifyContent: 'center',
+        },
+        [theme.breakpoints.down('sm')]: {
+            fontSize: '10px',
+        },
+    },
+
+    mediaQueriesEditBtn: {
+        [theme.breakpoints.down('lg')]: {
+            fontSize: '80px',
+            padding: '8px 20px',
+        },
+        [theme.breakpoints.down('sm')]: {
+            fontSize: '10px',
+        },
+    },
 }));
 
 
@@ -82,11 +125,11 @@ const Player = () => {
         <div className={classes.videoMain} style={{paddingTop: '50px'}}>
 
             {user && (user.role === 'admin' || user.role === 'superAdmin') && !urlFromYoutube ?
-                <Grid item xs={5}>
+                <Grid item xs={12} sm={4} md={4} lg={3} className={classes.gridCenter}>
                     <ButtonWithProgress
                         type="submit"
                         variant="outlined"
-                        className={classes.submit}
+                        className={classes.mediaQueriesAddBtn}
                         loading={loading}
                         disabled={loading}
                         component={Link}
@@ -109,16 +152,17 @@ const Player = () => {
                 playing={false}
                 controls={true}
                 url={urlFromYoutube}
+                width='50%'
             />
 
             <Grid container justifyContent={"center"} sx={{mt: '20px'}}>
                 {user && (user.role === 'admin' || user.role === 'superAdmin') && urlFromYoutube ?
-                    <Grid item xs={3}>
+                    <Grid item xs={12} sm={4} md={4} lg={3} className={classes.gridCenter}>
                         <ButtonWithProgress
                             type="submit"
                             variant="outlined"
                             color="success"
-                            className={classes.submit}
+                            className={classes.mediaQueriesEditBtn}
                             loading={loading}
                             disabled={loading}
                             component={Link}
@@ -130,12 +174,12 @@ const Player = () => {
                     </Grid> : ''}
 
                 {user && (user.role === 'admin' || user.role === 'superAdmin') && urlFromYoutube ?
-                    <Grid item xs={3}>
+                    <Grid item xs={12} sm={4} md={4} lg={3} className={classes.gridCenter}>
                         <ButtonWithProgress
                             type="submit"
                             variant="outlined"
                             color="error"
-                            className={classes.submit}
+                            className={classes.mediaQueriesDeleteBtn}
                             loading={loading}
                             disabled={loading}
                             onClick={() => setOpen(true)}

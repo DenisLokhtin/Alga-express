@@ -201,7 +201,7 @@ router.put('/', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req,
         for (const key of uniquePackages) {
             const updatedStatuses = await Package.findOneAndUpdate(
                 {trackNumber: key.trackNumber},
-                {status: key.status},
+                {status: key.status, flight: req.body.id},
                 {new: true, runValidators: true});
 
             if (updatedStatuses) {

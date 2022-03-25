@@ -39,6 +39,7 @@ const HomePage = () => {
 
     const [open, setOpen] = useState(false);
     const dispatch = useDispatch();
+    const [deleteElement, setDeleteElement] = useState('');
 
     useEffect(() => {
         dispatch(fetchAllInformationRequest());
@@ -49,6 +50,15 @@ const HomePage = () => {
         }
         dispatch(fetchMarketRequest());
     }, [messagesEndRef, dispatch]);
+
+    const deleteMarket = (id) => {
+        dispatch(deleteMarketRequest(id));
+        setOpen(false);
+        setDeleteElement(prevState => {
+            prevState = '';
+            return prevState
+        });
+    };
 
     return (
         <>
@@ -134,11 +144,18 @@ const HomePage = () => {
                                 {user && (user.role === 'admin' || user.role === 'superAdmin') && (
                                     <>
                                         <IconButton style={{position: "absolute", top: '0', right: '-20px'}}
-                                                    onClick={() => setOpen(true)}>
+                                                    onClick={() => {
+                                                        setOpen(true);
+                                                        setDeleteElement(prevState => {
+                                                            prevState = m._id;
+                                                            return prevState;
+                                                        });
+                                                    }
+                                                    }>
                                             <HighlightOffIcon/>
                                         </IconButton>
                                         <AppWindow open={open} onClose={() => setOpen(false)}
-                                                   confirm={() => dispatch(deleteMarketRequest(m._id))}/>
+                                                   confirm={() => deleteMarket(deleteElement)}/>
                                     </>
                                 )}
                             </div>
