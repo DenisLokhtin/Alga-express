@@ -112,7 +112,7 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-const UserMenu = ({user}) => {
+const UserMenu = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const [anchorEl, setAnchorEl] = useState(null);
@@ -161,7 +161,7 @@ const UserMenu = ({user}) => {
                     aria-expanded={open ? 'true' : undefined}
                 >
                     <Avatar sx={{ width: 32, height: 32 }}>
-                        {user.name[0]}
+                        {users.name[0]}
                     </Avatar>
                 </IconButton>
 
@@ -185,18 +185,18 @@ const UserMenu = ({user}) => {
                     }}
                 >
                     <Box sx={{padding: "6px 16px", display: "flex", alignItems: "center", alignContent: "start"}}>
-                        <Avatar src={apiURL + '/' + user?.avatar}/>
+                        <Avatar src={apiURL + '/' + users?.avatar}/>
                         <Box marginLeft={2}>
                             <Typography>
-                                {user.name}
+                                {users.name}
                             </Typography>
                             <Typography>
-                                {user.email}
+                                {users.email}
                             </Typography>
                         </Box>
                     </Box>
                     <Divider/>
-                    {user.role === 'admin' && adminSettings.map(setting => (
+                    {users.role === 'admin' && adminSettings.map(setting => (
                         <MenuItem
                             key={setting.title}
                             component={Link}
@@ -208,7 +208,7 @@ const UserMenu = ({user}) => {
                             <Typography textAlign="center">{setting.title}</Typography>
                         </MenuItem>
                     ))}
-                    {user.role === 'superAdmin' && superAdminSettings.map(setting => (
+                    {users.role === 'superAdmin' && superAdminSettings.map(setting => (
                         <MenuItem
                             key={setting.title}
                             component={Link}
@@ -220,7 +220,7 @@ const UserMenu = ({user}) => {
                             <Typography textAlign="center">{setting.title}</Typography>
                         </MenuItem>
                     ))}
-                    {user.role === 'warehouseman' && warehousemanSetting.map(setting => (
+                    {users.role === 'warehouseman' && warehousemanSetting.map(setting => (
                         <MenuItem
                             key={setting.title}
                             component={Link}
@@ -232,7 +232,7 @@ const UserMenu = ({user}) => {
                             <Typography textAlign="center">{setting.title}</Typography>
                         </MenuItem>
                     ))}
-                    {user.role === 'user' &&
+                    {users.role === 'user' &&
                         <div>
                             {userSettings.map((setting) => (
                                 <MenuItem
@@ -252,7 +252,7 @@ const UserMenu = ({user}) => {
                                 <ListItemIcon>
                                     <AccountBalanceWalletIcon/>
                                 </ListItemIcon>
-                                Ваш баланс {user?.balance + ' сом'}
+                                Ваш баланс {users?.balance + ' сом'}
                             </MenuItem>
                             <Divider/>
                         </div>}

@@ -24,10 +24,6 @@ import {makeStyles} from "@mui/styles";
 import EditIcon from "@mui/icons-material/Edit";
 import {Link} from "react-router-dom";
 import {editBuyout} from "../../paths";
-// import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-// import CurrencyYenIcon from "@mui/icons-material/CurrencyYen";
-// import CurrencyLiraIcon from "@mui/icons-material/CurrencyLira";
-// import Checkbox from "@mui/material/Checkbox";
 import DeliveryModal from "../../components/DeliveryModal/DeliveryModal";
 import Requisites from "../../components/Requisites/Requisites";
 import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
@@ -121,6 +117,7 @@ const UserPage = () => {
             name: order.user.name,
             amount: order.amount,
             price: order.price ? {price: order.price, icon: valueIcon(order.priceCurrency)} : {price: 'Нет'},
+            arrived_date: dayjs(order.flight.arrived_date).format('DD-MM-YYYY'),
             delivery: order.delivery || null,
             user: order.user.name
         }

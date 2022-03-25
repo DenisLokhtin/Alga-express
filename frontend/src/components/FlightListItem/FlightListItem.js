@@ -6,6 +6,7 @@ import {useDispatch} from "react-redux";
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import {putFlightRequest} from "../../store/actions/flightActions";
 import ruLocale from 'date-fns/locale/ru';
+import {flightStatuses} from "../../dataLocalization";
 
 const localeMap = {
     ru: ruLocale,
@@ -170,7 +171,7 @@ const FlightListItem = ({flight, id, page, limit}) => {
                                 onClick={statusChanger}
                                 color={flightData.status === 'ACTIVE' ? "success" : "secondary"}
                             >
-                                {flightData.status}
+                                {flightStatuses[flightData.status]}
                             </Button>
                         </Grid>
 

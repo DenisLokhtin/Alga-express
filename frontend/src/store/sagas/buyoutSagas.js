@@ -1,4 +1,4 @@
-import {put, takeEvery} from 'redux-saga/effects';
+import {put, takeEvery, select} from 'redux-saga/effects';
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
 import {
@@ -24,8 +24,9 @@ import {
     fetchSingleBuyoutRequest,
     fetchSingleBuyoutSuccess
 } from "../actions/buyoutActions";
-import {listBuyouts} from "../../paths";
+import {adminPagePath, userPage} from "../../paths";
 import History from "../../History";
+
 
 export function* getBuyoutSagas() {
     try {
@@ -52,7 +53,7 @@ export function* addBuyoutSaga({payload}) {
     try {
         yield axiosApi.post( '/buyouts', payload);
         yield put(addBuyoutSuccess());
-        History.push(listBuyouts);
+        History.push(userPage);
         toast.success('Новый заказ выкупа добавлен!');
 
     } catch (error) {
@@ -80,10 +81,17 @@ export function* deleteBuyoutSaga({payload: id}) {
 }
 
 function* editBuyoutSagas({payload}) {
+    const state = yield select();
+    const role = state.users.user.role;
     try {
         yield axiosApi.put(`/buyouts/` + payload.id, payload.obj);
         yield put(editBuyoutSuccess());
         toast.success('Успешно обновлен!');
+        if ((role==='admin') || (role === 'superAdmin')){
+            History.push(adminPagePath);
+        }else{
+            History.push(userPage);
+        }
     } catch (e) {
         yield put(editBuyoutFailure(e.response.data));
     }
