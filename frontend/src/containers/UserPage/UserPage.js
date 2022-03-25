@@ -10,7 +10,7 @@ import TableComponent from "../../components/TableComponent/TableComponent";
 import {buyoutsColumns, packagesColumns, paymentsColumns} from "../AdminPage/columns/tableColumns";
 import SwitchElement from "../../components/UI/SwitchElement/SwitchElement";
 import {useDispatch, useSelector} from "react-redux";
-import {countries, saleCountry, statuses, valueIcon} from "../../dataLocalization";
+import {countries, saleCountry, statusBuyouts, statuses, valueIcon} from "../../dataLocalization";
 import dayjs from "dayjs";
 import {apiURL} from "../../config";
 import {getOrdersHistoryRequest} from "../../store/actions/packageRegisterActions";
@@ -131,7 +131,7 @@ const UserPage = () => {
             description: buyout.description,
             datetime: dayjs(buyout.datetime).format('DD-MM-YYYY'),
             user: buyout.user.name,
-            status: statuses[buyout.status],
+            status: statusBuyouts[buyout.status],
             price: buyout.price ? {price: buyout.price, icon: valueIcon(buyout.value)} : {price: 'Нет'},
             commission: `${buyout.commission} %`,
             totalPrice: buyout.totalPrice ? `${buyout.totalPrice} сом` : 'Нет',
@@ -215,40 +215,9 @@ const UserPage = () => {
                         rows={packagesRows}
                         columns={[
                             ...packagesColumns,
-                            // {
-                            //     field: 'price',
-                            //     headerName: 'Цена товара',
-                            //     flex: 1,
-                            //     minWidth: 140,
-                            //     headerAlign: 'center',
-                            //     align: 'center',
-                            //     renderCell: (params => {
-                            //         const order = packages.find(order => order._id === params.id);
-                            //
-                            //         if (order.currency === 'usd') {
-                            //             return (
-                            //                 <div style={{display: 'flex', alignItems: 'center'}}>
-                            //                     {order.price} <AttachMoneyIcon/>
-                            //                 </div>
-                            //             )
-                            //         } else if (order.currency === 'cny') {
-                            //             return (
-                            //                 <div style={{display: 'flex', alignItems: 'center'}}>
-                            //                     {order.price} <CurrencyYenIcon/>
-                            //                 </div>
-                            //             )
-                            //         } else if (order.currency === 'try') {
-                            //             return (
-                            //                 <div style={{display: 'flex', alignItems: 'center'}}>
-                            //                     {order.price} <CurrencyLiraIcon/>
-                            //                 </div>
-                            //             )
-                            //         }
-                            //     })
-                            // },
                             {
                                 field: 'price',
-                                headerName: 'Стоимость Заказа',
+                                headerName: 'Стоимость доставки',
                                 flex: 1,
                                 minWidth: 100,
                                 headerAlign: 'center',
@@ -369,7 +338,6 @@ const UserPage = () => {
                         }
                     />
                 </TabPanelComponent>
-
                 <TabPanelComponent value={value} index={2}>
                     <TableComponent
                         rows={paymentsRows}
@@ -412,7 +380,6 @@ const UserPage = () => {
                             />
                         }
                     />
-
                     <ImageModal open={openImg} onClose={() => setOpenImg(false)} data={img}/>
                 </TabPanelComponent>
             </Box>
