@@ -67,30 +67,32 @@ const TableComponent = (
     }) => {
 
     return (
-        <DataGrid
-            rows={rows}
-            columns={columns}
-            pagination
-            pageSize={pageSize}
-            rowsPerPageOptions={[10, 20, 30, 50]}
-            rowCount={rowCount}
-            paginationMode="server"
-            onPageSizeChange={onPageSizeChange}
-            onPageChange={onPageChange}
-            onSelectionModelChange={onSelectionModelChange}
-            selectionModel={selectionModel}
-            localeText={ruRU.components.MuiDataGrid.defaultProps.localeText}
-            loading={loading}
-            rowHeight={rowHeight}
-            components={{
-                Toolbar: () => CustomToolbar(toolbarElements),
-                LoadingOverlay: CustomLoadingOverlay,
-                NoRowsOverlay: CustomNoRowsOverlay,
-            }}
-            onCellClick={onCellClick}
-            onCellDoubleClick={onCellDoubleClick}
-            onRowClick={onRowClick}
-        />
+        <Box sx={{height: 500}}>
+            <DataGrid
+                rows={rows}
+                columns={columns}
+                pagination
+                pageSize={pageSize}
+                rowsPerPageOptions={[10, 20, 30, 50]}
+                rowCount={rowCount}
+                paginationMode="server"
+                onPageSizeChange={onPageSizeChange}
+                onPageChange={onPageChange}
+                onSelectionModelChange={onSelectionModelChange}
+                selectionModel={selectionModel}
+                localeText={ruRU.components.MuiDataGrid.defaultProps.localeText}
+                loading={loading}
+                rowHeight={rowHeight}
+                components={{
+                    Toolbar: () => CustomToolbar(toolbarElements),
+                    LoadingOverlay: CustomLoadingOverlay,
+                    NoRowsOverlay: CustomNoRowsOverlay,
+                }}
+                onCellClick={onCellClick}
+                onCellDoubleClick={onCellDoubleClick}
+                onRowClick={onRowClick}
+            />
+        </Box>
     );
 };
 
