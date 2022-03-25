@@ -159,8 +159,6 @@ const AdminPage = () => {
     const [paymentsSelectionModel, setPaymentsSelectionModel] = useState([]);
     const paymentsPrevSelection = useRef(paymentsSelectionModel);
 
-    const handleClose = () => setOpen(false);
-
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -787,15 +785,16 @@ const AdminPage = () => {
                             <CurrenciesCard currency={currencies}/>}
                     </Grid>
 
-                    <Grid item xs={12} md={6} lg={6}>
-                        {valueSelect.tariff
-                            && searchData.search
-                            && <TariffCard
+
+                    {valueSelect.tariff
+                        && searchData.search
+                        && <Grid item xs={12} md={6} lg={6}>
+                            <TariffCard
                                 tariff={valueSelect.tariff}
                                 id={valueSelect._id}
                                 group={valueSelect.group}
-                            />}
-                    </Grid>
+                            />
+                        </Grid>}
                 </Grid>
             </TabPanelComponent>
             <Requisites/>
