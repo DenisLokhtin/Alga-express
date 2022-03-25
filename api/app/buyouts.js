@@ -167,7 +167,7 @@ router.put('/:id', auth, upload.single('image'), permit('admin', 'user'), async 
     const price = Number(req.body.price);
     const commission = Number(req.body.commission);
     const value = req.body.value;
-
+    console.log('in put: ', req.body);
     try {
         if (req.user.role === 'admin') {
             const updatedPrice = await Buyout.findById(req.params.id);
@@ -194,11 +194,11 @@ router.put('/:id', auth, upload.single('image'), permit('admin', 'user'), async 
                     lastBalance: user.balance,
                     status: 'DEBIT',
                 };
-
-               await sendMail({email: user.email},'Alga-express, статус изменен',
-                   buyoutTextTelegram(updatedPrice.description, "Принят на заказ", user.name),
-                   buyoutText(updatedPrice.description, "Принят на заказ", user.name)
-                   );
+               //
+               // await sendMail({email: user.email},'Alga-express, статус изменен',
+               //     buyoutTextTelegram(updatedPrice.description, "Принят на заказ", user.name),
+               //     buyoutText(updatedPrice.description, "Принят на заказ", user.name)
+               //     );
 
                 const paySave = new PaymentMove(buyoutMove);
                 await paySave.save();

@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchCurrencies} from "../../store/actions/currenciesActions";
 import CurrenciesCard from "../../components/CurrenciesCard/CurrenciesCard";
 import TableComponent from "../../components/TableComponent/TableComponent";
-import {countries, saleCountry, statuses, valueIcon} from "../../dataLocalization";
+import {countries, saleCountry, statusBuyouts, statuses, valueIcon} from "../../dataLocalization";
 import {getOrdersHistoryRequest, giveOutRequest} from "../../store/actions/packageRegisterActions";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
@@ -85,7 +85,7 @@ const maskMap = {
     ru: '__.__.____',
 };
 
-const AdminPage = () => {
+const AdminPage = ({tabSelect}) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const messagesEndRef = useRef(null);
@@ -179,7 +179,7 @@ const AdminPage = () => {
             title: order.title,
             country: countries[order.country],
             status: statuses[order.status],
-            arrived_date: dayjs(order.flight.arrived_date).format('DD-MM-YYYY'),
+            arrived_date: order.flight && order.flight.arrived_date ? dayjs(order.flight.arrived_date).format('DD-MM-YYYY') : 'Не назначен',
             amount: order.amount,
         }
     });
@@ -192,7 +192,7 @@ const AdminPage = () => {
             description: buyout.description,
             datetime: dayjs(buyout.datetime).format('DD-MM-YYYY'),
             user: buyout.user.name,
-            status: statuses[buyout.status],
+            status: statusBuyouts[buyout.status],
             price: buyout.price ? {price: buyout.price, icon: valueIcon(buyout.value)} : {price: 'Нет'},
             commission: `${buyout.commission} %`,
             totalPrice: buyout.totalPrice ? `${buyout.totalPrice} сом` : 'Нет',
@@ -212,6 +212,10 @@ const AdminPage = () => {
             status: payment.status
         }
     });
+
+    useEffect(() => {
+        tabSelect && setValue(tabSelect);
+    }, [tabSelect]);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -237,6 +241,14 @@ const AdminPage = () => {
                 case 0:
                     if (packagesHistory) {
                         pageData.history = true;
+                    }
+                    if (searchByNumber.search) {
+                        pageData.packageFind = searchByNumber.number;
+                        setSearchByNumber(prevState => ({
+                            ...prevState,
+                            number: '',
+                            search: false,
+                        }));
                     }
                     dispatch(getOrdersHistoryRequest({
                         page: pageData.page,
@@ -298,6 +310,7 @@ const AdminPage = () => {
 
     const submitFormByNumber = e => {
         e.preventDefault();
+        console.log('in submit');
         setSearchByNumber(prevState => ({
             ...prevState,
             search: true,
@@ -381,7 +394,7 @@ const AdminPage = () => {
                         onChange={changeSearchByNumber}
                     />
                 </Grid>
-                <Grid item xs={1} sm={1} sx={1}
+                <Grid item xs={1} sm={1}
                       md={1}>
                     <ButtonWithProgress
                         startIcon={<SearchIcon/>}
