@@ -13,6 +13,11 @@ export const statuses = {
     ERASED: 'Удалён',
 };
 
+export const flightStatuses ={
+    ACTIVE: 'Активный',
+    DONE: 'Прибыл',
+}
+
 export const countries = {
     usa: 'Америка - Авиа',
     turkey: 'Турция - Авиа',
@@ -25,14 +30,14 @@ export const saleCountry = {
     USA: 'Америка',
     Turkey: 'Турция',
     China: 'Китай',
-}
+};
 
 export const groups = {
     NEW: 'Новый',
     ADVANCED: 'Продвинутый',
     BUYER: 'Байер',
     VIP: 'VIP'
-}
+};
 
 export const valueIcon = (value) => {
     switch (value) {
