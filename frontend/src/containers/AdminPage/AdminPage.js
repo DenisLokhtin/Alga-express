@@ -32,7 +32,6 @@ import Grid from "@mui/material/Grid";
 import ruLocale from "date-fns/locale/ru";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
 import AppWindow from "../../components/UI/AppWindow/AppWindow";
-import DeliveryModal from "../../components/DeliveryModal/DeliveryModal";
 import Requisites from "../../components/Requisites/Requisites";
 import SearchIcon from '@mui/icons-material/Search';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
@@ -40,6 +39,9 @@ import {toast} from "react-toastify";
 import TariffCard from "../../components/TariffCard/TariffCard";
 import FormElement from "../../components/UI/Form/FormElement";
 import History from '../../History';
+import DeliveryInfo from "../../components/DeliveryInfo/DeliveryInfo";
+import DeliveryModal from "../../components/DeliveryModal/DeliveryModal";
+import DeliveryDiningIcon from "@mui/icons-material/DeliveryDining";
 
 function a11yProps(index) {
     return {
@@ -96,16 +98,9 @@ const AdminPage = () => {
         open: false,
         id: '',
     });
-    const [open, setOpen] = useState(false);
-    const [currentModal] = useState({
-        cargoNumber: "1",
-        country: "Китай-Авия",
-        delivery: "false",
-        id: "6220b025363a1780b6f28293",
-        status: "В пути",
-        title: "package 3",
-        trackNumber: "DnS5myCQv6H4H1_4YCtPM",
-    });
+    const [openModal, setOpenModal] = useState(false);
+    const [openInfo, setOpenInfo] = useState(false);
+    const [packageData, setPackageData] = useState(null);
 
     const [img, setImg] = useState(null);
     const currencies = useSelector(state => state.currencies.currencies);
@@ -181,6 +176,9 @@ const AdminPage = () => {
             status: statuses[order.status],
             arrived_date: dayjs(order.flight.arrived_date).format('DD-MM-YYYY'),
             amount: order.amount,
+            delivery: order.delivery || null,
+            user: order.user.name,
+            price: order.price ? {price: order.price, icon: valueIcon(order.priceCurrency)} : {price: 'Нет'},
         }
     });
 
@@ -395,6 +393,13 @@ const AdminPage = () => {
                         Найти
                     </ButtonWithProgress>
                 </Grid>
+                <FormElement
+                    xs={12} sm={6} md={5}
+                    label='Поиск по Трек Карго номеру'
+                    name='number' value={searchByNumber.number}
+                    autoComplete='off'
+                    onChange={changeSearchByNumber}
+                />
             </Grid>
             <Grid
                 container
@@ -523,13 +528,6 @@ const AdminPage = () => {
                 </Grid>
             </Grid>
             <TabPanelComponent value={value} index={0}>
-                <DeliveryModal title={currentModal.title}
-                               track={currentModal.trackNumber}
-                               status={currentModal.status}
-                               country={currentModal.country}
-                               open={open} page={packagesPage}
-                               pageLimit={packagesPageLimit}
-                               close={handleClose}/>
                 <TableComponent
                     onCellDoubleClick={packageData => History.push(`cargo/package/${packageData.id}`)}
                     rows={packagesRows}
@@ -556,12 +554,33 @@ const AdminPage = () => {
                             field: 'delivery',
                             headerName: 'Доставка',
                             flex: 1,
-                            minWidth: 90,
+                            minWidth: 150,
                             headerAlign: 'center',
                             align: 'center',
-                            renderCell: (params) => {
+                            renderCell: (params) => (
+                                !params.row.delivery ?
+                                    <Button
+                                        startIcon={<DeliveryDiningIcon fontSize="large"/>}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setPackageData({...params.row});
+                                            setOpenModal(true);
+                                        }}
+                                    >
+                                        Оформить
+                                    </Button> :
 
-                            }
+                                    <Button
+                                        startIcon={<DeliveryDiningIcon fontSize="large"/>}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setPackageData({...params.row});
+                                            setOpenInfo(true);
+                                        }}
+                                    >
+                                        Изменить
+                                    </Button>
+                            )
                         },
                         {
                             field: "actions",
@@ -605,6 +624,22 @@ const AdminPage = () => {
                         />
                     }
                 />
+
+                {packageData && openInfo &&
+                    <DeliveryInfo
+                        open={openInfo}
+                        onClose={() => setOpenInfo(false)}
+                        packageData={packageData}
+                        update={() => setUpdate(!update)}
+                    />}
+
+                {packageData && openModal &&
+                    <DeliveryModal
+                        open={openModal}
+                        onClose={() => setOpenModal(false)}
+                        packageData={packageData}
+                        update={() => setUpdate(!update)}
+                    />}
             </TabPanelComponent>
 
             <TabPanelComponent value={value} index={1}>
@@ -687,7 +722,6 @@ const AdminPage = () => {
                             minWidth: 120,
                             headerAlign: 'center',
                             align: 'center',
-
                         },
                         ...paymentsColumns,
                         {

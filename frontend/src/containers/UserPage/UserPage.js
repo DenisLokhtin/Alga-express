@@ -13,7 +13,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {countries, saleCountry, statuses, valueIcon} from "../../dataLocalization";
 import dayjs from "dayjs";
 import {apiURL} from "../../config";
-import {changeDeliveryStatusRequest, getOrdersHistoryRequest} from "../../store/actions/packageRegisterActions";
+import {getOrdersHistoryRequest} from "../../store/actions/packageRegisterActions";
 import {fetchBuyoutsList} from "../../store/actions/buyoutActions";
 import {fetchPaymentRequest} from "../../store/actions/paymentActions";
 import Typography from "@mui/material/Typography";
@@ -24,10 +24,12 @@ import {makeStyles} from "@mui/styles";
 import EditIcon from "@mui/icons-material/Edit";
 import {Link} from "react-router-dom";
 import {editBuyout} from "../../paths";
-import {deleteDeliveryRequest} from "../../store/actions/deliveryAction";
-import Checkbox from "@mui/material/Checkbox";
 import DeliveryModal from "../../components/DeliveryModal/DeliveryModal";
 import Requisites from "../../components/Requisites/Requisites";
+import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
+import Button from "@mui/material/Button";
+import DeliveryInfo from "../../components/DeliveryInfo/DeliveryInfo";
+
 
 function a11yProps(index) {
     return {
@@ -67,16 +69,9 @@ const UserPage = () => {
     const [value, setValue] = useState(0);
     const [update, setUpdate] = useState(false);
     const userId = useSelector(state => state.users.user._id);
-    const [open, setOpen] = useState(false);
-    const [currentModal, setCurrentModal] = useState({
-        cargoNumber: "1",
-        country: "Китай-Авия",
-        delivery: "false",
-        id: "6220b025363a1780b6f28293",
-        status: "В пути",
-        title: "package 3",
-        trackNumber: "DnS5myCQv6H4H1_4YCtPM",
-    });
+    const [openModal, setOpenModal] = useState(false);
+    const [openInfo, setOpenInfo] = useState(false);
+    const [packageData, setPackageData] = useState(null);
     const [openImg, setOpenImg] = useState(false);
     const [img, setImg] = useState(null);
 
@@ -107,8 +102,6 @@ const UserPage = () => {
     const [buyoutsSelectionModel, setBuyoutsSelectionModel] = useState([]);
     const buyoutsPrevSelection = useRef(buyoutsSelectionModel);
 
-    const handleClose = () => setOpen(false);
-
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -125,7 +118,8 @@ const UserPage = () => {
             amount: order.amount,
             price: order.price ? {price: order.price, icon: valueIcon(order.priceCurrency)} : {price: 'Нет'},
             arrived_date: dayjs(order.flight.arrived_date).format('DD-MM-YYYY'),
-            delivery: order.delivery,
+            delivery: order.delivery || null,
+            user: order.user.name
         }
     });
 
@@ -216,13 +210,6 @@ const UserPage = () => {
                 </Box>
 
                 <TabPanelComponent value={value} index={0}>
-                    <DeliveryModal title={currentModal.title}
-                                   track={currentModal.trackNumber}
-                                   status={currentModal.status}
-                                   country={currentModal.country}
-                                   open={open} page={packagesPage}
-                                   pageLimit={packagesPageLimit}
-                                   close={handleClose}/>
                     <TableComponent
                         rows={packagesRows}
                         columns={[
@@ -270,31 +257,38 @@ const UserPage = () => {
                                     >{params.value.price} {params.value.icon}
                                     </p>
                                 },
-
                             },
                             {
                                 field: 'delivery',
                                 headerName: 'Доставка',
                                 flex: 1,
-                                minWidth: 90,
+                                minWidth: 150,
                                 headerAlign: 'center',
                                 align: 'center',
-                                renderCell: (params) => {
-                                    const onClick = (e) => {
-                                        e.stopPropagation();
-                                        if (e.target.checked) {
-                                            setOpen(true);
-                                            setCurrentModal({...params.row});
-                                        } else {
-                                            dispatch(changeDeliveryStatusRequest({...params.row}));
-                                            dispatch(deleteDeliveryRequest({...params.row}));
-                                            setUpdate(!update);
-                                        }
-                                    };
-                                    return (
-                                        <Checkbox checked={params.row.delivery} onChange={(e) => onClick(e)}/>
-                                    );
-                                }
+                                renderCell: (params) => (
+                                    params.row.delivery === undefined ?
+                                        <Button
+                                            startIcon={<DeliveryDiningIcon fontSize="large"/>}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setPackageData({...params.row});
+                                                setOpenModal(true);
+                                            }}
+                                        >
+                                            Оформить
+                                        </Button> :
+
+                                        <Button
+                                            startIcon={<DeliveryDiningIcon fontSize="large"/>}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setPackageData({...params.row});
+                                                setUpdate(!update);
+                                            }}
+                                        >
+                                            Изменить
+                                        </Button>
+                                )
                             },
                         ]}
                         pageSize={packagesPageLimit}
@@ -317,6 +311,22 @@ const UserPage = () => {
                             />
                         }
                     />
+
+                    {packageData && openInfo &&
+                        <DeliveryInfo
+                            open={openInfo}
+                            onClose={() => setOpenInfo(false)}
+                            packageData={packageData}
+                            update={() => setUpdate(!update)}
+                        />}
+
+                    {packageData && openModal &&
+                        <DeliveryModal
+                            open={openModal}
+                            onClose={() => setOpenModal(false)}
+                            packageData={packageData}
+                            update={() => setUpdate(!update)}
+                        />}
                 </TabPanelComponent>
 
                 <TabPanelComponent value={value} index={1}>

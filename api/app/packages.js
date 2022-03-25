@@ -79,7 +79,7 @@ router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) =>
         const size = await Package.find(findFilter);
 
         const packages = await Package.find(findFilter)
-            .populate({path: 'flight user', select: 'name number description depart_date arrived_date'})
+            .populate({path: 'flight user delivery', select: 'name number description depart_date arrived_date address'})
             .select('title trackNumber country cargoNumber status description price priceCurrency delivery amount')
             .sort(query.sort)
             .limit(limit)
