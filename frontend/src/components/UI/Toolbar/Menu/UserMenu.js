@@ -185,7 +185,7 @@ const UserMenu = ({user}) => {
                     }}
                 >
                     <Box sx={{padding: "6px 16px", display: "flex", alignItems: "center", alignContent: "start"}}>
-                        <Avatar src={apiURL + '/' + user?.avatar}/>
+                        <Avatar src={user.avatar && apiURL + '/' + user?.avatar}/>
                         <Box marginLeft={2}>
                             <Typography>
                                 {user.name}
