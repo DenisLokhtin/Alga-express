@@ -20,17 +20,16 @@ const TariffCard = ({tariff, id, group}) => {
         china: tariff.china,
         chinaGround: tariff.chinaGround,
     });
-
     useEffect(()=>{
         dispatch(fetchTariffsRequest());
     },[dispatch]);
 
     useEffect(() => {
-        let id = 0;
-        fetchTariff.forEach((key, i) => {
+        let id = null;
+        if (fetchTariff) fetchTariff.forEach((key, i) => {
             if (key.name.toUpperCase() === groupData) id = i
         });
-        if (groupData !== 'VIP') {
+        if ((groupData !== 'VIP') && id) {
             setTariffData(prevState => ({
                 ...prevState,
                 usa: fetchTariff[id].usa,
