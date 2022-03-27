@@ -10,8 +10,9 @@ import {
 } from "../actions/paymentActions";
 import {toast} from "react-toastify";
 import History from "../../History";
+import {adminPagePath} from "../../paths";
 
-export function* fetchPaymentAdmin ({payload: paymentsData}){
+export function* fetchPaymentAdmin({payload: paymentsData}) {
     const page = paymentsData.page;
     const limit = paymentsData.limit;
     const id = paymentsData.id;
@@ -29,34 +30,34 @@ export function* fetchPaymentAdmin ({payload: paymentsData}){
     try {
         const response = yield axiosApi.get(url);
 
-        yield put (fetchPaymentSuccess(response.data));
+        yield put(fetchPaymentSuccess(response.data));
     } catch (e) {
         toast.error(e.response.data.error);
-        yield put (fetchPaymentFailure(e.response.data.error));
+        yield put(fetchPaymentFailure(e.response.data.error));
     }
 }
 
-export function* paymentAccepted ({payload}){
+export function* paymentAccepted({payload}) {
     try {
         yield axiosApi.post(`/cargo/`, payload);
-        yield put (paymentAcceptedSuccess());
+        yield put(paymentAcceptedSuccess());
         toast.success("Оплата подтверждена");
     } catch (e) {
         toast.error(e.response.data.error);
-        yield put (fetchPaymentFailure(e.response.data));
+        yield put(fetchPaymentFailure(e.response.data));
     }
 }
 
-export function* addPaymentAdmin ({payload}){
+export function* addPaymentAdmin({payload}) {
     try {
         const payment = yield axiosApi.post(`/cargo/cash`, payload);
-        yield put (paymentAcceptedSuccess());
+        yield put(paymentAcceptedSuccess());
         yield put(fetchPaymentFailure());
         toast.success(payment.data);
-        History.push('/');
+        History.push(adminPagePath);
     } catch (e) {
-        // toast.error(e.response.data.error);
-        yield put (fetchPaymentFailure(e.response.data));
+        toast.error(e.response.data.error);
+        yield put(fetchPaymentFailure(e.response.data));
     }
 }
 

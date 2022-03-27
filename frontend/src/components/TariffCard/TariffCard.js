@@ -1,15 +1,17 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Card, CardContent, CardHeader, FormControl, Grid, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import Button from "@mui/material/Button";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {editTariff} from "../../store/actions/usersActions";
 import {groups} from "../../dataLocalization";
+import {fetchTariffsRequest} from "../../store/actions/tariffActions";
 
 const TariffCard = ({tariff, id, group}) => {
     const dispatch = useDispatch();
     const [status, setStatus] = useState(true);
+    const fetchTariff = useSelector(state => state.tariffs.tariffs);
     const [groupData, setGroupData] = useState(group);
     const [tariffData, setTariffData] = useState({
         usa: tariff.usa,
@@ -18,6 +20,36 @@ const TariffCard = ({tariff, id, group}) => {
         china: tariff.china,
         chinaGround: tariff.chinaGround,
     });
+
+    useEffect(()=>{
+        dispatch(fetchTariffsRequest());
+    },[dispatch]);
+
+    useEffect(() => {
+        let id = 0;
+        fetchTariff.forEach((key, i) => {
+            if (key.name.toUpperCase() === groupData) id = i
+        });
+        if (groupData !== 'VIP') {
+            setTariffData(prevState => ({
+                ...prevState,
+                usa: fetchTariff[id].usa,
+                turkey: fetchTariff[id].turkey,
+                turkeyGround: fetchTariff[id].turkeyGround,
+                china: fetchTariff[id].china,
+                chinaGround: fetchTariff[id].chinaGround,
+            }));
+        } else {
+            setTariffData(prevState => ({
+                ...prevState,
+                usa: 0,
+                turkey: 0,
+                turkeyGround: 0,
+                china: 0,
+                chinaGround: 0,
+            }));
+        }
+    },[fetchTariff,groupData]);
 
     const edit = () => setStatus(prevState => !prevState);
 
@@ -71,7 +103,7 @@ const TariffCard = ({tariff, id, group}) => {
                                     name="usa"
                                     type="number"
                                     onChange={changeHandler}
-                                    disabled={status}
+                                    disabled={status || groupData !== 'VIP'}
                                     variant="outlined"
                                 />
                             </Grid>
@@ -84,7 +116,7 @@ const TariffCard = ({tariff, id, group}) => {
                                     name="turkey"
                                     type="number"
                                     onChange={changeHandler}
-                                    disabled={status}
+                                    disabled={status || groupData !== 'VIP'}
                                     variant="outlined"
                                 />
                             </Grid>
@@ -97,7 +129,7 @@ const TariffCard = ({tariff, id, group}) => {
                                     name="turkeyGround"
                                     type="number"
                                     onChange={changeHandler}
-                                    disabled={status}
+                                    disabled={status || groupData !== 'VIP'}
                                     variant="outlined"
                                 />
                             </Grid>
@@ -110,7 +142,7 @@ const TariffCard = ({tariff, id, group}) => {
                                     name="china"
                                     type="number"
                                     onChange={changeHandler}
-                                    disabled={status}
+                                    disabled={status || groupData !== 'VIP'}
                                     variant="outlined"
                                 />
                             </Grid>
@@ -123,7 +155,7 @@ const TariffCard = ({tariff, id, group}) => {
                                     name="chinaGround"
                                     type="number"
                                     onChange={changeHandler}
-                                    disabled={status}
+                                    disabled={status || groupData !== 'VIP'}
                                     variant="outlined"
                                 />
                             </Grid>
