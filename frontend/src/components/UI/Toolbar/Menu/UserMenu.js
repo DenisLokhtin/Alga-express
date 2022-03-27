@@ -3,6 +3,7 @@ import {Box, Divider, Grid, IconButton, ListItemIcon, Menu, MenuItem} from "@mui
 import {Link, useNavigate} from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
 import {Logout} from "@mui/icons-material";
 import Badge from "@mui/material/Badge";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
@@ -20,7 +21,7 @@ import {
     adminPagePath,
     cargoCreateUser,
     editInformation,
-    editPages,
+    editPages, editTariffGroup,
     editUserProfile,
     listFlightAdmin,
     newPackageRegister,
@@ -59,6 +60,7 @@ const superAdminSettings = [
     // {url: addUserPayment, title: 'Пополнить баланс', icon: <PaidIcon/>},
     // {url: packageInfo, title: 'Информация доставки', icon: <InfoIcon/>},
     {url: listFlightAdmin, title: 'Рейсы', icon: <FlightIcon/>},
+    {url: editTariffGroup, title: 'Тарифы', icon: <ContentPasteSearchIcon/>},
     {url: addFlightAdmin, title: 'Добавить рейс', icon: <AddIcon/>},
     // {url: listPaymentsAdmin, title: 'Список пополнений', icon: <FactCheckIcon/>},
     {url: editPages, title: 'Редактировать страницы', icon: <EditIcon/>},
@@ -79,6 +81,7 @@ const adminSettings = [
     // {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon/>},
     {url: listFlightAdmin, title: 'Рейсы', icon: <FlightIcon/>},
     {url: addFlightAdmin, title: 'Добавить рейс', icon: <AddIcon/>},
+    {url: editTariffGroup, title: 'Тарифы', icon: <ContentPasteSearchIcon/>},
     // {url: listPaymentsAdmin, title: 'Список пополнений', icon: <FactCheckIcon/>},
     {url: editPages, title: 'Редактировать страницы', icon: <EditIcon/>},
     {url: processingTrackNumbersAdmin, title: 'Смена статуса посылок', icon: <EditIcon/>},
