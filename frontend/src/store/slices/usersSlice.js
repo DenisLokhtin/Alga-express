@@ -16,7 +16,6 @@ export const initialState = {
     resetLoading: false,
     forgotError:null,
     forgotLoading: false,
-    notification: false,
     editLoading: false,
     editError: null,
 };
@@ -176,8 +175,9 @@ const usersSlice = createSlice({
         editTariff(state) {
             state.editLoading = true;
         },
-        editTariffSuccess(state) {
+        editTariffSuccess(state, {payload}) {
             state.editLoading = false;
+            state.user.tariff = payload;
         },
         editTariffFailure(state, action) {
             state.editLoading = false;

@@ -67,7 +67,6 @@ const EditCarouselAdmin = () => {
 
     const onInputTextareaChange = e => {
         const {name, value} = e.target;
-        console.log(name, value);
         setSingleCarousel(prev => ({
             ...prev,
             [name]: value

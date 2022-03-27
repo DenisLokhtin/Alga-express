@@ -9,6 +9,17 @@ const emailDistribution = require("../email-texts");
 
 const router = express.Router();
 
+const requestTariff = async (name,) => {
+    const tariff = await TariffGroup.findOne({name: name});
+    return {
+        usa: tariff.usa,
+        turkey: tariff.turkey,
+        turkeyGround: tariff.turkeyGround,
+        china: tariff.china,
+        chinaGround: tariff.chinaGround,
+    };
+};
+
 router.get('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
     try {
         const users = await User.find({role: 'user'})
@@ -18,16 +29,16 @@ router.get('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
         res.status(500).send(e);
     }
 });
-
-router.get('/notification', auth, permit('admin'), async (req, res) => {
-    try {
-        const notification = await User.findById(req.user._id)
-            .select('notification');
-        res.send(notification);
-    } catch (e) {
-        res.status(500).send(e);
-    }
-});
+//
+// router.get('/notification', auth, permit('admin'), async (req, res) => {
+//     try {
+//         const notification = await User.findById(req.user._id)
+//             .select('notification');
+//         res.send(notification);
+//     } catch (e) {
+//         res.status(500).send(e);
+//     }
+// });
 
 router.post('/', async (req, res) => {
     try {
@@ -96,7 +107,7 @@ router.post('/sessions', async (req, res) => {
     await user.save({validateBeforeSave: false});
 
     user = await User.findOne({email: req.body.email})
-        .select('token role name balance phone avatar group');
+        .select('token role name balance phone avatar group tariff');
 
     res.send(user);
 });
@@ -106,16 +117,21 @@ router.put('/tariffEdit', auth, permit('admin', 'superAdmin'), async (req, res) 
     const change = {};
 
     if (req.body.group !== "undefined") change.group = req.body.group;
-    if (req.body.tariff !== "undefined") change.tariff = req.body.tariff;
-    try {
-        const user = await User.findByIdAndUpdate(id, change);
+    if (req.body.tariff !== "undefined" && req.body.group === 'NEW') change.tariff = await requestTariff('new');
+    if (req.body.tariff !== "undefined" && req.body.group === 'ADVANCED') change.tariff = await requestTariff('advanced');
+    if (req.body.tariff !== "undefined" && req.body.group === 'BUYER') change.tariff = await requestTariff('buyer');
+    if (req.body.tariff !== "undefined" && req.body.group === 'VIP') change.tariff = req.body.tariff;
 
+    try {
+        const user = await User.findByIdAndUpdate(id, change, {new: true})
+            .select('name email tariff group');
         if (!user) return res.status(404).send({message: "Пользователь не найден"});
 
-        res.send({message: 'Тариф обновлен'});
+        res.send({message: 'Тариф обновлен', user});
     } catch (e) {
         res.status(500).send(e)
-;    }
+        ;
+    }
 });
 
 router.post('/forgot', async (req, res) => {
@@ -126,18 +142,18 @@ router.post('/forgot', async (req, res) => {
 
         const resetCode = nanoid(8);
         await User.findOneAndUpdate({email: user.email}, {resetCode});
-       await sendMail({email: user.email}, 'Сброс пароля', null, emailDistribution.passwordReset(resetCode, user.name))
+        await sendMail({email: user.email}, 'Сброс пароля', null, emailDistribution.passwordReset(resetCode, user.name))
         res.send({message: "Код сброса пароля отправлен на почту!"})
 
         const userToBeUpdated = await User.findOne({resetCode: resetCode});
 
-        const deleteResetCode = async ()=>{
-            if(userToBeUpdated){
-                await User.findByIdAndUpdate(userToBeUpdated._id,{resetCode: ''});
+        const deleteResetCode = async () => {
+            if (userToBeUpdated) {
+                await User.findByIdAndUpdate(userToBeUpdated._id, {resetCode: ''});
             }
         }
 
-        setTimeout(deleteResetCode,300000);
+        setTimeout(deleteResetCode, 300000);
 
     } catch (e) {
         res.status(500).send(e);
@@ -154,7 +170,7 @@ router.post('/reset', async (req, res) => {
         user.password = req.body.password
 
         user.$ignore('email');
-       await user.save()
+        await user.save()
 
         res.send({message: " Пароль успешно изменен"});
     } catch (e) {

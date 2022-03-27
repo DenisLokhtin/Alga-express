@@ -68,7 +68,8 @@ const UserPage = () => {
     const messagesEndRef = useRef(null);
     const [value, setValue] = useState(0);
     const [update, setUpdate] = useState(false);
-    const userId = useSelector(state => state.users.user._id);
+    const user = useSelector(state => state.users.user);
+    const userId = user._id;
     const [openModal, setOpenModal] = useState(false);
     const [openInfo, setOpenInfo] = useState(false);
     const [packageData, setPackageData] = useState(null);
@@ -176,6 +177,7 @@ const UserPage = () => {
         update,
     ]);
 
+
     return (
         <Container ref={messagesEndRef} className={classes.container}>
             <h2>Мой портфель</h2>
@@ -192,7 +194,7 @@ const UserPage = () => {
                     <Typography variant="h6">
                         Ваш тариф
                     </Typography>
-                    <TariffPage/>
+                    <TariffPage tariff={user.tariff}/>
                 </Grid>
             </Grid>
 
