@@ -29,6 +29,7 @@ import Requisites from "../../components/Requisites/Requisites";
 import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
 import Button from "@mui/material/Button";
 import DeliveryInfo from "../../components/DeliveryInfo/DeliveryInfo";
+import {setTabValue} from "../../store/actions/usersActions";
 
 
 function a11yProps(index) {
@@ -66,7 +67,7 @@ const UserPage = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const messagesEndRef = useRef(null);
-    const [value, setValue] = useState(0);
+    const value = useSelector(state => state.users.tabPage);
     const [update, setUpdate] = useState(false);
     const user = useSelector(state => state.users.user);
     const userId = user._id;
@@ -104,7 +105,7 @@ const UserPage = () => {
     const buyoutsPrevSelection = useRef(buyoutsSelectionModel);
 
     const handleChange = (event, newValue) => {
-        setValue(newValue);
+        dispatch(setTabValue(newValue));
     };
 
     const packagesRows = packages.map(order => {

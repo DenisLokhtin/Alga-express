@@ -43,6 +43,7 @@ export const {
     // changeNotificationSuccess,
     // changeNotificationFailure,
     logout,
+    setTabValue,
     editTariffSuccess,
     editTariff,
     editTariffFailure

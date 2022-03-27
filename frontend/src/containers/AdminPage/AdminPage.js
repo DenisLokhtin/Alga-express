@@ -22,7 +22,7 @@ import {makeStyles} from "@mui/styles";
 import ImageIcon from "@mui/icons-material/Image";
 import Button from "@mui/material/Button";
 import Autocomplete from "@mui/material/Autocomplete";
-import {fetchUsersRequest} from "../../store/actions/usersActions";
+import {fetchUsersRequest, setTabValue} from "../../store/actions/usersActions";
 import {Link} from "react-router-dom";
 import {editBuyout, newPackageRegister} from "../../paths";
 import EditIcon from '@mui/icons-material/Edit';
@@ -92,7 +92,7 @@ const AdminPage = () => {
     const dispatch = useDispatch();
     const messagesEndRef = useRef(null);
     const [update, setUpdate] = useState(false);
-    const [value, setValue] = useState(0);
+    const value = useSelector(state => state.users.tabPage);
     const [openImg, setOpenImg] = useState(false);
     const [openDone, setOpenDone] = useState({
         open: false,
@@ -160,7 +160,7 @@ const AdminPage = () => {
     const paymentsPrevSelection = useRef(paymentsSelectionModel);
 
     const handleChange = (event, newValue) => {
-        setValue(newValue);
+        dispatch(setTabValue(newValue));
     };
 
     const packagesRows = packages.map(order => {

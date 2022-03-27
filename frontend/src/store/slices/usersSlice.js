@@ -12,6 +12,7 @@ export const initialState = {
     userError: null,
     payment: null,
     total: 0,
+    tabPage: 0,
     resetError:null,
     resetLoading: false,
     forgotError:null,
@@ -170,6 +171,10 @@ const usersSlice = createSlice({
 
         logout(state) {
             state.user = null;
+        },
+        setTabValue(state, {payload}) {
+            console.log(payload);
+            state.tabPage = payload;
         },
         editTariff(state) {
             state.editLoading = true;
