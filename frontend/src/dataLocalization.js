@@ -13,6 +13,12 @@ export const statuses = {
     ERASED: 'Удалён',
 };
 
+export const statusBuyouts = {
+    NEW: 'Новый',
+    ACCEPTED: 'Обработан',
+    ORDERED: 'Заказан',
+}
+
 export const flightStatuses ={
     ACTIVE: 'Активный',
     DONE: 'Прибыл',

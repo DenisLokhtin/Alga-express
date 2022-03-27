@@ -43,8 +43,8 @@ import {
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
 import History from '../../History';
-import {adminPagePath, processingTrackNumbersAdmin, userLogin, userPage} from "../../paths";
-import {put, takeEvery} from "redux-saga/effects";
+import {adminPagePath, processingTrackNumbersAdmin, root, userLogin, userPage} from "../../paths";
+import {put, takeEvery, select} from "redux-saga/effects";
 
 export function* registerUserSaga({payload}) {
     try {
@@ -123,6 +123,7 @@ export function* editUserSaga({payload}) {
         const response = yield  axiosApi.put('/userEdit/' + payload.id, payload.data);
         yield put(editUserDataSuccess(response.data));
         toast.success('Редактирование успешно!');
+        History.push(root);
     } catch (e) {
         toast.error(e.response.data.error);
         yield put(editUserDataFailure(e.response.data));
@@ -237,12 +238,17 @@ export function* logoutUserSaga() {
 }
 
 export function* editTariffSagas({payload}) {
+    const state = yield select();
+    const userRole = state.users.user.role;
     const id = payload.id;
     const group = payload.group;
     const tariff = payload.tariff;
 
     try {
         const {data} = yield axiosApi.put(`users/tariffEdit?id=${id}`, {group: group, tariff: tariff});
+        if (userRole === 'user') {
+            yield put(editTariffSuccess(data.user.tariff));
+        }
         yield put(editTariffSuccess());
         toast.success(data.message);
     } catch (e) {

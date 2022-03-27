@@ -35,7 +35,6 @@ export function* allInformationSagas() {
 
 function* informationEditSaga({payload}) {
     try {
-        console.log(payload);
         const response = yield axiosApi.put(`/information/${payload.information}`, {text: payload.text});
         yield put(changeInformationSuccess(response.data));
         toast.success('Информация отредактирована!');

@@ -79,7 +79,7 @@ router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) =>
         const size = await Package.find(findFilter);
 
         const packages = await Package.find(findFilter)
-            .populate({path: 'flight user', select: 'name number description depart_date arrived_date'})
+            .populate({path: 'flight user delivery', select: 'name number description depart_date arrived_date address'})
             .select('title trackNumber country cargoNumber status description price priceCurrency delivery amount')
             .sort(query.sort)
             .limit(limit)
@@ -174,7 +174,7 @@ router.post('/', auth, packageValidate, permit('admin', 'superAdmin', 'user'), a
 
 router.put('/', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req, res) => {
     const notFoundTrackNumbers = [];
-
+    console.log(req.body);
     const separatedBySpaces = req.body.trackNumbers.split(' ');
 
     const trackNumbersData = separatedBySpaces.map(trackNumber => (
@@ -199,9 +199,14 @@ router.put('/', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req,
         }
 
         for (const key of uniquePackages) {
+            const request = {};
+            if (req.body.id) {
+                request.flight = req.body.id;
+            }
+            request.status = key.status;
             const updatedStatuses = await Package.findOneAndUpdate(
                 {trackNumber: key.trackNumber},
-                {status: key.status, flight: req.body.id},
+                status,
                 {new: true, runValidators: true});
 
             if (updatedStatuses) {

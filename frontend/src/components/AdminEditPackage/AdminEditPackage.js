@@ -276,7 +276,7 @@ const AdminEditPackage = ({packageAdmin, id}) => {
                             required
                             onChange={inputChangeHandler}
                         >
-                            <MenuItem value={'USE'}>
+                            <MenuItem value={'USD'}>
                                 Доллар
                                 <AttachMoneyIcon/>
                             </MenuItem>

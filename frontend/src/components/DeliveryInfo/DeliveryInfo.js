@@ -1,27 +1,27 @@
-import * as React from 'react';
-import {useState} from 'react';
-import Modal from '@mui/material/Modal';
-import {useDispatch} from "react-redux";
+import React, {useState} from 'react';
+import Modal from "@mui/material/Modal";
 import {Backdrop, Card, CardContent, CardHeader, Fade, Grid, TextField} from "@mui/material";
-import {postDeliveryRequest} from "../../store/actions/deliveryAction";
 import Typography from "@mui/material/Typography";
-import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
 import Button from "@mui/material/Button";
+import EditIcon from '@mui/icons-material/Edit';
+import {useDispatch} from "react-redux";
+import {putDeliveryRequest} from "../../store/actions/deliveryAction";
 
 const style = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: {xs: 300, sm: 400},
+    width: 400,
     backgroundColor: 'background.paper',
     p: 2,
 }
 
-const DeliveryModal = ({packageData, open, onClose, update}) => {
+const DeliveryInfo = ({packageData, open, onClose, update}) => {
     const dispatch = useDispatch();
+    const [editStatus, setEditStatus] = useState(false);
     const [address, setAddress] = useState({
-        address: ''
+        address: packageData.delivery.address
     });
 
     const handleChange = (e) => {
@@ -30,13 +30,14 @@ const DeliveryModal = ({packageData, open, onClose, update}) => {
             ...prevState,
             [name]: value
         }));
-    };
-
-    const handleClick = (e) => {
-        e.preventDefault();
-        dispatch(postDeliveryRequest({package: packageData.id, address, onClose}));
-        update();
     }
+
+    const saveHandleClick = (e) => {
+        e.preventDefault();
+        dispatch(putDeliveryRequest({id: packageData.delivery._id, address}));
+        onClose();
+        update();
+    };
 
     return (
         packageData && <Modal
@@ -51,8 +52,8 @@ const DeliveryModal = ({packageData, open, onClose, update}) => {
             }}
         >
             <Fade in={open}>
-                <Card sx={style}>
-                    <CardHeader subheader={`Оформить доставку на посылку`}/>
+                <Card sx={style} variant="outlined">
+                    <CardHeader title={packageData.title}/>
                     <CardContent>
                         <Grid container spacing={1}>
                             <Grid item xs={12} md={12} lg={12}>
@@ -60,6 +61,7 @@ const DeliveryModal = ({packageData, open, onClose, update}) => {
                                     <strong>Пользователь:</strong> {packageData.name}
                                 </Typography>
                             </Grid>
+
 
                             <Grid item xs={12} md={12} lg={12}>
                                 <Typography variant="body1">
@@ -82,16 +84,27 @@ const DeliveryModal = ({packageData, open, onClose, update}) => {
                                     value={address.address}
                                     onChange={handleChange}
                                     fullWidth
+                                    disabled={!editStatus}
                                 />
                             </Grid>
 
                             <Grid item xs={12} md={12} lg={12}>
                                 <Button
-                                    startIcon={<DeliveryDiningIcon/>}
-                                    onClick={handleClick}
+                                    startIcon={<EditIcon/>}
+                                    onClick={() => setEditStatus(!editStatus)}
                                     fullWidth
                                 >
-                                    Оформить
+                                    Редактировать
+                                </Button>
+                            </Grid>
+
+                            <Grid item xs={12} md={12} lg={12}>
+                                <Button
+                                    disabled={!editStatus}
+                                    onClick={saveHandleClick}
+                                    fullWidth
+                                >
+                                    Сохранить
                                 </Button>
                             </Grid>
                         </Grid>
@@ -99,7 +112,7 @@ const DeliveryModal = ({packageData, open, onClose, update}) => {
                 </Card>
             </Fade>
         </Modal>
-    )
+    );
 };
 
-export default DeliveryModal;
+export default DeliveryInfo;
