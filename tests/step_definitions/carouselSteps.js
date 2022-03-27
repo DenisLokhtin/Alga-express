@@ -14,11 +14,11 @@ Given('я ввожу данные:', (table) => {
     });
 });
 
-When('нажимаю на кнопку удалить изображение в карусели {string}', () => {
-    I.wait(3)
-    I.click(`(//div//h3[contains(text(),'Новость для проверки добавления карусели')]/following-sibling::div//button[text()='Удалить изображение'])[2]`);
-    I.wait(3)
-});
+// When('нажимаю на кнопку удалить изображение в карусели {string}', () => {
+//     I.wait(3)
+//     I.click(`(//div//h3[contains(text(),'Новость для проверки добавления карусели')]/following-sibling::div//button[text()='Удалить изображение'])[2]`);
+//     I.wait(3)
+// });
 
 Given('я ввожу данные:', (table) => {
     table.rows.forEach(row => {
