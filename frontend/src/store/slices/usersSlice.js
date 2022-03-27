@@ -171,7 +171,6 @@ const usersSlice = createSlice({
         logout(state) {
             state.user = null;
         },
-
         editTariff(state) {
             state.editLoading = true;
         },
