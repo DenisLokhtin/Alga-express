@@ -706,32 +706,6 @@ const AdminPage = () => {
                                 >
                                     Оформить
                                 </Button>,
-                    <TabPanelComponent value={value} index={1}>
-                        <TableComponent
-                            rows={buyoutsRows}
-                            columns={[
-                                ...buyoutsColumns,
-                                {
-                                    field: "actions",
-                                    type: "actions",
-                                    width: 200,
-                                    getActions: (params) => [
-                                        <Button
-                                            variant="outlined"
-                                            component={Link}
-                                            to={newPackageRegister}
-                                            state={{
-                                                userProps: {
-                                                    id: params.row.userData._id,
-                                                    name: params.row.userData.name,
-                                                    email: params.row.userData.email,
-                                                    buyoutId: params.row.id
-                                                }
-                                            }}
-                                        >
-                                            Оформить
-                                        </Button>,
-
                                         <IconButton
                                             component={Link}
                                             to={editBuyout.slice(0, editBuyout.length - 3) + params.row.id}
@@ -761,36 +735,6 @@ const AdminPage = () => {
                                 />
                             }
                         />
-                    </TabPanelComponent>
-                                <IconButton
-                                    component={Link}
-                                    to={editBuyout.slice(0, editBuyout.length - 3) + params.row.id}
-                                >
-                                    <EditIcon/>
-                                </IconButton>
-                            ]
-                        }
-                    ]}
-                    pageSize={buyoutsPageLimit}
-                    rowCount={buyoutsTotalRow}
-                    rowHeight={70}
-                    onPageSizeChange={newRowsLimit => setBuyoutsPageLimit(newRowsLimit)}
-                    onPageChange={(newPage) => {
-                        buyoutsPrevSelection.current = buyoutsSelectionModel;
-                        setBuyoutsPage(newPage);
-                    }}
-                    selectionModel={buyoutsSelectionModel}
-                    onSelectionModelChange={(newSelectionModel) => {
-                        setBuyoutsSelectionModel(newSelectionModel);
-                    }}
-                    loading={buyoutsLoading}
-                    toolbarElements={
-                        <SwitchElement
-                            checked={buyoutsHistory}
-                            onChange={(e) => setBuyoutsHistory(e.target.checked)}
-                        />
-                    }
-                />
                 <ImageModal open={openBuyoutImg} onClose={() => setOpenBuyoutImg(false)} data={imgBuyout}/>
             </TabPanelComponent>
 
