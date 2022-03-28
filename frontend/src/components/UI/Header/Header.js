@@ -99,7 +99,7 @@ const Header = () => {
                             <div className="header__btns">
                                 <div className="btn-cont">
                                     <Link className="btn" to={newUserRegister}>
-                                        Зарегистрироваться
+                                        Регистрация
                                     </Link>
                                 </div>
                                 <div className="btn-cont">

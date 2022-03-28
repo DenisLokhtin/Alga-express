@@ -40,6 +40,7 @@ const useStyles = makeStyles(() => ({
         maxWidth: '80%',
         textAlign: 'center',
         padding: '20px 10px',
+        lineHeight: '35px',
         margin: "15px auto",
         boxShadow: 'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px',
         borderRadius: '10px',

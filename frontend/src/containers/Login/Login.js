@@ -21,6 +21,7 @@ import {createTheme} from "@mui/material/styles";
 const theme = createTheme({
     breakpoints: {
         values: {
+            xs: 450,
             sm: 768,
         },
     },
@@ -33,6 +34,7 @@ const useStyles = makeStyles(() => ({
 
     breakpoints: {
         values: {
+            xs: 450,
             sm: 768,
         },
     },
@@ -43,6 +45,9 @@ const useStyles = makeStyles(() => ({
         marginBottom: '30px',
         [theme.breakpoints.down('sm')]: {
             paddingTop: '100px',
+        },
+        [theme.breakpoints.down('xs')]: {
+            paddingTop: '140px',
         },
     },
 
