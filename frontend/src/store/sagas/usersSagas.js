@@ -43,8 +43,8 @@ import {
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
 import History from '../../History';
-import {adminPagePath, processingTrackNumbersAdmin, root, userLogin, userPage} from "../../paths";
-import {put, takeEvery, select} from "redux-saga/effects";
+import {adminPagePath, processingTrackNumbersAdmin, userLogin, userPage} from "../../paths";
+import {put, select, takeEvery} from "redux-saga/effects";
 
 export function* registerUserSaga({payload}) {
     try {
@@ -123,7 +123,7 @@ export function* editUserSaga({payload}) {
         const response = yield  axiosApi.put('/userEdit/' + payload.id, payload.data);
         yield put(editUserDataSuccess(response.data));
         toast.success('Редактирование успешно!');
-        History.push(root);
+        History.push(userPage);
     } catch (e) {
         toast.error(e.response.data.error);
         yield put(editUserDataFailure(e.response.data));
