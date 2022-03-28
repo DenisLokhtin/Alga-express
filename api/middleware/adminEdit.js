@@ -89,6 +89,7 @@ const adminEdit = (user, packageOrder, updateData, price) => {
             }
         }
 
+        if (packageOrder.cargoPrice) packageOrder.status('DELIVERED');
         packageOrder.deleted = updateData.deleted || packageOrder.deleted;
 
     } else {

@@ -83,7 +83,16 @@ export const packagesColumns = [
                       style={{textDecoration: 'none', color: 'inherit'}}>Редактировать</Link>
             </Button>
         ]
-    }
+    },
+    {
+        field: "price",
+        headerName: 'Цена доставки',
+        flex: 1,
+        minWidth: 120,
+        headerAlign: 'center',
+        align: 'center',
+    },
+
 ];
 
 export const buyoutsColumns = [

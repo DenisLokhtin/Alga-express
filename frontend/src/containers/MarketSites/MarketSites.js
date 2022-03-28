@@ -13,6 +13,7 @@ const MarketSites = () => {
     const market = useSelector(state => state.market.sites);
     const [open, setOpen] = useState(false);
     const messagesEndRef = useRef(null);
+    const [deleteElement, setDeleteElement] = useState('');
 
     useEffect(() => {
         if (!!messagesEndRef.current) {
@@ -22,6 +23,15 @@ const MarketSites = () => {
         }
         dispatch(fetchMarketRequest());
     }, [dispatch, messagesEndRef]);
+
+    const deleteMarket = (id) => {
+        dispatch(deleteMarketRequest(id));
+        setOpen(false);
+        setDeleteElement(prevState => {
+            prevState = '';
+            return prevState
+        });
+    };
 
     return (
         <Container maxWidth="lg">
@@ -47,11 +57,17 @@ const MarketSites = () => {
                             {user && (user.role === 'admin' || user.role === 'superAdmin') && (
                                 <>
                                     <IconButton style={{position: "absolute", top: '0', right: '-20px'}}
-                                                onClick={() => setOpen(true)}>
+                                                onClick={() => {
+                                                    setOpen(true);
+                                                    setDeleteElement(prevState => {
+                                                        prevState = m._id;
+                                                        return prevState;
+                                                    })
+                                                }}>
                                         <HighlightOffIcon/>
                                     </IconButton>
                                     <AppWindow open={open} onClose={() => setOpen(false)}
-                                               confirm={() => dispatch(deleteMarketRequest(m._id))}/>
+                                               confirm={() => deleteMarket(deleteElement)}/>
                                 </>
                             )}
                         </div>

@@ -178,8 +178,8 @@ const AdminPage = () => {
             amount: order.amount,
             delivery: order.delivery || null,
             user: order.user.name,
-            // price: order.cargoPrice ? order.cargoPrice : {price: 'Нет'},
-            price: order.cargoPrice,
+            price: order.cargoPrice ? order.cargoPrice + ' $': 'Нет',
+            // price: order.cargoPrice,
         }
     });
     const buyoutsRows = buyouts.map(buyout => {
@@ -549,22 +549,22 @@ const AdminPage = () => {
                             rows={packagesRows}
                             columns={[
                                 ...packagesColumns,
-                                {
-                                    field: 'price',
-                                    headerName: 'Цена доставки',
-                                    flex: 1,
-                                    minWidth: 110,
-                                    headerAlign: 'center',
-                                    align: 'center',
-                                    renderCell: params => {
-                                        const order = packages.find(order => order._id === params.id);
-                                        return (
-                                            <div style={{display: 'flex', alignItems: 'center'}}>
-                                                {order.cargoPrice} $
-                                            </div>
-                                        )
-                                    }
-                                },
+                                // {
+                                //     field: 'price',
+                                //     headerName: 'Цена доставки',
+                                //     flex: 1,
+                                //     minWidth: 110,
+                                //     headerAlign: 'center',
+                                //     align: 'center',
+                                //     renderCell: params => {
+                                //         const order = packages.find(order => order._id === params.id);
+                                //         return (
+                                //             <div style={{display: 'flex', alignItems: 'center'}}>
+                                //                 {order.cargoPrice}
+                                //             </div>
+                                //         )
+                                //     }
+                                // },
                                 {
                                     field: 'delivery',
                                     headerName: 'Доставка',

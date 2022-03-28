@@ -314,7 +314,6 @@ router.put('/:id', auth, packageValidate, permit('admin', 'warehouseman', 'super
             return res.status(result.code).send({message: result.message});
 
         if (result.success) {
-            console.log(result);
             const debitAmount = (result.success.cargoPrice) * currency.usd;
             if (result.success.cargoPrice) {
                 const permitData = {

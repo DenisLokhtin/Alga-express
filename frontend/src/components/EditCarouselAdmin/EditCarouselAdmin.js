@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
     container: {
         width: "90%",
         margin: "0 auto",
-        marginTop: theme.spacing(2),
+        marginBottom: theme.spacing(4),
         [theme.breakpoints.up('sm')]: {
             width: '60%',
         },

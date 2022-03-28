@@ -40,7 +40,7 @@ import {apiURL} from "../../../../config";
 import {createTheme} from "@mui/material/styles";
 
 const userSettings = [
-    {url: editUserProfile, title: 'Личный кабинет', icon: <ManageAccountsIcon/>},
+    {url: editUserProfile, title: 'Профиль пользователя', icon: <ManageAccountsIcon/>},
     {url: userPage, title: 'Моя страница', icon: <HomeIcon/>},
     // {url: packageHistory, title: 'История заказов', icon: <HistoryIcon/>},
     {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon/>},
@@ -52,7 +52,7 @@ const userSettings = [
 
 const superAdminSettings = [
     {url: adminPagePath, title: 'Администратор', icon: <ManageAccountsIcon/>},
-    {url: editUserProfile, title: 'Личный кабинет', icon: <ManageAccountsIcon/>},
+    {url: editUserProfile, title: 'Профиль пользователей', icon: <ManageAccountsIcon/>},
     // {url: packageHistory, title: 'История всех заказов', icon: <HistoryIcon/>},
     // {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon/>},
     // {url: orderBuyouts, title: 'Заказать выкуп', icon: <ShoppingCartIcon/>},
@@ -76,7 +76,7 @@ const warehousemanSetting = [
 
 const adminSettings = [
     {url: adminPagePath, title: 'Администратор', icon: <ManageAccountsIcon/>},
-    {url: editUserProfile, title: 'Личный кабинет пользователей', icon: <ManageAccountsIcon/>},
+    {url: editUserProfile, title: 'Профиль пользователей', icon: <ManageAccountsIcon/>},
     // {url: packageHistory, title: 'История всех заказов', icon: <HistoryIcon/>},
     {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon/>},
     {url: listFlightAdmin, title: 'Рейсы', icon: <FlightIcon/>},

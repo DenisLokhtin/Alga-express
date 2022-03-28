@@ -120,7 +120,7 @@ const UserPage = () => {
             status: statuses[order.status],
             name: order.user.name,
             amount: order.amount,
-            price: order.price ? {price: order.price, icon: valueIcon(order.priceCurrency)} : {price: 'Нет'},
+            price: order.cargoPrice ? order.cargoPrice + ' $': 'Нет',
             delivery: order.delivery || null,
             user: order.user.name,
             arrived_date: order.flight && order.flight.arrived_date ? dayjs(order.flight.arrived_date).format('DD-MM-YYYY') : 'Не назначен',
@@ -226,19 +226,6 @@ const UserPage = () => {
                         rows={packagesRows}
                         columns={[
                             ...packagesColumns,
-                            {
-                                field: 'price',
-                                headerName: 'Стоимость доставки',
-                                flex: 1,
-                                minWidth: 100,
-                                headerAlign: 'center',
-                                align: 'center',
-                                renderCell: params => {
-                                    return <p style={{display: 'flex', alignItems: 'center'}}
-                                    >{params.value.price} {params.value.icon}
-                                    </p>
-                                },
-                            },
                             {
                                 field: 'delivery',
                                 headerName: 'Доставка',
