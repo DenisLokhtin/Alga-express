@@ -17,4 +17,6 @@ module.exports = {
     db: {
         url: dbUrl,
     },
+    resetPasswordUrl: "https://alga-express.ddns.net/",
 };
+
