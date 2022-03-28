@@ -80,7 +80,7 @@ router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) =>
 
         const packages = await Package.find(findFilter)
             .populate({path: 'flight user delivery', select: 'name number description depart_date arrived_date address'})
-            .select('title trackNumber country cargoNumber status description price priceCurrency delivery amount')
+            .select('title trackNumber country cargoNumber status description cargoPrice delivery amount')
             .sort(query.sort)
             .limit(limit)
             .skip(page * limit);
@@ -282,14 +282,26 @@ router.put('/giveout/:id', auth, permit('admin', 'warehouseman', 'superAdmin', '
 
 router.put('/:id', auth, permit('admin', 'warehouseman', 'superAdmin', 'user'), async (req, res) => {
     let result = {};
-
+    const updateData = {};
+    if (req.body.trackNumber) updateData.trackNumber = req.body.trackNumber;
+    if (req.body.title) updateData.title = req.body.title;
+    if (req.body.amount) updateData.amount = Number(req.body.amount);
+    if (req.body.price) updateData.price = Number(req.body.price);
+    if (req.body.country) updateData.country = req.body.country;
+    if (req.body.width) updateData.width = Number(req.body.width);
+    if (req.body.height) updateData.height = Number(req.body.height);
+    if (req.body.length) updateData.length = Number(req.body.length);
+    if (req.body.urlPackage) updateData.urlPackage = req.body.urlPackage;
+    if (req.body.cargoWeight) updateData.cargoWeight = Number(req.body.cargoWeight);
+    if (req.body.status) updateData.status = req.body.status;
+    if (req.body.priceCurrency) updateData.priceCurrency = req.body.priceCurrency;
     try {
         const packageFind = await Package.findById(req.params.id)
         const userDebit = await User.findById(packageFind.user._id);
 
         const currency = await Currency.findOne({});
         const prices = userDebit.tariff;
-
+        console.log(prices);
         if (req.user.role === 'user')
             result = userEdit(req.user, packageFind, req.body);
 
@@ -303,6 +315,7 @@ router.put('/:id', auth, permit('admin', 'warehouseman', 'superAdmin', 'user'), 
             return res.status(result.code).send({message: result.message});
 
         if (result.success) {
+            console.log(result);
             const debitAmount = (result.success.cargoPrice) * currency.usd;
             if (result.success.cargoPrice) {
                 const permitData = {
