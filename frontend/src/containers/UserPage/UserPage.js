@@ -186,15 +186,20 @@ const UserPage = () => {
         <Container ref={messagesEndRef} className={classes.container}>
             <h2>Мой портфель</h2>
 
-            <Grid container justifyContent="space-between" spacing={2}>
-                <Grid item xs={12} sm={6} md={6} lg={6}>
+            <Grid container justifyContent="space-between" spacing={2}
+            >
+                <Grid item xs={12} sm={6} md={6} lg={5.7}
+                      sx={{boxShadow: 'rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px'}}
+                >
                     <Typography variant="h6">
                         Курс валют
                     </Typography>
                     <Currency/>
                 </Grid>
 
-                <Grid item xs={12} sm={6} md={6} lg={6}>
+                <Grid item xs={12} sm={6} md={6} lg={5.7}
+                sx={{boxShadow: 'rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px'}}
+                >
                     <Typography variant="h6">
                         Ваш тариф
                     </Typography>
