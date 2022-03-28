@@ -537,7 +537,7 @@ const AdminPage = () => {
                                 ...packagesColumns,
                                 {
                                     field: 'price',
-                                    headerName: 'Цена товара',
+                                    headerName: 'Цена доставки',
                                     flex: 1,
                                     minWidth: 110,
                                     headerAlign: 'center',
