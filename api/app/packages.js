@@ -301,7 +301,6 @@ router.put('/:id', auth, packageValidate, permit('admin', 'warehouseman', 'super
 
         const currency = await Currency.findOne({});
         const prices = userDebit.tariff;
-        console.log(prices);
         if (req.user.role === 'user')
             result = userEdit(req.user, packageFind, req.body);
 

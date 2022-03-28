@@ -1,10 +1,8 @@
 const comparisonValue = (width, length, height, weight, price) => {
-    console.log('width', width);
-    console.log('length', length);
-    console.log('height', height);
-    console.log('weight', weight);
-    const sizePrice = (width * length * height / 6000) * price;
-    const weightPrice = weight * price;
+    const sizePriceFixed = ((width * length * height / 6000) * price).toFixed(2);
+    const weightPriceFixed = (weight * price).toFixed(2);
+    const sizePrice = Number(sizePriceFixed);
+    const weightPrice = Number(weightPriceFixed);
 
     if (sizePrice >= weightPrice) {
         return sizePrice;
@@ -15,8 +13,6 @@ const comparisonValue = (width, length, height, weight, price) => {
 
 const adminEdit = (user, packageOrder, updateData, price) => {
     const result = {};
-    console.log('packageOrder', packageOrder);
-    console.log('updateData', updateData);
     if (packageOrder.status === 'DONE') {
         result.code = 406;
         result.error = 'Заказ выполнен - редактировнию не подлежит';

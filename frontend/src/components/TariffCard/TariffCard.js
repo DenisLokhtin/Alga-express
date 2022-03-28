@@ -48,7 +48,7 @@ const TariffCard = ({tariff, id, group}) => {
                 chinaGround: tariff.chinaGround,
             }));
         }
-    },[fetchTariff,groupData]);
+    },[fetchTariff,groupData, tariff]);
 
     const edit = () => setStatus(prevState => !prevState);
 
