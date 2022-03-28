@@ -85,6 +85,7 @@ const UserPayment = () => {
     const dispatch = useDispatch();
 
     const error = useSelector(state => state.users.userError);
+    const loading = useSelector(state => state.users.loadUserDate);
 
     const [pay, setPay] = useState({
         description: '',
@@ -188,7 +189,7 @@ const UserPayment = () => {
                                 fullWidth
                                 required={true}
                                 onChange={fileChangeHandler}
-                                // error={getFieldError('payment')}
+                                error={getFieldError('payment')}
                             >
                             </FileInput>
                         </label>
@@ -196,8 +197,8 @@ const UserPayment = () => {
                     <Grid item xs={12} sm={8} md={7} lg={7}
                           className={classes.packageBtnContainer}>
                         <ButtonWithProgress
-                            // loading={loading}
-                            // disabled={loading}
+                            loading={loading}
+                            disabled={loading || !pay.description}
                             type="submit"
                             variant="contained">
                             Отправить

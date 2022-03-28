@@ -29,7 +29,7 @@ router.put('/:id', auth, permit('user', 'admin', 'warehouseman', 'superAdmin'), 
 
         if (!updatedDelivery) return res.status(404).send({message: 'Доставка не найдена!'});
 
-        res.send({message: 'Посылка доставлена!'});
+        res.send({message: 'Адрес изменен!'});
     } catch (error) {
         res.status(400).send(error);
     }
