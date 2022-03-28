@@ -75,7 +75,9 @@ const UserPage = () => {
     const [openInfo, setOpenInfo] = useState(false);
     const [packageData, setPackageData] = useState(null);
     const [openImg, setOpenImg] = useState(false);
+    const [openBuyoutImg, setOpenBuyoutImg] = useState(false);
     const [img, setImg] = useState(null);
+    const [imgBuyout, setImgBuyout]=useState(null);
 
     const packages = useSelector(state => state.package.orders);
     const [packagesHistory, setPackagesHistory] = useState(false);
@@ -137,6 +139,7 @@ const UserPage = () => {
             price: buyout.price ? {price: buyout.price, icon: valueIcon(buyout.value)} : {price: 'Нет'},
             commission: `${buyout.commission} %`,
             totalPrice: buyout.totalPrice ? `${buyout.totalPrice} сом` : 'Нет',
+            image: apiURL+'/'+buyout.image,
         }
     });
 
@@ -307,6 +310,22 @@ const UserPage = () => {
                         rows={buyoutsRows}
                         columns={[...buyoutsColumns,
                             {
+                                field: 'Изображение',
+                                renderCell: (params => (
+                                        <IconButton
+                                            onClick={() => {
+                                                setOpenBuyoutImg(true);
+                                                setImgBuyout(params.row);
+                                            }}
+                                            sx={{cursor: 'pointer'}}
+                                        >
+                                            <ImageIcon sx={{fontSize: "48px"}}/>
+                                        </IconButton>
+                                    )
+                                ),
+                            },
+
+                            {
                                 field: "actions",
                                 type: "actions",
                                 width: 70,
@@ -340,6 +359,7 @@ const UserPage = () => {
                             />
                         }
                     />
+                    <ImageModal open={openBuyoutImg} onClose={() => setOpenBuyoutImg(false)} data={imgBuyout}/>
                 </TabPanelComponent>
                 <TabPanelComponent value={value} index={2}>
                     <TableComponent
