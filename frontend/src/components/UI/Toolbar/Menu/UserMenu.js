@@ -76,7 +76,7 @@ const adminSettings = [
     {url: adminPagePath, title: 'Администратор', icon: <ManageAccountsIcon/>},
     {url: editUserProfile, title: 'Личный кабинет пользователей', icon: <ManageAccountsIcon/>},
     // {url: packageHistory, title: 'История всех заказов', icon: <HistoryIcon/>},
-    // {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon/>},
+    {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon/>},
     {url: listFlightAdmin, title: 'Рейсы', icon: <FlightIcon/>},
     {url: addFlightAdmin, title: 'Добавить рейс', icon: <AddIcon/>},
     // {url: listPaymentsAdmin, title: 'Список пополнений', icon: <FactCheckIcon/>},

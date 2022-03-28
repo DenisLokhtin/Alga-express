@@ -94,6 +94,7 @@ const AdminPage = () => {
     const [update, setUpdate] = useState(false);
     const [value, setValue] = useState(0);
     const [openImg, setOpenImg] = useState(false);
+    const[openBuyoutImg, setOpenBuyoutImg] =useState(false);
     const [openDone, setOpenDone] = useState({
         open: false,
         id: '',
@@ -103,6 +104,7 @@ const AdminPage = () => {
     const [packageData, setPackageData] = useState(null);
 
     const [img, setImg] = useState(null);
+    const[imgBuyout,setImgBuyout]=useState(null);
     const currencies = useSelector(state => state.currencies.currencies);
     const users = useSelector(state => state.users.users);
 
@@ -192,7 +194,8 @@ const AdminPage = () => {
             price: buyout.price ? {price: buyout.price, icon: valueIcon(buyout.value)} : {price: 'Нет'},
             commission: `${buyout.commission} %`,
             totalPrice: buyout.totalPrice ? `${buyout.totalPrice} сом` : 'Нет',
-            userData: buyout.user
+            userData: buyout.user,
+            image:apiURL + '/' + buyout.image,
         }
     });
 
@@ -653,6 +656,22 @@ const AdminPage = () => {
                     rows={buyoutsRows}
                     columns={[
                         ...buyoutsColumns,
+
+                        {
+                            field: 'image',
+                            renderCell: (params => (
+                                    <IconButton
+                                        onClick={() => {
+                                            setOpenBuyoutImg(true);
+                                            setImgBuyout(params.row);
+                                        }}
+                                        sx={{cursor: 'pointer'}}
+                                    >
+                                        <ImageIcon sx={{fontSize: "48px"}}/>
+                                    </IconButton>
+                                )
+                            ),
+                        },
                         {
                             field: "actions",
                             type: "actions",
@@ -703,6 +722,7 @@ const AdminPage = () => {
                         />
                     }
                 />
+                <ImageModal open={openBuyoutImg} onClose={() => setOpenBuyoutImg(false)} data={imgBuyout}/>
             </TabPanelComponent>
 
             <TabPanelComponent value={value} index={2}>
