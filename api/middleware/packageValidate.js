@@ -1,5 +1,3 @@
-const Package = require("../models/Package");
-
 const packageValidate = async (req, res, next) => {
     try {
         if (req.body.width && req.body.height) {
@@ -57,25 +55,6 @@ const packageValidate = async (req, res, next) => {
                     },
                 });
             }
-        }
-
-        if (req.body.length && req.body.width && req.body.height) {
-            const packageDataDimensions = {
-                country: req.body.country,
-                title: req.body.title,
-                trackNumber: req.body.trackNumber,
-                amount: req.body.amount,
-                price: req.body.price,
-                width: req.body.width,
-                height: req.body.height,
-                length: req.body.length,
-                user: req.user._id,
-            };
-
-            const newPackage = new Package(packageDataDimensions);
-            await newPackage.save();
-
-            return res.send(newPackage);
         }
 
     } catch (error) {

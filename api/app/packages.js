@@ -280,7 +280,7 @@ router.put('/giveout/:id', auth, permit('admin', 'warehouseman', 'superAdmin', '
     }
 })
 
-router.put('/:id', auth, permit('admin', 'warehouseman', 'superAdmin', 'user'), async (req, res) => {
+router.put('/:id', auth, packageValidate, permit('admin', 'warehouseman', 'superAdmin', 'user'), async (req, res) => {
     let result = {};
     const updateData = {};
     if (req.body.trackNumber) updateData.trackNumber = req.body.trackNumber;
@@ -332,14 +332,13 @@ router.put('/:id', auth, permit('admin', 'warehouseman', 'superAdmin', 'user'), 
 
             }
 
-            result.success.$ignore('trackNumber');
-            await result.success.save();
+            await result.success.save({validateBeforeSave: false});
             return res.status(result.code).send(result.success);
         }
 
         res.send(result.success);
     } catch (e) {
-        console.log(e.message);
+        console.log('put packageID', e.message);
         res.status(400).send(e);
     }
 });

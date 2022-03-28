@@ -215,7 +215,7 @@ ul {
     }
 
     .btn-cont .btn {
-        padding: 5px 10px;
+        padding: 5px 15px;
         font-size: 1em;
     }
 
@@ -451,11 +451,12 @@ ul {
 
     .btn-cont + .btn-cont {
         margin-left: 6px;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
     }
 
     .btn-cont .btn {
         font-size: 0.8em;
+        padding: 5px 15px;
     }
 
     .menu__link {
@@ -473,7 +474,7 @@ ul {
 
 @media screen and (max-width: 395px) {
     .btn-cont .btn {
-        font-size: 0.5em;
+        font-size: 0.7em;
     }
 
     .header__burger {

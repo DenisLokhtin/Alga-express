@@ -35,5 +35,6 @@ export const {
     clearPackage,
     giveOutRequest,
     giveOutFailure,
-    giveOutSuccess
+    giveOutSuccess,
+    editAdminPackageFailure,
 } = packageSlice.actions;

@@ -93,6 +93,7 @@ const AdminEditPackage = ({packageAdmin, id}) => {
         setPackageEdit(prevState => ({...prevState, [name]: value}));
     };
 
+    console.log('error', error);
     const getFieldError = fieldName => {
         try {
             return error.errors[fieldName].message;
@@ -170,10 +171,9 @@ const AdminEditPackage = ({packageAdmin, id}) => {
                         >
                             <MenuItem value={'REGISTERED'}>Оформлен</MenuItem>
                             <MenuItem value={'ON_WAREHOUSE'}>На складе</MenuItem>
-                            <MenuItem value={'ON_WAY'}>Вылетел</MenuItem>
-                            <MenuItem value={'PROCESSED'}>Обрабатывается</MenuItem>
-                            <MenuItem value={'DELIVERED'}>Готово к выдаче</MenuItem>
-                            <MenuItem value={'DONE'}>Выдано</MenuItem>
+                            <MenuItem value={'ON_WAY'}>В пути</MenuItem>
+                            <MenuItem value={'DELIVERED'}>Прибыл</MenuItem>
+                            <MenuItem value={'DONE'}>Выдан</MenuItem>
                         </Select>
                         <FormHelperText error={true}>{error?.errors?.['status']?.message}</FormHelperText>
                     </FormControl>
