@@ -32,7 +32,7 @@ const useStyles = makeStyles(() => ({
     container: {
         paddingTop: '170px',
         [theme.breakpoints.down('sm')]: {
-            paddingTop: '60px',
+            paddingTop: '100px',
         },
     },
 
@@ -127,7 +127,7 @@ const News = () => {
     };
 
     return (
-        <Container maxWidth="lg" className={classes.container}>
+        <Container maxWidth="lg" className={classes.container} ref={messagesEndRef}>
             {openEdit ?
                 <EditNewsModal
                     id={id}
@@ -135,7 +135,7 @@ const News = () => {
                     close={handleClose}
                 /> : null
             }
-            <Grid ref={messagesEndRef} container direction={"column"} justifyContent={"center"}>
+            <Grid container direction={"column"} justifyContent={"center"}>
                 {(user?.role === 'admin' || user?.role === 'superAdmin') && (
                     <AddNewsAdmin/>
                 )}
