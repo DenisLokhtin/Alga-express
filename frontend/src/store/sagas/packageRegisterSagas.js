@@ -1,4 +1,4 @@
-import {put, takeEvery} from 'redux-saga/effects';
+import {put, select, takeEvery} from 'redux-saga/effects';
 import {
     changeDeliveryStatusError,
     changeDeliveryStatusRequest,
@@ -28,20 +28,29 @@ import {
     getOrdersHistorySuccess,
     getPackageByIdFailure,
     getPackageByIdRequest,
-    getPackageByIdSuccess, giveOutFailure, giveOutRequest, giveOutSuccess,
+    getPackageByIdSuccess,
+    giveOutFailure,
+    giveOutRequest,
+    giveOutSuccess,
 } from "../actions/packageRegisterActions";
 import axiosApi from "../../axiosApi";
 import {toast} from "react-toastify";
 import History from '../../History';
-import {root} from "../../paths";
-import {adminPagePath} from "../../paths";
+import {adminPagePath, userPage} from "../../paths";
 
 function* packageRegisterSagas({payload: packageData}) {
+    const state = yield select();
+    const role = state.users.user.role;
+
     try {
         yield axiosApi.post('/packages', packageData);
         yield put(createPackageSuccess());
-            History.push(root);
         toast.success('Ваш заказ был успешно создан');
+        if ((role==='admin') || (role === 'superAdmin')){
+            History.push(adminPagePath);
+        }else{
+            History.push(userPage);
+        }
     } catch (e) {
         yield put(createPackageFailure(e.response.data));
     }
@@ -57,11 +66,17 @@ function* getPackageById({payload: id}) {
 }
 
 function* packageChangeSagas({payload: packageData}) {
+    const state = yield select();
+    const role = state.users.user.role;
     try {
         yield axiosApi.put(`/packages/${packageData.packageId}`, packageData.editPackage);
         yield put(changePackageSuccess());
         toast.success('Ваш заказ был успешно отредактирован');
-        History.push('/package/history')
+        if ((role==='admin') || (role === 'superAdmin')){
+            History.push(adminPagePath);
+        }else{
+            History.push(userPage);
+        }
     } catch (e) {
         yield put(changePackageFailure(e.response.data));
     }
@@ -128,12 +143,18 @@ function* getOrderById({payload: orderId}) {
 }
 
 function* changeStatuses({payload: packageData}) {
+    const state = yield select();
+    const role = state.users.user.role;
     try {
         const response = yield axiosApi.put('/packages', packageData);
         yield put(changeStatusesSuccess());
         if (!response.data.length) {
             toast.success(response.data.message);
-            History.push('/')
+            if ((role==='admin') || (role === 'superAdmin')){
+                History.push(adminPagePath);
+            }else{
+                History.push(userPage);
+            }
         }
     } catch (error) {
         if (error.response.data && error.response.data.length > 0) {
@@ -156,17 +177,6 @@ function* changeDeliveryStatus({payload: data}) {
     }
 }
 
-
-// export function* fetchNewPackagesSaga() {
-//     try {
-//         const {data} = yield axiosApi.get('/packages/newPackages');
-//         yield put(fetchNewPackagesSuccess(data));
-//     } catch (e) {
-//         yield put(fetchNewPackagesFailure(e));
-//     }
-// }
-
-
 export function* fetchNewPackagesSaga() {
     try {
         const {data} = yield axiosApi.get('/packages/newPackages');
@@ -178,7 +188,6 @@ export function* fetchNewPackagesSaga() {
 
 export function* giveOutSagas({payload}) {
     try {
-        // const {data} =
         yield axiosApi.put(`/packages/giveout/${payload.id}`, payload.data);
         yield put(giveOutSuccess());
     } catch (e) {

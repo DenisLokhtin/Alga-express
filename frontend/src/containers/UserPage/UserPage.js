@@ -10,7 +10,7 @@ import TableComponent from "../../components/TableComponent/TableComponent";
 import {buyoutsColumns, packagesColumns, paymentsColumns} from "../AdminPage/columns/tableColumns";
 import SwitchElement from "../../components/UI/SwitchElement/SwitchElement";
 import {useDispatch, useSelector} from "react-redux";
-import {countries, saleCountry, statuses, valueIcon} from "../../dataLocalization";
+import {countries, saleCountry, statusBuyouts, statuses, valueIcon} from "../../dataLocalization";
 import dayjs from "dayjs";
 import {apiURL} from "../../config";
 import {getOrdersHistoryRequest} from "../../store/actions/packageRegisterActions";
@@ -29,6 +29,7 @@ import Requisites from "../../components/Requisites/Requisites";
 import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
 import Button from "@mui/material/Button";
 import DeliveryInfo from "../../components/DeliveryInfo/DeliveryInfo";
+import {setTabValue} from "../../store/actions/usersActions";
 
 
 function a11yProps(index) {
@@ -66,9 +67,10 @@ const UserPage = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const messagesEndRef = useRef(null);
-    const [value, setValue] = useState(0);
+    const value = useSelector(state => state.users.tabPage);
     const [update, setUpdate] = useState(false);
-    const userId = useSelector(state => state.users.user._id);
+    const user = useSelector(state => state.users.user);
+    const userId = user._id;
     const [openModal, setOpenModal] = useState(false);
     const [openInfo, setOpenInfo] = useState(false);
     const [packageData, setPackageData] = useState(null);
@@ -103,7 +105,7 @@ const UserPage = () => {
     const buyoutsPrevSelection = useRef(buyoutsSelectionModel);
 
     const handleChange = (event, newValue) => {
-        setValue(newValue);
+        dispatch(setTabValue(newValue));
     };
 
     const packagesRows = packages.map(order => {
@@ -131,7 +133,7 @@ const UserPage = () => {
             description: buyout.description,
             datetime: dayjs(buyout.datetime).format('DD-MM-YYYY'),
             user: buyout.user.name,
-            status: statuses[buyout.status],
+            status: statusBuyouts[buyout.status],
             price: buyout.price ? {price: buyout.price, icon: valueIcon(buyout.value)} : {price: 'Нет'},
             commission: `${buyout.commission} %`,
             totalPrice: buyout.totalPrice ? `${buyout.totalPrice} сом` : 'Нет',
@@ -176,6 +178,7 @@ const UserPage = () => {
         update,
     ]);
 
+
     return (
         <Container ref={messagesEndRef} className={classes.container}>
             <h2>Мой портфель</h2>
@@ -192,7 +195,7 @@ const UserPage = () => {
                     <Typography variant="h6">
                         Ваш тариф
                     </Typography>
-                    <TariffPage/>
+                    <TariffPage tariff={user.tariff}/>
                 </Grid>
             </Grid>
 
@@ -215,40 +218,9 @@ const UserPage = () => {
                         rows={packagesRows}
                         columns={[
                             ...packagesColumns,
-                            // {
-                            //     field: 'price',
-                            //     headerName: 'Цена товара',
-                            //     flex: 1,
-                            //     minWidth: 140,
-                            //     headerAlign: 'center',
-                            //     align: 'center',
-                            //     renderCell: (params => {
-                            //         const order = packages.find(order => order._id === params.id);
-                            //
-                            //         if (order.currency === 'usd') {
-                            //             return (
-                            //                 <div style={{display: 'flex', alignItems: 'center'}}>
-                            //                     {order.price} <AttachMoneyIcon/>
-                            //                 </div>
-                            //             )
-                            //         } else if (order.currency === 'cny') {
-                            //             return (
-                            //                 <div style={{display: 'flex', alignItems: 'center'}}>
-                            //                     {order.price} <CurrencyYenIcon/>
-                            //                 </div>
-                            //             )
-                            //         } else if (order.currency === 'try') {
-                            //             return (
-                            //                 <div style={{display: 'flex', alignItems: 'center'}}>
-                            //                     {order.price} <CurrencyLiraIcon/>
-                            //                 </div>
-                            //             )
-                            //         }
-                            //     })
-                            // },
                             {
                                 field: 'price',
-                                headerName: 'Стоимость Заказа',
+                                headerName: 'Стоимость доставки',
                                 flex: 1,
                                 minWidth: 100,
                                 headerAlign: 'center',
@@ -369,7 +341,6 @@ const UserPage = () => {
                         }
                     />
                 </TabPanelComponent>
-
                 <TabPanelComponent value={value} index={2}>
                     <TableComponent
                         rows={paymentsRows}
@@ -412,7 +383,6 @@ const UserPage = () => {
                             />
                         }
                     />
-
                     <ImageModal open={openImg} onClose={() => setOpenImg(false)} data={img}/>
                 </TabPanelComponent>
             </Box>
