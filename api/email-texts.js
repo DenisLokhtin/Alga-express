@@ -1,3 +1,5 @@
+const {resetPasswordUrl} = require("./config");
+
 class distributions {
     passwordReset(code, user) {
         return (
@@ -5,7 +7,7 @@ class distributions {
                 <p>Здравствуйте уважаемый(ая) ${user}!</p>
                 <p>Мы получили запрос о смене пароля к вашему  аккаунту.</p> 
                 <p>Код для сброса пароля: <b>${code}</b>
-                Для изменения пароля, пожалуйста,  <a href="http://localhost:3000/secret/reset-password">Перейдите по ссылке</a></p>
+                Для изменения пароля, пожалуйста,  <a href='${resetPasswordUrl}/secret/reset-password'>Перейдите по ссылке</a></p>
                 <p>Код для сброса действителен только в течении 5 минут</p>
                 <p>Если вы не отправляли запрос - просто проигнорируйте это письмо.</p>
                 <p>С уважением Alga-express</p>

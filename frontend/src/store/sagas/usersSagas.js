@@ -155,10 +155,10 @@ export function* editPassportSaga({payload}) {
 
 export function* userPaymentSaga({payload}) {
     try {
-        const response = yield  axiosApi.post('/userEdit/payment/', payload);
-        yield put(addUserPaymentSuccess(response.data));
-        History.push(userPage);
+        yield  axiosApi.post('/userEdit/payment/', payload);
+        yield put(addUserPaymentSuccess());
         toast.success('Оплата отправлена');
+        History.push(userPage);
     } catch (e) {
         toast.error(e.response.data.error);
         yield put(addUserPaymentFailure(e.response.data.error));

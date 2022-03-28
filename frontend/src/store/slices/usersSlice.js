@@ -171,9 +171,9 @@ const usersSlice = createSlice({
 
         logout(state) {
             state.user = null;
+            state.tabPage = 0;
         },
         setTabValue(state, {payload}) {
-            console.log(payload);
             state.tabPage = payload;
         },
         editTariff(state) {

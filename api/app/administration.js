@@ -64,7 +64,7 @@ router.get('/payments', auth, permit('user', 'admin', 'superAdmin'), async (req,
 router.post('/', auth, permit('admin', 'superAdmin'), async (req, res) => {
     let pay = Number(req.body.pay).toFixed(2);
     pay = Number(pay);
-
+    console.log(req.body);
     try {
         const checkPayment = await Payment.findById(req.body.id)
             .populate('user', 'name email');

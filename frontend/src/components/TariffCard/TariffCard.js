@@ -41,11 +41,11 @@ const TariffCard = ({tariff, id, group}) => {
         } else {
             setTariffData(prevState => ({
                 ...prevState,
-                usa: 0,
-                turkey: 0,
-                turkeyGround: 0,
-                china: 0,
-                chinaGround: 0,
+                usa: tariff.usa,
+                turkey: tariff.turkey,
+                turkeyGround: tariff.turkeyGround,
+                china: tariff.china,
+                chinaGround: tariff.chinaGround,
             }));
         }
     },[fetchTariff,groupData]);

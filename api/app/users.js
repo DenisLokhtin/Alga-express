@@ -49,7 +49,8 @@ router.post('/', async (req, res) => {
             });
         }
 
-        const tariff = await TariffGroup.findOne({new: {$exists: true}});
+
+        const tariff = await TariffGroup.findOne({name: 'new'});
         const user = new User({
             email: req.body.email,
             password: req.body.password,
