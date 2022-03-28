@@ -40,7 +40,7 @@ import {apiURL} from "../../../../config";
 import {createTheme} from "@mui/material/styles";
 
 const userSettings = [
-    {url: editUserProfile, title: 'Личный кабинет', icon: <ManageAccountsIcon/>},
+    {url: editUserProfile, title: 'Мой профиль', icon: <ManageAccountsIcon/>},
     {url: userPage, title: 'Моя страница', icon: <HomeIcon/>},
     // {url: packageHistory, title: 'История заказов', icon: <HistoryIcon/>},
     {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon/>},
