@@ -8,6 +8,8 @@ const sendMail = require('../middleware/sendMail');
 const {newsTextTelegram} = require('../email-texts');
 const {newsText} = require('../email-texts');
 const User = require("../models/User");
+const auth = require('../middleware/auth');
+const permit = require('../middleware/permit');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -51,7 +53,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.post('/', upload.single('image'), async (req, res) => {
+router.post('/',auth, permit('admin', 'superAdmin'), upload.single('image'), async (req, res) => {
     try {
         const newsData = {
             title: req.body.title,
@@ -75,7 +77,7 @@ router.post('/', upload.single('image'), async (req, res) => {
     }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, permit( 'admin', 'superAdmin'), async (req, res) => {
     try {
         const news = await News.findById(req.params.id);
 
@@ -92,7 +94,7 @@ router.delete('/:id', async (req, res) => {
 });
 
 
-router.put('/', async (req, res) => {
+router.put('/', auth, permit( 'admin', 'superAdmin'), async (req, res) => {
     try {
         const updatedNews = await News.findByIdAndUpdate(req.body.id, {
             title: req.body.title,

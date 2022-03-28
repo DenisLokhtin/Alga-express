@@ -4,7 +4,6 @@ import CurrencyLiraIcon from "@mui/icons-material/CurrencyLira";
 import React from "react";
 
 export const statuses = {
-    NEW: 'Новый',
     REGISTERED: 'Оформлен',
     DELIVERED: 'Прибыл',
     ON_WAREHOUSE: 'На складе',

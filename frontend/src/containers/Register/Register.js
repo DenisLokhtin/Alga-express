@@ -25,6 +25,7 @@ import {createTheme} from "@mui/material/styles";
 const theme = createTheme({
     breakpoints: {
         values: {
+            xs: 450,
             sm: 768,
         },
     },
@@ -33,6 +34,7 @@ const theme = createTheme({
 const useStyles = makeStyles(() => ({
     breakpoints: {
         values: {
+            xs: 450,
             sm: 768,
         },
     },
@@ -41,7 +43,10 @@ const useStyles = makeStyles(() => ({
         paddingTop: '170px',
         marginBottom: '30px',
         [theme.breakpoints.down('sm')]: {
-            paddingTop: '100px',
+            paddingTop: '120px',
+        },
+        [theme.breakpoints.down('xs')]: {
+            paddingTop: '140px',
         },
     },
 
@@ -145,7 +150,12 @@ const Register = ({userData}) => {
                         Регистрация пользователей
                     </Typography>
                 ) : (
-                    <Typography component="h1" variant="h6" align={'center'}>
+                    <Typography
+                        component="h1"
+                        variant="h6"
+                        align={'center'}
+                        sx={{margin: '20px'}}
+                    >
                         Регистрация
                     </Typography>
                 )}

@@ -6,7 +6,7 @@ import {
     howCompany,
     newsCompany,
     rulesCompany,
-    sitesCompany, wareHouseCompany
+    wareHouseCompany
 } from "../../../paths";
 import {Link} from "react-router-dom";
 import './Footer.css';
@@ -60,9 +60,6 @@ const Footer = () => {
                         <ul className="ft-main-list">
                             <li className="ft-main-list__item">
                                 <Link className="ft-main-list__link" to={howCompany}>Как это работает</Link>
-                            </li>
-                            <li className="ft-main-list__item">
-                                <Link className="ft-main-list__link" to={sitesCompany}>Где покупать</Link>
                             </li>
                             <li className="ft-main-list__item">
                                 <Link className="ft-main-list__link" to={aboutCompany}>О нас</Link>

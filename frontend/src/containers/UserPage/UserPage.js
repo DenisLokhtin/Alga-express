@@ -75,7 +75,9 @@ const UserPage = () => {
     const [openInfo, setOpenInfo] = useState(false);
     const [packageData, setPackageData] = useState(null);
     const [openImg, setOpenImg] = useState(false);
+    const [openBuyoutImg, setOpenBuyoutImg] = useState(false);
     const [img, setImg] = useState(null);
+    const [imgBuyout, setImgBuyout]=useState(null);
 
     const packages = useSelector(state => state.package.orders);
     const [packagesHistory, setPackagesHistory] = useState(false);
@@ -137,6 +139,7 @@ const UserPage = () => {
             price: buyout.price ? {price: buyout.price, icon: valueIcon(buyout.value)} : {price: 'Нет'},
             commission: `${buyout.commission} %`,
             totalPrice: buyout.totalPrice ? `${buyout.totalPrice} сом` : 'Нет',
+            image: apiURL+'/'+buyout.image,
         }
     });
 
@@ -183,15 +186,20 @@ const UserPage = () => {
         <Container ref={messagesEndRef} className={classes.container}>
             <h2>Мой портфель</h2>
 
-            <Grid container justifyContent="space-between" spacing={2}>
-                <Grid item xs={12} sm={6} md={6} lg={6}>
+            <Grid container justifyContent="space-between" spacing={2}
+            >
+                <Grid item xs={12} sm={6} md={6} lg={5.7}
+                      sx={{boxShadow: 'rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px'}}
+                >
                     <Typography variant="h6">
                         Курс валют
                     </Typography>
                     <Currency/>
                 </Grid>
 
-                <Grid item xs={12} sm={6} md={6} lg={6}>
+                <Grid item xs={12} sm={6} md={6} lg={5.7}
+                sx={{boxShadow: 'rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px'}}
+                >
                     <Typography variant="h6">
                         Ваш тариф
                     </Typography>
@@ -307,6 +315,22 @@ const UserPage = () => {
                         rows={buyoutsRows}
                         columns={[...buyoutsColumns,
                             {
+                                field: 'Изображение',
+                                renderCell: (params => (
+                                        <IconButton
+                                            onClick={() => {
+                                                setOpenBuyoutImg(true);
+                                                setImgBuyout(params.row);
+                                            }}
+                                            sx={{cursor: 'pointer'}}
+                                        >
+                                            <ImageIcon sx={{fontSize: "48px"}}/>
+                                        </IconButton>
+                                    )
+                                ),
+                            },
+
+                            {
                                 field: "actions",
                                 type: "actions",
                                 width: 70,
@@ -314,6 +338,7 @@ const UserPage = () => {
                                     <IconButton
                                         component={Link}
                                         to={editBuyout.slice(0, editBuyout.length - 3) + params.row.id}
+                                        disabled={params.row.status === "Обработан"}
                                     >
                                         <EditIcon/>
                                     </IconButton>
@@ -340,6 +365,7 @@ const UserPage = () => {
                             />
                         }
                     />
+                    <ImageModal open={openBuyoutImg} onClose={() => setOpenBuyoutImg(false)} data={imgBuyout}/>
                 </TabPanelComponent>
                 <TabPanelComponent value={value} index={2}>
                     <TableComponent

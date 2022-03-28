@@ -70,7 +70,6 @@ const AdminEditPackage = ({packageAdmin, id}) => {
         height: '',
         length: '',
         urlPackage: packageAdmin.urlPackage,
-        cargoPrice: '',
         cargoWeight: '',
         status: packageAdmin.status,
         priceCurrency: packageAdmin.priceCurrency,
@@ -84,7 +83,6 @@ const AdminEditPackage = ({packageAdmin, id}) => {
             name === 'width' ||
             name === 'length' ||
             name === 'height' ||
-            name === 'cargoPrice' ||
             name === 'cargoWeight') {
             if (event.target.value < 0) {
                 value = 0;
@@ -95,6 +93,7 @@ const AdminEditPackage = ({packageAdmin, id}) => {
         setPackageEdit(prevState => ({...prevState, [name]: value}));
     };
 
+    console.log('error', error);
     const getFieldError = fieldName => {
         try {
             return error.errors[fieldName].message;
@@ -172,10 +171,9 @@ const AdminEditPackage = ({packageAdmin, id}) => {
                         >
                             <MenuItem value={'REGISTERED'}>Оформлен</MenuItem>
                             <MenuItem value={'ON_WAREHOUSE'}>На складе</MenuItem>
-                            <MenuItem value={'ON_WAY'}>Вылетел</MenuItem>
-                            <MenuItem value={'PROCESSED'}>Обрабатывается</MenuItem>
-                            <MenuItem value={'DELIVERED'}>Готово к выдаче</MenuItem>
-                            <MenuItem value={'DONE'}>Выдано</MenuItem>
+                            <MenuItem value={'ON_WAY'}>В пути</MenuItem>
+                            <MenuItem value={'DELIVERED'}>Прибыл</MenuItem>
+                            <MenuItem value={'DONE'}>Выдан</MenuItem>
                         </Select>
                         <FormHelperText error={true}>{error?.errors?.['status']?.message}</FormHelperText>
                     </FormControl>
@@ -212,18 +210,6 @@ const AdminEditPackage = ({packageAdmin, id}) => {
                     required
                     variant="outlined"
                     label="Количество"
-                    error={getFieldError('amount')}
-                />
-                <FormElement
-                    xs={11} sm={9} md={9} lg={9}
-                    name="cargoPrice"
-                    type="number"
-                    value={packageEdit.cargoPrice}
-                    onChange={inputChangeHandler}
-                    fullWidth
-                    required
-                    variant="outlined"
-                    label="Стоимость доставки"
                     error={getFieldError('amount')}
                 />
                 <FormElement

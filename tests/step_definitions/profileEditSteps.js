@@ -59,21 +59,3 @@ When('я загружаю фотографию', () => {
 Then('я нажимаю на кнопку {string}',(btnText) => {
     I.click(btnText)
 });
-
-
-
-
-
-// Then(`я нажимаю на кнопку {string}`, () => {
-//     I.click('//form//button[.//span[contains(text(), \'Сохранить\')]]')
-// });
-
-
-
-// Then(`я нажимаю на кнопку {string}`, (buttonText) => {
-//     if (buttonText === 'Сохранить') {
-//         I.click('//form//button[.//span[contains(text(), \'Сохранить\')]]')
-//     } else {
-//         I.click(buttonText)
-//     }
-// });

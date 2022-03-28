@@ -11,7 +11,7 @@ import {
     changeStatusesSuccess,
     createPackageFailure,
     createPackageRequest,
-    createPackageSuccess,
+    createPackageSuccess, editAdminPackageFailure,
     editAdminPackageRequest,
     editAdminPackageSuccess,
     fetchNewPackages,
@@ -98,7 +98,7 @@ function* packageEditAdminSagas({payload}) {
         toast.success('Заказ был успешно отредактирован');
         History.push(adminPagePath);
     } catch (e) {
-        yield put(changePackageFailure(e.response.data));
+        yield put(editAdminPackageFailure(e.response.data));
     }
 }
 

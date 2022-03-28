@@ -74,7 +74,7 @@ const useStyles = makeStyles(() => ({
         paddingTop: '155px',
         marginBottom: '30px',
         [theme.breakpoints.down('sm')]: {
-            paddingTop: '90px',
+            paddingTop: '120px',
         },
     },
 }));
@@ -94,6 +94,7 @@ const AdminPage = () => {
     const [update, setUpdate] = useState(false);
     const value = useSelector(state => state.users.tabPage);
     const [openImg, setOpenImg] = useState(false);
+    const[openBuyoutImg, setOpenBuyoutImg] =useState(false);
     const [openDone, setOpenDone] = useState({
         open: false,
         id: '',
@@ -103,6 +104,7 @@ const AdminPage = () => {
     const [packageData, setPackageData] = useState(null);
 
     const [img, setImg] = useState(null);
+    const[imgBuyout,setImgBuyout]=useState(null);
     const currencies = useSelector(state => state.currencies.currencies);
     const users = useSelector(state => state.users.users);
 
@@ -176,10 +178,10 @@ const AdminPage = () => {
             amount: order.amount,
             delivery: order.delivery || null,
             user: order.user.name,
-            price: order.price ? {price: order.price, icon: valueIcon(order.priceCurrency)} : {price: 'Нет'},
+            // price: order.cargoPrice ? order.cargoPrice : {price: 'Нет'},
+            price: order.cargoPrice,
         }
     });
-
     const buyoutsRows = buyouts.map(buyout => {
         return {
             id: buyout._id,
@@ -192,7 +194,8 @@ const AdminPage = () => {
             price: buyout.price ? {price: buyout.price, icon: valueIcon(buyout.value)} : {price: 'Нет'},
             commission: `${buyout.commission} %`,
             totalPrice: buyout.totalPrice ? `${buyout.totalPrice} сом` : 'Нет',
-            userData: buyout.user
+            userData: buyout.user,
+            image:apiURL + '/' + buyout.image,
         }
     });
 
@@ -362,7 +365,7 @@ const AdminPage = () => {
                         container
                         component="form"
                         alignItems="center"
-                        justifyContent="space-evenly"
+                        justifyContent="space-around"
                         spacing={1}
                         onSubmit={submitFormHandler}
                     >
@@ -442,7 +445,7 @@ const AdminPage = () => {
                         </Grid>
 
                         <Grid item xs={12} sm={4} md={3}>
-                            <Grid container spacing={1}>
+                            <Grid container spacing={2}>
                                 <Grid item xs={6} md={6} lg={6}>
                                     <ButtonWithProgress
                                         startIcon={<SearchIcon/>}
@@ -452,6 +455,11 @@ const AdminPage = () => {
                                         color="primary"
                                         // className={classes.submit}
                                         // loading={loading}
+                                        sx={{
+                                            margin: {
+                                                xs: '15px 0',
+                                            },
+                                        }}
                                         disabled={!(valueSelect.name || periodDate.from)}
                                     >
                                         Найти
@@ -466,6 +474,11 @@ const AdminPage = () => {
                                         color="primary"
                                         onClick={clearHandler}
                                         startIcon={<RestartAltIcon/>}
+                                        sx={{
+                                            margin: {
+                                                xs: '15px 0',
+                                            },
+                                        }}
                                         // className={classes.submit}
                                         // loading={loading}
                                     >
@@ -481,8 +494,12 @@ const AdminPage = () => {
                     <Grid
                         container
                         component='form'
-                        justifyContent='space-evenly'
                         alignItems='center'
+                        sx={{
+                            justifyContent: {
+                                sm: 'center',
+                            },
+                        }}
                         spacing={1}
                         onSubmit={submitFormByNumber}
                     >
@@ -534,17 +551,16 @@ const AdminPage = () => {
                                 ...packagesColumns,
                                 {
                                     field: 'price',
-                                    headerName: 'Цена товара',
+                                    headerName: 'Цена доставки',
                                     flex: 1,
                                     minWidth: 110,
                                     headerAlign: 'center',
                                     align: 'center',
                                     renderCell: params => {
                                         const order = packages.find(order => order._id === params.id);
-
                                         return (
                                             <div style={{display: 'flex', alignItems: 'center'}}>
-                                                {order.price} {valueIcon(order.priceCurrency)}
+                                                {order.cargoPrice} $
                                             </div>
                                         )
                                     }
@@ -662,32 +678,47 @@ const AdminPage = () => {
                         />
                     </TabPanelComponent>
 
-                    <TabPanelComponent value={value} index={1}>
-                        <TableComponent
-                            rows={buyoutsRows}
-                            columns={[
-                                ...buyoutsColumns,
-                                {
-                                    field: "actions",
-                                    type: "actions",
-                                    width: 200,
-                                    getActions: (params) => [
-                                        <Button
-                                            variant="outlined"
-                                            component={Link}
-                                            to={newPackageRegister}
-                                            state={{
-                                                userProps: {
-                                                    id: params.row.userData._id,
-                                                    name: params.row.userData.name,
-                                                    email: params.row.userData.email,
-                                                    buyoutId: params.row.id
-                                                }
-                                            }}
-                                        >
-                                            Оформить
-                                        </Button>,
+            <TabPanelComponent value={value} index={1}>
+                <TableComponent
+                    rows={buyoutsRows}
+                    columns={[
+                        ...buyoutsColumns,
 
+                        {
+                            field: 'Изображение',
+                            renderCell: (params => (
+                                    <IconButton
+                                        onClick={() => {
+                                            setOpenBuyoutImg(true);
+                                            setImgBuyout(params.row);
+                                        }}
+                                        sx={{cursor: 'pointer'}}
+                                    >
+                                        <ImageIcon sx={{fontSize: "48px"}}/>
+                                    </IconButton>
+                                )
+                            ),
+                        },
+                        {
+                            field: "actions",
+                            type: "actions",
+                            width: 200,
+                            getActions: (params) => [
+                                <Button
+                                    variant="outlined"
+                                    component={Link}
+                                    to={newPackageRegister}
+                                    state={{
+                                        userProps: {
+                                            id: params.row.userData._id,
+                                            name: params.row.userData.name,
+                                            email: params.row.userData.email,
+                                            buyoutId: params.row.id
+                                        }
+                                    }}
+                                >
+                                    Оформить
+                                </Button>,
                                         <IconButton
                                             component={Link}
                                             to={editBuyout.slice(0, editBuyout.length - 3) + params.row.id}
@@ -717,7 +748,8 @@ const AdminPage = () => {
                                 />
                             }
                         />
-                    </TabPanelComponent>
+                <ImageModal open={openBuyoutImg} onClose={() => setOpenBuyoutImg(false)} data={imgBuyout}/>
+            </TabPanelComponent>
 
                     <TabPanelComponent value={value} index={2}>
                         <TableComponent
