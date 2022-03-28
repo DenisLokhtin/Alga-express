@@ -14,8 +14,8 @@ import SingleNews from "./containers/SingleNews/SingleNews";
 import HomePage from "./containers/HomePage/HomePage";
 import FAQ from "./containers/FAQ/FAQ";
 import AdminEditPackagePage from "./containers/AdminEditPackagePage/AdminEditPackagePage";
-import OrderHistory from "./containers/OrderHistory/OrderHistory";
-import SpecificPackage from "./containers/SpecificPackage/SpecificPackage";
+// import OrderHistory from "./containers/OrderHistory/OrderHistory";
+// import SpecificPackage from "./containers/SpecificPackage/SpecificPackage";
 import AddFlight from "./containers/AddFlight/AddFlight";
 import FlightsList from "./containers/FlightsList/FlightsList";
 import UserProfileEdit from "./containers/UserProfileEdit/UserProfileEdit";
@@ -46,7 +46,6 @@ import {
     faqCompany,
     forgotPassword,
     howCompany,
-    listBuyouts,
     listFlightAdmin,
     listPaymentsAdmin,
     newPackageRegister,
@@ -54,8 +53,8 @@ import {
     newsIdCompany,
     newUserRegister,
     orderBuyouts,
-    packageHistory,
-    packageInfoId,
+    // packageHistory,
+    // packageInfoId,
     processingTrackNumbersAdmin,
     resetPassword,
     root,
@@ -69,7 +68,6 @@ import {
 import OrderBuyout from "./containers/OrderBuyout/OrderBuyout";
 import EditPages from "./containers/EditPages/EditPages";
 import EditBuyout from "./components/EditBuyout/EditBuyout";
-import BuyoutList from "./containers/BuyoutList/BuyoutList";
 import AddPaymentAdmin from "./components/AddPaymentAdmin/AddPaymentAdmin";
 import EditTariffGroup from "./components/EditTariffGroup/EditTariffGroup";
 import WarehousePage from "./components/WarehousePage/WarehousePage";
@@ -102,13 +100,12 @@ const App = () => {
                 <Routes>
                     <Route element={<ProtectedRoutesForUser/>}>
                         {/* Routes for registered user admin and superAdmin*/}
-                        <Route path={packageHistory} element={<OrderHistory/>}/>
+                        {/*<Route path={packageHistory} element={<OrderHistory/>}/>*/}
                         <Route path={newPackageRegister} element={<PackageRegister/>}/>
                         <Route path={editUserProfile} element={<UserProfileEdit/>}/>
                         <Route path={editPackageUser} element={<UserEditPackage/>}/>
-                        <Route path={packageInfoId} element={<SpecificPackage/>}/>
+                        {/*<Route path={packageInfoId} element={<SpecificPackage/>}/>*/}
                         <Route path={orderBuyouts} element={<OrderBuyout/>}/>
-                        <Route path={listBuyouts} element={<BuyoutList/>}/>
                         <Route path={userPage} element={<UserPage/>}/>
                         <Route path={editBuyout} element={<EditBuyout/>}/>
                         <Route path={addUserPayment} element={<UserPayment/>}/>
@@ -133,6 +130,7 @@ const App = () => {
                         <Route path={editInformation} element={<EditInformation/>}/>
                         <Route path={editBuyout} element={<EditBuyout/>}/>
                         <Route path={editTariffGroup} element={<EditTariffGroup/>}/>
+                        <Route path={sitesCompany} element={<MarketSites/>}/>
                     </Route>
 
                     {/* Routes for warehouseman and SuperAdmin*/}
