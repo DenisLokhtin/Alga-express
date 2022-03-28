@@ -115,7 +115,8 @@ const WarehousePage = () => {
                     <div className={classes.countryFlag}/>
                 </Grid>
                 <Grid item>
-                    <Box ref={messagesEndRef} sx={{width: '100%', typography: 'body1'}} style={{padding: '25px 25px 40px 25px'}}
+                    <Box ref={messagesEndRef} sx={{width: '100%', typography: 'body1'}}
+                         style={{padding: '25px 0px 40px 0px'}}
                          className={classes.tableContainer}>
                         {user && user.role === 'admin' ?
                             <Grid item xs={12} sm={4} md={4} lg={3} className={classes.gridCenter}>
@@ -149,9 +150,16 @@ const WarehousePage = () => {
                             <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
                                 <Grid container>
                                     <Grid item xs={12} sm={12} md={12} lg={12} className={classes.gridCenter}>
-                                        <TabList onChange={handleChange} aria-label="lab API tabs example">
+                                        <TabList
+                                            variant="scrollable"
+                                            scrollButtons
+                                            allowScrollButtonsMobile
+                                            onChange={handleChange} aria-label="lab API tabs example">
                                             {wareHouses.map((warehouse, i) => (
-                                                <Tab key={warehouse._id} value={String(i)} label={warehouse.country}/>
+                                                <Tab key={warehouse._id}
+                                                     value={String(i)}
+                                                     label={warehouse.country}
+                                                />
                                             ))}
                                         </TabList>
                                     </Grid>
