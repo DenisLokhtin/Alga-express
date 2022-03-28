@@ -37,7 +37,6 @@ const useStyles = makeStyles(() => ({
 const FlightsList = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    // const [update, setUpdate] =  useState(false);
     const flights = useSelector(state => state.flights.flights);
     const count = useSelector(state => state.flights.flightsCount);
     const [expanded, setExpanded] = useState('panel1');
