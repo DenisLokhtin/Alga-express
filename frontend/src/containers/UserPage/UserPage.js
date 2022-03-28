@@ -333,6 +333,7 @@ const UserPage = () => {
                                     <IconButton
                                         component={Link}
                                         to={editBuyout.slice(0, editBuyout.length - 3) + params.row.id}
+                                        disabled={params.row.status === "Обработан"}
                                     >
                                         <EditIcon/>
                                     </IconButton>
