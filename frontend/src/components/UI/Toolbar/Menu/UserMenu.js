@@ -41,7 +41,7 @@ import {createTheme} from "@mui/material/styles";
 
 const userSettings = [
     {url: editUserProfile, title: 'Мой профиль', icon: <ManageAccountsIcon/>},
-    {url: userPage, title: 'Моя страница', icon: <HomeIcon/>},
+    {url: userPage, title: 'Мой кабинет', icon: <HomeIcon/>},
     // {url: packageHistory, title: 'История заказов', icon: <HistoryIcon/>},
     {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon/>},
     {url: orderBuyouts, title: 'Заказать выкуп', icon: <ShoppingCartIcon/>},
