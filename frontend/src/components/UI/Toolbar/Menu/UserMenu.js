@@ -40,8 +40,8 @@ import {apiURL} from "../../../../config";
 import {createTheme} from "@mui/material/styles";
 
 const userSettings = [
-    {url: editUserProfile, title: 'Профиль пользователя', icon: <ManageAccountsIcon/>},
-    {url: userPage, title: 'Моя страница', icon: <HomeIcon/>},
+    {url: editUserProfile, title: 'Мой профиль', icon: <ManageAccountsIcon/>},
+    {url: userPage, title: 'Мой кабинет', icon: <HomeIcon/>},
     // {url: packageHistory, title: 'История заказов', icon: <HistoryIcon/>},
     {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon/>},
     {url: orderBuyouts, title: 'Заказать выкуп', icon: <ShoppingCartIcon/>},

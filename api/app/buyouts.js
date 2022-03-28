@@ -214,9 +214,9 @@ router.put('/:id', auth, upload.single('image'), permit('admin', 'user'), async 
             }
 
             if (req.file) {
-                newObj.image = 'uploads/buyouts/' + req.file.filename;
+                newObj.image = 'uploads/' + req.file.filename;
             }
-            const updatedBuyout = await Buyout.findByIdAndUpdate(req.params.id, {newObj}, {
+            const updatedBuyout = await Buyout.findByIdAndUpdate(req.params.id, newObj, {
                 new: true,
                 runValidators: true
             });
