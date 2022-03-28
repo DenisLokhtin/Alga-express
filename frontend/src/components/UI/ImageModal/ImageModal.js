@@ -64,7 +64,7 @@ const ImageModal = ({open, onClose, data}) => {
 
                         </Grid>
                         <Grid item xs={12} md={12} lg={12}>
-                            <Box sx={{width: "50vw"}}>
+                            <Box sx={{width: {xs: "80vw", md: "30vw"}}}>
                                 <img style={styles.img} src={data.image} alt=""/>
                             </Box>
                         </Grid>
