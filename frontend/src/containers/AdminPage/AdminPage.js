@@ -178,10 +178,10 @@ const AdminPage = () => {
             amount: order.amount,
             delivery: order.delivery || null,
             user: order.user.name,
-            price: order.price ? {price: order.price, icon: valueIcon(order.priceCurrency)} : {price: 'Нет'},
+            // price: order.cargoPrice ? order.cargoPrice : {price: 'Нет'},
+            price: order.cargoPrice,
         }
     });
-
     const buyoutsRows = buyouts.map(buyout => {
         return {
             id: buyout._id,
@@ -558,10 +558,9 @@ const AdminPage = () => {
                                     align: 'center',
                                     renderCell: params => {
                                         const order = packages.find(order => order._id === params.id);
-
                                         return (
                                             <div style={{display: 'flex', alignItems: 'center'}}>
-                                                {order.price} {valueIcon(order.priceCurrency)}
+                                                {order.cargoPrice} $
                                             </div>
                                         )
                                     }

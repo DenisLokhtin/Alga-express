@@ -14,11 +14,11 @@ const TariffCard = ({tariff, id, group}) => {
     const fetchTariff = useSelector(state => state.tariffs.tariffs);
     const [groupData, setGroupData] = useState(group);
     const [tariffData, setTariffData] = useState({
-        usa: tariff.usa,
-        turkey: tariff.turkey,
-        turkeyGround: tariff.turkeyGround,
-        china: tariff.china,
-        chinaGround: tariff.chinaGround,
+        usa: '',
+        turkey: '',
+        turkeyGround: '',
+        china: '',
+        chinaGround: '',
     });
     useEffect(()=>{
         dispatch(fetchTariffsRequest());
@@ -48,7 +48,7 @@ const TariffCard = ({tariff, id, group}) => {
                 chinaGround: tariff.chinaGround,
             }));
         }
-    },[fetchTariff,groupData]);
+    },[fetchTariff,groupData, tariff]);
 
     const edit = () => setStatus(prevState => !prevState);
 
@@ -96,7 +96,6 @@ const TariffCard = ({tariff, id, group}) => {
 
                             <Grid item xs={12} md={12} lg={12}>
                                 <TextField
-                                    inputMode="numeric"
                                     label="Usa"
                                     value={tariffData.usa}
                                     name="usa"
@@ -109,7 +108,6 @@ const TariffCard = ({tariff, id, group}) => {
 
                             <Grid item xs={12} md={12} lg={12}>
                                 <TextField
-                                    inputMode="numeric"
                                     label="Turkey"
                                     value={tariffData.turkey}
                                     name="turkey"
@@ -122,7 +120,6 @@ const TariffCard = ({tariff, id, group}) => {
 
                             <Grid item xs={12} md={12} lg={12}>
                                 <TextField
-                                    inputMode="numeric"
                                     label="Turkey Ground"
                                     value={tariffData.turkeyGround}
                                     name="turkeyGround"
@@ -135,7 +132,6 @@ const TariffCard = ({tariff, id, group}) => {
 
                             <Grid item xs={12} md={12} lg={12}>
                                 <TextField
-                                    inputMode="numeric"
                                     label="China"
                                     value={tariffData.china}
                                     name="china"
@@ -148,7 +144,6 @@ const TariffCard = ({tariff, id, group}) => {
 
                             <Grid item xs={12} md={12} lg={12}>
                                 <TextField
-                                    inputMode="numeric"
                                     label="China Ground"
                                     value={tariffData.chinaGround}
                                     name="chinaGround"

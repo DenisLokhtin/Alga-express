@@ -70,7 +70,6 @@ const AdminEditPackage = ({packageAdmin, id}) => {
         height: '',
         length: '',
         urlPackage: packageAdmin.urlPackage,
-        cargoPrice: '',
         cargoWeight: '',
         status: packageAdmin.status,
         priceCurrency: packageAdmin.priceCurrency,
@@ -84,7 +83,6 @@ const AdminEditPackage = ({packageAdmin, id}) => {
             name === 'width' ||
             name === 'length' ||
             name === 'height' ||
-            name === 'cargoPrice' ||
             name === 'cargoWeight') {
             if (event.target.value < 0) {
                 value = 0;
@@ -212,18 +210,6 @@ const AdminEditPackage = ({packageAdmin, id}) => {
                     required
                     variant="outlined"
                     label="Количество"
-                    error={getFieldError('amount')}
-                />
-                <FormElement
-                    xs={11} sm={9} md={9} lg={9}
-                    name="cargoPrice"
-                    type="number"
-                    value={packageEdit.cargoPrice}
-                    onChange={inputChangeHandler}
-                    fullWidth
-                    required
-                    variant="outlined"
-                    label="Стоимость доставки"
                     error={getFieldError('amount')}
                 />
                 <FormElement

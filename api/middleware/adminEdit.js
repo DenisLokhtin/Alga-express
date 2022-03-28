@@ -1,6 +1,8 @@
 const comparisonValue = (width, length, height, weight, price) => {
-    const sizePrice = (width * length * height / 6000) * price;
-    const weightPrice = weight * price;
+    const sizePriceFixed = ((width * length * height / 6000) * price).toFixed(2);
+    const weightPriceFixed = (weight * price).toFixed(2);
+    const sizePrice = Number(sizePriceFixed);
+    const weightPrice = Number(weightPriceFixed);
 
     if (sizePrice >= weightPrice) {
         return sizePrice;
