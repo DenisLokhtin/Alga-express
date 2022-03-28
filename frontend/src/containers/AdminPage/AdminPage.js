@@ -658,7 +658,7 @@ const AdminPage = () => {
                         ...buyoutsColumns,
 
                         {
-                            field: 'image',
+                            field: 'Изображение',
                             renderCell: (params => (
                                     <IconButton
                                         onClick={() => {

@@ -4,6 +4,7 @@ import Grid from "@mui/material/Grid";
 import CloseIcon from '@mui/icons-material/Close';
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import ZoomInIcon from '@mui/icons-material/ZoomIn';
 
 const styles = {
     card: {
@@ -47,7 +48,7 @@ const ImageModal = ({open, onClose, data}) => {
 
                                 <Grid item >
                                     <Button component='a' href={data.image} target='_blank'>
-                                        zoom
+                                        <ZoomInIcon sx={{fontSize: 40}}/>
                                     </Button>
                                 </Grid>
 
