@@ -74,7 +74,7 @@ const useStyles = makeStyles(() => ({
         paddingTop: '155px',
         marginBottom: '30px',
         [theme.breakpoints.down('sm')]: {
-            paddingTop: '90px',
+            paddingTop: '120px',
         },
     },
 }));
@@ -365,7 +365,7 @@ const AdminPage = () => {
                         container
                         component="form"
                         alignItems="center"
-                        justifyContent="space-evenly"
+                        justifyContent="space-around"
                         spacing={1}
                         onSubmit={submitFormHandler}
                     >
@@ -445,7 +445,7 @@ const AdminPage = () => {
                         </Grid>
 
                         <Grid item xs={12} sm={4} md={3}>
-                            <Grid container spacing={1}>
+                            <Grid container spacing={2}>
                                 <Grid item xs={6} md={6} lg={6}>
                                     <ButtonWithProgress
                                         startIcon={<SearchIcon/>}
@@ -455,6 +455,11 @@ const AdminPage = () => {
                                         color="primary"
                                         // className={classes.submit}
                                         // loading={loading}
+                                        sx={{
+                                            margin: {
+                                                xs: '15px 0',
+                                            },
+                                        }}
                                         disabled={!(valueSelect.name || periodDate.from)}
                                     >
                                         Найти
@@ -469,6 +474,11 @@ const AdminPage = () => {
                                         color="primary"
                                         onClick={clearHandler}
                                         startIcon={<RestartAltIcon/>}
+                                        sx={{
+                                            margin: {
+                                                xs: '15px 0',
+                                            },
+                                        }}
                                         // className={classes.submit}
                                         // loading={loading}
                                     >
@@ -484,8 +494,12 @@ const AdminPage = () => {
                     <Grid
                         container
                         component='form'
-                        justifyContent='space-evenly'
                         alignItems='center'
+                        sx={{
+                            justifyContent: {
+                                sm: 'center',
+                            },
+                        }}
                         spacing={1}
                         onSubmit={submitFormByNumber}
                     >
