@@ -37,7 +37,6 @@ const HomePage = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchAllInformationRequest());
         if (!!messagesEndRef.current) {
             messagesEndRef.current.scrollIntoView({
                 behavior: 'smooth'

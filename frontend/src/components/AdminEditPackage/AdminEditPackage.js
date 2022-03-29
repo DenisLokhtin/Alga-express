@@ -66,11 +66,11 @@ const AdminEditPackage = ({packageAdmin, id}) => {
         amount: packageAdmin.amount,
         price: packageAdmin.price,
         country: packageAdmin.country,
-        width: '',
-        height: '',
-        length: '',
+        width: packageAdmin.width || '',
+        height: packageAdmin.height || '',
+        length: packageAdmin.length || '',
         urlPackage: packageAdmin.urlPackage,
-        cargoWeight: '',
+        cargoWeight: packageAdmin.cargoWeight || '',
         status: packageAdmin.status,
         priceCurrency: packageAdmin.priceCurrency,
     });
@@ -93,7 +93,6 @@ const AdminEditPackage = ({packageAdmin, id}) => {
         setPackageEdit(prevState => ({...prevState, [name]: value}));
     };
 
-    console.log('error', error);
     const getFieldError = fieldName => {
         try {
             return error.errors[fieldName].message;

@@ -124,36 +124,41 @@ const Player = () => {
     return (
         <div className={classes.videoMain} style={{paddingTop: '50px'}}>
 
-            {user && (user.role === 'admin' || user.role === 'superAdmin') && !urlFromYoutube ?
-                <Grid item xs={12} sm={4} md={4} lg={3} className={classes.gridCenter}>
-                    <ButtonWithProgress
-                        type="submit"
-                        variant="outlined"
-                        className={classes.mediaQueriesAddBtn}
-                        loading={loading}
-                        disabled={loading}
-                        component={Link}
-                        to={addPlayer}
-                    >
-                        <AddBoxIcon/> Добавить новое видео
-                    </ButtonWithProgress>
-                </Grid> : ''}
+            <Grid container flexDirection="column" justifyContent="center">
+                {user && (user.role === 'admin' || user.role === 'superAdmin') && !urlFromYoutube ?
+                    <Grid item xs={12} sm={4} md={4} lg={3} className={classes.gridCenter} alignSelf="center">
+                        <ButtonWithProgress
+                            type="submit"
+                            variant="outlined"
+                            className={classes.mediaQueriesAddBtn}
+                            loading={loading}
+                            disabled={loading}
+                            component={Link}
+                            to={addPlayer}
+                        >
+                            <AddBoxIcon/> Добавить новое видео
+                        </ButtonWithProgress>
+                    </Grid> : ''}
 
-            <ReactPlayer
-                config={{
-                    youtube: {
-                        playerVars: {
-                            origin: window.location.origin,
-                            showinfo: 0,
-                            enablejsapi: 1,
-                        },
-                    },
-                }}
-                playing={false}
-                controls={true}
-                url={urlFromYoutube}
-                width='50%'
-            />
+
+                <Grid item xs={12} md={6}>
+                    <ReactPlayer
+                        config={{
+                            youtube: {
+                                playerVars: {
+                                    origin: window.location.origin,
+                                    showinfo: 0,
+                                    enablejsapi: 1,
+                                },
+                            },
+                        }}
+                        playing={false}
+                        controls={true}
+                        url={urlFromYoutube}
+                        width='100%'
+                    />
+                </Grid>
+            </Grid>
 
             <Grid container justifyContent={"center"} sx={{mt: '20px'}}>
                 {user && (user.role === 'admin' || user.role === 'superAdmin') && urlFromYoutube ?

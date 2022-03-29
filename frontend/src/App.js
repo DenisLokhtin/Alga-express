@@ -14,8 +14,6 @@ import SingleNews from "./containers/SingleNews/SingleNews";
 import HomePage from "./containers/HomePage/HomePage";
 import FAQ from "./containers/FAQ/FAQ";
 import AdminEditPackagePage from "./containers/AdminEditPackagePage/AdminEditPackagePage";
-// import OrderHistory from "./containers/OrderHistory/OrderHistory";
-// import SpecificPackage from "./containers/SpecificPackage/SpecificPackage";
 import AddFlight from "./containers/AddFlight/AddFlight";
 import FlightsList from "./containers/FlightsList/FlightsList";
 import UserProfileEdit from "./containers/UserProfileEdit/UserProfileEdit";
@@ -53,14 +51,11 @@ import {
     newsIdCompany,
     newUserRegister,
     orderBuyouts,
-    // packageHistory,
-    // packageInfoId,
     processingTrackNumbersAdmin,
     resetPassword,
     root,
     rulesCompany,
     sitesCompany,
-    tariffs,
     userLogin,
     userPage,
     wareHouseCompany,
@@ -73,7 +68,6 @@ import EditTariffGroup from "./components/EditTariffGroup/EditTariffGroup";
 import WarehousePage from "./components/WarehousePage/WarehousePage";
 import AddWareHouseAdmin from "./components/AddWareHouseAdmin/AddWareHouseAdmin";
 import EditWareHouseAdmin from "./components/EditWareHouseAdmin/EditWareHouseAdmin";
-import TariffsPage from "./containers/TariffPage/TariffPage";
 import ProtectedRoutesForUser from "./components/ProtectedRoutes/ProtectedRoutesForUser/ProtectedRoutesForUser";
 import ProtectedRoutesForAdmin from "./components/ProtectedRoutes/ProtectedRoutesForAdmin/ProtectedRoutesForAdmin";
 import AdminPage from "./containers/AdminPage/AdminPage";
@@ -100,11 +94,9 @@ const App = () => {
                 <Routes>
                     <Route element={<ProtectedRoutesForUser/>}>
                         {/* Routes for registered user admin and superAdmin*/}
-                        {/*<Route path={packageHistory} element={<OrderHistory/>}/>*/}
                         <Route path={newPackageRegister} element={<PackageRegister/>}/>
                         <Route path={editUserProfile} element={<UserProfileEdit/>}/>
                         <Route path={editPackageUser} element={<UserEditPackage/>}/>
-                        {/*<Route path={packageInfoId} element={<SpecificPackage/>}/>*/}
                         <Route path={orderBuyouts} element={<OrderBuyout/>}/>
                         <Route path={userPage} element={<UserPage/>}/>
                         <Route path={editBuyout} element={<EditBuyout/>}/>
@@ -144,7 +136,6 @@ const App = () => {
 
                     {/* Routes for not registered user */}
                     <Route path={wareHouseCompany} element={<WarehousePage/>}/>
-                    <Route path={tariffs} element={<TariffsPage/>}/>
                     <Route path={root} element={<HomePage/>}/>
                     <Route path={faqCompany} element={<FAQ/>}/>
                     <Route path={newUserRegister} element={<Register/>}/>
@@ -157,7 +148,6 @@ const App = () => {
                     <Route path={newsIdCompany} element={<SingleNews/>}/>
                     <Route path={forgotPassword} element={<ForgotPassword/>}/>
                     <Route path={resetPassword} element={<ResetPassword/>}/>
-                    <Route path={sitesCompany} element={<MarketSites/>}/>
                     <Route
                         path="*"
                         element={

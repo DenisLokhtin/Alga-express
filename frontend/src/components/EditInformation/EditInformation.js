@@ -5,7 +5,7 @@ import {Container, FormControl, Grid, InputLabel, MenuItem, Select, TextareaAuto
 import {makeStyles} from "@mui/styles";
 import FormElement from "../UI/Form/FormElement";
 import {createTheme} from "@mui/material/styles";
-import {changeInformationRequest} from "../../store/actions/informationActions";
+import {changeInformationRequest, fetchAllInformationRequest} from "../../store/actions/informationActions";
 
 const theme = createTheme({
     breakpoints: {
@@ -64,10 +64,19 @@ const EditPages = () => {
                 return {...prevState, text: [...arr[0].text], information: data}
             });
         }
-    }, [messagesEndRef, information, data]);
+    }, [messagesEndRef, data, information]);
+
+    useEffect(() => {
+        dispatch(fetchAllInformationRequest());
+    }, [dispatch, data]);
 
     const submitFormHandler = e => {
         e.preventDefault();
+        setChangeArr({
+            information: '',
+            text: [],
+        });
+        setData('');
         dispatch(changeInformationRequest(changedArr));
     };
 
@@ -147,6 +156,7 @@ const EditPages = () => {
                             name="information"
                             required
                             onChange={inputChangeHandler}
+                            value={data}
                         >
                             <MenuItem value={''}/>
                             <MenuItem value={'schedule'}>График работы</MenuItem>
