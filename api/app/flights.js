@@ -97,7 +97,7 @@ router.put('/:id',  auth, permit('admin', 'superAdmin'), async (req, res) => {
     }
 });
 
-router.get('/', auth, permit('admin', 'superAdmin'),async (req, res) => {
+router.get('/', auth, permit('admin', 'superAdmin', 'warehouseman'),async (req, res) => {
     let page = 0;
     let limit = 10;
     let status = null;

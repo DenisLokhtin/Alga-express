@@ -37,6 +37,7 @@ function* informationEditSaga({payload}) {
     try {
         const response = yield axiosApi.put(`/information/${payload.information}`, {text: payload.text});
         yield put(changeInformationSuccess(response.data));
+        yield allInformationSagas();
         toast.success('Информация отредактирована!');
     } catch (e) {
         yield put(changeInformationFailure(e.response.data));
