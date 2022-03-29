@@ -80,7 +80,6 @@ const WarehousemanStatusEdit = () => {
     const user = useSelector(state => state.users.user);
     const dispatch = useDispatch();
     const notFoundTrackNumbers = useSelector(state => state.package.notFoundTrackNumbers);
-    const noFlights = [{_id: 0}];
     const flights = useSelector(state => state.flights.flights);
     const error = useSelector(state => state.package.changeStatusesError);
     const loading = useSelector(state => state.package.changeStatusesLoading);

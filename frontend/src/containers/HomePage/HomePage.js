@@ -2,7 +2,6 @@ import React, {Fragment, useEffect, useRef} from 'react';
 import {makeStyles} from "@mui/styles";
 import NewsPanel from "../../components/NewsPanel/NewsPanel";
 import Carousel from "../../components/Carousel/Carousel";
-import {fetchAllInformationRequest} from "../../store/actions/informationActions";
 import {useDispatch, useSelector} from "react-redux";
 import '../HomePage/HomePage.css';
 import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined';

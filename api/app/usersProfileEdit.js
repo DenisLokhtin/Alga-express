@@ -48,23 +48,21 @@ const storage = multer.diskStorage({
             let index = 0;
             let passport = null;
             try {
-                console.log('pass id:', user_id);
                 passport = await User.findById(user_id);
             } catch (e) {
                 console.log(e);
             }
-            console.log('passport: ', passport);
-
+            let pathNameFile = '';
             if (passport.passport.length > 0) {
                 const str = passport.passport[(req.user.passport.length) - 1].image;
                 const firstIndex = str.indexOf('/', 10);
                 const secondIndex = str.indexOf('_', 10);
                 index = parseInt(str.substr(firstIndex + 1, (secondIndex - firstIndex) - 1)) + 1;
+                pathNameFile = file.fieldname + '/' + index + '_' + dayjs(new Date()).format('DDMMYYYY') + '_' + user_id + path.extname(file.originalname);
+            } else {
+                pathNameFile = file.fieldname + '/' + 0 + '_' + dayjs(new Date()).format('DDMMYYYY') + '_' + user_id + path.extname(file.originalname);
             }
-            for (const key in req.files['passport']) {
-                cb(null, file.fieldname + '/' + index + '_' + dayjs(new Date()).format('DDMMYYYY') + '_' + user_id + path.extname(file.originalname))
-                index++;
-            }
+            cb(null, pathNameFile);
         }
 
         if (file.fieldname === 'payment') {
@@ -149,12 +147,11 @@ router.put('/:id', auth, upload.fields([
         const userData = {};
         try {
             const user = await User.findById(req.params.id);
-
             for (const key in req.files) {
                 userData.passport = user.passport;
                 if (key === 'passport') {
-                    Object.keys(req.files['passport']).map(keys => {
-                        const pathname = 'uploads/' + req.files['passport'][keys].filename;
+                    Object.keys(req.files[key]).map((keys, i) => {
+                        const pathname = 'uploads/' + req.files[key][keys].filename;
                         userData.passport.push({image: pathname});
                     });
 
@@ -188,7 +185,8 @@ router.put('/:id', auth, upload.fields([
 
 router.post('/payment', auth, upload.single('payment'), async (req, res) => {
     const paymentData = {};
-
+    console.log(req.body);
+    console.log(req.file);
     try {
         if (req.body.payment) {
             paymentData.description = req.body.payment;

@@ -182,7 +182,6 @@ const UserProfileEdit = () => {
             ...userData.phone,
         ]);
 
-        userData && setPassport([...userData.passport]);
     }, [userData, user]);
 
     useEffect(() => {
@@ -236,22 +235,27 @@ const UserProfileEdit = () => {
         }
     };
 
-    const fileChangeHandler = e => {
+    const fileChangeAvatarHandler = e => {
         const name = e.target.name;
         const files = e.target.files;
 
-        if (name === 'avatar') {
-            setDataUser(prevState => {
-                return {...prevState, [name]: files[0]};
-            });
-        }
+        setDataUser(prevState => {
+            return {...prevState, [name]: files[0]};
+        });
 
+    };
+
+    const fileChangePassportHandler = e => {
+        setPassport([]);
+        const files = e.target.files;
+        console.log(files);
         for (let i = 0; i < files.length; i++) {
             setPassport(prevState => ([
                 ...prevState,
                 files[i]
             ]))
         }
+
     };
 
     const submitFormProfileHandler = e => {
@@ -292,11 +296,14 @@ const UserProfileEdit = () => {
         dispatch(editPassportRequest({id, data: formData}));
     };
 
-    if (dataUser.avatar) {
+    if (userData && userData.avatar) {
         imageURL = apiURL + '/' + userData.avatar;
+    } else {
+        imageURL = null;
     }
 
-    if (userData && userData.passport) {
+
+    if (userData && (userData.passport.length > 0)) {
         userData.passport.forEach((pas, i) => {
             imagesPassport[i] = apiURL + '/' + pas.image;
         })
@@ -320,7 +327,8 @@ const UserProfileEdit = () => {
             </Grid>
 
             <Grid container justifyContent="center">
-                <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')} style={{margin: '20px 0'}}>
+                <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}
+                           style={{margin: '20px 0'}}>
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon/>}
                         aria-controls="panel1bh-content"
@@ -484,7 +492,7 @@ const UserProfileEdit = () => {
                                             name="avatar"
                                             type="file"
                                             fullWidth
-                                            onChange={fileChangeHandler}
+                                            onChange={fileChangeAvatarHandler}
                                             error={getFieldError('avatar')}
                                         >
                                             <Button>Text</Button>
@@ -543,7 +551,7 @@ const UserProfileEdit = () => {
                                         type="file"
                                         multiple="multiple"
                                         fullWidth
-                                        onChange={fileChangeHandler}
+                                        onChange={fileChangePassportHandler}
                                         error={getFieldError('passport')}
                                     >
                                     </FileInput>
@@ -563,10 +571,10 @@ const UserProfileEdit = () => {
                                 <Paper
                                     className={classes.padding}
                                 >
-                                    <ImageList sx={{maxWidth: 500, minHeight: 450}}>
-                                        {imagesPassport.map(passport => (
+                                    <ImageList sx={{width: 500, minHeight: 450}}>
+                                        {imagesPassport.map((passport, index) => (
                                             <Grid item
-                                                  key={passport}
+                                                  key={index}
                                             >
                                                 <ImageListItem>
                                                     <img

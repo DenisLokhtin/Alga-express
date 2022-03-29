@@ -174,7 +174,6 @@ router.post('/', auth, packageValidate, permit('admin', 'superAdmin', 'user'), a
 
 router.put('/', auth, permit('admin', 'warehouseman', 'superAdmin'), async (req, res) => {
     const notFoundTrackNumbers = [];
-    console.log(req.body);
     const separatedBySpaces = req.body.trackNumbers.split(' ');
 
     const trackNumbersData = separatedBySpaces.map(trackNumber => (
