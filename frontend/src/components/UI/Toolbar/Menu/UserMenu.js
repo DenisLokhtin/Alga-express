@@ -53,6 +53,7 @@ const userSettings = [
 const superAdminSettings = [
     {url: adminPagePath, title: 'Администратор', icon: <ManageAccountsIcon/>},
     {url: editUserProfile, title: 'Профиль пользователей', icon: <ManageAccountsIcon/>},
+    {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon/>},
     // {url: packageHistory, title: 'История всех заказов', icon: <HistoryIcon/>},
     // {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon/>},
     // {url: orderBuyouts, title: 'Заказать выкуп', icon: <ShoppingCartIcon/>},

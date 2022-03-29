@@ -30,7 +30,7 @@ export const packagesColumns = [
     },
     {
         field: 'title',
-        headerName: 'Заголовок',
+        headerName: 'Название',
         flex: 1,
         minWidth: 200,
         headerAlign: 'center',
@@ -96,19 +96,6 @@ export const packagesColumns = [
 ];
 
 export const buyoutsColumns = [
-    {
-        field: 'description',
-        headerName: 'Описание',
-        flex: 1,
-        minWidth: 150,
-        headerAlign: 'center',
-        align: 'center',
-        renderCell: params => (
-            <div onClick={() => console.log('Click!')}>
-                qwe
-            </div>
-        )
-    },
     {
         field: 'url',
         headerName: 'Сайт товара',
