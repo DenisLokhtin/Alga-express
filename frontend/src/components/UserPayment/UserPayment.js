@@ -154,7 +154,7 @@ const UserPayment = () => {
                     sx={{marginBottom: '15px'}}
                     className={classes.packageMainTitle}
                 >
-                    Оплата Пользователя
+                    Пополнение баланса
                 </Typography>
                 <Grid
                     component="form"
@@ -182,11 +182,11 @@ const UserPayment = () => {
                         xs={12} sm={9.5} md={9.5} lg={9.5}
                     >
                         <label className={classes.label}>
-                            Оплата
                             <FileInput
                                 name="payment"
                                 type="file"
                                 fullWidth
+                                label="Изображение"
                                 required={true}
                                 onChange={fileChangeHandler}
                                 error={getFieldError('payment')}

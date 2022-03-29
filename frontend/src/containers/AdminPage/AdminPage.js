@@ -588,7 +588,7 @@ const AdminPage = () => {
                                     getActions: (params) => [
                                         <Button
                                             variant="outlined"
-                                            disabled={params.row.status !== "Доставлено"}
+                                            disabled={params.row.status !== "Прибыл"}
                                             onClick={() => {
                                                 setOpenDone(prevState => ({
                                                     ...prevState,
