@@ -560,6 +560,7 @@ const AdminPage = () => {
                                         !params.row.delivery ?
                                             <Button
                                                 startIcon={<DeliveryDiningIcon fontSize="large"/>}
+                                                disabled={params.row.status === "Выдан"}
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                     setPackageData({...params.row});
@@ -571,6 +572,7 @@ const AdminPage = () => {
 
                                             <Button
                                                 startIcon={<DeliveryDiningIcon fontSize="large"/>}
+                                                disabled={params.row.status === "Выдан"}
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                     setPackageData({...params.row});

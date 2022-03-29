@@ -237,6 +237,7 @@ const UserPage = () => {
                                     !params.row.delivery ?
                                         <Button
                                             startIcon={<DeliveryDiningIcon fontSize="large"/>}
+                                            disabled={params.row.status === "Выдан"}
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 setPackageData({...params.row});
@@ -248,6 +249,7 @@ const UserPage = () => {
 
                                         <Button
                                             startIcon={<DeliveryDiningIcon fontSize="large"/>}
+                                            disabled={params.row.status === "Выдан"}
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 setPackageData({...params.row});
