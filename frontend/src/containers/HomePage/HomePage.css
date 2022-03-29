@@ -191,7 +191,6 @@
 
 .website-block-container {
     display: flex;
-    justify-content: space-between;
     text-align: center;
 }
 

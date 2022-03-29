@@ -103,6 +103,11 @@ export const buyoutsColumns = [
         minWidth: 150,
         headerAlign: 'center',
         align: 'center',
+        renderCell: params => (
+            <div onClick={() => console.log('Click!')}>
+                qwe
+            </div>
+        )
     },
     {
         field: 'url',
