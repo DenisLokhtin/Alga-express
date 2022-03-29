@@ -60,7 +60,7 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 900,
+    maxWidth: 1200,
     bgcolor: 'background.paper',
     boxShadow: 24,
     p: 4,
@@ -301,8 +301,8 @@ export default function BasicTabs() {
                 </Tabs>
                 {user && user.role === 'admin' && (
                     <div style={{textAlign: 'center'}}>
-                        <Button sx={{display: 'inline', width: 100, border: '1px solid grey', margin: '10px'}}
-                                variant="text" onClick={handleOpen}>EDIT</Button>
+                        <Button sx={{display: 'inline', maxWidth: 150, border: '1px solid grey', margin: '10px'}}
+                                variant="text" onClick={handleOpen}>Редактировать</Button>
                     </div>
                 )}
             </Box>

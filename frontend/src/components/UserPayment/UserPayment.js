@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Container, Grid, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
-import {addUserPaymentRequest} from "../../store/actions/usersActions";
+import {addUserPaymentRequest, setTabValue} from "../../store/actions/usersActions";
 import FormElement from "../UI/Form/FormElement";
 import FileInput from "../UI/FileInput/FileInput";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
@@ -117,6 +117,7 @@ const UserPayment = () => {
             formData.append('payment', pay[key]);
         });
         dispatch(addUserPaymentRequest(formData));
+        dispatch(setTabValue(2));
     };
 
     const getFieldError = fieldName => {
@@ -154,7 +155,7 @@ const UserPayment = () => {
                     sx={{marginBottom: '15px'}}
                     className={classes.packageMainTitle}
                 >
-                    Оплата Пользователя
+                    Пополнение баланса
                 </Typography>
                 <Grid
                     component="form"
@@ -182,11 +183,11 @@ const UserPayment = () => {
                         xs={12} sm={9.5} md={9.5} lg={9.5}
                     >
                         <label className={classes.label}>
-                            Оплата
                             <FileInput
                                 name="payment"
                                 type="file"
                                 fullWidth
+                                label="Изображение"
                                 required={true}
                                 onChange={fileChangeHandler}
                                 error={getFieldError('payment')}

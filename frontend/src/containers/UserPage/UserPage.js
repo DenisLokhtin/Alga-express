@@ -23,14 +23,14 @@ import {createTheme} from "@mui/material/styles";
 import {makeStyles} from "@mui/styles";
 import EditIcon from "@mui/icons-material/Edit";
 import {Link} from "react-router-dom";
-import {editBuyout} from "../../paths";
+import {editBuyout, newPackageRegister, orderBuyouts} from "../../paths";
 import DeliveryModal from "../../components/DeliveryModal/DeliveryModal";
 import Requisites from "../../components/Requisites/Requisites";
 import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
 import Button from "@mui/material/Button";
 import DeliveryInfo from "../../components/DeliveryInfo/DeliveryInfo";
 import {setTabValue} from "../../store/actions/usersActions";
-
+import AddIcon from '@mui/icons-material/Add';
 
 function a11yProps(index) {
     return {
@@ -120,7 +120,7 @@ const UserPage = () => {
             status: statuses[order.status],
             name: order.user.name,
             amount: order.amount,
-            price: order.price ? {price: order.price, icon: valueIcon(order.priceCurrency)} : {price: 'Нет'},
+            price: order.cargoPrice ? order.cargoPrice + ' $': 'Нет',
             delivery: order.delivery || null,
             user: order.user.name,
             arrived_date: order.flight && order.flight.arrived_date ? dayjs(order.flight.arrived_date).format('DD-MM-YYYY') : 'Не назначен',
@@ -227,19 +227,6 @@ const UserPage = () => {
                         columns={[
                             ...packagesColumns,
                             {
-                                field: 'price',
-                                headerName: 'Стоимость доставки',
-                                flex: 1,
-                                minWidth: 100,
-                                headerAlign: 'center',
-                                align: 'center',
-                                renderCell: params => {
-                                    return <p style={{display: 'flex', alignItems: 'center'}}
-                                    >{params.value.price} {params.value.icon}
-                                    </p>
-                                },
-                            },
-                            {
                                 field: 'delivery',
                                 headerName: 'Доставка',
                                 flex: 1,
@@ -250,6 +237,7 @@ const UserPage = () => {
                                     !params.row.delivery ?
                                         <Button
                                             startIcon={<DeliveryDiningIcon fontSize="large"/>}
+                                            disabled={params.row.status === "Выдан"}
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 setPackageData({...params.row});
@@ -261,6 +249,7 @@ const UserPage = () => {
 
                                         <Button
                                             startIcon={<DeliveryDiningIcon fontSize="large"/>}
+                                            disabled={params.row.status === "Выдан"}
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 setPackageData({...params.row});
@@ -286,10 +275,19 @@ const UserPage = () => {
                         }}
                         loading={packagesLoading}
                         toolbarElements={
-                            <SwitchElement
-                                checked={packagesHistory}
-                                onChange={(e) => setPackagesHistory(e.target.checked)}
-                            />
+                            <>
+                                <Button
+                                    component={Link}
+                                    to={newPackageRegister}
+                                    startIcon={<AddIcon/>}
+                                >
+                                    Оформить заказ
+                                </Button>
+                                <SwitchElement
+                                    checked={packagesHistory}
+                                    onChange={(e) => setPackagesHistory(e.target.checked)}
+                                />
+                            </>
                         }
                     />
 
@@ -359,10 +357,19 @@ const UserPage = () => {
                         }}
                         loading={buyoutsLoading}
                         toolbarElements={
-                            <SwitchElement
-                                checked={buyoutsHistory}
-                                onChange={(e) => setBuyoutsHistory(e.target.checked)}
-                            />
+                            <>
+                                <Button
+                                    component={Link}
+                                    to={orderBuyouts}
+                                    startIcon={<AddIcon/>}
+                                >
+                                    Заказать выкуп
+                                </Button>
+                                <SwitchElement
+                                    checked={buyoutsHistory}
+                                    onChange={(e) => setBuyoutsHistory(e.target.checked)}
+                                />
+                            </>
                         }
                     />
                     <ImageModal open={openBuyoutImg} onClose={() => setOpenBuyoutImg(false)} data={imgBuyout}/>

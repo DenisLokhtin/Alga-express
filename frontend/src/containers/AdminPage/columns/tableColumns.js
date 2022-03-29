@@ -30,7 +30,7 @@ export const packagesColumns = [
     },
     {
         field: 'title',
-        headerName: 'Заголовок',
+        headerName: 'Название',
         flex: 1,
         minWidth: 200,
         headerAlign: 'center',
@@ -83,18 +83,19 @@ export const packagesColumns = [
                       style={{textDecoration: 'none', color: 'inherit'}}>Редактировать</Link>
             </Button>
         ]
-    }
-];
-
-export const buyoutsColumns = [
+    },
     {
-        field: 'description',
-        headerName: 'Описание',
+        field: "price",
+        headerName: 'Цена доставки',
         flex: 1,
-        minWidth: 150,
+        minWidth: 120,
         headerAlign: 'center',
         align: 'center',
     },
+
+];
+
+export const buyoutsColumns = [
     {
         field: 'url',
         headerName: 'Сайт товара',

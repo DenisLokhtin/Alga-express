@@ -43,6 +43,7 @@ export function* paymentAccepted({payload}) {
         yield put(paymentAcceptedSuccess());
         toast.success("Оплата подтверждена");
     } catch (e) {
+        console.log('ya tut => ', e);
         toast.error(e.response.data.error);
         yield put(fetchPaymentFailure(e.response.data));
     }

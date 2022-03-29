@@ -146,46 +146,47 @@ const FlightListItem = ({flight, id, page, limit}) => {
                         </Grid>
                     </Grid>
 
-                    <Grid
-                        container
-                        flexDirection='column'
-                        spacing={1}
-                        justifyContent='space-evenly'
-                        alignContent="center"
-                    >
-                        <Grid item>
-                            <Button
-                                fullWidth
-                                variant='contained'
-                                onClick={edit}
-                            >
-                                Редактировать
-                            </Button>
-                        </Grid>
+                    {flight.status === "ACTIVE" ?
+                        <Grid
+                            container
+                            flexDirection='column'
+                            spacing={1}
+                            justifyContent='space-evenly'
+                            alignContent="center"
+                        >
+                            <Grid item>
+                                <Button
+                                    fullWidth
+                                    variant='contained'
+                                    onClick={edit}
+                                >
+                                    Редактировать
+                                </Button>
+                            </Grid>
 
-                        <Grid item>
-                            <Button
-                                disabled={editStatus}
-                                fullWidth
-                                variant='contained'
-                                onClick={statusChanger}
-                                color={flightData.status === 'ACTIVE' ? "success" : "secondary"}
-                            >
-                                {flightStatuses[flightData.status]}
-                            </Button>
-                        </Grid>
+                            <Grid item>
+                                <Button
+                                    disabled={editStatus}
+                                    fullWidth
+                                    variant='contained'
+                                    onClick={statusChanger}
+                                    color={flightData.status === 'ACTIVE' ? "success" : "secondary"}
+                                >
+                                    {flightStatuses[flightData.status]}
+                                </Button>
+                            </Grid>
 
-                        <Grid item>
-                            <Button
-                                fullWidth
-                                disabled={editStatus || flightData.number.length === 0}
-                                variant='contained'
-                                onClick={saveAfterEdit}
-                            >
-                                Сохранить
-                            </Button>
-                        </Grid>
-                    </Grid>
+                            <Grid item>
+                                <Button
+                                    fullWidth
+                                    disabled={editStatus || flightData.number.length === 0}
+                                    variant='contained'
+                                    onClick={saveAfterEdit}
+                                >
+                                    Сохранить
+                                </Button>
+                            </Grid>
+                        </Grid> : null}
                 </CardContent>
             </Card>
         </Grid>

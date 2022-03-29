@@ -40,8 +40,8 @@ import {apiURL} from "../../../../config";
 import {createTheme} from "@mui/material/styles";
 
 const userSettings = [
-    {url: editUserProfile, title: 'Личный кабинет', icon: <ManageAccountsIcon/>},
-    {url: userPage, title: 'Моя страница', icon: <HomeIcon/>},
+    {url: editUserProfile, title: 'Мой профиль', icon: <ManageAccountsIcon/>},
+    {url: userPage, title: 'Мой кабинет', icon: <HomeIcon/>},
     // {url: packageHistory, title: 'История заказов', icon: <HistoryIcon/>},
     {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon/>},
     {url: orderBuyouts, title: 'Заказать выкуп', icon: <ShoppingCartIcon/>},
@@ -52,10 +52,11 @@ const userSettings = [
 
 const superAdminSettings = [
     {url: adminPagePath, title: 'Администратор', icon: <ManageAccountsIcon/>},
-    {url: editUserProfile, title: 'Личный кабинет', icon: <ManageAccountsIcon/>},
+    {url: editUserProfile, title: 'Профиль пользователей', icon: <ManageAccountsIcon/>},
+    {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon/>},
     // {url: packageHistory, title: 'История всех заказов', icon: <HistoryIcon/>},
-    // {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon/>},
-    // {url: orderBuyouts, title: 'Заказать выкуп', icon: <ShoppingCartIcon/>},
+    {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon/>},
+    {url: orderBuyouts, title: 'Оформить выкуп', icon: <ShoppingCartIcon/>},
     // {url: listBuyouts, title: 'Список заказов', icon: <FactCheckIcon/>},
     // {url: addUserPayment, title: 'Пополнить баланс', icon: <PaidIcon/>},
     // {url: packageInfo, title: 'Информация доставки', icon: <InfoIcon/>},
@@ -76,7 +77,7 @@ const warehousemanSetting = [
 
 const adminSettings = [
     {url: adminPagePath, title: 'Администратор', icon: <ManageAccountsIcon/>},
-    {url: editUserProfile, title: 'Личный кабинет пользователей', icon: <ManageAccountsIcon/>},
+    {url: editUserProfile, title: 'Профиль пользователей', icon: <ManageAccountsIcon/>},
     // {url: packageHistory, title: 'История всех заказов', icon: <HistoryIcon/>},
     {url: newPackageRegister, title: 'Оформить заказ', icon: <AddIcon/>},
     {url: listFlightAdmin, title: 'Рейсы', icon: <FlightIcon/>},

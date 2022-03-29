@@ -5,7 +5,10 @@ import {
     FormControl,
     Grid,
     InputLabel,
-    List, ListItem, ListItemIcon, ListItemText,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
     MenuItem,
     Select,
     Typography
@@ -40,7 +43,6 @@ const theme = createTheme({
         },
     },
 });
-
 
 const useStyles = makeStyles(() => ({
     breakpoints: {
@@ -128,7 +130,7 @@ const WarehousemanStatusEdit = () => {
 
     return (
         <Container ref={messagesEndRef} className={classes.container} maxWidth="md">
-            <Grid container component="form" onSubmit={submit} justifyContent="center" spacing={3}>
+            <Grid container component="form" onSubmit={submit} justifyContent="center" spacing={2}>
                 <Grid item xs={12} sm={8} md={7} lg={7}>
                     <Typography
                         variant="h4"
@@ -178,23 +180,27 @@ const WarehousemanStatusEdit = () => {
                 </Grid>
                 <Grid item xs={12} sm={8} md={7} lg={7}>
                     {packageStatus.status === 'ON_WAY' ? (
-                        <FormControl fullWidth>
-                            <InputLabel id="demo-simple-select-label">Номер Рейса</InputLabel>
-                            <Select
-                                name="id"
-                                label="Номер Рейса"
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={flightSelect.id}
-                                onChange={onFlightChange}
-                            >
-                                {flights.map(flight => (
-                                    <MenuItem key={flight._id} value={flight._id}>
-                                        {`"Номер Рейса": ${flight.number} | "Дата Вылета": ${dayjs(flight.depart_date).format('DD-MM-YYYY')}`}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
+                        flights.length === 0 ? (
+                            <b>Нет активных рейсов</b>
+                        ) : (
+                            <FormControl fullWidth>
+                                <InputLabel id="demo-simple-select-label">Номер Рейса</InputLabel>
+                                <Select
+                                    name="id"
+                                    label="Номер Рейса"
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    value={flightSelect.id}
+                                    onChange={onFlightChange}
+                                >
+                                    {flights.map(flight => (
+                                        <MenuItem key={flight._id} value={flight._id}>
+                                            {`"Номер Рейса": ${flight.number} | "Дата Вылета": ${dayjs(flight.depart_date).format('DD-MM-YYYY')}`}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        )
                     ) : null}
                 </Grid>
                 <Grid item xs={12} sm={8} md={7} lg={7}>

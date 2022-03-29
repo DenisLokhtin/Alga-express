@@ -124,7 +124,7 @@ function* getOrdersHistorySagas({payload: pageData}) {
         yield put(getOrdersHistorySuccess(response.data));
     } catch (error) {
         yield put(getOrdersHistoryError(error.response.statusText || error.message));
-        toast.error(error.response.statusText || error.message, {
+        toast.error(error.response.data.error || error.response.data.error || error.message, {
             autoClose: 5000,
         });
     }

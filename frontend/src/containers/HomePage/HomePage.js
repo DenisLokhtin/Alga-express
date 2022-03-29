@@ -1,19 +1,16 @@
-import React, {Fragment, useEffect, useRef, useState} from 'react';
+import React, {Fragment, useEffect, useRef} from 'react';
 import {makeStyles} from "@mui/styles";
 import NewsPanel from "../../components/NewsPanel/NewsPanel";
 import Carousel from "../../components/Carousel/Carousel";
-import {fetchAllInformationRequest} from "../../store/actions/informationActions";
 import {useDispatch, useSelector} from "react-redux";
 import '../HomePage/HomePage.css';
 import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined';
 import InventoryOutlinedIcon from '@mui/icons-material/InventoryOutlined';
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
 import mainPicture from '../../assets/images/mainPic.jpg';
-import {Grid, IconButton, Link} from "@mui/material";
+import {Grid, Link} from "@mui/material";
 import {apiURL} from "../../config";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import AppWindow from "../../components/UI/AppWindow/AppWindow";
-import {deleteMarketRequest, fetchMarketRequest} from "../../store/actions/marketActions";
+import {fetchMarketRequest} from "../../store/actions/marketActions";
 
 const useStyles = makeStyles(() => ({
     breakpoints: {
@@ -33,16 +30,12 @@ const useStyles = makeStyles(() => ({
 
 const HomePage = () => {
     const classes = useStyles();
-    const user = useSelector(state => state.users.user);
     const messagesEndRef = useRef(null);
     const market = useSelector(state => state.market.sites);
 
-    const [open, setOpen] = useState(false);
     const dispatch = useDispatch();
-    const [deleteElement, setDeleteElement] = useState('');
 
     useEffect(() => {
-        dispatch(fetchAllInformationRequest());
         if (!!messagesEndRef.current) {
             messagesEndRef.current.scrollIntoView({
                 behavior: 'smooth'
@@ -50,15 +43,6 @@ const HomePage = () => {
         }
         dispatch(fetchMarketRequest());
     }, [messagesEndRef, dispatch]);
-
-    const deleteMarket = (id) => {
-        dispatch(deleteMarketRequest(id));
-        setOpen(false);
-        setDeleteElement(prevState => {
-            prevState = '';
-            return prevState
-        });
-    };
 
     return (
         <>
@@ -141,23 +125,6 @@ const HomePage = () => {
                                 <Link href={m.url} target={'_blank'} rel={'noopener'}>
                                     <img className="website-block-container__img" src={`${apiURL}/${m.image}`} alt="website"/>
                                 </Link>
-                                {user && (user.role === 'admin' || user.role === 'superAdmin') && (
-                                    <>
-                                        <IconButton style={{position: "absolute", top: '0', right: '-20px'}}
-                                                    onClick={() => {
-                                                        setOpen(true);
-                                                        setDeleteElement(prevState => {
-                                                            prevState = m._id;
-                                                            return prevState;
-                                                        });
-                                                    }
-                                                    }>
-                                            <HighlightOffIcon/>
-                                        </IconButton>
-                                        <AppWindow open={open} onClose={() => setOpen(false)}
-                                                   confirm={() => deleteMarket(deleteElement)}/>
-                                    </>
-                                )}
                             </div>
                         </Fragment>
                     ))}

@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Container, IconButton, TextField} from "@mui/material";
+import {Container, IconButton, Modal, TextField, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchCurrencies} from "../../store/actions/currenciesActions";
 import CurrenciesCard from "../../components/CurrenciesCard/CurrenciesCard";
@@ -58,6 +58,18 @@ const theme = createTheme({
     },
 });
 
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 350,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+};
+
 const useStyles = makeStyles(() => ({
     breakpoints: {
         values: {
@@ -102,6 +114,16 @@ const AdminPage = () => {
     const [openModal, setOpenModal] = useState(false);
     const [openInfo, setOpenInfo] = useState(false);
     const [packageData, setPackageData] = useState(null);
+
+    const [openDescription, setOpenDescription] = React.useState(false);
+    const handleOpenDescription = () => setOpenDescription(true);
+    const handleCloseDescription = () => setOpenDescription(false);
+    const [currentDescription, setCurrentDescription] = useState('');
+
+    const changeCurrentDescription = description => {
+        setCurrentDescription(description);
+        handleOpenDescription();
+    };
 
     const [img, setImg] = useState(null);
     const[imgBuyout,setImgBuyout]=useState(null);
@@ -178,8 +200,8 @@ const AdminPage = () => {
             amount: order.amount,
             delivery: order.delivery || null,
             user: order.user.name,
-            // price: order.cargoPrice ? order.cargoPrice : {price: 'Нет'},
-            price: order.cargoPrice,
+            price: order.cargoPrice ? order.cargoPrice + ' $': 'Нет',
+            // price: order.cargoPrice,
         }
     });
     const buyoutsRows = buyouts.map(buyout => {
@@ -550,22 +572,6 @@ const AdminPage = () => {
                             columns={[
                                 ...packagesColumns,
                                 {
-                                    field: 'price',
-                                    headerName: 'Цена доставки',
-                                    flex: 1,
-                                    minWidth: 110,
-                                    headerAlign: 'center',
-                                    align: 'center',
-                                    renderCell: params => {
-                                        const order = packages.find(order => order._id === params.id);
-                                        return (
-                                            <div style={{display: 'flex', alignItems: 'center'}}>
-                                                {order.cargoPrice} $
-                                            </div>
-                                        )
-                                    }
-                                },
-                                {
                                     field: 'delivery',
                                     headerName: 'Доставка',
                                     flex: 1,
@@ -576,6 +582,7 @@ const AdminPage = () => {
                                         !params.row.delivery ?
                                             <Button
                                                 startIcon={<DeliveryDiningIcon fontSize="large"/>}
+                                                disabled={params.row.status === "Выдан"}
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                     setPackageData({...params.row});
@@ -587,6 +594,7 @@ const AdminPage = () => {
 
                                             <Button
                                                 startIcon={<DeliveryDiningIcon fontSize="large"/>}
+                                                disabled={params.row.status === "Выдан"}
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                     setPackageData({...params.row});
@@ -604,7 +612,7 @@ const AdminPage = () => {
                                     getActions: (params) => [
                                         <Button
                                             variant="outlined"
-                                            disabled={params.row.status !== "Доставлено"}
+                                            disabled={params.row.status !== "Прибыл"}
                                             onClick={() => {
                                                 setOpenDone(prevState => ({
                                                     ...prevState,
@@ -683,7 +691,33 @@ const AdminPage = () => {
                     rows={buyoutsRows}
                     columns={[
                         ...buyoutsColumns,
-
+                        {
+                            field: 'description',
+                            headerName: 'Описание',
+                            flex: 1,
+                            minWidth: 150,
+                            headerAlign: 'center',
+                            align: 'center',
+                            renderCell: params => {
+                                return (
+                                    <div>
+                                        <span onClick={() => changeCurrentDescription(params.row.description)}>{params.row.description}</span>
+                                        <Modal
+                                            open={openDescription}
+                                            onClose={handleCloseDescription}
+                                            aria-labelledby="modal-modal-title1"
+                                            aria-describedby="modal-modal-description1"
+                                        >
+                                            <Box sx={style}>
+                                                <Typography id="modal-modal-description1" sx={{ mt: 2 }}>
+                                                    {currentDescription}
+                                                </Typography>
+                                            </Box>
+                                        </Modal>
+                                    </div>
+                                )
+                            }
+                        },
                         {
                             field: 'Изображение',
                             renderCell: (params => (
@@ -798,7 +832,7 @@ const AdminPage = () => {
                                                         id: params.row.id,
                                                     }));
                                                 } else {
-                                                    toast.error('Укажите сумму!');
+                                                    toast.error('Укажите сумму или введите положительные числа!');
                                                 }
                                                 setUpdate(!update);
                                             }}

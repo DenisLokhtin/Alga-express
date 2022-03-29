@@ -64,10 +64,15 @@ const EditPages = () => {
                 return {...prevState, text: [...arr[0].text], information: data}
             });
         }
-    }, [messagesEndRef, information, data]);
+    }, [messagesEndRef, data, information]);
 
     const submitFormHandler = e => {
         e.preventDefault();
+        setChangeArr({
+            information: '',
+            text: [],
+        });
+        setData('');
         dispatch(changeInformationRequest(changedArr));
     };
 
@@ -147,6 +152,7 @@ const EditPages = () => {
                             name="information"
                             required
                             onChange={inputChangeHandler}
+                            value={data}
                         >
                             <MenuItem value={''}/>
                             <MenuItem value={'schedule'}>График работы</MenuItem>

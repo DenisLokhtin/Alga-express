@@ -232,7 +232,7 @@ export function* logoutUserSaga() {
         if (e.response && e.response.data) {
             yield  put(loginUserFailure(e.response.data));
         } else {
-            yield put(loginUserFailure({message: "No internet connexion"}));
+            yield put(loginUserFailure({message: "No internet connection"}));
         }
     }
 }

@@ -66,11 +66,11 @@ const AdminEditPackage = ({packageAdmin, id}) => {
         amount: packageAdmin.amount,
         price: packageAdmin.price,
         country: packageAdmin.country,
-        width: '',
-        height: '',
-        length: '',
+        width: packageAdmin.width || '',
+        height: packageAdmin.height || '',
+        length: packageAdmin.length || '',
         urlPackage: packageAdmin.urlPackage,
-        cargoWeight: '',
+        cargoWeight: packageAdmin.cargoWeight || '',
         status: packageAdmin.status,
         priceCurrency: packageAdmin.priceCurrency,
     });
@@ -93,7 +93,6 @@ const AdminEditPackage = ({packageAdmin, id}) => {
         setPackageEdit(prevState => ({...prevState, [name]: value}));
     };
 
-    console.log('error', error);
     const getFieldError = fieldName => {
         try {
             return error.errors[fieldName].message;
@@ -157,27 +156,27 @@ const AdminEditPackage = ({packageAdmin, id}) => {
                         <FormHelperText error={true}>{error?.errors?.['country']?.message}</FormHelperText>
                     </FormControl>
                 </Grid>
-                <Grid item xs={11} sm={9} md={9} lg={9}>
-                    <FormControl variant="outlined" fullWidth error={Boolean(getFieldError('status'))}>
-                        <InputLabel id="demo-controlled-open-select-label">Status</InputLabel>
-                        <Select
-                            labelId="demo-controlled-open-select-label"
-                            id="demo-controlled-open-select"
-                            value={packageEdit.status}
-                            label="Статус"
-                            name="status"
-                            required
-                            onChange={inputChangeHandler}
-                        >
-                            <MenuItem value={'REGISTERED'}>Оформлен</MenuItem>
-                            <MenuItem value={'ON_WAREHOUSE'}>На складе</MenuItem>
-                            <MenuItem value={'ON_WAY'}>В пути</MenuItem>
-                            <MenuItem value={'DELIVERED'}>Прибыл</MenuItem>
-                            <MenuItem value={'DONE'}>Выдан</MenuItem>
-                        </Select>
-                        <FormHelperText error={true}>{error?.errors?.['status']?.message}</FormHelperText>
-                    </FormControl>
-                </Grid>
+                {/*<Grid item xs={11} sm={9} md={9} lg={9}>*/}
+                {/*    <FormControl variant="outlined" fullWidth error={Boolean(getFieldError('status'))}>*/}
+                {/*        <InputLabel id="demo-controlled-open-select-label">Status</InputLabel>*/}
+                {/*        <Select*/}
+                {/*            labelId="demo-controlled-open-select-label"*/}
+                {/*            id="demo-controlled-open-select"*/}
+                {/*            value={packageEdit.status}*/}
+                {/*            label="Статус"*/}
+                {/*            name="status"*/}
+                {/*            required*/}
+                {/*            onChange={inputChangeHandler}*/}
+                {/*        >*/}
+                {/*            <MenuItem value={'REGISTERED'}>Оформлен</MenuItem>*/}
+                {/*            <MenuItem value={'ON_WAREHOUSE'}>На складе</MenuItem>*/}
+                {/*            <MenuItem value={'ON_WAY'}>В пути</MenuItem>*/}
+                {/*            <MenuItem value={'DELIVERED'}>Прибыл</MenuItem>*/}
+                {/*            <MenuItem value={'DONE'}>Выдан</MenuItem>*/}
+                {/*        </Select>*/}
+                {/*        <FormHelperText error={true}>{error?.errors?.['status']?.message}</FormHelperText>*/}
+                {/*    </FormControl>*/}
+                {/*</Grid>*/}
                 <FormElement
                     xs={11} sm={9} md={9} lg={9}
                     name="trackNumber"
