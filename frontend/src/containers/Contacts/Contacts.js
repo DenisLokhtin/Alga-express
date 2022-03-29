@@ -49,11 +49,6 @@ const Contacts = () => {
     }, []);
 
     useEffect(() => {
-        // if (!!messagesEndRef.current) {
-        //     messagesEndRef.current.scrollIntoView({
-        //         behavior: 'smooth',
-        //     }, 250);
-        // }
         dispatch(fetchAllInformationRequest());
         dispatch(fetchWareHouseRequest());
     }, [messagesEndRef, dispatch]);
@@ -97,7 +92,8 @@ const Contacts = () => {
     };
 
     return (
-        <Container style={{'textAlign': 'center', paddingTop: '200px'}} component='div' ref={messagesEndRef} className="containerStyle">
+        <Container style={{'textAlign': 'center', paddingTop: '200px'}} component='div' ref={messagesEndRef}
+                   className="containerStyle">
             <Container style={{
                 'borderRadius': '3px',
                 'margin': '10px 0 20px 0',
@@ -124,10 +120,12 @@ const Contacts = () => {
                         </div>
 
                         <Typography>
-                            <a href="https://www.instagram.com/alga_express/" target="_blank" rel="noreferrer">Instagram</a>
+                            <a href="https://www.instagram.com/alga_express/" target="_blank"
+                               rel="noreferrer">Instagram</a>
                         </Typography>
                         <Typography>
-                            <a href="https://api.whatsapp.com/send?phone=996774769434" target="_blank" rel="noreferrer">Whatsapp</a>
+                            <a href="https://api.whatsapp.com/send?phone=996774769434" target="_blank"
+                               rel="noreferrer">Whatsapp</a>
                         </Typography>
                         <div>
                             {printWarehouses()}
