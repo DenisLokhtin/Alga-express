@@ -549,22 +549,6 @@ const AdminPage = () => {
                             rows={packagesRows}
                             columns={[
                                 ...packagesColumns,
-                                // {
-                                //     field: 'price',
-                                //     headerName: 'Цена доставки',
-                                //     flex: 1,
-                                //     minWidth: 110,
-                                //     headerAlign: 'center',
-                                //     align: 'center',
-                                //     renderCell: params => {
-                                //         const order = packages.find(order => order._id === params.id);
-                                //         return (
-                                //             <div style={{display: 'flex', alignItems: 'center'}}>
-                                //                 {order.cargoPrice}
-                                //             </div>
-                                //         )
-                                //     }
-                                // },
                                 {
                                     field: 'delivery',
                                     headerName: 'Доставка',
