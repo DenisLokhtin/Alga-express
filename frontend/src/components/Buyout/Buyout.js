@@ -7,6 +7,7 @@ import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {makeStyles} from "@mui/styles";
 import {addBuyoutRequest, clearBuyoutsError} from "../../store/actions/buyoutActions";
 import {createTheme} from "@mui/material/styles";
+import {setTabValue} from "../../store/actions/usersActions";
 
 const theme = createTheme({
     breakpoints: {
@@ -61,6 +62,7 @@ const Buyout = () => {
         });
 
         dispatch(addBuyoutRequest(formData));
+        dispatch(setTabValue(1));
         setBuyout({
             description: "",
             image: null,

@@ -114,7 +114,6 @@ const App = () => {
                         <Route path={addWareHouseAddress} element={<AddWareHouseAdmin/>}/>
                         <Route path={editWareHouseAddress} element={<EditWareHouseAdmin/>}/>
                         <Route path={listPaymentsAdmin} element={<AdminPaymentsProcessing/>}/>
-                        <Route path={addUserPayment} element={<UserPayment/>}/>
                         <Route path={addCarousel} element={<AddCarouselAdmin/>}/>
                         <Route path={editCarousel} element={<EditCarouselAdmin/>}/>
                         <Route path={addPlayer} element={<AddPlayerAdmin/>}/>

@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Container, Grid, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
-import {addUserPaymentRequest} from "../../store/actions/usersActions";
+import {addUserPaymentRequest, setTabValue} from "../../store/actions/usersActions";
 import FormElement from "../UI/Form/FormElement";
 import FileInput from "../UI/FileInput/FileInput";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
@@ -117,6 +117,7 @@ const UserPayment = () => {
             formData.append('payment', pay[key]);
         });
         dispatch(addUserPaymentRequest(formData));
+        dispatch(setTabValue(2));
     };
 
     const getFieldError = fieldName => {
