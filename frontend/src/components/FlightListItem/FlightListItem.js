@@ -111,7 +111,7 @@ const FlightListItem = ({flight, id, page, limit}) => {
                                     mask={maskMap['ru']}
                                     disabled={editStatus}
                                     label="Дата вылета"
-                                    openTo="month"
+                                    openTo="year"
                                     views={['year', 'month', 'day']}
                                     value={flightData.depart_date}
                                     onChange={(newValue) => {
@@ -130,8 +130,8 @@ const FlightListItem = ({flight, id, page, limit}) => {
                                 <DatePicker
                                     mask={maskMap['ru']}
                                     disabled={editStatus}
-                                    label="Дата вылета"
-                                    openTo="month"
+                                    label="Дата прибытия"
+                                    openTo="year"
                                     views={['year', 'month', 'day']}
                                     value={flightData.arrived_date}
                                     onChange={(newValue) => {
