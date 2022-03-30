@@ -29,6 +29,8 @@ router.get('/newPackages', auth, permit('admin', 'warehouseman', 'user', 'superA
 router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) => {
     const query = {};
 
+    console.log(req.query);
+
     if (Number.isInteger(req.query.page))
         return res.status(403).send({error: 'Не корректные данные запроса'});
 
@@ -58,7 +60,9 @@ router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) =>
         }
     }
     console.log(req.query, 'QUERY FROM FRONT');
-    if (req.query.history) query.history = req.query.history;
+    if (req.query.history === 'true') {
+        query.history = true;
+    }
     if (req.query.from) query.from = req.query.from;
     if (req.query.to) query.to = req.query.to;
     if (req.query.sort) {
