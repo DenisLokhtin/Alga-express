@@ -57,6 +57,7 @@ router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) =>
             }
         }
     }
+    console.log(req.query, 'QUERY FROM FRONT');
     if (req.query.history) query.history = req.query.history;
     if (req.query.from) query.from = req.query.from;
     if (req.query.to) query.to = req.query.to;
@@ -75,8 +76,8 @@ router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) =>
     let findFilter = {};
     try {
         findFilter = filterPackage(query, 'packages');
-
-        const size = await Package.find(findFilter);
+        console.log(findFilter, 'FIND FILTER');
+        const totalPage = await Package.countDocuments(findFilter);
 
         const packages = await Package.find(findFilter)
             .populate({path: 'flight user delivery', select: 'name number description depart_date arrived_date address'})
@@ -84,7 +85,7 @@ router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) =>
             .sort(query.sort)
             .limit(limit)
             .skip(page * limit);
-        res.send({totalPage: Math.ceil(size.length), packages: packages});
+        res.send({totalPage, packages: packages});
     } catch (e) {
         res.status(400).send(e);
     }
