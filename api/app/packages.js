@@ -80,7 +80,6 @@ router.get('/', auth, permit('admin', 'user', 'superAdmin'), async (req, res) =>
     let findFilter = {};
     try {
         findFilter = filterPackage(query, 'packages');
-        console.log(findFilter, 'FIND FILTER');
         const totalPage = await Package.countDocuments(findFilter);
 
         const packages = await Package.find(findFilter)

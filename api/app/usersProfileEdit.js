@@ -7,6 +7,7 @@ const path = require("path");
 const dayjs = require('dayjs');
 const Payment = require("../models/Payment");
 const fs = require("fs");
+const {nanoid} = require("nanoid");
 
 const router = express.Router();
 
@@ -45,24 +46,7 @@ const storage = multer.diskStorage({
         }
 
         if (file.fieldname === 'passport') {
-            let index = 0;
-            let passport = null;
-            try {
-                passport = await User.findById(user_id);
-            } catch (e) {
-                console.log(e);
-            }
-            let pathNameFile = '';
-            if (passport.passport.length > 0) {
-                const str = passport.passport[(req.user.passport.length) - 1].image;
-                const firstIndex = str.indexOf('/', 10);
-                const secondIndex = str.indexOf('_', 10);
-                index = parseInt(str.substr(firstIndex + 1, (secondIndex - firstIndex) - 1)) + 1;
-                pathNameFile = file.fieldname + '/' + index + '_' + dayjs(new Date()).format('DDMMYYYY') + '_' + user_id + path.extname(file.originalname);
-            } else {
-                pathNameFile = file.fieldname + '/' + 0 + '_' + dayjs(new Date()).format('DDMMYYYY') + '_' + user_id + path.extname(file.originalname);
-            }
-            cb(null, pathNameFile);
+            cb(null, file.fieldname + '/' + nanoid() + path.extname(file.originalname));
         }
 
         if (file.fieldname === 'payment') {
